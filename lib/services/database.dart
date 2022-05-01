@@ -26,13 +26,12 @@ class DataBaseService {
     try {
       List<LogModel> logModels = [];
       final querySnapshot = await logRef.get();
-      querySnapshot.docs.forEach((doc) {
+      for (var doc in querySnapshot.docs) {
         final log = LogModel.fromJson(doc.data());
         logModels.add(log);
-      });
+      }
       return logModels;
     } catch (_) {
-      print('Exception occured $_');
       return [];
     }
   }

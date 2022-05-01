@@ -21,7 +21,7 @@ class LogsPage extends StatefulWidget {
 
 class _LogsPageState extends State<LogsPage> {
   String generateUuid() {
-    var uuid = Uuid();
+    var uuid = const Uuid();
     return uuid.v1();
   }
 
@@ -34,8 +34,6 @@ class _LogsPageState extends State<LogsPage> {
   }
 
   Future<LogModel> fetchLogs() async {
-    print('fetching log from firestore');
-
     /// prevnt  unecessary requestes created on logs tap
     if (logs.data.isEmpty) {
       logs = await DataBaseService.fetchLogById(uuid);
@@ -59,7 +57,7 @@ class _LogsPageState extends State<LogsPage> {
       body: Align(
         alignment: Alignment.center,
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 1024),
+          constraints: const BoxConstraints(maxWidth: 1024),
           child: FutureBuilder<LogModel?>(
               future: fetchLogs(),
               builder:

@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   String generateUuid() {
-    var uuid = Uuid();
+    var uuid = const Uuid();
     return uuid.v1();
   }
 
@@ -39,7 +39,7 @@ class HomePageState extends State<HomePage> {
           alignment: Alignment.center,
           child: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 1024),
+              constraints: const BoxConstraints(maxWidth: 1024),
               child: Column(
                 children: [
                   LogBuilder(
@@ -98,8 +98,7 @@ class TitleBar extends StatefulWidget with PreferredSizeWidget {
   State<TitleBar> createState() => TitleBarState();
 
   @override
-  // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class TitleBarState extends State<TitleBar> {

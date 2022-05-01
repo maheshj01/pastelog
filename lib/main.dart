@@ -71,7 +71,7 @@ class App extends StatelessWidget {
         pageBuilder: (context, state) {
           return CustomTransitionPage<void>(
             key: state.pageKey,
-            child: HomePage(),
+            child: const HomePage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),
@@ -174,7 +174,7 @@ class _LogBuilderState extends State<LogBuilder> {
                 child: IconButton(
                     onPressed: () async {
                       await Clipboard.setData(
-                          ClipboardData(text: "${controller.text}"));
+                          ClipboardData(text: controller.text));
                       showMessage(context, " copied to clipboard!");
                     },
                     icon: const Icon(

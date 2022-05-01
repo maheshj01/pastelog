@@ -18,22 +18,12 @@ class Settings extends ChangeNotifier {
 
   static late SharedPreferences _prefs;
   static ThemeMode _theme = ThemeMode.system;
-  static String _themeModeKey = 'themeMode';
-  static String _currencyKey = 'currency';
-  static bool _isReadMode = false;
+  static const String _themeModeKey = 'themeMode';
 
   static Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
     loadTheme();
   }
-
-  // static bool get isReadMode => _isReadMode;
-
-  // static set isReadMode(bool value) {
-  //   _isReadMode = value;
-  //   _singleton.notify();
-  // }
-
   static ThemeMode get getTheme => _theme;
 
   static void setTheme(ThemeMode theme) {
