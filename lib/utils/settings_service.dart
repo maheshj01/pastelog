@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/pages/themes/themes.dart';
+import 'package:flutter_template/themes/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A service that stores and retrieves user settings.
@@ -20,11 +20,19 @@ class Settings extends ChangeNotifier {
   static ThemeMode _theme = ThemeMode.system;
   static String _themeModeKey = 'themeMode';
   static String _currencyKey = 'currency';
+  static bool _isReadMode = false;
 
   static Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
     loadTheme();
   }
+
+  // static bool get isReadMode => _isReadMode;
+
+  // static set isReadMode(bool value) {
+  //   _isReadMode = value;
+  //   _singleton.notify();
+  // }
 
   static ThemeMode get getTheme => _theme;
 

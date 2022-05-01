@@ -1,69 +1,71 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/main.dart';
-import 'package:flutter_template/utils/settings_service.dart';
+import 'package:flutter_template/models/log_model.dart';
+import 'package:flutter_template/services/database.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _toggleTheme() {
-    if (Settings.getTheme == ThemeMode.dark) {
-      Settings.setTheme(ThemeMode.light);
-    } else {
-      Settings.setTheme(ThemeMode.dark);
-    }
+class HomePageState extends State<HomePage> {
+  String generateUuid() {
+    var uuid = Uuid();
+    return uuid.v1();
   }
 
+  late String uuid;
+
+  LogModel logs = LogModel(
+    id: '',
+    data: '',
+    expiryDate: null,
+  );
+
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
+        body: Column(
+      children: [
+        Expanded(
+            child: LogBuilder(
+          controller: controller,
+          data: logs.data,
+        )),
+        Container(
+          height: 200,
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                      onPressed: () async {
+                        uuid = generateUuid();
+                        final log = LogModel(
+                          id: uuid,
+                          data: controller.text,
+                          expiryDate: DateTime.now(),
+                        );
+                        await DataBaseService.addLog(log);
+                        context.push('/$uuid', extra: log);
+                      },
+                      child: const Text('Submit')),
+                  const SizedBox(
+                    width: 40,
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
-        body: ListView.builder(
-            itemCount: 50,
-            itemBuilder: (BuildContext context, int id) {
-              return Card(
-                child: SizedBox(
-                  height: 100,
-                  child: ListTile(
-                    title: Center(child: Text('item $id')),
-                    onTap: () {
-                      context.go('/product/$id');
-                      // goTo(context, '/detail/$y');
-                    },
-                  ),
-                ),
-              );
-            }),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              onPressed: _toggleTheme,
-              tooltip: 'Increment',
-              child: const Icon(Icons.dark_mode),
-            ),
-            const SizedBox(width: 10),
-            FloatingActionButton(
-              heroTag: 'something',
-              onPressed: () async {
-                GoRouter.of(context).go('/login');
-              },
-              tooltip: 'Navigate',
-              child: const Icon(Icons.navigate_next),
-            ),
-          ],
-        ));
+      ],
+    ));
   }
 }

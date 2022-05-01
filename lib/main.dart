@@ -1,28 +1,31 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/constants/strings.dart';
+import 'package:flutter_template/pages/error.dart';
+import 'package:flutter_template/pages/home.dart';
+import 'package:flutter_template/pages/log_detail.dart';
+import 'package:flutter_template/themes/themes.dart';
+import 'package:flutter_template/utils/firebase_options.dart';
 import 'package:flutter_template/models/log_model.dart';
-import 'package:flutter_template/pages/themes/themes.dart';
+import 'package:flutter_template/services/database.dart';
 import 'package:flutter_template/utils/settings_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 Future<void> main() async {
   GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
-  // initScreen = prefs.getString("initScreen") ?? '00';
-  print('initScreen ${initScreen}');
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(App());
 }
 
-String initScreen = '00';
-
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);
-  static const title = 'GoRouter Example: Custom Transitions';
+  static const title = 'PasteLog Web';
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -37,7 +40,6 @@ class App extends StatelessWidget {
             theme: AppTheme.lightThemeData,
             darkTheme: AppTheme.darkThemeData,
             themeMode: Settings.getTheme,
-            // home: const MyHomePage(title: 'Flutter Template'),
             routeInformationParser: _router.routeInformationParser,
             routerDelegate: _router.routerDelegate,
           );
@@ -48,21 +50,20 @@ class App extends StatelessWidget {
     navigatorBuilder:
         (BuildContext context, GoRouterState state, Widget widget) {
       if (state.location == '/') return widget;
-      return LogsPage(
-        id: state.location,
-        isReadMode: true,
-        // log: log,
+      return Overlay(
+        initialEntries: [
+          OverlayEntry(
+            builder: (context) => LogsPage(
+              id: state.location,
+              // log: log,
+            ),
+          )
+        ],
       );
     },
     errorBuilder: (context, error) {
-      // final Log log = error.extra as Log;
-      return Scaffold(
-        body: Center(
-          child: Text(
-            'Error: ${error}',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-        ),
+      return ErrorPage(
+        errorMessage: 'Error: $error',
       );
     },
     routes: [
@@ -71,9 +72,7 @@ class App extends StatelessWidget {
         pageBuilder: (context, state) {
           return CustomTransitionPage<void>(
             key: state.pageKey,
-            child: LogsPage(
-              id: state.location,
-            ),
+            child: HomePage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),
@@ -84,144 +83,83 @@ class App extends StatelessWidget {
   );
 }
 
-class LogsPage extends StatefulWidget {
-  final String? id;
-  final bool isReadMode;
+class UrlBuilder extends StatefulWidget {
+  final String url;
+  final Function onTap;
 
-  const LogsPage({Key? key, this.id, this.isReadMode = false})
+  const UrlBuilder({Key? key, required this.url, required this.onTap})
       : super(key: key);
 
   @override
-  State<LogsPage> createState() => _LogsPageState();
+  State<UrlBuilder> createState() => _UrlBuilderState();
 }
 
-class _LogsPageState extends State<LogsPage> {
-  Future<void> updateCounter() async {
-    counter++;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("initScreen", 'item$counter');
-  }
-
-  int counter = 0;
-  String generateUuid() {
-    var uuid = Uuid();
-    return uuid.v1();
-  }
-
-  late String uuid;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    uuid = widget.id ?? '';
-  }
-
-  Future<LogModel?> fetchLogs() async {
-    final model = LogModel(
-      id: uuid,
-      data: 'Logs',
-      expiryDate: DateTime.now(),
-    );
-    // Future<LogModel>.delayed(
-    //     uuid.isEmpty ? Duration.zero : const Duration(seconds: 3), () => model);
-    return Future.value(model);
-  }
-
-  final TextEditingController controller = TextEditingController();
+class _UrlBuilderState extends State<UrlBuilder> {
   @override
   Widget build(BuildContext context) {
-    final Widget child = Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
-            child: Container(
-          padding: EdgeInsets.all(8),
-          margin: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: Colors.grey, borderRadius: BorderRadius.circular(12)),
-          child: TextField(
-            cursorHeight: 20,
-            controller: controller,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              hintText: 'Enter text',
-            ),
-            maxLines: 100,
-          ),
-        )),
-        Container(
-          height: 200,
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          uuid = generateUuid();
-                          initScreen = uuid;
-                        });
-                      },
-                      child: const Text('Submit')),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {}, child: const Text('Download')),
-                  const SizedBox(
-                    width: 40,
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RichText(
-                      text: const TextSpan(
-                          style: TextStyle(color: Colors.white),
-                          text: 'Your file is available at ',
-                          children: [])),
-                  TextButton(
-                      onPressed: () {
-                        final log = LogModel(
-                            id: uuid,
-                            data: controller.text,
-                            expiryDate: DateTime.now());
-                        context.push('/$uuid', extra: log);
-                      },
-                      child: Text(
-                        'http://localhost:30550/#/$uuid',
-                        style: AppTheme.textTheme.bodyText2!
-                            .copyWith(color: Colors.blueAccent),
-                      )),
-                ],
-              ),
-            ],
-          ),
-        ),
+        RichText(
+            text: const TextSpan(
+                style: TextStyle(color: Colors.white),
+                text: 'Your file is available at ')),
+        TextButton(
+            onPressed: () => widget.onTap(),
+            child: Text(
+              widget.url,
+              style: AppTheme.textTheme.bodyText2!
+                  .copyWith(color: Colors.blueAccent),
+            )),
       ],
     );
-    return Scaffold(
-      body: !widget.isReadMode
-          ? child
-          : FutureBuilder<LogModel?>(
-              future: fetchLogs(),
-              builder:
-                  (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
-                return snapshot.data == null
-                    ? Center(
-                        child: Text(
-                        'Loading...',
-                        style: Theme.of(context).textTheme.headline4,
-                      ))
-                    : child;
-              }),
+  }
+}
+
+class LogBuilder extends StatefulWidget {
+  String? data;
+  final TextEditingController? controller;
+  bool isReadOnly;
+  LogBuilder({Key? key, this.controller, this.data, this.isReadOnly = false})
+      : super(key: key);
+
+  @override
+  State<LogBuilder> createState() => _LogBuilderState();
+}
+
+class _LogBuilderState extends State<LogBuilder> {
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controller ?? TextEditingController();
+    controller.text = widget.data ?? '';
+  }
+
+  late final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: Colors.grey, borderRadius: BorderRadius.circular(12)),
+      child: widget.isReadOnly
+          ? SingleChildScrollView(child: SelectableText(widget.data!))
+          : TextField(
+              cursorHeight: 20,
+              controller: controller,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                hintText: 'Enter text',
+              ),
+              maxLines: 100,
+            ),
     );
   }
 }
