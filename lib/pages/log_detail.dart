@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_template/exports.dart';
 import 'package:flutter_template/main.dart';
 import 'package:flutter_template/models/log_model.dart';
+import 'package:flutter_template/pages/home.dart';
 import 'package:flutter_template/services/database.dart';
+import 'package:flutter_template/themes/themes.dart';
 import 'package:flutter_template/utils/utility.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_template/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
 
 class LogsPage extends StatefulWidget {
@@ -25,15 +29,17 @@ class _LogsPageState extends State<LogsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print('rebuilding page');
     uuid = widget.id ?? '';
   }
 
   Future<LogModel> fetchLogs() async {
     print('fetching log from firestore');
-    logs = await DataBaseService.fetchLogById(uuid);
+
+    /// prevnt  unecessary requestes created on logs tap
+    if (logs.data.isEmpty) {
+      logs = await DataBaseService.fetchLogById(uuid);
+    }
     return logs;
   }
 
@@ -47,15 +53,14 @@ class _LogsPageState extends State<LogsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const TitleBar(
+        title: appTitle,
+      ),
       body: FutureBuilder<LogModel?>(
           future: fetchLogs(),
           builder: (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
             return snapshot.data == null
-                ? Center(
-                    child: Text(
-                    'Loading...',
-                    style: Theme.of(context).textTheme.headline4,
-                  ))
+                ? LoadingWidget()
                 : Column(
                     children: [
                       Expanded(
@@ -67,25 +72,32 @@ class _LogsPageState extends State<LogsPage> {
                       Container(
                         height: 150,
                         alignment: Alignment.center,
+                        padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: ElevatedButton(
-                                  onPressed: () {
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                LogButton(
+                                  onTap: () {
                                     save(controller.text, 'logs.text');
                                   },
-                                  child: const Text('Download')),
+                                  label: 'Download',
+                                ),
+                                const SizedBox(
+                                  width: 24,
+                                ),
+                                LogButton(
+                                    onTap: () async {
+                                      await Clipboard.setData(
+                                          ClipboardData(text: controller.text));
+                                      showMessage(
+                                          context, " copied to clipboard!");
+                                    },
+                                    iconData: Icons.share,
+                                    label: 'Share'),
+                              ],
                             ),
-                            UrlBuilder(
-                                url: 'http://localhost:30550$uuid',
-                                onTap: () {
-                                  final log = LogModel(
-                                      id: uuid,
-                                      data: controller.text,
-                                      expiryDate: DateTime.now());
-                                  context.push('/$uuid', extra: log);
-                                })
                           ],
                         ),
                       ),
@@ -93,5 +105,42 @@ class _LogsPageState extends State<LogsPage> {
                   );
           }),
     );
+  }
+}
+
+class LogButton extends StatelessWidget {
+  final String label;
+  final Function onTap;
+  final IconData? iconData;
+  const LogButton(
+      {Key? key, required this.label, required this.onTap, this.iconData})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        style: ButtonStyle(
+          minimumSize: MaterialStateProperty.all(const Size(100, 42)),
+        ),
+        onPressed: () => onTap(),
+        child: Row(
+          children: [
+            Text(
+              label,
+              style:
+                  AppTheme.textTheme.bodyText2!.copyWith(color: Colors.white),
+            ),
+            SizedBox(
+              width: iconData != null ? 8 : 0,
+            ),
+            iconData != null
+                ? Icon(
+                    iconData,
+                    size: 16,
+                    color: Colors.white,
+                  )
+                : const SizedBox.shrink(),
+          ],
+        ));
   }
 }

@@ -14,10 +14,10 @@ class AppTheme {
   static final Color scaffoldBackgroundColor = Colors.grey.shade900;
   static final Color navbarBackground = Colors.indigo.shade100;
 
-  static TextStyle inputTextStyle = TextStyle(
+  static TextStyle inputTextStyle = const TextStyle(
     fontSize: 25,
   );
-  static TextStyle rupeeStyle = TextStyle(
+  static TextStyle rupeeStyle = const TextStyle(
     fontSize: 18,
   );
 
@@ -52,9 +52,10 @@ class AppTheme {
         elevation: 0,
         iconTheme: IconThemeData(color: colorScheme.primary),
       ),
+
       iconTheme: IconThemeData(color: colorScheme.onPrimary),
       canvasColor: colorScheme.background,
-      scaffoldBackgroundColor: colorScheme.background,
+      scaffoldBackgroundColor: const Color(0xFF241E30),
       highlightColor: Colors.transparent,
       focusColor: focusColor,
       snackBarTheme: SnackBarThemeData(
@@ -74,19 +75,19 @@ class AppTheme {
       Settings.getTheme == ThemeMode.light ? lightColorScheme : darkColorScheme;
 
   static ColorScheme lightColorScheme = ColorScheme.fromSeed(
-    seedColor: Color.fromARGB(255, 126, 120, 211),
+    seedColor: const Color.fromARGB(255, 126, 120, 211),
     //   primary: Color.fromARGB(255, 87, 138, 206),
     //   primaryContainer: Color(0xFF117378),
     //   secondary: Color(0xFFEFF3F3),
     //   secondaryContainer: Color(0xFFFAFBFB),
-    background: Color.fromARGB(255, 230, 219, 253),
+    background: const Color.fromARGB(255, 230, 219, 253),
     //   surface: Color(0xFFFAFBFB),
     //   onBackground: Colors.white,
     //   error: _lightFillColor,
     //   onError: _lightFillColor,
     onPrimary: _lightFillColor,
     //   onSecondary: Color(0xFF322942),
-    onSurface: Color(0xFF241E30),
+    onSurface: const Color(0xFF241E30),
     //   brightness: Brightness.light,
   );
 
@@ -116,7 +117,7 @@ class AppTheme {
   static const _semiBold = FontWeight.w600;
   static const _bold = FontWeight.w700;
 
-  static final TextTheme textTheme = TextTheme(
+  static const TextTheme textTheme = TextTheme(
     headline1: TextStyle(fontWeight: _bold, fontSize: 56.0),
     headline2: TextStyle(fontWeight: _bold, fontSize: 48.0),
     headline3: TextStyle(fontWeight: _bold, fontSize: 32.0),

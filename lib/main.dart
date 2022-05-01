@@ -3,17 +3,16 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_template/constants/strings.dart';
 import 'package:flutter_template/pages/error.dart';
 import 'package:flutter_template/pages/home.dart';
 import 'package:flutter_template/pages/log_detail.dart';
 import 'package:flutter_template/themes/themes.dart';
 import 'package:flutter_template/utils/firebase_options.dart';
-import 'package:flutter_template/models/log_model.dart';
-import 'package:flutter_template/services/database.dart';
 import 'package:flutter_template/utils/settings_service.dart';
+import 'package:flutter_template/utils/utility.dart';
 import 'package:go_router/go_router.dart';
-import 'package:uuid/uuid.dart';
 
 Future<void> main() async {
   GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
@@ -102,7 +101,7 @@ class _UrlBuilderState extends State<UrlBuilder> {
       children: [
         RichText(
             text: const TextSpan(
-                style: TextStyle(color: Colors.white),
+                // style: TextStyle(color: Colors.black),
                 text: 'Your file is available at ')),
         TextButton(
             onPressed: () => widget.onTap(),
@@ -136,30 +135,54 @@ class _LogBuilderState extends State<LogBuilder> {
   }
 
   late final TextEditingController controller;
+  String hint =
+      '''Publish your logs to the cloud,\nAnd access them from anywhere via a unique link.
 
+      \nNo Sign in required!''';
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.all(8),
-      width: double.infinity,
-      decoration: BoxDecoration(
-          color: Colors.grey, borderRadius: BorderRadius.circular(12)),
-      child: widget.isReadOnly
-          ? SingleChildScrollView(child: SelectableText(widget.data!))
-          : TextField(
-              cursorHeight: 20,
-              controller: controller,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                hintText: 'Enter text',
-              ),
-              maxLines: 100,
-            ),
+    return Stack(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(12)),
+          child: widget.isReadOnly
+              ? SingleChildScrollView(child: SelectableText(widget.data!))
+              : TextField(
+                  cursorHeight: 20,
+                  controller: controller,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    hintText: hint,
+                  ),
+                  minLines: 20,
+                  maxLines: 40,
+                ),
+        ),
+        widget.isReadOnly
+            ? Positioned(
+                right: 10,
+                top: 6,
+                child: IconButton(
+                    onPressed: () async {
+                      await Clipboard.setData(
+                          ClipboardData(text: "${controller.text}"));
+                      showMessage(context, " copied to clipboard!");
+                    },
+                    icon: const Icon(
+                      Icons.copy,
+                      color: Colors.black,
+                    )))
+            : const SizedBox.shrink(),
+      ],
     );
   }
 }
