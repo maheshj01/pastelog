@@ -32,7 +32,7 @@ class AppTheme {
   static const _lightFillColor = Colors.black;
   static const _darkFillColor = Colors.white;
 
-  static Color get themeTextColor => isDark ? _lightFillColor : _darkFillColor;
+  static Color get themeTextColor => !isDark ? _lightFillColor : _darkFillColor;
 
   static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
   static final Color _darkFocusColor = Colors.white.withOpacity(0.12);

@@ -1,11 +1,15 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_template/exports.dart';
 import 'package:flutter_template/main.dart';
 import 'package:flutter_template/models/log_model.dart';
+import 'package:flutter_template/pages/error.dart';
 import 'package:flutter_template/pages/home.dart';
 import 'package:flutter_template/services/database.dart';
 import 'package:flutter_template/themes/themes.dart';
+import 'package:flutter_template/utils/navigator.dart';
 import 'package:flutter_template/utils/utility.dart';
 import 'package:flutter_template/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
@@ -35,10 +39,14 @@ class _LogsPageState extends State<LogsPage> {
 
   Future<LogModel> fetchLogs() async {
     /// prevnt  unecessary requestes created on logs tap
-    if (logs.data.isEmpty) {
-      logs = await DataBaseService.fetchLogById(uuid);
+    try {
+      if (logs.data.isEmpty) {
+        logs = await DataBaseService.fetchLogById(uuid);
+      }
+      return logs;
+    } catch (_) {
+      throw 'Logs Not found';
     }
-    return logs;
   }
 
   LogModel logs = LogModel(
@@ -62,51 +70,135 @@ class _LogsPageState extends State<LogsPage> {
               future: fetchLogs(),
               builder:
                   (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
-                return snapshot.data == null
-                    ? LoadingWidget()
-                    : Column(
-                        children: [
-                          Expanded(
-                              child: LogBuilder(
-                            controller: controller,
-                            data: snapshot.data!.data,
-                            isReadOnly: true,
-                          )),
-                          Container(
-                            height: 150,
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
+                if (snapshot.hasError) {
+                  return ErrorPage(errorMessage: snapshot.error.toString());
+                } else if (snapshot.data == null) {
+                  return const LoadingWidget();
+                } else {
+                  return Column(
+                    children: [
+                      Expanded(
+                          child: LogBuilder(
+                        controller: controller,
+                        data: snapshot.data!.data,
+                        isReadOnly: true,
+                      )),
+                      Container(
+                        height: 150,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    LogButton(
-                                      onTap: () {
-                                        save(controller.text, 'logs.text');
-                                      },
-                                      label: 'Download',
-                                    ),
-                                    const SizedBox(
-                                      width: 24,
-                                    ),
-                                    LogButton(
-                                        onTap: () async {
-                                          await Clipboard.setData(ClipboardData(
-                                              text: controller.text));
-                                          showMessage(
-                                              context, " copied to clipboard!");
-                                        },
-                                        iconData: Icons.share,
-                                        label: 'Share'),
-                                  ],
+                                LogButton(
+                                  onTap: () {
+                                    save(controller.text, 'logs.text');
+                                  },
+                                  label: 'Download',
                                 ),
+                                const SizedBox(
+                                  width: 24,
+                                ),
+                                LogButton(
+                                    onTap: () async {
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) {
+                                            return ShareDialog(
+                                                url: window.location.href);
+                                          });
+                                    },
+                                    iconData: Icons.share,
+                                    label: 'Share'),
                               ],
                             ),
-                          ),
-                        ],
-                      );
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
               }),
+        ),
+      ),
+    );
+  }
+}
+
+class ShareDialog extends StatefulWidget {
+  final String url;
+  const ShareDialog({Key? key, required this.url}) : super(key: key);
+
+  @override
+  State<ShareDialog> createState() => _ShareDialogState();
+}
+
+class _ShareDialogState extends State<ShareDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Share',
+              style: AppTheme.textTheme.headline4,
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SelectableText(
+                            widget.url,
+                            style: AppTheme.textTheme.subtitle1!
+                                .copyWith(color: AppTheme.themeTextColor),
+                          ))),
+                  IconButton(
+                      onPressed: () async {
+                        await Clipboard.setData(
+                            ClipboardData(text: widget.url));
+                        showMessage(context, " copied to clipboard!");
+                        popView(context);
+                      },
+                      icon: const Icon(
+                        Icons.copy,
+                        color: Colors.black,
+                      ))
+                ],
+              ),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(color: Colors.white),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                LogButton(
+                  onTap: () async {
+                    popView(context);
+                  },
+                  // iconData: Icons.share,
+                  label: 'Cancel',
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

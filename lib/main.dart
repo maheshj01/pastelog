@@ -46,20 +46,6 @@ class App extends StatelessWidget {
   }
 
   final _router = GoRouter(
-    navigatorBuilder:
-        (BuildContext context, GoRouterState state, Widget widget) {
-      if (state.location == '/') return widget;
-      return Overlay(
-        initialEntries: [
-          OverlayEntry(
-            builder: (context) => LogsPage(
-              id: state.location,
-              // log: log,
-            ),
-          )
-        ],
-      );
-    },
     errorBuilder: (context, error) {
       return ErrorPage(
         errorMessage: 'Error: $error',
@@ -72,6 +58,18 @@ class App extends StatelessWidget {
           return CustomTransitionPage<void>(
             key: state.pageKey,
             child: const HomePage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(opacity: animation, child: child),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/logs/:id',
+        pageBuilder: (context, state) {
+          return CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: LogsPage(id: state.params['id']),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),
@@ -151,10 +149,17 @@ class _LogBuilderState extends State<LogBuilder> {
               color: Colors.grey.shade100,
               borderRadius: BorderRadius.circular(12)),
           child: widget.isReadOnly
-              ? SingleChildScrollView(child: SelectableText(widget.data!))
+              ? SingleChildScrollView(
+                  child: SelectableText(
+                  widget.data!,
+                  style: AppTheme.textTheme.subtitle1!
+                      .copyWith(color: AppTheme.themeTextColor),
+                ))
               : TextField(
                   cursorHeight: 20,
                   controller: controller,
+                  style: AppTheme.textTheme.subtitle1!
+                      .copyWith(color: AppTheme.themeTextColor),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,

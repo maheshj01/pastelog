@@ -64,7 +64,7 @@ class HomePageState extends State<HomePage> {
                                   expiryDate: DateTime.now(),
                                 );
                                 await DataBaseService.addLog(log);
-                                context.push('/$uuid', extra: log);
+                                context.push('/logs/$uuid', extra: log);
                               },
                               child: Text(
                                 'Publish',
@@ -106,6 +106,7 @@ class TitleBarState extends State<TitleBar> {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppTheme.colorScheme.surface,
+      automaticallyImplyLeading: false,
       title: Text(
         appTitle,
         style: Theme.of(context)

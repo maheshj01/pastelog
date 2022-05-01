@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/themes/themes.dart';
 import 'package:go_router/go_router.dart';
 
 class ErrorPage extends StatelessWidget {
@@ -10,8 +11,20 @@ class ErrorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: TextButton(
-            child: const Text('Go Home'), onPressed: () => context.go('/')),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$errorMessage',
+              style: AppTheme.textTheme.headline4,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextButton(
+                child: const Text('Go Home'), onPressed: () => context.go('/')),
+          ],
+        ),
       ),
     );
   }
