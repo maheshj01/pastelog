@@ -161,6 +161,8 @@ class _LogBuilderState extends State<LogBuilder> {
                   style: AppTheme.textTheme.subtitle1!
                       .copyWith(color: AppTheme.themeTextColor),
                   decoration: InputDecoration(
+                    hintStyle: AppTheme.textTheme.subtitle1!
+                        .copyWith(color: AppTheme.themeTextColor),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
