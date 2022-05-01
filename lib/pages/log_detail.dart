@@ -142,7 +142,8 @@ class _ShareDialogState extends State<ShareDialog> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Padding(
+      child: Container(
+        width: 400,
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -187,6 +188,7 @@ class _ShareDialogState extends State<ShareDialog> {
               height: 12,
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 LogButton(
