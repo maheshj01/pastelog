@@ -35,48 +35,54 @@ class HomePageState extends State<HomePage> {
         appBar: const TitleBar(
           title: appTitle,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              LogBuilder(
-                controller: controller,
-                data: logs.data,
-              ),
-              Container(
-                height: 150,
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+        body: Align(
+          alignment: Alignment.center,
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 1024),
+              child: Column(
+                children: [
+                  LogBuilder(
+                    controller: controller,
+                    data: logs.data,
+                  ),
+                  Container(
+                    height: 150,
+                    alignment: Alignment.center,
+                    child: Column(
                       children: [
-                        ElevatedButton(
-                          onPressed: () async {
-                            if (controller.text.isEmpty) return;
-                            uuid = generateUuid();
-                            final log = LogModel(
-                              id: uuid,
-                              data: controller.text,
-                              expiryDate: DateTime.now(),
-                            );
-                            await DataBaseService.addLog(log);
-                            context.push('/$uuid', extra: log);
-                          },
-                          child: Text(
-                            'Publish',
-                            style: AppTheme.textTheme.bodyText2!
-                                .copyWith(color: Colors.white),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (controller.text.isEmpty) return;
+                                uuid = generateUuid();
+                                final log = LogModel(
+                                  id: uuid,
+                                  data: controller.text,
+                                  expiryDate: DateTime.now(),
+                                );
+                                await DataBaseService.addLog(log);
+                                context.push('/$uuid', extra: log);
+                              },
+                              child: Text(
+                                'Publish',
+                                style: AppTheme.textTheme.bodyText2!
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 40,
+                            )
+                          ],
                         ),
-                        const SizedBox(
-                          width: 40,
-                        )
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ));
   }

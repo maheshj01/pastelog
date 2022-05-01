@@ -56,54 +56,61 @@ class _LogsPageState extends State<LogsPage> {
       appBar: const TitleBar(
         title: appTitle,
       ),
-      body: FutureBuilder<LogModel?>(
-          future: fetchLogs(),
-          builder: (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
-            return snapshot.data == null
-                ? LoadingWidget()
-                : Column(
-                    children: [
-                      Expanded(
-                          child: LogBuilder(
-                        controller: controller,
-                        data: snapshot.data!.data,
-                        isReadOnly: true,
-                      )),
-                      Container(
-                        height: 150,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+      body: Align(
+        alignment: Alignment.center,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 1024),
+          child: FutureBuilder<LogModel?>(
+              future: fetchLogs(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
+                return snapshot.data == null
+                    ? LoadingWidget()
+                    : Column(
+                        children: [
+                          Expanded(
+                              child: LogBuilder(
+                            controller: controller,
+                            data: snapshot.data!.data,
+                            isReadOnly: true,
+                          )),
+                          Container(
+                            height: 150,
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
                               children: [
-                                LogButton(
-                                  onTap: () {
-                                    save(controller.text, 'logs.text');
-                                  },
-                                  label: 'Download',
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    LogButton(
+                                      onTap: () {
+                                        save(controller.text, 'logs.text');
+                                      },
+                                      label: 'Download',
+                                    ),
+                                    const SizedBox(
+                                      width: 24,
+                                    ),
+                                    LogButton(
+                                        onTap: () async {
+                                          await Clipboard.setData(ClipboardData(
+                                              text: controller.text));
+                                          showMessage(
+                                              context, " copied to clipboard!");
+                                        },
+                                        iconData: Icons.share,
+                                        label: 'Share'),
+                                  ],
                                 ),
-                                const SizedBox(
-                                  width: 24,
-                                ),
-                                LogButton(
-                                    onTap: () async {
-                                      await Clipboard.setData(
-                                          ClipboardData(text: controller.text));
-                                      showMessage(
-                                          context, " copied to clipboard!");
-                                    },
-                                    iconData: Icons.share,
-                                    label: 'Share'),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-          }),
+                          ),
+                        ],
+                      );
+              }),
+        ),
+      ),
     );
   }
 }
