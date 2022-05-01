@@ -47,6 +47,7 @@ class HomePageState extends State<HomePage> {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
+                        if (controller.text.isEmpty) return;
                         uuid = generateUuid();
                         final log = LogModel(
                           id: uuid,

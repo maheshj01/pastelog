@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_template/main.dart';
 import 'package:flutter_template/models/log_model.dart';
 import 'package:flutter_template/services/database.dart';
-import 'package:flutter_template/utils/settings_service.dart';
+import 'package:flutter_template/utils/utility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
@@ -72,7 +72,9 @@ class _LogsPageState extends State<LogsPage> {
                             Align(
                               alignment: Alignment.centerRight,
                               child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    save(controller.text, 'logs.text');
+                                  },
                                   child: const Text('Download')),
                             ),
                             UrlBuilder(

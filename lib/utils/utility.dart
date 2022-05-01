@@ -1,6 +1,9 @@
-/// 
-/// A utility class containing all the helper functions
-/// to keep your code clean and readable and helping to maintain
-/// the Single responsibility princple
+import 'dart:html' as html;
+import 'dart:js' as js;
 
-int squareOfNumber(int x) => x * x;
+void save(Object bytes, String fileName) {
+  js.context.callMethod("saveAs", <Object>[
+    html.Blob(<Object>[bytes]),
+    fileName
+  ]);
+}
