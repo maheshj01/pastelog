@@ -7,6 +7,8 @@ import 'package:flutter_template/themes/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
+import '../utils/settings_service.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -107,6 +109,15 @@ class TitleBarState extends State<TitleBar> {
     return AppBar(
       backgroundColor: AppTheme.colorScheme.surface,
       automaticallyImplyLeading: false,
+      actions: [
+        IconButton(
+            onPressed: () {
+              Settings.getTheme == ThemeMode.dark
+                  ? Settings.setTheme(ThemeMode.light)
+                  : Settings.setTheme(ThemeMode.dark);
+            },
+            icon: const Icon(Icons.dark_mode))
+      ],
       title: Text(
         appTitle,
         style: Theme.of(context)

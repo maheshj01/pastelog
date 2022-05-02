@@ -19,6 +19,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Settings.init();
   runApp(App());
 }
 
@@ -153,7 +154,7 @@ class _LogBuilderState extends State<LogBuilder> {
                   child: SelectableText(
                   widget.data!,
                   style: AppTheme.textTheme.subtitle1!
-                      .copyWith(color: AppTheme.themeTextColor),
+                      .copyWith(color: Colors.black),
                 ))
               : TextField(
                   cursorHeight: 20,
