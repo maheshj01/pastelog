@@ -158,6 +158,9 @@ class _ShareDialogState extends State<ShareDialog> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              color: !AppTheme.isDark
+                  ? AppTheme.darkColorScheme.surface
+                  : AppTheme.colorScheme.surface,
               child: Row(
                 children: [
                   Expanded(
@@ -165,8 +168,8 @@ class _ShareDialogState extends State<ShareDialog> {
                           scrollDirection: Axis.horizontal,
                           child: SelectableText(
                             widget.url,
-                            style: AppTheme.textTheme.subtitle1!
-                                .copyWith(color: AppTheme.themeTextColor),
+                            style: AppTheme.textTheme.subtitle1!.copyWith(
+                                color: AppTheme.themeTextContrastColor),
                           ))),
                   IconButton(
                       onPressed: () async {
@@ -175,14 +178,13 @@ class _ShareDialogState extends State<ShareDialog> {
                         showMessage(context, " copied to clipboard!");
                         popView(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.copy,
-                        color: Colors.black,
+                        color: AppTheme.themeTextContrastColor,
                       ))
                 ],
               ),
               alignment: Alignment.center,
-              decoration: const BoxDecoration(color: Colors.white),
             ),
             const SizedBox(
               height: 12,
