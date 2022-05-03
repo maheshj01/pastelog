@@ -4,10 +4,10 @@ import 'package:flutter_template/main.dart';
 import 'package:flutter_template/models/log_model.dart';
 import 'package:flutter_template/services/database.dart';
 import 'package:flutter_template/themes/themes.dart';
+import 'package:flutter_template/utils/extensions.dart';
+import 'package:flutter_template/utils/settings_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-
-import '../utils/settings_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,10 +27,26 @@ class HomePageState extends State<HomePage> {
   LogModel logs = LogModel(
     id: '',
     data: '',
+    createdDate: DateTime.now(),
     expiryDate: null,
   );
 
   final TextEditingController controller = TextEditingController();
+  DateTime? expiryDate;
+
+  Future<void> _selectExpiryDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2025));
+    if (picked != null && picked != expiryDate) {
+      setState(() {
+        expiryDate = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +72,53 @@ class HomePageState extends State<HomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            Text(
+                              "This Log should Expire",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2!
+                                  .copyWith(color: Colors.white),
+                            ),
+                            Stack(
+                              children: [
+                                TextButton(
+                                    onPressed: () {
+                                      _selectExpiryDate(context);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          expiryDate == null
+                                              ? "Never"
+                                              : expiryDate!.formatDate(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6!
+                                              .copyWith(
+                                                  color: AppTheme
+                                                      .colorScheme.primary),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Icon(Icons.calendar_today,
+                                            color: AppTheme.colorScheme.primary,
+                                            size: 20),
+                                      ],
+                                    )),
+                                Positioned(
+                                    bottom: 0,
+                                    left: 4,
+                                    right: 2,
+                                    child: Container(
+                                        height: 2,
+                                        width: double.infinity,
+                                        color: Colors.white)),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 50,
+                            ),
                             ElevatedButton(
                               onPressed: () async {
                                 if (controller.text.isEmpty) return;
@@ -63,7 +126,8 @@ class HomePageState extends State<HomePage> {
                                 final log = LogModel(
                                   id: uuid,
                                   data: controller.text,
-                                  expiryDate: DateTime.now(),
+                                  expiryDate: expiryDate,
+                                  createdDate: DateTime.now(),
                                 );
                                 await DataBaseService.addLog(log);
                                 context.push('/logs/$uuid', extra: log);

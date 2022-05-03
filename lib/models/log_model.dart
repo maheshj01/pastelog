@@ -18,8 +18,9 @@ class LogModel {
   final String id;
   final String data;
   final DateTime? expiryDate;
+  final DateTime? createdDate;
 
-  LogModel({required this.id, required this.data, this.expiryDate});
+  LogModel({required this.id, required this.data, this.expiryDate,required this.createdDate});
   factory LogModel.fromJson(Map<String, dynamic> json) =>
       _$LogModelFromJson(json);
   Map<String, dynamic> toJson() => _$LogModelToJson(this);

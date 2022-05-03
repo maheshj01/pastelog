@@ -9,6 +9,7 @@ import 'package:flutter_template/pages/error.dart';
 import 'package:flutter_template/pages/home.dart';
 import 'package:flutter_template/services/database.dart';
 import 'package:flutter_template/themes/themes.dart';
+import 'package:flutter_template/utils/extensions.dart';
 import 'package:flutter_template/utils/navigator.dart';
 import 'package:flutter_template/utils/utility.dart';
 import 'package:flutter_template/widgets/widgets.dart';
@@ -49,11 +50,8 @@ class _LogsPageState extends State<LogsPage> {
     }
   }
 
-  LogModel logs = LogModel(
-    id: '',
-    data: '',
-    expiryDate: null,
-  );
+  LogModel logs =
+      LogModel(id: '', data: '', expiryDate: null, createdDate: DateTime.now());
 
   final TextEditingController controller = TextEditingController();
   @override
@@ -77,6 +75,10 @@ class _LogsPageState extends State<LogsPage> {
                 } else {
                   return Column(
                     children: [
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      LogPublishDetails(logModel: snapshot.data!),
                       Expanded(
                           child: LogBuilder(
                         controller: controller,
@@ -121,6 +123,58 @@ class _LogsPageState extends State<LogsPage> {
                   );
                 }
               }),
+        ),
+      ),
+    );
+  }
+}
+
+class LogPublishDetails extends StatelessWidget {
+  final LogModel logModel;
+
+  const LogPublishDetails({Key? key, required this.logModel}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final String creationDate = logModel.createdDate!.formatDate();
+    DateTime? expiryDate = logModel.expiryDate;
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                  style: Theme.of(context).textTheme.subtitle2,
+                  text: "Created:"),
+              creationDate == "Today"
+                  ? TextSpan(
+                      style: Theme.of(context).textTheme.headline6,
+                      text: "Today")
+                  : TextSpan(text: "on $creationDate")
+            ])),
+            const SizedBox(
+              height: 16,
+            ),
+            RichText(
+                text: TextSpan(children: [
+              expiryDate == null
+                  ? TextSpan(
+                      style: Theme.of(context).textTheme.headline6,
+                      text: "This log will last forever 😉")
+                  : TextSpan(
+                      children: [
+                        TextSpan(text: "on $creationDate"),
+                        TextSpan(
+                            text:
+                                'This log will be deleted on ${expiryDate.formatDate()}')
+                      ],
+                    ),
+            ])),
+          ],
         ),
       ),
     );
