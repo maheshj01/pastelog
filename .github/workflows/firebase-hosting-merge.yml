@@ -11,17 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
+      - uses: subosito/flutter-action@v2
         with:
-          java-version: "12.x"
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: "stable"
+          flutter-version: '2.10.5'
+          channel: 'stable'
+      - run: echo $FIREBASE_OPTIONS | base64 -d > lib/utils/firebase_options.dart
+        env:
+          FIREBASE_OPTIONS: ${{ secrets.FIREBASE_OPTIONS }}
+      - run: echo $GOOGLE_SERVICES_JSON | base64 -d > android/app/google-services.json
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      - run: echo $GOOGLE_SERVICES_INFO_PLIST | base64 -d > ios/Runner/GoogleService-Info.plist
+        env:
+          GOOGLE_SERVICES_INFO_PLIST: ${{ secrets.GOOGLE_SERVICES_INFO_PLIST }}
       - run: flutter clean
       - run: flutter pub get
-      - run: flutter pub run build_runner build --delete-conflicting-outputs
-      - run: flutter build web
-      - uses: actions/checkout@v2
+      - run: flutter build web --release
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
