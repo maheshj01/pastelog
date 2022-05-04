@@ -3,9 +3,9 @@ import * as functions from "firebase-functions";
 
 admin.initializeApp(functions.config().firebase);
 
-// Run functions every 6 hours
+// Run functions every 7 days
 exports.scheduledFunction = functions.pubsub
-  .schedule("00 12 * * *")
+  .schedule("0 * */7 * *")
   .timeZone("Asia/Kolkata")
   .onRun(async () => {
     const colRef = await admin.firestore().collection("logs").get();

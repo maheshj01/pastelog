@@ -20,6 +20,24 @@ class DataBaseService {
     // );
     final json = model.toJson();
     await logRef.doc(model.id).set(json);
+    deleteOldLogs();
+  }
+
+  static Future<void> deleteOldLogs() async {
+    logRef.get().then((snapshot) {
+      final length = snapshot.docs.length;
+      for (int i = 0; i < length; i++) {
+        final id = snapshot.docs[i]['id'];
+        final date = snapshot.docs[i]['expiryDate'];
+        if (date != null) {
+          final expiryDate = DateTime.parse(date);
+          final now = DateTime.now();
+          if (expiryDate.isBefore(now)) {
+            removeLog(id);
+          }
+        }
+      }
+    });
   }
 
   static Future<List<LogModel>> getLogs() async {
