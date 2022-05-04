@@ -31,9 +31,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const admin = __importStar(require("firebase-admin"));
 const functions = __importStar(require("firebase-functions"));
 admin.initializeApp(functions.config().firebase);
-// Run functions every 6 hours
+// Run functions every 7 days (Sunday)
 exports.scheduledFunction = functions.pubsub
-    .schedule("00 12 * * *")
+    .schedule("0 0 * * 0")
     .timeZone("Asia/Kolkata")
     .onRun(() => __awaiter(void 0, void 0, void 0, function* () {
     const colRef = yield admin.firestore().collection("logs").get();
