@@ -25,8 +25,8 @@ jobs:
         # env:
           # GOOGLE_SERVICES_INFO_PLIST: ${{ secrets.GOOGLE_SERVICES_INFO_PLIST }}
       - run: flutter clean
-      - run: flutter pub run build_runner build --delete-conflicting-outputs
       - run: flutter pub get
+      - run: flutter pub run build_runner build --delete-conflicting-outputs
       - run: flutter build web --release
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
