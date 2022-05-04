@@ -108,3 +108,7 @@ macos/**/xcuserdata/
 
 ios/Flutter/Debug.xcconfig
 ios/Flutter/Release.xcconfig
+
+# functions related
+
+functions/node_modules/
