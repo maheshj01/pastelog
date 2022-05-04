@@ -25,6 +25,9 @@ jobs:
         # env:
           # GOOGLE_SERVICES_INFO_PLIST: ${{ secrets.GOOGLE_SERVICES_INFO_PLIST }}
       - run: flutter clean
+      - run: echo $FIREBASE_OPTIONS | base64 -d > lib/utils/firebase_options.dart
+        env:
+          FIREBASE_OPTIONS: ${{ secrets.FIREBASE_OPTIONS }}
       - run: flutter pub get
       - run: flutter pub run build_runner build --delete-conflicting-outputs
       - run: flutter build web --release

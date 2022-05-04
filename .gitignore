@@ -112,3 +112,5 @@ ios/Flutter/Release.xcconfig
 # functions related
 
 functions/node_modules/
+
+lib/utils/firebase_options.dart
