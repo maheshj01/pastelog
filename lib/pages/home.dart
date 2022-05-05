@@ -176,24 +176,38 @@ class TitleBar extends StatefulWidget with PreferredSizeWidget {
 class TitleBarState extends State<TitleBar> {
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Settings.getTheme == ThemeMode.dark;
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
       automaticallyImplyLeading: false,
       actions: [
         IconButton(
             onPressed: () {
-              Settings.getTheme == ThemeMode.dark
+              isDark
                   ? Settings.setTheme(ThemeMode.light)
                   : Settings.setTheme(ThemeMode.dark);
             },
-            icon: const Icon(Icons.dark_mode))
+            icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny))
       ],
-      title: Text(
-        appTitle,
-        style: Theme.of(context)
-            .textTheme
-            .headline3!
-            .copyWith(color: AppTheme.themeTextColor),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.format_align_left,
+            size: 36,
+            color: AppTheme.colorScheme.primary,
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Text(
+            appTitle,
+            style: Theme.of(context)
+                .textTheme
+                .headline3!
+                .copyWith(color: AppTheme.themeTextColor),
+          ),
+        ],
       ),
     );
   }

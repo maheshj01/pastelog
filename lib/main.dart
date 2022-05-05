@@ -33,7 +33,7 @@ class App extends StatelessWidget {
         builder: (BuildContext context, Widget? child) {
           return MaterialApp.router(
             title: appTitle,
-            debugShowCheckedModeBanner: kDebugMode,
+            debugShowCheckedModeBanner: !kDebugMode,
             supportedLocales: const [
               Locale('en', ''), // English, no country code
             ],

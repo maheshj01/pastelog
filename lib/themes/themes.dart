@@ -93,13 +93,13 @@ class AppTheme {
       onSurface: _lightFillColor);
 
   static ColorScheme darkColorScheme = const ColorScheme(
-    primary: const Color(0xFFFF8383),
-    primaryContainer: const Color(0xFF1CDEC9),
-    secondary: const Color(0xFF4D1F7C),
-    secondaryContainer: const Color(0xFF451B6F),
-    background: const Color(0xFF241E30),
+    primary: Color(0xFFFF8383),
+    primaryContainer: Color(0xFF1CDEC9),
+    secondary: Color(0xFF4D1F7C),
+    secondaryContainer: Color(0xFF451B6F),
+    background: Color(0xFF241E30),
     surface: Color(0xFF1F1929),
-    onBackground: const Color(0x0DFFFFFF), // White with 0.05 opacity
+    onBackground: Color(0x0DFFFFFF), // White with 0.05 opacity
     error: Colors.red,
     onError: _darkFillColor,
     onPrimary: _darkFillColor,
