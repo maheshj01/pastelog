@@ -86,7 +86,7 @@ class _LogsPageState extends State<LogsPage> {
                         isReadOnly: true,
                       )),
                       Container(
-                        height: 150,
+                        height: 100,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(16),
                         child: Column(
