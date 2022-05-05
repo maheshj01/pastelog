@@ -37,8 +37,10 @@ class App extends StatelessWidget {
             supportedLocales: const [
               Locale('en', ''), // English, no country code
             ],
-            theme: AppTheme.lightThemeData,
-            darkTheme: AppTheme.darkThemeData,
+            theme: AppTheme.lightThemeData.copyWith(
+                scaffoldBackgroundColor: AppTheme.lightColorScheme.background),
+            darkTheme: AppTheme.darkThemeData.copyWith(
+                scaffoldBackgroundColor: AppTheme.darkColorScheme.background),
             themeMode: Settings.getTheme,
             routeInformationParser: _router.routeInformationParser,
             routerDelegate: _router.routerDelegate,
@@ -147,14 +149,14 @@ class _LogBuilderState extends State<LogBuilder> {
           margin: const EdgeInsets.all(8),
           width: double.infinity,
           decoration: BoxDecoration(
-              color: Colors.grey.shade100,
+              color: AppTheme.colorScheme.surface,
               borderRadius: BorderRadius.circular(12)),
           child: widget.isReadOnly
               ? SingleChildScrollView(
                   child: SelectableText(
                   widget.data!,
                   style: AppTheme.textTheme.subtitle1!
-                      .copyWith(color: Colors.black),
+                      .copyWith(color: AppTheme.themeTextColor),
                 ))
               : TextField(
                   cursorHeight: 20,
@@ -162,8 +164,10 @@ class _LogBuilderState extends State<LogBuilder> {
                   style: AppTheme.textTheme.subtitle1!
                       .copyWith(color: AppTheme.themeTextColor),
                   decoration: InputDecoration(
-                    hintStyle: AppTheme.textTheme.subtitle1!
-                        .copyWith(color: AppTheme.themeTextColor),
+                    hintStyle: AppTheme.textTheme.subtitle1!.copyWith(
+                        color: AppTheme.isDark
+                            ? Colors.grey
+                            : AppTheme.themeTextColor),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,

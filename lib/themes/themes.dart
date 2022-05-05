@@ -76,33 +76,31 @@ class AppTheme {
   static ColorScheme get colorScheme =>
       Settings.getTheme == ThemeMode.light ? lightColorScheme : darkColorScheme;
 
-  static ColorScheme lightColorScheme = ColorScheme.fromSeed(
-    seedColor: const Color.fromARGB(255, 126, 120, 211),
-    //   primary: Color.fromARGB(255, 87, 138, 206),
-    //   primaryContainer: Color(0xFF117378),
-    //   secondary: Color(0xFFEFF3F3),
-    //   secondaryContainer: Color(0xFFFAFBFB),
-    background: const Color.fromARGB(255, 230, 219, 253),
-    //   surface: Color(0xFFFAFBFB),
-    //   onBackground: Colors.white,
-    //   error: _lightFillColor,
-    //   onError: _lightFillColor,
-    onPrimary: _lightFillColor,
-    //   onSecondary: Color(0xFF322942)
-    surface: Color(0xFF1F1929),
-    onSurface: const Color(0xFF241E30),
-    brightness: Brightness.light,
-  );
+  static ColorScheme lightColorScheme = ColorScheme(
+      brightness: Brightness.light,
+      // seedColor: const Color.fromARGB(255, 126, 120, 211),
+      primary: const Color.fromARGB(255, 87, 138, 206),
+      primaryContainer: const Color(0xFF117378),
+      secondary: const Color(0xFFEFF3F3),
+      secondaryContainer: const Color(0xFFFAFBFB),
+      background: const Color(0XFFFFFFFF),
+      surface: Colors.grey[100]!,
+      onBackground: Colors.white,
+      error: Colors.red,
+      onError: _lightFillColor,
+      onPrimary: _lightFillColor,
+      onSecondary: Color(0xFF322942),
+      onSurface: _lightFillColor);
 
   static ColorScheme darkColorScheme = const ColorScheme(
-    primary: Color(0xFFFF8383),
-    primaryContainer: Color(0xFF1CDEC9),
-    secondary: Color(0xFF4D1F7C),
-    secondaryContainer: Color(0xFF451B6F),
-    background: Color(0xFF241E30),
+    primary: const Color(0xFFFF8383),
+    primaryContainer: const Color(0xFF1CDEC9),
+    secondary: const Color(0xFF4D1F7C),
+    secondaryContainer: const Color(0xFF451B6F),
+    background: const Color(0xFF241E30),
     surface: Color(0xFF1F1929),
-    onBackground: Color(0x0DFFFFFF), // White with 0.05 opacity
-    error: _darkFillColor,
+    onBackground: const Color(0x0DFFFFFF), // White with 0.05 opacity
+    error: Colors.red,
     onError: _darkFillColor,
     onPrimary: _darkFillColor,
     onSecondary: _darkFillColor,

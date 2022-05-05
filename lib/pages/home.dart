@@ -6,6 +6,7 @@ import 'package:flutter_template/services/database.dart';
 import 'package:flutter_template/themes/themes.dart';
 import 'package:flutter_template/utils/extensions.dart';
 import 'package:flutter_template/utils/settings_service.dart';
+import 'package:flutter_template/utils/utility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
@@ -77,7 +78,7 @@ class HomePageState extends State<HomePage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle2!
-                                  .copyWith(color: Colors.white),
+                                  .copyWith(color: AppTheme.themeTextColor),
                             ),
                             Stack(
                               children: [
@@ -113,7 +114,7 @@ class HomePageState extends State<HomePage> {
                                     child: Container(
                                         height: 2,
                                         width: double.infinity,
-                                        color: Colors.white)),
+                                        color: AppTheme.themeTextColor)),
                               ],
                             ),
                             const SizedBox(
@@ -121,7 +122,12 @@ class HomePageState extends State<HomePage> {
                             ),
                             ElevatedButton(
                               onPressed: () async {
-                                if (controller.text.isEmpty) return;
+                                if (controller.text.isEmpty) {
+                                  showMessage(
+                                      context, 'Cannot Publish empty logs!');
+                                  return;
+                                }
+                                ;
                                 uuid = generateUuid();
                                 final log = LogModel(
                                   id: uuid,
@@ -171,7 +177,7 @@ class TitleBarState extends State<TitleBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppTheme.colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.background,
       automaticallyImplyLeading: false,
       actions: [
         IconButton(
@@ -187,7 +193,7 @@ class TitleBarState extends State<TitleBar> {
         style: Theme.of(context)
             .textTheme
             .headline3!
-            .copyWith(color: Colors.white),
+            .copyWith(color: AppTheme.themeTextColor),
       ),
     );
   }

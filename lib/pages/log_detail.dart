@@ -222,7 +222,7 @@ class _ShareDialogState extends State<ShareDialog> {
                           child: SelectableText(
                             widget.url,
                             style: AppTheme.textTheme.subtitle1!
-                                .copyWith(color: Colors.white),
+                                .copyWith(color: AppTheme.themeTextColor),
                           ))),
                   IconButton(
                       onPressed: () async {
