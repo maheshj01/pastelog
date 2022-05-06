@@ -169,7 +169,9 @@ class LogPublishDetails extends StatelessWidget {
                     )
                   : TextSpan(
                       children: [
-                        const TextSpan(text: "Expires:"),
+                        TextSpan(
+                            style: Theme.of(context).textTheme.subtitle2,
+                            text: "Expires:"),
                         TextSpan(
                             style: Theme.of(context).textTheme.headline6,
                             text: expiryDate.formatDate() == "Today"

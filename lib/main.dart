@@ -189,7 +189,6 @@ class _LogBuilderState extends State<LogBuilder> {
                     },
                     icon: const Icon(
                       Icons.copy,
-                      color: Colors.black,
                     )))
             : const SizedBox.shrink(),
       ],
