@@ -2,17 +2,17 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_template/exports.dart';
-import 'package:flutter_template/main.dart';
-import 'package:flutter_template/models/log_model.dart';
-import 'package:flutter_template/pages/error.dart';
-import 'package:flutter_template/pages/home.dart';
-import 'package:flutter_template/services/database.dart';
-import 'package:flutter_template/themes/themes.dart';
-import 'package:flutter_template/utils/extensions.dart';
-import 'package:flutter_template/utils/navigator.dart';
-import 'package:flutter_template/utils/utility.dart';
-import 'package:flutter_template/widgets/widgets.dart';
+import 'package:pastelog/exports.dart';
+import 'package:pastelog/main.dart';
+import 'package:pastelog/models/log_model.dart';
+import 'package:pastelog/pages/error.dart';
+import 'package:pastelog/pages/home.dart';
+import 'package:pastelog/services/database.dart';
+import 'package:pastelog/themes/themes.dart';
+import 'package:pastelog/utils/extensions.dart';
+import 'package:pastelog/utils/navigator.dart';
+import 'package:pastelog/utils/utility.dart';
+import 'package:pastelog/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
 
 class LogsPage extends StatefulWidget {

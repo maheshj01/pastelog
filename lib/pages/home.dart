@@ -1,14 +1,12 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_template/constants/constants.dart';
-import 'package:flutter_template/main.dart';
-import 'package:flutter_template/models/log_model.dart';
-import 'package:flutter_template/services/database.dart';
-import 'package:flutter_template/themes/themes.dart';
-import 'package:flutter_template/utils/extensions.dart';
-import 'package:flutter_template/utils/settings_service.dart';
-import 'package:flutter_template/utils/utility.dart';
+import 'package:pastelog/constants/constants.dart';
+import 'package:pastelog/main.dart';
+import 'package:pastelog/models/log_model.dart';
+import 'package:pastelog/services/database.dart';
+import 'package:pastelog/themes/themes.dart';
+import 'package:pastelog/utils/extensions.dart';
+import 'package:pastelog/utils/settings_service.dart';
+import 'package:pastelog/utils/utility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
@@ -133,7 +131,6 @@ class HomePageState extends State<HomePage> {
                                         context, 'Cannot Publish empty logs!');
                                     return;
                                   }
-                                  ;
                                   uuid = generateUuid();
                                   final log = LogModel(
                                     id: uuid,
@@ -182,7 +179,7 @@ class Footer extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Copyright © 2022 Widget Media labs ',
+            Text('Copyright © 2022 Widget Media Labs ',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2!

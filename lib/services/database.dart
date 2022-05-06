@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_template/models/log_model.dart';
+import 'package:pastelog/models/log_model.dart';
 
 class DataBaseService {
   static final DataBaseService _singleton = DataBaseService._internal();

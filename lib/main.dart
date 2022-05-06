@@ -4,14 +4,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_template/constants/strings.dart';
-import 'package:flutter_template/pages/error.dart';
-import 'package:flutter_template/pages/home.dart';
-import 'package:flutter_template/pages/log_detail.dart';
-import 'package:flutter_template/themes/themes.dart';
-import 'package:flutter_template/utils/firebase_options.dart';
-import 'package:flutter_template/utils/settings_service.dart';
-import 'package:flutter_template/utils/utility.dart';
+import 'package:pastelog/constants/strings.dart';
+import 'package:pastelog/pages/error.dart';
+import 'package:pastelog/pages/home.dart';
+import 'package:pastelog/pages/log_detail.dart';
+import 'package:pastelog/themes/themes.dart';
+import 'package:pastelog/utils/firebase_options.dart';
+import 'package:pastelog/utils/settings_service.dart';
+import 'package:pastelog/utils/utility.dart';
 import 'package:go_router/go_router.dart';
 
 Future<void> main() async {
@@ -98,10 +98,7 @@ class _UrlBuilderState extends State<UrlBuilder> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        RichText(
-            text: const TextSpan(
-                // style: TextStyle(color: Colors.black),
-                text: 'Your file is available at ')),
+        RichText(text: const TextSpan(text: 'Your file is available at ')),
         TextButton(
             onPressed: () => widget.onTap(),
             child: Text(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/utils/settings_service.dart';
+import 'package:pastelog/utils/settings_service.dart';
 
 class AppTheme {
   static final AppTheme _singleton = AppTheme._internal();
@@ -89,7 +89,7 @@ class AppTheme {
       error: Colors.red,
       onError: _lightFillColor,
       onPrimary: _lightFillColor,
-      onSecondary: Color(0xFF322942),
+      onSecondary: const Color(0xFF322942),
       onSurface: _lightFillColor);
 
   static ColorScheme darkColorScheme = const ColorScheme(
