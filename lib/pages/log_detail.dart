@@ -237,9 +237,9 @@ class _ShareDialogState extends State<ShareDialog> {
                         showMessage(context, " copied to clipboard!");
                         popView(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.copy,
-                        color: Colors.white,
+                        color: AppTheme.themeTextColor,
                       ))
                 ],
               ),

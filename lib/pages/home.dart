@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pastelog/constants/constants.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
@@ -231,13 +232,13 @@ class TitleBarState extends State<TitleBar> {
           const SizedBox(
             width: 8,
           ),
-          Text(
-            appTitle,
-            style: Theme.of(context)
-                .textTheme
-                .headline3!
-                .copyWith(color: AppTheme.themeTextColor),
-          ),
+          Text(appTitle,
+              style: GoogleFonts.anticSlab(
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .headline3!
+                    .copyWith(color: AppTheme.colorScheme.primary),
+              )),
         ],
       ),
     );
