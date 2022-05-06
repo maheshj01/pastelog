@@ -1,29 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/pages/home.dart';
 import 'package:flutter_template/themes/themes.dart';
 import 'package:go_router/go_router.dart';
 
 class ErrorPage extends StatelessWidget {
   final String errorMessage;
-  const ErrorPage({Key? key, this.errorMessage = "Error 404 not found"})
+  const ErrorPage({Key? key, this.errorMessage = "Logs not found"})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print('object');
     return Scaffold(
+      appBar: const TitleBar(
+        title: 'Pastelog',
+        hasAction: false,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '$errorMessage',
+              '404',
+              textAlign: TextAlign.center,
+              style: AppTheme.textTheme.headline1,
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Text(
+              errorMessage,
+              textAlign: TextAlign.center,
               style: AppTheme.textTheme.headline4,
             ),
             const SizedBox(
-              height: 20,
+              height: 32,
             ),
             TextButton(
-                child: const Text('Go Home'), onPressed: () => context.go('/')),
+                style: ButtonStyle(
+                  maximumSize: MaterialStateProperty.all(const Size(150, 54)),
+                  minimumSize: MaterialStateProperty.all(const Size(150, 54)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text('Go Home'),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Icon(Icons.home)
+                  ],
+                ),
+                onPressed: () => context.go('/')),
           ],
         ),
       ),

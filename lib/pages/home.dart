@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_template/constants/constants.dart';
 import 'package:flutter_template/main.dart';
@@ -162,8 +164,8 @@ class HomePageState extends State<HomePage> {
 
 class TitleBar extends StatefulWidget with PreferredSizeWidget {
   final String title;
-  final String? publishDate;
-  const TitleBar({Key? key, required this.title, this.publishDate})
+  final bool? hasAction;
+  const TitleBar({Key? key, required this.title, this.hasAction = true})
       : super(key: key);
 
   @override
@@ -181,13 +183,15 @@ class TitleBarState extends State<TitleBar> {
       backgroundColor: Theme.of(context).colorScheme.background,
       automaticallyImplyLeading: false,
       actions: [
-        IconButton(
-            onPressed: () {
-              isDark
-                  ? Settings.setTheme(ThemeMode.light)
-                  : Settings.setTheme(ThemeMode.dark);
-            },
-            icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny))
+        !widget.hasAction!
+            ? const SizedBox.shrink()
+            : IconButton(
+                onPressed: () {
+                  isDark
+                      ? Settings.setTheme(ThemeMode.light)
+                      : Settings.setTheme(ThemeMode.dark);
+                },
+                icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny))
       ],
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,

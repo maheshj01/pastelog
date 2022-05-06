@@ -69,7 +69,7 @@ class _LogsPageState extends State<LogsPage> {
               builder:
                   (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
                 if (snapshot.hasError) {
-                  return ErrorPage(errorMessage: snapshot.error.toString());
+                  return const ErrorPage();
                 } else if (snapshot.data == null) {
                   return const LoadingWidget();
                 } else {

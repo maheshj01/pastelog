@@ -50,9 +50,7 @@ class App extends StatelessWidget {
 
   final _router = GoRouter(
     errorBuilder: (context, error) {
-      return ErrorPage(
-        errorMessage: 'Error: $error',
-      );
+      return const ErrorPage();
     },
     routes: [
       GoRoute(
