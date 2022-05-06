@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/themes/themes.dart';
+import 'package:pastelog/themes/themes.dart';
 
 class PLDropdownButton<T> extends StatefulWidget {
   final List<T> items;
@@ -26,7 +26,7 @@ class PLDropdownButtonState<T> extends State<PLDropdownButton<T>> {
     return Container(
       alignment: Alignment.center,
       height: 52,
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
           border: Border.all(color: primary, width: 2),
           color: primary.withOpacity(0.1),
@@ -40,7 +40,7 @@ class PLDropdownButtonState<T> extends State<PLDropdownButton<T>> {
         iconSize: 32,
         style: AppTheme.textTheme.subtitle2!
             .copyWith(color: primary, fontSize: 15),
-        underline: SizedBox(),
+        underline: const SizedBox(),
         onChanged: (T? newValue) => widget.onChanged(newValue!),
         menuMaxHeight: 200,
         items: widget.items.map<DropdownMenuItem<T>>((T value) {

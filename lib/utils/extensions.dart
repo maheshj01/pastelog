@@ -7,7 +7,7 @@ extension DateHelper on DateTime {
     final now = DateTime.now();
     final differenceInDays = getDifferenceInDaysWithNow();
 
-    if (this.isSameDate(now)) {
+    if (isSameDate(now)) {
       return 'Today';
     } else if (differenceInDays == 1) {
       return 'Yesterday';
@@ -18,9 +18,9 @@ extension DateHelper on DateTime {
   }
 
   bool isSameDate(DateTime other) {
-    return this.year == other.year &&
-        this.month == other.month &&
-        this.day == other.day;
+    return year == other.year &&
+        month == other.month &&
+        day == other.day;
   }
 
   int getDifferenceInDaysWithNow() {
