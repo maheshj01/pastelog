@@ -73,53 +73,50 @@ class _LogsPageState extends State<LogsPage> {
                 } else if (snapshot.data == null) {
                   return const LoadingWidget();
                 } else {
-                  return Column(
-                    children: [
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      LogPublishDetails(logModel: snapshot.data!),
-                      Expanded(
-                          child: LogBuilder(
-                        controller: controller,
-                        data: snapshot.data!.data,
-                        isReadOnly: true,
-                      )),
-                      Container(
-                        height: 100,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                LogButton(
-                                  onTap: () {
-                                    save(controller.text, 'logs.text');
-                                  },
-                                  label: 'Download',
-                                ),
-                                const SizedBox(
-                                  width: 24,
-                                ),
-                                LogButton(
-                                    onTap: () async {
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) {
-                                            return ShareDialog(
-                                                url: window.location.href);
-                                          });
-                                    },
-                                    iconData: Icons.share,
-                                    label: 'Share'),
-                              ],
-                            ),
-                          ],
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 16,
                         ),
-                      ),
-                    ],
+                        LogPublishDetails(logModel: snapshot.data!),
+                        LogBuilder(
+                          controller: controller,
+                          data: snapshot.data!.data,
+                          isReadOnly: true,
+                        ),
+                        Container(
+                          height: 100,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              LogButton(
+                                onTap: () {
+                                  save(controller.text, 'logs.text');
+                                },
+                                label: 'Download',
+                              ),
+                              const SizedBox(
+                                width: 24,
+                              ),
+                              LogButton(
+                                  onTap: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) {
+                                          return ShareDialog(
+                                              url: window.location.href);
+                                        });
+                                  },
+                                  iconData: Icons.share,
+                                  label: 'Share'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
               }),
@@ -163,14 +160,21 @@ class LogPublishDetails extends StatelessWidget {
                 text: TextSpan(children: [
               expiryDate == null
                   ? TextSpan(
-                      style: Theme.of(context).textTheme.headline6,
-                      text: "This log will last forever 😉")
+                      children: [
+                        const TextSpan(text: "Expiry Date:"),
+                        TextSpan(
+                            style: Theme.of(context).textTheme.headline6,
+                            text: 'This log will last forever 😉')
+                      ],
+                    )
                   : TextSpan(
                       children: [
-                        TextSpan(text: "on $creationDate"),
+                        const TextSpan(text: "Expires:"),
                         TextSpan(
-                            text:
-                                'This log will be deleted on ${expiryDate.formatDate()}')
+                            style: Theme.of(context).textTheme.headline6,
+                            text: expiryDate.formatDate() == "Today"
+                                ? "Today"
+                                : "on ${expiryDate.formatDate()}"),
                       ],
                     ),
             ])),
