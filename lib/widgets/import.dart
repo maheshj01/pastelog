@@ -29,7 +29,7 @@ class _ImportDialogState extends State<ImportDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Import',
+              'Import Logs',
               style: AppTheme.textTheme.headline4,
             ),
             const SizedBox(
@@ -41,8 +41,8 @@ class _ImportDialogState extends State<ImportDialog> {
                 color: AppTheme.colorScheme.surface,
                 child: TextField(
                   controller: controller,
-                  decoration:
-                      const InputDecoration(hintText: 'Enter Pastelog or Gist Url'),
+                  decoration: const InputDecoration(
+                      hintText: 'Enter Pastelog or Gist Url'),
                 )),
             const SizedBox(
               height: 12,
