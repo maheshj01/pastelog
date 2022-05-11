@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pastelog/constants/strings.dart';
 import 'package:pastelog/models/log_model.dart';
+import 'package:http/http.dart' as http;
 
-class DataBaseService {
-  static final DataBaseService _singleton = DataBaseService._internal();
+class ApiService {
+  static final ApiService _singleton = ApiService._internal();
 
-  factory DataBaseService() {
+  factory ApiService() {
     return _singleton;
   }
 
-  DataBaseService._internal();
+  ApiService._internal();
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final logRef = _firestore.collection('logs');
 
@@ -55,14 +59,31 @@ class DataBaseService {
   }
 
   static Future<LogModel> fetchLogById(String docId) async {
-    final snapshot = await logRef.doc(docId).get();
+    try {
+      final snapshot = await logRef.doc(docId).get();
 
-    final doc = snapshot.data();
-    final LogModel logModel = LogModel.fromJson(doc!);
-    return logModel;
+      final doc = snapshot.data();
+      final LogModel logModel = LogModel.fromJson(doc!);
+      return logModel;
+    } catch (_) {
+      throw 'failed to fetch logs';
+    }
   }
 
   static Future<void> removeLog(String docId) async {
     await logRef.doc(docId).delete();
+  }
+
+  static Future<String> getGist(String gistId) async {
+    final url = '$gistApi$gistId';
+    try {
+      final response = await http.get(Uri.parse(url));
+      final json = jsonDecode(response.body);
+      final fileName = (json['files'] as Map).keys.toList()[0];
+      final content = json['files']['$fileName']['content'];
+      return content;
+    } catch (_) {
+      throw 'failed to fetch gist';
+    }
   }
 }

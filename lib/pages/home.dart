@@ -6,9 +6,14 @@ import 'package:pastelog/models/log_model.dart';
 import 'package:pastelog/services/database.dart';
 import 'package:pastelog/themes/themes.dart';
 import 'package:pastelog/utils/extensions.dart';
+import 'package:pastelog/utils/navigator.dart';
 import 'package:pastelog/utils/settings_service.dart';
 import 'package:pastelog/utils/utility.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pastelog/widgets/alert.dart';
+import 'package:pastelog/widgets/import.dart';
+import 'package:pastelog/widgets/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,9 +54,54 @@ class HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> showImportDialog() async {
+    String text = '';
+    await showDialog(
+        context: context,
+        builder: (_) {
+          return ImportDialog(
+            onCancel: () {
+              popView(context);
+            },
+            onImport: (url) async {
+              if (url.isEmpty) return;
+              try {
+                final id = url.split('/').last;
+                if (url.contains('pastelog.netlify.app')) {
+                  final model = await ApiService.fetchLogById(id);
+                  text = model.data;
+                } else if (url.contains('gist.github.com')) {
+                  text = await ApiService.getGist('${gistId(url)}');
+                }
+                controller.text = text;
+                popView(context);
+                showMessage(context, 'Import successful');
+              } catch (_) {
+                showMessage(context, 'Failed to fetch logs');
+                popView(context);
+              }
+            },
+          );
+        });
+    stopCircularIndicator(context);
+  }
+
+  String gistId(String url) {
+    final String id = url.split('/').last;
+    return id;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Import Logs',
+          onPressed: () async {
+            showCircularIndicator(context);
+            showImportDialog();
+          },
+          child: const Icon(Icons.download),
+        ),
         appBar: const TitleBar(
           title: appTitle,
         ),
@@ -139,7 +189,7 @@ class HomePageState extends State<HomePage> {
                                     expiryDate: expiryDate,
                                     createdDate: DateTime.now(),
                                   );
-                                  await DataBaseService.addLog(log);
+                                  await ApiService.addLog(log);
                                   context.push('/logs/$uuid', extra: log);
                                 },
                                 child: Text(
@@ -157,7 +207,7 @@ class HomePageState extends State<HomePage> {
                       ),
                     ),
                     const SizedBox(
-                      height: 300,
+                      height: 200,
                     ),
                     const Footer()
                   ],
@@ -172,19 +222,63 @@ class HomePageState extends State<HomePage> {
 class Footer extends StatelessWidget {
   const Footer({Key? key}) : super(key: key);
 
+  void _openCustomDialog(BuildContext context) {
+    showGeneralDialog(
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionBuilder: (context, a1, a2, widget) {
+          return Transform.scale(
+              scale: a1.value,
+              child: const AboutPasteLog(
+                title: 'About',
+              ));
+        },
+        transitionDuration: const Duration(milliseconds: 300),
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        pageBuilder: (context, animation1, animation2) {
+          return Container();
+        });
+  }
+
+  Widget linkWidget(String text, Function onTap) {
+    return TextButton(
+        onPressed: () => onTap(),
+        child: Text(
+          text,
+          style: AppTheme.textTheme.subtitle2!.copyWith(color: Colors.blue),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 120,
         alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        padding: const EdgeInsets.symmetric(vertical: 32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text('Copyright © 2022 Widget Media Labs ',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2!
-                    .copyWith(color: AppTheme.themeTextColor)),
+            Row(
+              children: [
+                linkWidget('About', () => _openCustomDialog(context)),
+                const SizedBox(
+                  width: 20,
+                ),
+                // linkWidget('Privacy Policy', () => launchLink(privacyPolicyUrl)),
+                linkWidget('Source Code',
+                    () => launch('https://github.com/maheshmnj/pastelog')),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Copyright © 2022 Widget Media Labs ',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(color: AppTheme.themeTextColor)),
+              ],
+            ),
           ],
         ));
   }

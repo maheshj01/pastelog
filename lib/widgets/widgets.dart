@@ -12,3 +12,17 @@ class LoadingWidget extends StatelessWidget {
     )));
   }
 }
+
+
+void removeFocus(BuildContext context) => FocusScope.of(context).unfocus();
+
+void showCircularIndicator(BuildContext context, {Color? color}) {
+  showDialog<void>(
+      barrierColor: color,
+      context: context,
+      barrierDismissible: false,
+      builder: (x) => const LoadingWidget());
+}
+void stopCircularIndicator(BuildContext context) {
+  Navigator.of(context).pop();
+}
