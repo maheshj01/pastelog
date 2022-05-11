@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pastelog/constants/constants.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
-import 'package:pastelog/services/database.dart';
+import 'package:pastelog/services/api.dart';
 import 'package:pastelog/themes/themes.dart';
 import 'package:pastelog/utils/extensions.dart';
 import 'package:pastelog/utils/navigator.dart';
@@ -67,11 +67,11 @@ class HomePageState extends State<HomePage> {
               if (url.isEmpty) return;
               try {
                 final id = url.split('/').last;
-                if (url.contains('pastelog.netlify.app')) {
+                if (url.contains(hostUrl)) {
                   final model = await ApiService.fetchLogById(id);
                   text = model.data;
                 } else if (url.contains('gist.github.com')) {
-                  text = await ApiService.getGist('${gistId(url)}');
+                  text = await ApiService.getGist(gistId(url));
                 }
                 controller.text = text;
                 popView(context);
@@ -178,8 +178,7 @@ class HomePageState extends State<HomePage> {
                               ElevatedButton(
                                 onPressed: () async {
                                   if (controller.text.isEmpty) {
-                                    showMessage(
-                                        context, 'Cannot Publish empty logs!');
+                                    showMessage(context, logsEmptyMessage);
                                     return;
                                   }
                                   uuid = generateUuid();
@@ -265,8 +264,8 @@ class Footer extends StatelessWidget {
                   width: 20,
                 ),
                 // linkWidget('Privacy Policy', () => launchLink(privacyPolicyUrl)),
-                linkWidget('Source Code',
-                    () => launch('https://github.com/maheshmnj/pastelog')),
+                linkWidget(
+                    'Source Code', () => launchUrl(Uri.parse(sourceCodeUrl))),
               ],
             ),
             Row(

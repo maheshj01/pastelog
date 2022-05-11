@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pastelog/constants/strings.dart';
 import 'package:pastelog/pages/error.dart';
 import 'package:pastelog/pages/home.dart';
@@ -113,10 +112,10 @@ class _UrlBuilderState extends State<UrlBuilder> {
 }
 
 class LogBuilder extends StatefulWidget {
-  String? data;
+  final String? data;
   final TextEditingController? controller;
-  bool isReadOnly;
-  LogBuilder({Key? key, this.controller, this.data, this.isReadOnly = false})
+  final bool isReadOnly;
+  const LogBuilder({Key? key, this.controller, this.data, this.isReadOnly = false})
       : super(key: key);
 
   @override
