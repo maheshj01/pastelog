@@ -7,7 +7,7 @@ import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
 import 'package:pastelog/pages/error.dart';
 import 'package:pastelog/pages/home.dart';
-import 'package:pastelog/services/database.dart';
+import 'package:pastelog/services/api.dart';
 import 'package:pastelog/themes/themes.dart';
 import 'package:pastelog/utils/extensions.dart';
 import 'package:pastelog/utils/navigator.dart';

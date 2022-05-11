@@ -15,4 +15,8 @@ String about =
     '''PasteLog is a simple, fast, and powerful pastebin. It is powered by firebase in the backend.
 It allows you to publish your logs, and access them from anywhere and any device via a unique link.''';
 
-String gistApi = 'https://api.github.com/gists/';
+const String logsEmptyMessage = 'Cannot Publish empty logs!';
+
+const String gistApi = 'https://api.github.com/gists/';
+const String sourceCodeUrl = 'https://github.com/maheshmnj/pastelog';
+const String hostUrl = 'pastelog.netlify.app';
