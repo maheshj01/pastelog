@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pastelog/utils/settings_service.dart';
 
 class AppTheme {
@@ -118,7 +119,7 @@ class AppTheme {
   static const _semiBold = FontWeight.w600;
   static const _bold = FontWeight.w700;
 
-  static const TextTheme textTheme = TextTheme(
+  static TextTheme textTheme = GoogleFonts.anticSlabTextTheme(const TextTheme(
     headline1: TextStyle(fontWeight: _bold, fontSize: 56.0),
     headline2: TextStyle(fontWeight: _bold, fontSize: 48.0),
     headline3: TextStyle(fontWeight: _bold, fontSize: 32.0),
@@ -132,5 +133,5 @@ class AppTheme {
     bodyText1: TextStyle(fontWeight: _regular, fontSize: 14.0),
     bodyText2: TextStyle(fontWeight: _regular, fontSize: 16.0),
     button: TextStyle(fontWeight: _semiBold, fontSize: 14.0),
-  );
+  ));
 }

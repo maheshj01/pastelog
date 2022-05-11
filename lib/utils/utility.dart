@@ -2,6 +2,7 @@ import 'dart:html' as html;
 import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void save(Object bytes, String fileName) {
   js.context.callMethod("saveAs", <Object>[
@@ -31,3 +32,11 @@ void showMessage(BuildContext context, String message,
       .closed
       .whenComplete(() => onClosed == null ? null : onClosed());
 }
+
+
+  Future<void> launchLink(String url, {bool isNewTab = true}) async {
+    await launchUrl(
+      Uri.parse(url),
+      webOnlyWindowName: isNewTab ? '_blank' : '_self',
+    );
+  }

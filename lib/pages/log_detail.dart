@@ -42,7 +42,7 @@ class _LogsPageState extends State<LogsPage> {
     /// prevnt  unecessary requestes created on logs tap
     try {
       if (logs.data.isEmpty) {
-        logs = await DataBaseService.fetchLogById(uuid);
+        logs = await ApiService.fetchLogById(uuid);
       }
       return logs;
     } catch (_) {
@@ -115,6 +115,10 @@ class _LogsPageState extends State<LogsPage> {
                             ],
                           ),
                         ),
+                        const SizedBox(
+                          height: 200,
+                        ),
+                        const Footer()
                       ],
                     ),
                   );
