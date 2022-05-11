@@ -3,7 +3,7 @@
 const String appTitle = 'Pastelog';
 
 String hint =
-    '''Publish your logs to the cloud,and access them from anywhere via a unique link.
+    '''Publish your logs to the cloud and access them from anywhere via a unique link.
 
       \nNo Sign in required!
       
