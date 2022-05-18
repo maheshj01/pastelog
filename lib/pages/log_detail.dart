@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pastelog/exports.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
@@ -57,8 +58,11 @@ class _LogsPageState extends State<LogsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TitleBar(
+      appBar: TitleBar(
         title: appTitle,
+        onTap: () {
+          context.go('/');
+        },
       ),
       body: Align(
         alignment: Alignment.center,
