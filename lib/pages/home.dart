@@ -100,10 +100,13 @@ class HomePageState extends State<HomePage> {
             showCircularIndicator(context);
             showImportDialog();
           },
-          child: const Icon(Icons.download),
+          child: const Icon(Icons.file_upload),
         ),
-        appBar: const TitleBar(
+        appBar: TitleBar(
           title: appTitle,
+          onTap: () {
+            context.go('/');
+          },
         ),
         body: Align(
           alignment: Alignment.center,
@@ -285,8 +288,10 @@ class Footer extends StatelessWidget {
 
 class TitleBar extends StatefulWidget with PreferredSizeWidget {
   final String title;
+  final Function? onTap;
   final bool? hasAction;
-  const TitleBar({Key? key, required this.title, this.hasAction = true})
+  const TitleBar(
+      {Key? key, required this.title, this.onTap, this.hasAction = true})
       : super(key: key);
 
   @override
@@ -300,39 +305,42 @@ class TitleBarState extends State<TitleBar> {
   @override
   Widget build(BuildContext context) {
     final bool isDark = Settings.getTheme == ThemeMode.dark;
-    return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      automaticallyImplyLeading: false,
-      actions: [
-        !widget.hasAction!
-            ? const SizedBox.shrink()
-            : IconButton(
-                onPressed: () {
-                  isDark
-                      ? Settings.setTheme(ThemeMode.light)
-                      : Settings.setTheme(ThemeMode.dark);
-                },
-                icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny))
-      ],
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(
-            Icons.format_align_left,
-            size: 36,
-            color: AppTheme.colorScheme.primary,
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          Text(appTitle,
-              style: GoogleFonts.anticSlab(
-                textStyle: Theme.of(context)
-                    .textTheme
-                    .headline3!
-                    .copyWith(color: AppTheme.colorScheme.primary),
-              )),
+    return InkWell(
+      onTap: () => widget.onTap!(),
+      child: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        automaticallyImplyLeading: false,
+        actions: [
+          !widget.hasAction!
+              ? const SizedBox.shrink()
+              : IconButton(
+                  onPressed: () {
+                    isDark
+                        ? Settings.setTheme(ThemeMode.light)
+                        : Settings.setTheme(ThemeMode.dark);
+                  },
+                  icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny))
         ],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.format_align_left,
+              size: 36,
+              color: AppTheme.colorScheme.primary,
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Text(appTitle,
+                style: GoogleFonts.anticSlab(
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .headline3!
+                      .copyWith(color: AppTheme.colorScheme.primary),
+                )),
+          ],
+        ),
       ),
     );
   }
