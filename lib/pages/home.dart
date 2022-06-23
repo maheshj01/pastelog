@@ -92,6 +92,14 @@ class HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    _isLoading.dispose();
+    super.dispose();
+  }
+
+  final ValueNotifier<bool> _isLoading = ValueNotifier<bool>(false);
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -175,27 +183,55 @@ class HomePageState extends State<HomePage> {
                               width: 50,
                             ),
                             ElevatedButton(
-                              onPressed: () async {
-                                if (controller.text.isEmpty) {
-                                  showMessage(context, logsEmptyMessage);
-                                  return;
-                                }
-                                uuid = generateUuid();
-                                final log = LogModel(
-                                  id: uuid,
-                                  data: controller.text,
-                                  expiryDate: expiryDate,
-                                  createdDate: DateTime.now(),
-                                );
-                                await ApiService.addLog(log);
-                                context.push('/logs/$uuid', extra: log);
-                              },
-                              child: Text(
-                                'Publish',
-                                style: AppTheme.textTheme.bodyText2!
-                                    .copyWith(color: Colors.white),
-                              ),
-                            ),
+                                onPressed: () async {
+                                  if (_isLoading.value) {
+                                    return;
+                                  }
+                                  if (controller.text.isEmpty) {
+                                    showMessage(context, logsEmptyMessage);
+                                    return;
+                                  }
+                                  _isLoading.value = true;
+                                  uuid = generateUuid();
+                                  final log = LogModel(
+                                    id: uuid,
+                                    data: controller.text,
+                                    expiryDate: expiryDate,
+                                    createdDate: DateTime.now(),
+                                  );
+                                  await ApiService.addLog(log);
+                                  controller.clear();
+                                  _isLoading.value = false;
+                                  context.push('/logs/$uuid', extra: log);
+                                },
+                                style: ButtonStyle(
+                                    minimumSize:
+                                        MaterialStateProperty.resolveWith(
+                                            (states) => const Size(120, 45))),
+                                child: ValueListenableBuilder<bool>(
+                                  valueListenable: _isLoading,
+                                  builder: (BuildContext context,
+                                      bool isLoading, Widget? child) {
+                                    return AnimatedCrossFade(
+                                        duration:
+                                            const Duration(milliseconds: 600),
+                                        firstChild: Text(
+                                          'Publish',
+                                          style: AppTheme.textTheme.bodyText2!
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                        secondChild: const Padding(
+                                          padding: EdgeInsets.all(1.0),
+                                          child: LoadingWidget(
+                                            color: Colors.white,
+                                            width: 2.5,
+                                          ),
+                                        ),
+                                        crossFadeState: isLoading
+                                            ? CrossFadeState.showSecond
+                                            : CrossFadeState.showFirst);
+                                  },
+                                )),
                             const SizedBox(
                               width: 40,
                             )
