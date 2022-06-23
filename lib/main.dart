@@ -115,7 +115,8 @@ class LogBuilder extends StatefulWidget {
   final String? data;
   final TextEditingController? controller;
   final bool isReadOnly;
-  const LogBuilder({Key? key, this.controller, this.data, this.isReadOnly = false})
+  const LogBuilder(
+      {Key? key, this.controller, this.data, this.isReadOnly = false})
       : super(key: key);
 
   @override
@@ -143,33 +144,26 @@ class _LogBuilderState extends State<LogBuilder> {
           decoration: BoxDecoration(
               color: AppTheme.colorScheme.surface,
               borderRadius: BorderRadius.circular(12)),
-          child: widget.isReadOnly
-              ? SingleChildScrollView(
-                  child: SelectableText(
-                  widget.data!,
-                  style: AppTheme.textTheme.subtitle1!
-                      .copyWith(color: AppTheme.themeTextColor),
-                ))
-              : TextField(
-                  cursorHeight: 20,
-                  controller: controller,
-                  style: AppTheme.textTheme.subtitle1!
-                      .copyWith(color: AppTheme.themeTextColor),
-                  decoration: InputDecoration(
-                    hintStyle: AppTheme.textTheme.subtitle1!.copyWith(
-                        color: AppTheme.isDark
-                            ? Colors.grey
-                            : AppTheme.themeTextColor),
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    hintText: hint,
-                  ),
-                  minLines: 20,
-                  maxLines: 40,
-                ),
+          child: TextField(
+            cursorHeight: 20,
+            controller: controller,
+            readOnly: widget.isReadOnly,
+            style: AppTheme.textTheme.subtitle1!
+                .copyWith(color: AppTheme.themeTextColor),
+            decoration: InputDecoration(
+              hintStyle: AppTheme.textTheme.subtitle1!.copyWith(
+                  color:
+                      AppTheme.isDark ? Colors.grey : AppTheme.themeTextColor),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              hintText: hint,
+            ),
+            minLines: 20,
+            maxLines: 40,
+          ),
         ),
         widget.isReadOnly
             ? Positioned(

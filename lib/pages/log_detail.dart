@@ -64,21 +64,21 @@ class _LogsPageState extends State<LogsPage> {
           context.go('/');
         },
       ),
-      body: Align(
-        alignment: Alignment.center,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1024),
-          child: FutureBuilder<LogModel?>(
-              future: fetchLogs(),
-              builder:
-                  (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
-                if (snapshot.hasError) {
-                  return const ErrorPage();
-                } else if (snapshot.data == null) {
-                  return const LoadingWidget();
-                } else {
-                  return SingleChildScrollView(
-                    child: Column(
+      body: SingleChildScrollView(
+        child: Align(
+          alignment: Alignment.center,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1024),
+            child: FutureBuilder<LogModel?>(
+                future: fetchLogs(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
+                  if (snapshot.hasError) {
+                    return const ErrorPage();
+                  } else if (snapshot.data == null) {
+                    return const LoadingWidget();
+                  } else {
+                    return Column(
                       children: [
                         const SizedBox(
                           height: 16,
@@ -124,10 +124,10 @@ class _LogsPageState extends State<LogsPage> {
                         ),
                         const Footer()
                       ],
-                    ),
-                  );
-                }
-              }),
+                    );
+                  }
+                }),
+          ),
         ),
       ),
     );

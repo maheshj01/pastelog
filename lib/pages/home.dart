@@ -108,112 +108,107 @@ class HomePageState extends State<HomePage> {
             context.go('/');
           },
         ),
-        body: Align(
-          alignment: Alignment.center,
-          child: ScrollConfiguration(
-            behavior:
-                ScrollConfiguration.of(context).copyWith(scrollbars: false),
-            child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1024),
-                child: Column(
-                  children: [
-                    LogBuilder(
-                      controller: controller,
-                      data: logs.data,
+        body: SingleChildScrollView(
+          child: Align(
+            alignment: Alignment.center,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1024),
+              child: Column(
+                children: [
+                  LogBuilder(
+                    controller: controller,
+                    data: logs.data,
+                  ),
+                  Container(
+                    height: 150,
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "This Log should Expire",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2!
+                                  .copyWith(color: AppTheme.themeTextColor),
+                            ),
+                            Stack(
+                              children: [
+                                TextButton(
+                                    onPressed: () {
+                                      _selectExpiryDate(context);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          expiryDate == null
+                                              ? "Never"
+                                              : expiryDate!.formatDate(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6!
+                                              .copyWith(
+                                                  color: AppTheme
+                                                      .colorScheme.primary),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Icon(Icons.calendar_today,
+                                            color: AppTheme.colorScheme.primary,
+                                            size: 20),
+                                      ],
+                                    )),
+                                Positioned(
+                                    bottom: 0,
+                                    left: 4,
+                                    right: 2,
+                                    child: Container(
+                                        height: 2,
+                                        width: double.infinity,
+                                        color: AppTheme.themeTextColor)),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 50,
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (controller.text.isEmpty) {
+                                  showMessage(context, logsEmptyMessage);
+                                  return;
+                                }
+                                uuid = generateUuid();
+                                final log = LogModel(
+                                  id: uuid,
+                                  data: controller.text,
+                                  expiryDate: expiryDate,
+                                  createdDate: DateTime.now(),
+                                );
+                                await ApiService.addLog(log);
+                                context.push('/logs/$uuid', extra: log);
+                              },
+                              child: Text(
+                                'Publish',
+                                style: AppTheme.textTheme.bodyText2!
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 40,
+                            )
+                          ],
+                        ),
+                      ],
                     ),
-                    Container(
-                      height: 150,
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "This Log should Expire",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2!
-                                    .copyWith(color: AppTheme.themeTextColor),
-                              ),
-                              Stack(
-                                children: [
-                                  TextButton(
-                                      onPressed: () {
-                                        _selectExpiryDate(context);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            expiryDate == null
-                                                ? "Never"
-                                                : expiryDate!.formatDate(),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .copyWith(
-                                                    color: AppTheme
-                                                        .colorScheme.primary),
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Icon(Icons.calendar_today,
-                                              color:
-                                                  AppTheme.colorScheme.primary,
-                                              size: 20),
-                                        ],
-                                      )),
-                                  Positioned(
-                                      bottom: 0,
-                                      left: 4,
-                                      right: 2,
-                                      child: Container(
-                                          height: 2,
-                                          width: double.infinity,
-                                          color: AppTheme.themeTextColor)),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 50,
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  if (controller.text.isEmpty) {
-                                    showMessage(context, logsEmptyMessage);
-                                    return;
-                                  }
-                                  uuid = generateUuid();
-                                  final log = LogModel(
-                                    id: uuid,
-                                    data: controller.text,
-                                    expiryDate: expiryDate,
-                                    createdDate: DateTime.now(),
-                                  );
-                                  await ApiService.addLog(log);
-                                  context.push('/logs/$uuid', extra: log);
-                                },
-                                child: Text(
-                                  'Publish',
-                                  style: AppTheme.textTheme.bodyText2!
-                                      .copyWith(color: Colors.white),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 40,
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 200,
-                    ),
-                    const Footer()
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 200,
+                  ),
+                  const Footer()
+                ],
               ),
             ),
           ),
