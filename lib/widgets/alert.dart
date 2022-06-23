@@ -23,27 +23,30 @@ class AboutPasteLog extends StatelessWidget {
       elevation: 0.5,
       child: Container(
         width: 350,
-        height: 200,
+        height: 220,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(
-                '$about If you see any bugs or have feature requests, please consider filing a bug by using the report button.'),
-            FutureBuilder<String>(
-                future: getVersion(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  String version = '';
-                  if (snapshot.data != null) {
-                    version = snapshot.data!;
-                  }
-                  return Text('version: ${version}');
-                })
+                '$about If you see any bugs or have feature requests, please consider reporting them on Github.'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FutureBuilder<String>(
+                  future: getVersion(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    String version = '';
+                    if (snapshot.data != null) {
+                      version = snapshot.data!;
+                    }
+                    return Text('version: $version');
+                  }),
+            )
           ],
         ),
       ),

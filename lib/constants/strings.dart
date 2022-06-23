@@ -6,14 +6,13 @@ String hint =
     '''Publish your logs to the cloud and access them from anywhere via a unique link.
 
       \nNo Sign in required!
-      
-      
+
+
       \nNote: Do not paste any confidential info here as these logs will be publicly available to anyone with the link.
       ''';
 
 String about =
-    '''PasteLog is a simple, fast, and powerful pastebin. It is powered by firebase in the backend.
-It allows you to publish your logs, and access them from anywhere and any device via a unique link.''';
+    '''PasteLog is a simple, fast, and powerful pastebin. It allows you to publish your logs, and access them from anywhere and any device via a unique link.''';
 
 const String logsEmptyMessage = 'Cannot Publish empty logs!';
 
