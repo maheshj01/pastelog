@@ -223,10 +223,13 @@ class Footer extends StatelessWidget {
     showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.5),
         transitionBuilder: (context, a1, a2, widget) {
-          return Transform.scale(
-              scale: a1.value,
-              child: const AboutPasteLog(
-                title: 'About',
+          return ScaleTransition(
+              scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+              child: FadeTransition(
+                opacity: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+                child: const AboutPasteLog(
+                  title: 'About',
+                ),
               ));
         },
         transitionDuration: const Duration(milliseconds: 300),
