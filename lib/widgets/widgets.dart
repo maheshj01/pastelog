@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
 class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({Key? key}) : super(key: key);
+  final Color? color;
+  final double width;
+  const LoadingWidget({Key? key, this.color, this.width = 4.0})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
         child: CircularProgressIndicator(
+            strokeWidth: width,
             valueColor: AlwaysStoppedAnimation<Color>(
-      Theme.of(context).colorScheme.primary,
-    )));
+              color ?? Theme.of(context).colorScheme.primary,
+            )));
   }
 }
-
 
 void removeFocus(BuildContext context) => FocusScope.of(context).unfocus();
 
@@ -23,6 +26,7 @@ void showCircularIndicator(BuildContext context, {Color? color}) {
       barrierDismissible: false,
       builder: (x) => const LoadingWidget());
 }
+
 void stopCircularIndicator(BuildContext context) {
   Navigator.of(context).pop();
 }
