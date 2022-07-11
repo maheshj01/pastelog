@@ -12,7 +12,8 @@ Try the app here:
 
 
 1. Visit [https://pastelog.netlify.app](https://pastelog.netlify.app)
-2. Paste your logs that you want to share publicly across devices
+
+2. Paste your logs that you want to share publicly across devices (Linux machine)
 
 Tip: you can also import gist from gihtub by just pasting the link to your gist 
 
@@ -21,7 +22,7 @@ Tip: you can also import gist from gihtub by just pasting the link to your gist
 https://user-images.githubusercontent.com/31410839/178278070-47329147-acc4-4be2-9b6a-31dc6838629b.mp4
 
 
-4. Acesss your logs via the link
+4. Acesss your logs via the link (MacOs)
 
 https://user-images.githubusercontent.com/31410839/178278116-90d734e5-90cc-4122-95fc-2039034aa2ec.mp4
 
