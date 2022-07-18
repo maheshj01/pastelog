@@ -6,7 +6,8 @@ It allows you to publish your logs, and access them from anywhere and any device
 
 ### Features
 - The logs are publicly accessible, no signIn required
-- The logs can be stored 
+- The logs can be stored forever or have a expiry
+- You can import gists from github
 
 
 ### How it works
