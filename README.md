@@ -15,7 +15,7 @@ Try the app here:
 
 2. Paste your logs that you want to share publicly across devices (Linux machine)
 
-Tip: you can also import gist from gihtub by just pasting the link to your gist 
+Tip: you can also import gist from github by just pasting the link to your gist 
 
 3. Share the pastelog link 
 
