@@ -83,7 +83,7 @@ class HomePageState extends State<HomePage> {
             },
           );
         });
-    stopCircularIndicator(context);
+    // stopCircularIndicator(context);
   }
 
   String gistId(String url) {
@@ -105,7 +105,7 @@ class HomePageState extends State<HomePage> {
         floatingActionButton: FloatingActionButton(
           tooltip: 'Import Logs',
           onPressed: () async {
-            showCircularIndicator(context);
+            // showCircularIndicator(context);
             showImportDialog();
           },
           child: const Icon(Icons.file_upload),
@@ -358,7 +358,10 @@ class TitleBarState extends State<TitleBar> {
                         ? Settings.setTheme(ThemeMode.light)
                         : Settings.setTheme(ThemeMode.dark);
                   },
-                  icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny))
+                  icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny)),
+          const SizedBox(
+            width: 20,
+          ),
         ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
