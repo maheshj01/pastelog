@@ -72,8 +72,6 @@ class AppTheme {
     );
   }
 
-  Settings appSettings = Settings();
-
   static ColorScheme get colorScheme =>
       Settings.getTheme == ThemeMode.light ? lightColorScheme : darkColorScheme;
 

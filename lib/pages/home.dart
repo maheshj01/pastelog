@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pastelog/constants/constants.dart';
 import 'package:pastelog/main.dart';
@@ -9,7 +10,6 @@ import 'package:pastelog/utils/extensions.dart';
 import 'package:pastelog/utils/navigator.dart';
 import 'package:pastelog/utils/settings_service.dart';
 import 'package:pastelog/utils/utility.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pastelog/widgets/alert.dart';
 import 'package:pastelog/widgets/import.dart';
 import 'package:pastelog/widgets/widgets.dart';
@@ -136,7 +136,7 @@ class HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              "This Log should Expire",
+                              "This Log expires",
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle2!
@@ -144,39 +144,44 @@ class HomePageState extends State<HomePage> {
                             ),
                             Stack(
                               children: [
-                                TextButton(
-                                    onPressed: () {
-                                      _selectExpiryDate(context);
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          expiryDate == null
-                                              ? "Never"
-                                              : expiryDate!.formatDate(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6!
-                                              .copyWith(
-                                                  color: AppTheme
-                                                      .colorScheme.primary),
-                                        ),
-                                        const SizedBox(
-                                          width: 8,
-                                        ),
-                                        Icon(Icons.calendar_today,
-                                            color: AppTheme.colorScheme.primary,
-                                            size: 20),
-                                      ],
-                                    )),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: TextButton(
+                                      onPressed: () {
+                                        _selectExpiryDate(context);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            expiryDate == null
+                                                ? "Never"
+                                                : expiryDate!.formatDate(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                    color: AppTheme
+                                                        .colorScheme.primary),
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Icon(Icons.calendar_today,
+                                              color:
+                                                  AppTheme.colorScheme.primary,
+                                              size: 20),
+                                        ],
+                                      )),
+                                ),
                                 Positioned(
                                     bottom: 0,
                                     left: 4,
                                     right: 2,
-                                    child: Container(
-                                        height: 2,
-                                        width: double.infinity,
-                                        color: AppTheme.themeTextColor)),
+                                    child: Divider(
+                                      color: AppTheme.colorScheme.primary,
+                                      thickness: 3,
+                                    )),
                               ],
                             ),
                             const SizedBox(
