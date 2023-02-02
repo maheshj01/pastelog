@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pastelog/constants/strings.dart';
 import 'package:pastelog/pages/error.dart';
 import 'package:pastelog/pages/home.dart';
@@ -12,7 +13,6 @@ import 'package:pastelog/themes/themes.dart';
 import 'package:pastelog/utils/firebase_options.dart';
 import 'package:pastelog/utils/settings_service.dart';
 import 'package:pastelog/utils/utility.dart';
-import 'package:go_router/go_router.dart';
 
 Future<void> main() async {
   GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
@@ -37,8 +37,8 @@ class App extends StatelessWidget {
             supportedLocales: const [
               Locale('en', ''), // English, no country code
             ],
-            theme: AppTheme.lightThemeData.copyWith(
-                scaffoldBackgroundColor: AppTheme.lightColorScheme.background),
+            theme: AppTheme.blueThemeData.copyWith(
+                scaffoldBackgroundColor: AppTheme.blueColorScheme.background),
             darkTheme: AppTheme.darkThemeData.copyWith(
                 scaffoldBackgroundColor: AppTheme.darkColorScheme.background),
             themeMode: Settings.getTheme,
@@ -103,7 +103,7 @@ class _UrlBuilderState extends State<UrlBuilder> {
             onPressed: () => widget.onTap(),
             child: Text(
               widget.url,
-              style: AppTheme.textTheme.bodyText2!
+              style: AppTheme.textTheme.bodyMedium!
                   .copyWith(color: Colors.blueAccent),
             )),
       ],
@@ -148,10 +148,10 @@ class _LogBuilderState extends State<LogBuilder> {
             cursorHeight: 20,
             controller: controller,
             readOnly: widget.isReadOnly,
-            style: AppTheme.textTheme.subtitle1!
+            style: AppTheme.textTheme.titleMedium!
                 .copyWith(color: AppTheme.themeTextColor),
             decoration: InputDecoration(
-              hintStyle: AppTheme.textTheme.subtitle1!.copyWith(
+              hintStyle: AppTheme.textTheme.titleMedium!.copyWith(
                   color:
                       AppTheme.isDark ? Colors.grey : AppTheme.themeTextColor),
               border: InputBorder.none,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pastelog/themes/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pastelog/themes/themes.dart';
 
 class ErrorPage extends StatelessWidget {
   final String errorMessage;
@@ -21,7 +21,7 @@ class ErrorPage extends StatelessWidget {
             Text(
               '404',
               textAlign: TextAlign.center,
-              style: AppTheme.textTheme.headline1,
+              style: AppTheme.textTheme.displayLarge,
             ),
             const SizedBox(
               height: 12,
@@ -29,7 +29,7 @@ class ErrorPage extends StatelessWidget {
             Text(
               errorMessage,
               textAlign: TextAlign.center,
-              style: AppTheme.textTheme.headline4,
+              style: AppTheme.textTheme.headlineMedium,
             ),
             const SizedBox(
               height: 32,

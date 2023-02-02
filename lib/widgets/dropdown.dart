@@ -38,7 +38,7 @@ class PLDropdownButtonState<T> extends State<PLDropdownButton<T>> {
         isExpanded: true,
         icon: Icon(Icons.keyboard_arrow_down_rounded, color: primary),
         iconSize: 32,
-        style: AppTheme.textTheme.subtitle2!
+        style: AppTheme.textTheme.titleSmall!
             .copyWith(color: primary, fontSize: 15),
         underline: const SizedBox(),
         onChanged: (T? newValue) => widget.onChanged(newValue!),
