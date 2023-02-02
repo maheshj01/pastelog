@@ -14,7 +14,7 @@ class AppTheme {
   static final Color bottomSheetBackgroundColor = Colors.grey.shade800;
   static final Color scaffoldBackgroundColor = Colors.grey.shade900;
   static final Color navbarBackground = Colors.indigo.shade100;
-
+  static const Color greenColorSchemeSeed = Color.fromARGB(255, 0, 255, 0);
   static TextStyle inputTextStyle = const TextStyle(
     fontSize: 25,
   );
@@ -40,8 +40,8 @@ class AppTheme {
   static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
   static final Color _darkFocusColor = Colors.white.withOpacity(0.12);
 
-  static ThemeData lightThemeData =
-      _themeData(lightColorScheme, _lightFocusColor);
+  static ThemeData blueThemeData =
+      _themeData(blueColorScheme, _lightFocusColor);
   static ThemeData darkThemeData = _themeData(darkColorScheme, _darkFocusColor);
 
   static ThemeData _themeData(ColorScheme colorScheme, Color focusColor) {
@@ -67,15 +67,21 @@ class AppTheme {
           _lightFillColor.withOpacity(0.80),
           _darkFillColor,
         ),
-        contentTextStyle: textTheme.subtitle1!.apply(color: _darkFillColor),
+        contentTextStyle: textTheme.titleMedium!.apply(color: _darkFillColor),
       ),
     );
   }
 
   static ColorScheme get colorScheme =>
-      Settings.getTheme == ThemeMode.light ? lightColorScheme : darkColorScheme;
+      Settings.getTheme == ThemeMode.light ? colorSchemes[0] : darkColorScheme;
 
-  static ColorScheme lightColorScheme = ColorScheme(
+  static List<ColorScheme> get colorSchemes =>
+      [blueColorScheme, darkColorScheme, greenColorScheme];
+
+  static ColorScheme greenColorScheme =
+      ColorScheme.fromSeed(seedColor: greenColorSchemeSeed);
+
+  static ColorScheme blueColorScheme = ColorScheme(
       brightness: Brightness.light,
       // seedColor: const Color.fromARGB(255, 126, 120, 211),
       primary: const Color.fromARGB(255, 87, 138, 206),
@@ -118,18 +124,18 @@ class AppTheme {
   static const _bold = FontWeight.w700;
 
   static TextTheme textTheme = GoogleFonts.anticSlabTextTheme(const TextTheme(
-    headline1: TextStyle(fontWeight: _bold, fontSize: 56.0),
-    headline2: TextStyle(fontWeight: _bold, fontSize: 48.0),
-    headline3: TextStyle(fontWeight: _bold, fontSize: 32.0),
-    headline4: TextStyle(fontWeight: _bold, fontSize: 20.0),
-    headline5: TextStyle(fontWeight: _bold, fontSize: 16.0),
-    headline6: TextStyle(fontWeight: _bold, fontSize: 16.0),
-    caption: TextStyle(fontWeight: _semiBold, fontSize: 16.0),
-    subtitle1: TextStyle(fontWeight: _medium, fontSize: 16.0),
-    subtitle2: TextStyle(fontWeight: _medium, fontSize: 14.0),
-    overline: TextStyle(fontWeight: _medium, fontSize: 12.0),
-    bodyText1: TextStyle(fontWeight: _regular, fontSize: 14.0),
-    bodyText2: TextStyle(fontWeight: _regular, fontSize: 16.0),
-    button: TextStyle(fontWeight: _semiBold, fontSize: 14.0),
+    displayLarge: TextStyle(fontWeight: _bold, fontSize: 56.0),
+    displayMedium: TextStyle(fontWeight: _bold, fontSize: 48.0),
+    displaySmall: TextStyle(fontWeight: _bold, fontSize: 32.0),
+    headlineMedium: TextStyle(fontWeight: _bold, fontSize: 20.0),
+    headlineSmall: TextStyle(fontWeight: _bold, fontSize: 16.0),
+    titleLarge: TextStyle(fontWeight: _bold, fontSize: 16.0),
+    bodySmall: TextStyle(fontWeight: _semiBold, fontSize: 16.0),
+    titleMedium: TextStyle(fontWeight: _medium, fontSize: 16.0),
+    titleSmall: TextStyle(fontWeight: _medium, fontSize: 14.0),
+    labelSmall: TextStyle(fontWeight: _medium, fontSize: 12.0),
+    bodyLarge: TextStyle(fontWeight: _regular, fontSize: 14.0),
+    bodyMedium: TextStyle(fontWeight: _regular, fontSize: 16.0),
+    labelLarge: TextStyle(fontWeight: _semiBold, fontSize: 14.0),
   ));
 }
