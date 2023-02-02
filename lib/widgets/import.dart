@@ -30,7 +30,7 @@ class _ImportDialogState extends State<ImportDialog> {
           children: [
             Text(
               'Import Logs',
-              style: AppTheme.textTheme.headline4,
+              style: AppTheme.textTheme.headlineMedium,
             ),
             const SizedBox(
               height: 8,

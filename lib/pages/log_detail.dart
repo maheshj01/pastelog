@@ -153,11 +153,11 @@ class LogPublishDetails extends StatelessWidget {
             RichText(
                 text: TextSpan(children: [
               TextSpan(
-                  style: Theme.of(context).textTheme.subtitle2,
+                  style: Theme.of(context).textTheme.titleSmall,
                   text: "Created:"),
               creationDate == "Today"
                   ? TextSpan(
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.titleLarge,
                       text: "Today")
                   : TextSpan(text: "on $creationDate")
             ])),
@@ -171,20 +171,20 @@ class LogPublishDetails extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: "Expiry Date:",
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                         TextSpan(
-                            style: Theme.of(context).textTheme.headline6,
+                            style: Theme.of(context).textTheme.titleLarge,
                             text: 'This log will last forever 😉')
                       ],
                     )
                   : TextSpan(
                       children: [
                         TextSpan(
-                            style: Theme.of(context).textTheme.subtitle2,
+                            style: Theme.of(context).textTheme.titleSmall,
                             text: "Expires:"),
                         TextSpan(
-                            style: Theme.of(context).textTheme.headline6,
+                            style: Theme.of(context).textTheme.titleLarge,
                             text: expiryDate.formatDate() == "Today"
                                 ? "Today"
                                 : "on ${expiryDate.formatDate()}"),
@@ -222,7 +222,7 @@ class _ShareDialogState extends State<ShareDialog> {
           children: [
             Text(
               'Share',
-              style: AppTheme.textTheme.headline4,
+              style: AppTheme.textTheme.headlineMedium,
             ),
             const SizedBox(
               height: 8,
@@ -238,7 +238,7 @@ class _ShareDialogState extends State<ShareDialog> {
                           scrollDirection: Axis.horizontal,
                           child: SelectableText(
                             widget.url,
-                            style: AppTheme.textTheme.subtitle1!
+                            style: AppTheme.textTheme.titleMedium!
                                 .copyWith(color: AppTheme.themeTextColor),
                           ))),
                   IconButton(
@@ -299,7 +299,7 @@ class LogButton extends StatelessWidget {
             Text(
               label,
               style:
-                  AppTheme.textTheme.bodyText2!.copyWith(color: Colors.white),
+                  AppTheme.textTheme.bodyMedium!.copyWith(color: Colors.white),
             ),
             SizedBox(
               width: iconData != null ? 8 : 0,

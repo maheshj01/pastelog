@@ -139,7 +139,7 @@ class HomePageState extends State<HomePage> {
                               "This Log expires",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2!
+                                  .titleSmall!
                                   .copyWith(color: AppTheme.themeTextColor),
                             ),
                             Stack(
@@ -159,7 +159,7 @@ class HomePageState extends State<HomePage> {
                                                 : expiryDate!.formatDate(),
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline6!
+                                                .titleLarge!
                                                 .copyWith(
                                                     color: AppTheme
                                                         .colorScheme.primary),
@@ -222,7 +222,7 @@ class HomePageState extends State<HomePage> {
                                             const Duration(milliseconds: 600),
                                         firstChild: Text(
                                           'Publish',
-                                          style: AppTheme.textTheme.bodyText2!
+                                          style: AppTheme.textTheme.bodyMedium!
                                               .copyWith(color: Colors.white),
                                         ),
                                         secondChild: const Padding(
@@ -287,7 +287,7 @@ class Footer extends StatelessWidget {
         onPressed: () => onTap(),
         child: Text(
           text,
-          style: AppTheme.textTheme.subtitle2!.copyWith(color: Colors.blue),
+          style: AppTheme.textTheme.titleSmall!.copyWith(color: Colors.blue),
         ));
   }
 
@@ -316,7 +316,7 @@ class Footer extends StatelessWidget {
                 Text('Copyright © 2022 Widget Media Labs ',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2!
+                        .bodyMedium!
                         .copyWith(color: AppTheme.themeTextColor)),
               ],
             ),
@@ -378,7 +378,7 @@ class TitleBarState extends State<TitleBar> {
                 style: GoogleFonts.anticSlab(
                   textStyle: Theme.of(context)
                       .textTheme
-                      .headline3!
+                      .displaySmall!
                       .copyWith(color: AppTheme.colorScheme.primary),
                 )),
           ],
