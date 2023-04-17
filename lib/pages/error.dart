@@ -10,10 +10,6 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: const TitleBar(
-      //   title: 'Pastelog',
-      //   hasAction: false,
-      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

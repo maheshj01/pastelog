@@ -8,7 +8,8 @@ import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
 import 'package:pastelog/pages/error.dart';
 import 'package:pastelog/pages/home.dart';
-import 'package:pastelog/services/api.dart';
+import 'package:pastelog/services/api_service.dart';
+import 'package:pastelog/services/text_service.dart';
 import 'package:pastelog/themes/themes.dart';
 import 'package:pastelog/utils/extensions.dart';
 import 'package:pastelog/utils/navigator.dart';
@@ -43,7 +44,7 @@ class _LogsPageState extends State<LogsPage> {
     /// prevnt  unecessary requestes created on logs tap
     try {
       if (logs.data.isEmpty) {
-        logs = await ApiService.fetchLogById(uuid);
+        logs = await _strategy.fetchLogById(uuid);
       }
       return logs;
     } catch (_) {
@@ -51,86 +52,88 @@ class _LogsPageState extends State<LogsPage> {
     }
   }
 
-  LogModel logs =
-      LogModel(id: '', data: '', expiryDate: null, createdDate: DateTime.now());
-
+  LogModel logs = LogModel(
+      type: LogType.text,
+      id: '',
+      data: '',
+      expiryDate: null,
+      createdDate: DateTime.now());
+  final ContentUploadStrategy _strategy =
+      ContentUploadStrategy(TextApiServiceImpl());
   final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TitleBar(
-        title: appTitle,
-        onTap: () {
-          context.go('/');
-        },
-      ),
-      body: SingleChildScrollView(
-        child: Align(
-          alignment: Alignment.center,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1024),
-            child: FutureBuilder<LogModel?>(
-                future: fetchLogs(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
-                  if (snapshot.hasError) {
-                    return const ErrorPage();
-                  } else if (snapshot.data == null) {
-                    return const LoadingWidget();
-                  } else {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        LogPublishDetails(logModel: snapshot.data!),
-                        LogBuilder(
-                          controller: controller,
-                          data: snapshot.data!.data,
-                          isReadOnly: true,
-                        ),
-                        Container(
-                          height: 100,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              LogButton(
-                                onTap: () {
-                                  save(controller.text, 'logs.text');
-                                },
-                                label: 'Download',
-                              ),
-                              const SizedBox(
-                                width: 24,
-                              ),
-                              LogButton(
-                                  onTap: () async {
-                                    showDialog(
-                                        context: context,
-                                        builder: (_) {
-                                          return ShareDialog(
-                                              url: window.location.href);
-                                        });
-                                  },
-                                  iconData: Icons.share,
-                                  label: 'Share'),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 200,
-                        ),
-                        const Footer()
-                      ],
-                    );
-                  }
-                }),
-          ),
+        appBar: TitleBar(
+          title: appTitle,
+          onTap: () {
+            context.go('/');
+          },
         ),
-      ),
-    );
+        body: FutureBuilder<LogModel?>(
+            future: fetchLogs(),
+            builder: (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
+              if (snapshot.hasError) {
+                return const ErrorPage();
+              } else if (snapshot.data == null) {
+                return const LoadingWidget();
+              } else {
+                return SingleChildScrollView(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1024),
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            LogPublishDetails(logModel: snapshot.data!),
+                            LogBuilder(
+                              controller: controller,
+                              data: snapshot.data!.data,
+                              isReadOnly: true,
+                            ),
+                            Container(
+                              height: 100,
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  LogButton(
+                                    onTap: () {
+                                      save(controller.text, 'logs.text');
+                                    },
+                                    label: 'Download',
+                                  ),
+                                  const SizedBox(
+                                    width: 24,
+                                  ),
+                                  LogButton(
+                                      onTap: () async {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return ShareDialog(
+                                                  url: window.location.href);
+                                            });
+                                      },
+                                      iconData: Icons.share,
+                                      label: 'Share'),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 200,
+                            ),
+                            const Footer()
+                          ],
+                        )),
+                  ),
+                );
+              }
+            }));
   }
 }
 

@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pastelog/constants/constants.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
-import 'package:pastelog/services/api.dart';
+import 'package:pastelog/services/api_service.dart';
+import 'package:pastelog/services/text_service.dart';
 import 'package:pastelog/themes/themes.dart';
 import 'package:pastelog/utils/extensions.dart';
 import 'package:pastelog/utils/navigator.dart';
@@ -34,6 +35,7 @@ class HomePageState extends State<HomePage> {
   LogModel logs = LogModel(
     id: '',
     data: '',
+    type: LogType.text,
     createdDate: DateTime.now(),
     expiryDate: null,
   );
@@ -68,10 +70,10 @@ class HomePageState extends State<HomePage> {
               try {
                 final id = url.split('/').last;
                 if (url.contains(hostUrl)) {
-                  final model = await ApiService.fetchLogById(id);
+                  final model = await _contentUploadStrategy.fetchLogById(id);
                   text = model.data;
                 } else if (url.contains('gist.github.com')) {
-                  text = await ApiService.getGist(gistId(url));
+                  text = await _contentUploadStrategy.getGist(gistId(url));
                 }
                 controller.text = text;
                 popView(context);
@@ -98,6 +100,9 @@ class HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  final ContentUploadStrategy _contentUploadStrategy = ContentUploadStrategy(
+    TextApiServiceImpl(),
+  );
   final ValueNotifier<bool> _isLoading = ValueNotifier<bool>(false);
   @override
   Widget build(BuildContext context) {
@@ -200,11 +205,12 @@ class HomePageState extends State<HomePage> {
                                   uuid = generateUuid();
                                   final log = LogModel(
                                     id: uuid,
+                                    type: LogType.text,
                                     data: controller.text,
                                     expiryDate: expiryDate,
                                     createdDate: DateTime.now(),
                                   );
-                                  await ApiService.addLog(log);
+                                  await _contentUploadStrategy.addLog(log);
                                   controller.clear();
                                   _isLoading.value = false;
                                   context.push('/logs/$uuid', extra: log);
