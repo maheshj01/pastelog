@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:pastelog/constants/constants.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
@@ -297,6 +300,17 @@ class Footer extends StatelessWidget {
         ));
   }
 
+  Future<DateTime> getLastUpdateDateTime() async {
+    try {
+      final response = await http.get(Uri.parse(lastCommitApi));
+      final json = jsonDecode(response.body);
+      final date = DateTime.parse(json['commit']['commit']['author']['date']);
+      return date;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -325,6 +339,25 @@ class Footer extends StatelessWidget {
                         .bodyMedium!
                         .copyWith(color: AppTheme.themeTextColor)),
               ],
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            FutureBuilder(
+              builder:
+                  (BuildContext context, AsyncSnapshot<DateTime> snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    'Last Updated: ${snapshot.data?.toLocal().formatDateTime()}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(color: AppTheme.themeTextColor),
+                  );
+                }
+                return const SizedBox();
+              },
+              future: getLastUpdateDateTime(),
             ),
           ],
         ));

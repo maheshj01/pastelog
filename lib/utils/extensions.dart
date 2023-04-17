@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 const String dateFormatter = 'MMMM dd, y';
+const String dateTimeFormatter = 'MMMM dd, y HH:mm';
 
 extension DateHelper on DateTime {
   String formatDate() {
@@ -17,10 +18,14 @@ extension DateHelper on DateTime {
     }
   }
 
+  //
+  String formatDateTime() {
+    final formatter = DateFormat(dateTimeFormatter);
+    return formatter.format(this);
+  }
+
   bool isSameDate(DateTime other) {
-    return year == other.year &&
-        month == other.month &&
-        day == other.day;
+    return year == other.year && month == other.month && day == other.day;
   }
 
   int getDifferenceInDaysWithNow() {

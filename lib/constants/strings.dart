@@ -19,3 +19,5 @@ const String logsEmptyMessage = 'Cannot Publish empty logs!';
 const String gistApi = 'https://api.github.com/gists/';
 const String sourceCodeUrl = 'https://github.com/maheshmnj/pastelog';
 const String hostUrl = 'pastelog.netlify.app';
+const String lastCommitApi =
+    'https://api.github.com/repos/maheshmnj/pastelog/branches/master';
