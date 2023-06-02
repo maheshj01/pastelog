@@ -364,7 +364,7 @@ class Footer extends StatelessWidget {
   }
 }
 
-class TitleBar extends StatefulWidget with PreferredSizeWidget {
+class TitleBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final Function? onTap;
   final bool? hasAction;
