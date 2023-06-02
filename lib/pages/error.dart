@@ -35,9 +35,9 @@ class ErrorPage extends StatelessWidget {
                   maximumSize: MaterialStateProperty.all(const Size(150, 54)),
                   minimumSize: MaterialStateProperty.all(const Size(150, 54)),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text('Go Home'),
                     SizedBox(
                       width: 8,

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pastelog/constants/strings.dart';
 import 'package:pastelog/pages/error.dart';
@@ -15,7 +16,7 @@ import 'package:pastelog/utils/settings_service.dart';
 import 'package:pastelog/utils/utility.dart';
 
 Future<void> main() async {
-  GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
+  usePathUrlStrategy();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -70,7 +71,7 @@ class App extends StatelessWidget {
         pageBuilder: (context, state) {
           return CustomTransitionPage<void>(
             key: state.pageKey,
-            child: LogsPage(id: state.params['id']),
+            child: LogsPage(id: state.pathParameters['id']),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),
