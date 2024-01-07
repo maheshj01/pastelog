@@ -1,33 +1,31 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:pastelog/constants/constants.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
 import 'package:pastelog/services/api_service.dart';
 import 'package:pastelog/services/text_service.dart';
 import 'package:pastelog/themes/themes.dart';
-import 'package:pastelog/utils/extensions.dart';
 import 'package:pastelog/utils/navigator.dart';
-import 'package:pastelog/utils/settings_service.dart';
 import 'package:pastelog/utils/utility.dart';
-import 'package:pastelog/widgets/alert.dart';
+import 'package:pastelog/widgets/LogField.dart';
+import 'package:pastelog/widgets/date_picker.dart';
+import 'package:pastelog/widgets/footer.dart';
+import 'package:pastelog/widgets/gradientButton.dart';
 import 'package:pastelog/widgets/import.dart';
-import 'package:pastelog/widgets/widgets.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:pastelog/widgets/titlebar.dart';
 import 'package:uuid/uuid.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => HomePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   String generateUuid() {
     var uuid = const Uuid();
     return uuid.v1();
@@ -37,6 +35,7 @@ class HomePageState extends State<HomePage> {
 
   LogModel logs = LogModel(
     id: '',
+    title: '',
     data: '',
     type: LogType.text,
     createdDate: DateTime.now(),
@@ -109,7 +108,15 @@ class HomePageState extends State<HomePage> {
   final ValueNotifier<bool> _isLoading = ValueNotifier<bool>(false);
   @override
   Widget build(BuildContext context) {
+    final isDark = ref.watch(settingsNotifierProvider).isDark;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
+        appBar: TitleBar(
+          title: appTitle,
+          onTap: () {
+            context.go('/');
+          },
+        ),
         floatingActionButton: FloatingActionButton(
           tooltip: 'Import Logs',
           onPressed: () async {
@@ -118,22 +125,24 @@ class HomePageState extends State<HomePage> {
           },
           child: const Icon(Icons.file_upload),
         ),
-        appBar: TitleBar(
-          title: appTitle,
-          onTap: () {
-            context.go('/');
-          },
-        ),
         body: SingleChildScrollView(
-          child: Align(
+          child: Container(
+            decoration: isDark
+                ? null
+                : const BoxDecoration(
+                    gradient: AppTheme.gradient,
+                  ),
             alignment: Alignment.center,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1024),
               child: Column(
                 children: [
-                  LogBuilder(
-                    controller: controller,
-                    data: logs.data,
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: size.height * 0.8),
+                    child: LogInputField(
+                      controller: controller,
+                      data: logs.data,
+                    ),
                   ),
                   Container(
                     height: 150,
@@ -143,109 +152,49 @@ class HomePageState extends State<HomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(
-                              "This Log expires",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall!
-                                  .copyWith(color: AppTheme.themeTextColor),
-                            ),
-                            Stack(
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: TextButton(
-                                      onPressed: () {
-                                        _selectExpiryDate(context);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            expiryDate == null
-                                                ? "Never"
-                                                : expiryDate!.formatDate(),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge!
-                                                .copyWith(
-                                                    color: AppTheme
-                                                        .colorScheme.primary),
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Icon(Icons.calendar_today,
-                                              color:
-                                                  AppTheme.colorScheme.primary,
-                                              size: 20),
-                                        ],
-                                      )),
-                                ),
-                                Positioned(
-                                    bottom: 0,
-                                    left: 4,
-                                    right: 2,
-                                    child: Divider(
-                                      color: AppTheme.colorScheme.primary,
-                                      thickness: 3,
-                                    )),
-                              ],
+                            ExpiryDateSelector(
+                              value: expiryDate,
+                              onExpirySet: (expiry) {
+                                setState(() {
+                                  expiryDate = expiry;
+                                });
+                              },
                             ),
                             const SizedBox(
                               width: 50,
                             ),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  if (_isLoading.value) {
-                                    return;
-                                  }
-                                  if (controller.text.isEmpty) {
-                                    showMessage(context, logsEmptyMessage);
-                                    return;
-                                  }
-                                  _isLoading.value = true;
-                                  uuid = generateUuid();
-                                  final log = LogModel(
-                                    id: uuid,
-                                    type: LogType.text,
-                                    data: controller.text,
-                                    expiryDate: expiryDate,
-                                    createdDate: DateTime.now(),
+                            ValueListenableBuilder<bool>(
+                                valueListenable: _isLoading,
+                                builder: (BuildContext context, bool isLoading,
+                                    Widget? child) {
+                                  return GradientButton(
+                                    isLoading: isLoading,
+                                    onPressed: () async {
+                                      if (_isLoading.value) {
+                                        return;
+                                      }
+                                      if (controller.text.isEmpty) {
+                                        showMessage(context, logsEmptyMessage);
+                                        return;
+                                      }
+                                      _isLoading.value = true;
+                                      uuid = generateUuid();
+                                      final log = LogModel(
+                                        id: uuid,
+                                        title: '',
+                                        type: LogType.text,
+                                        data: controller.text,
+                                        expiryDate: expiryDate,
+                                        createdDate: DateTime.now(),
+                                      );
+                                      await _contentUploadStrategy.addLog(log);
+                                      controller.clear();
+                                      _isLoading.value = false;
+                                      context.push('/logs/$uuid', extra: log);
+                                    },
+                                    text: 'Publish',
                                   );
-                                  await _contentUploadStrategy.addLog(log);
-                                  controller.clear();
-                                  _isLoading.value = false;
-                                  context.push('/logs/$uuid', extra: log);
-                                },
-                                style: ButtonStyle(
-                                    minimumSize:
-                                        MaterialStateProperty.resolveWith(
-                                            (states) => const Size(120, 45))),
-                                child: ValueListenableBuilder<bool>(
-                                  valueListenable: _isLoading,
-                                  builder: (BuildContext context,
-                                      bool isLoading, Widget? child) {
-                                    return AnimatedCrossFade(
-                                        duration:
-                                            const Duration(milliseconds: 600),
-                                        firstChild: Text(
-                                          'Publish',
-                                          style: AppTheme.textTheme.bodyMedium!
-                                              .copyWith(color: Colors.white),
-                                        ),
-                                        secondChild: const Padding(
-                                          padding: EdgeInsets.all(1.0),
-                                          child: LoadingWidget(
-                                            color: Colors.white,
-                                            width: 2.5,
-                                          ),
-                                        ),
-                                        crossFadeState: isLoading
-                                            ? CrossFadeState.showSecond
-                                            : CrossFadeState.showFirst);
-                                  },
-                                )),
+                                }),
                             const SizedBox(
                               width: 40,
                             )
@@ -263,166 +212,5 @@ class HomePageState extends State<HomePage> {
             ),
           ),
         ));
-  }
-}
-
-class Footer extends StatelessWidget {
-  const Footer({Key? key}) : super(key: key);
-
-  void _openCustomDialog(BuildContext context) {
-    showGeneralDialog(
-        barrierColor: Colors.black.withOpacity(0.5),
-        transitionBuilder: (context, a1, a2, widget) {
-          return ScaleTransition(
-              scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-              child: FadeTransition(
-                opacity: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                child: const AboutPasteLog(
-                  title: 'About',
-                ),
-              ));
-        },
-        transitionDuration: const Duration(milliseconds: 300),
-        barrierDismissible: true,
-        barrierLabel: '',
-        context: context,
-        pageBuilder: (context, animation1, animation2) {
-          return Container();
-        });
-  }
-
-  Widget linkWidget(String text, Function onTap) {
-    return TextButton(
-        onPressed: () => onTap(),
-        child: Text(
-          text,
-          style: AppTheme.textTheme.titleSmall!.copyWith(color: Colors.blue),
-        ));
-  }
-
-  Future<DateTime> getLastUpdateDateTime() async {
-    try {
-      final response = await http.get(Uri.parse(lastCommitApi));
-      final json = jsonDecode(response.body);
-      final date = DateTime.parse(json['commit']['commit']['author']['date']);
-      return date;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Row(
-              children: [
-                linkWidget('About', () => _openCustomDialog(context)),
-                const SizedBox(
-                  width: 20,
-                ),
-                // linkWidget('Privacy Policy', () => launchLink(privacyPolicyUrl)),
-                linkWidget(
-                    'Source Code', () => launchUrl(Uri.parse(sourceCodeUrl))),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Copyright © 2022 Widget Media Labs ',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: AppTheme.themeTextColor)),
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            FutureBuilder(
-              builder:
-                  (BuildContext context, AsyncSnapshot<DateTime> snapshot) {
-                if (snapshot.hasData) {
-                  return Text(
-                    'Last Updated: ${snapshot.data?.toLocal().formatDateTime()}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(color: AppTheme.themeTextColor),
-                  );
-                }
-                return const SizedBox();
-              },
-              future: getLastUpdateDateTime(),
-            ),
-          ],
-        ));
-  }
-}
-
-class TitleBar extends StatefulWidget implements PreferredSizeWidget {
-  final String title;
-  final Function? onTap;
-  final bool? hasAction;
-  const TitleBar(
-      {Key? key, required this.title, this.onTap, this.hasAction = true})
-      : super(key: key);
-
-  @override
-  State<TitleBar> createState() => TitleBarState();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
-
-class TitleBarState extends State<TitleBar> {
-  @override
-  Widget build(BuildContext context) {
-    final bool isDark = Settings.getTheme == ThemeMode.dark;
-    return InkWell(
-      onTap: () => widget.onTap!(),
-      child: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        automaticallyImplyLeading: false,
-        actions: [
-          !widget.hasAction!
-              ? const SizedBox.shrink()
-              : IconButton(
-                  onPressed: () {
-                    isDark
-                        ? Settings.setTheme(ThemeMode.light)
-                        : Settings.setTheme(ThemeMode.dark);
-                  },
-                  icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny)),
-          const SizedBox(
-            width: 20,
-          ),
-        ],
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.format_align_left,
-              size: 36,
-              color: AppTheme.colorScheme.primary,
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            Text(appTitle,
-                style: GoogleFonts.anticSlab(
-                  textStyle: Theme.of(context)
-                      .textTheme
-                      .displaySmall!
-                      .copyWith(color: AppTheme.colorScheme.primary),
-                )),
-          ],
-        ),
-      ),
-    );
   }
 }

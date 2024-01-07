@@ -2,31 +2,34 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pastelog/exports.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
 import 'package:pastelog/pages/error.dart';
-import 'package:pastelog/pages/home.dart';
 import 'package:pastelog/services/api_service.dart';
 import 'package:pastelog/services/text_service.dart';
 import 'package:pastelog/themes/themes.dart';
 import 'package:pastelog/utils/extensions.dart';
 import 'package:pastelog/utils/navigator.dart';
 import 'package:pastelog/utils/utility.dart';
+import 'package:pastelog/widgets/LogField.dart';
+import 'package:pastelog/widgets/footer.dart';
+import 'package:pastelog/widgets/titlebar.dart';
 import 'package:pastelog/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
 
-class LogsPage extends StatefulWidget {
+class LogsPage extends ConsumerStatefulWidget {
   final String? id;
 
   const LogsPage({Key? key, this.id}) : super(key: key);
 
   @override
-  State<LogsPage> createState() => _LogsPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _LogsPageState();
 }
 
-class _LogsPageState extends State<LogsPage> {
+class _LogsPageState extends ConsumerState<LogsPage> {
   String generateUuid() {
     var uuid = const Uuid();
     return uuid.v1();
@@ -54,6 +57,7 @@ class _LogsPageState extends State<LogsPage> {
 
   LogModel logs = LogModel(
       type: LogType.text,
+      title: '',
       id: '',
       data: '',
       expiryDate: null,
@@ -63,6 +67,8 @@ class _LogsPageState extends State<LogsPage> {
   final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final isDark = ref.watch(settingsNotifierProvider).isDark;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: TitleBar(
           title: appTitle,
@@ -76,10 +82,22 @@ class _LogsPageState extends State<LogsPage> {
               if (snapshot.hasError) {
                 return const ErrorPage();
               } else if (snapshot.data == null) {
-                return const LoadingWidget();
+                return Container(
+                  decoration: isDark
+                      ? null
+                      : const BoxDecoration(
+                          gradient: AppTheme.gradient,
+                        ),
+                  child: const LoadingWidget(),
+                );
               } else {
                 return SingleChildScrollView(
-                  child: Align(
+                  child: Container(
+                    decoration: isDark
+                        ? null
+                        : const BoxDecoration(
+                            gradient: AppTheme.gradient,
+                          ),
                     alignment: Alignment.center,
                     child: ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 1024),
@@ -89,10 +107,14 @@ class _LogsPageState extends State<LogsPage> {
                               height: 16,
                             ),
                             LogPublishDetails(logModel: snapshot.data!),
-                            LogBuilder(
-                              controller: controller,
-                              data: snapshot.data!.data,
-                              isReadOnly: true,
+                            ConstrainedBox(
+                              constraints:
+                                  BoxConstraints(maxHeight: size.height * 0.8),
+                              child: LogInputField(
+                                controller: controller,
+                                data: snapshot.data!.data,
+                                isReadOnly: true,
+                              ),
                             ),
                             Container(
                               height: 100,
@@ -301,8 +323,7 @@ class LogButton extends StatelessWidget {
           children: [
             Text(
               label,
-              style:
-                  AppTheme.textTheme.bodyMedium!.copyWith(color: Colors.white),
+              style: AppTheme.textTheme.bodyMedium!,
             ),
             SizedBox(
               width: iconData != null ? 8 : 0,
@@ -311,7 +332,6 @@ class LogButton extends StatelessWidget {
                 ? Icon(
                     iconData,
                     size: 16,
-                    color: Colors.white,
                   )
                 : const SizedBox.shrink(),
           ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pastelog/utils/settings_service.dart';
 
 class AppTheme {
   static final AppTheme _singleton = AppTheme._internal();
@@ -21,6 +20,17 @@ class AppTheme {
   static TextStyle rupeeStyle = const TextStyle(
     fontSize: 18,
   );
+
+  static const gradient = LinearGradient(
+    colors: [surfaceRed, surfaceBlue, skyBlue],
+    stops: [0.15, 0.35, 0.9],
+    begin: Alignment.bottomRight,
+    end: Alignment.topLeft,
+  );
+
+  static const surfaceRed = Color(0xffdaf1ee);
+  static const surfaceBlue = Color(0xffd3e8fb);
+  static const skyBlue = Color(0xfff3ddec);
 
   bool _isDark = false;
 
@@ -73,7 +83,7 @@ class AppTheme {
   }
 
   static ColorScheme get colorScheme =>
-      Settings.getTheme == ThemeMode.light ? colorSchemes[0] : darkColorScheme;
+      true ? colorSchemes[0] : darkColorScheme;
 
   static List<ColorScheme> get colorSchemes =>
       [blueColorScheme, darkColorScheme, greenColorScheme];
