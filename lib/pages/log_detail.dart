@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -151,7 +149,7 @@ class _LogsPageState extends ConsumerState<LogsPage> {
                                             context: context,
                                             builder: (_) {
                                               return ShareDialog(
-                                                  url: window.location.href);
+                                                  url: Uri.base.toString());
                                             });
                                       },
                                       iconData: Icons.share,
