@@ -22,18 +22,102 @@ enum LogType {
 @JsonSerializable()
 class LogModel {
   final String id;
+  final String title;
   final String data;
   final DateTime? expiryDate;
   final LogType type;
   final DateTime? createdDate;
 
+  factory LogModel.fromJson(Map<String, dynamic> json) =>
+      _$LogModelFromJson(json);
+
   LogModel(
       {required this.id,
       required this.data,
-      this.type = LogType.text,
-      this.expiryDate,
+      required this.title,
+      required this.expiryDate,
+      required this.type,
       required this.createdDate});
-  factory LogModel.fromJson(Map<String, dynamic> json) =>
-      _$LogModelFromJson(json);
   Map<String, dynamic> toJson() => _$LogModelToJson(this);
+
+
+
+
+  LogModel copyWith({
+    String? id,
+    String? data,
+    DateTime? expiryDate,
+    String? title,
+    LogType? type,
+    DateTime? createdDate,
+  }) {
+    return LogModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      data: data ?? this.data,
+      expiryDate: expiryDate ?? this.expiryDate,
+      type: type ?? this.type,
+      createdDate: createdDate ?? this.createdDate,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'id': id});
+    result.addAll({'data': data});
+    result.addAll({'title': title});
+    if (expiryDate != null) {
+      result.addAll({'expiryDate': expiryDate!.millisecondsSinceEpoch});
+    }
+    result.addAll({'type': type.name});
+    if (createdDate != null) {
+      result.addAll({'createdDate': createdDate!.millisecondsSinceEpoch});
+    }
+
+    return result;
+  }
+
+  factory LogModel.fromMap(Map<String, dynamic> map) {
+    return LogModel(
+      id: map['id'] ?? '',
+      data: map['data'] ?? '',
+      title: map['title'] ?? '',
+      expiryDate: map['expiryDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['expiryDate'])
+          : null,
+      type: map['type'] == 'text' ? LogType.text : LogType.file,
+      createdDate: map['createdDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['createdDate'])
+          : null,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'LogModel(id: $id, title: $title, data: $data, expiryDate: $expiryDate, type: $type, createdDate: $createdDate)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is LogModel &&
+        other.id == id &&
+        other.title == title &&
+        other.data == data &&
+        other.expiryDate == expiryDate &&
+        other.type == type &&
+        other.createdDate == createdDate;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        title.hashCode ^
+        data.hashCode ^
+        expiryDate.hashCode ^
+        type.hashCode ^
+        createdDate.hashCode;
+  }
 }
