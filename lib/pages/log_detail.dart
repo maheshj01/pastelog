@@ -73,7 +73,7 @@ class _LogsPageState extends ConsumerState<LogsPage> {
         appBar: TitleBar(
           title: appTitle,
           onTap: () {
-            context.go('/');
+            context.push('/');
           },
         ),
         body: FutureBuilder<LogModel?>(
@@ -91,6 +91,7 @@ class _LogsPageState extends ConsumerState<LogsPage> {
                   child: const LoadingWidget(),
                 );
               } else {
+                final log = snapshot.data;
                 return SingleChildScrollView(
                   child: Container(
                     decoration: isDark
@@ -106,7 +107,19 @@ class _LogsPageState extends ConsumerState<LogsPage> {
                             const SizedBox(
                               height: 16,
                             ),
-                            LogPublishDetails(logModel: snapshot.data!),
+                            LogPublishDetails(logModel: log!),
+                            log.title.isNotEmpty
+                                ? Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.all(16),
+                                    child: Text(
+                                      log.title,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium,
+                                    ),
+                                  )
+                                : const SizedBox.shrink(),
                             ConstrainedBox(
                               constraints:
                                   BoxConstraints(maxHeight: size.height * 0.8),
