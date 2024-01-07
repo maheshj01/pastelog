@@ -9,9 +9,18 @@ import 'package:pastelog/utils/utility.dart';
 class LogInputField extends ConsumerStatefulWidget {
   final String? data;
   final TextEditingController? controller;
+  final int minLines;
+  final int maxLines;
   final bool isReadOnly;
+  final String? hint;
   const LogInputField(
-      {Key? key, this.controller, this.data, this.isReadOnly = false})
+      {Key? key,
+      this.controller,
+      this.minLines = 20,
+      this.maxLines = 40,
+      this.data,
+      this.hint,
+      this.isReadOnly = false})
       : super(key: key);
 
   @override
@@ -42,7 +51,9 @@ class _LogInputFieldState extends ConsumerState<LogInputField> {
           decoration: BoxDecoration(
               border:
                   Border.all(color: isDark ? colorScheme.surface : Colors.grey),
-              color: isDark ? colorScheme.surface : null,
+              color: isDark
+                  ? colorScheme.surface
+                  : AppTheme.gradient.colors[0].withOpacity(0.5),
               borderRadius: BorderRadius.circular(12)),
           child: TextField(
             cursorHeight: 20,
@@ -57,10 +68,10 @@ class _LogInputFieldState extends ConsumerState<LogInputField> {
               enabledBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
               errorBorder: InputBorder.none,
-              hintText: hint,
+              hintText: widget.hint ?? hint,
             ),
-            minLines: 20,
-            maxLines: 40,
+            minLines: widget.minLines,
+            maxLines: widget.maxLines,
           ),
         ),
         widget.isReadOnly

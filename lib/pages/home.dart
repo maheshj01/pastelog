@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:pastelog/constants/constants.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
@@ -43,6 +42,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   );
 
   final TextEditingController controller = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
   DateTime? expiryDate;
 
   Future<void> _selectExpiryDate(BuildContext context) async {
@@ -98,6 +98,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void dispose() {
     controller.dispose();
+    titleController.dispose();
     _isLoading.dispose();
     super.dispose();
   }
@@ -137,6 +138,12 @@ class _HomePageState extends ConsumerState<HomePage> {
               constraints: const BoxConstraints(maxWidth: 1024),
               child: Column(
                 children: [
+                  LogInputField(
+                    maxLines: 1,
+                    minLines: 1,
+                    controller: titleController,
+                    hint: 'Description of the log (optional)',
+                  ),
                   ConstrainedBox(
                     constraints: BoxConstraints(maxHeight: size.height * 0.8),
                     child: LogInputField(
@@ -181,7 +188,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       uuid = generateUuid();
                                       final log = LogModel(
                                         id: uuid,
-                                        title: '',
+                                        title: titleController.text.trim(),
                                         type: LogType.text,
                                         data: controller.text,
                                         expiryDate: expiryDate,
@@ -189,6 +196,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       );
                                       await _contentUploadStrategy.addLog(log);
                                       controller.clear();
+                                      titleController.clear();
                                       _isLoading.value = false;
                                       context.push('/logs/$uuid', extra: log);
                                     },
