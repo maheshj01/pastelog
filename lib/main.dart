@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pastelog/constants/strings.dart';
+import 'package:pastelog/models/log_model.dart';
 import 'package:pastelog/pages/error.dart';
 import 'package:pastelog/pages/home.dart';
 import 'package:pastelog/pages/log_detail.dart';
@@ -52,9 +53,12 @@ class App extends ConsumerWidget {
       GoRoute(
         path: '/',
         pageBuilder: (context, state) {
+          LogModel? log = state.extra as LogModel?;
           return CustomTransitionPage<void>(
             key: state.pageKey,
-            child: const HomePage(),
+            child: HomePage(
+              log: log,
+            ),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),

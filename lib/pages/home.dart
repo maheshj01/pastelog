@@ -20,7 +20,8 @@ import 'package:pastelog/widgets/titlebar.dart';
 import 'package:uuid/uuid.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+  final LogModel? log;
+  const HomePage({super.key, this.log});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
@@ -118,6 +119,14 @@ class _HomePageState extends ConsumerState<HomePage>
     super.initState();
     iconController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.log != null) {
+        logs = widget.log!;
+        controller.text = logs.data;
+        titleController.text = logs.title;
+        expiryDate = logs.expiryDate;
+      }
+    });
   }
 
   void _openEndDrawer() {

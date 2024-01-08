@@ -81,6 +81,15 @@ class _LogsPageState extends ConsumerState<LogsPage> {
           onTap: () {
             context.push('/');
           },
+          actions: [
+            LogButton(
+                onTap: () async {
+                  context.push('/', extra: logs);
+                },
+                iconData: Icons.fork_right_rounded,
+                label: 'Fork'),
+            16.0.hSpacer()
+          ],
         ),
         body: FutureBuilder<LogModel?>(
             future: fetchLogs(),
