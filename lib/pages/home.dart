@@ -76,7 +76,8 @@ class _HomePageState extends ConsumerState<HomePage>
               if (url.isEmpty) return;
               try {
                 final id = url.split('/').last;
-                if (url.contains(hostUrl)) {
+                final domain = Uri.base.host;
+                if (url.contains(domain)) {
                   final model = await _contentUploadStrategy.fetchLogById(id);
                   text = model.data;
                 } else if (url.contains('gist.github.com')) {
