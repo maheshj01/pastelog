@@ -22,13 +22,13 @@ class AppTheme {
   );
 
   static const gradient = LinearGradient(
-    colors: [surfaceRed, surfaceBlue, skyBlue],
+    colors: [skyBlue, surfaceBlue, surfaceGreen],
     stops: [0.15, 0.35, 0.9],
     begin: Alignment.bottomRight,
     end: Alignment.topLeft,
   );
 
-  static const surfaceRed = Color(0xffdaf1ee);
+  static const surfaceGreen = Color.fromARGB(255, 237, 255, 227);
   static const surfaceBlue = Color(0xffd3e8fb);
   static const skyBlue = Color(0xfff3ddec);
 
