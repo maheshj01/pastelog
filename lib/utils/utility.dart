@@ -1,14 +1,23 @@
+import 'dart:convert' show utf8;
 import 'dart:html' as html;
-import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void save(Object bytes, String fileName) {
-  js.context.callMethod("saveAs", <Object>[
-    html.Blob(<Object>[bytes]),
-    fileName
-  ]);
+// void save(Object bytes, String fileName) {
+//   context.callMethod("saveAs", <Object>[
+//     html.Blob(<Object>[bytes]),
+//     fileName
+//   ]);
+// }
+
+void saveTextFile(String text, String filename) {
+  html.AnchorElement()
+    ..href =
+        '${Uri.dataFromString(text, mimeType: 'text/plain', encoding: utf8)}'
+    ..download = filename
+    ..style.display = 'none'
+    ..click();
 }
 
 void showMessage(BuildContext context, String message,
@@ -33,10 +42,9 @@ void showMessage(BuildContext context, String message,
       .whenComplete(() => onClosed == null ? null : onClosed());
 }
 
-
-  Future<void> launchLink(String url, {bool isNewTab = true}) async {
-    await launchUrl(
-      Uri.parse(url),
-      webOnlyWindowName: isNewTab ? '_blank' : '_self',
-    );
-  }
+Future<void> launchLink(String url, {bool isNewTab = true}) async {
+  await launchUrl(
+    Uri.parse(url),
+    webOnlyWindowName: isNewTab ? '_blank' : '_self',
+  );
+}
