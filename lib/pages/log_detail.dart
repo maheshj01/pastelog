@@ -187,7 +187,7 @@ class LogPublishDetails extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: 8.0.allPadding,
         child: Row(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -226,7 +226,7 @@ class LogPublishDetails extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleLarge,
                             text: expiryDate.formatDate() == "Today"
                                 ? "Today"
-                                : "on ${expiryDate.formatDate()}"),
+                                : expiryDate.formatDate()),
                       ],
                     ),
             ])),
