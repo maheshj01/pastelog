@@ -136,7 +136,8 @@ class _LogsPageState extends ConsumerState<LogsPage> {
                                 children: [
                                   LogButton(
                                     onTap: () {
-                                      save(controller.text, 'logs.text');
+                                      saveTextFile(
+                                          controller.text, 'logs.text');
                                     },
                                     label: 'Download',
                                   ),
