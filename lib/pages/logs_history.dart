@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/utils/extensions.dart';
+import 'package:pastelog/widgets/widgets.dart';
 
 class LogsHistory extends ConsumerStatefulWidget {
   AnimationController? controller;
@@ -13,6 +14,33 @@ class LogsHistory extends ConsumerStatefulWidget {
 }
 
 class _LogsHistoryState extends ConsumerState<LogsHistory> {
+  void showClearDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Clear logs'),
+          content: const Text('Are you sure you want to clear all logs?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                ref.read(settingsNotifierProvider.notifier).clearLogs();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Clear'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final logs = ref.watch(settingsNotifierProvider).logs;
@@ -30,15 +58,28 @@ class _LogsHistoryState extends ConsumerState<LogsHistory> {
                   'Logs History',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: AnimatedIcon(
-                    icon: AnimatedIcons.menu_close,
-                    progress: widget.controller!,
-                  ),
-                ),
+                // clear logs
+                Row(
+                  children: [
+                    if (logs.isNotEmpty)
+                      GestureDetector(
+                        onTap: () {
+                          showClearDialog();
+                        },
+                        child: const Icon(Icons.delete),
+                      ),
+                    20.0.hSpacer(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: AnimatedIcon(
+                        icon: AnimatedIcons.menu_close,
+                        progress: widget.controller!,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -55,15 +96,21 @@ class _LogsHistoryState extends ConsumerState<LogsHistory> {
                       final title = log.title.isEmpty
                           ? 'Log ${log.id}'
                           : log.title.substring(0, length) + '...';
-                      return ListTile(
-                        title: Text('$title'),
-                        subtitle: Text(
-                          log.createdDate!.standardDateTime(),
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                        onTap: () {
-                          context.push('/logs/${log.id}');
-                        },
+                      return Column(
+                        children: [
+                          if (index == 0) hLine(),
+                          ListTile(
+                            title: Text('$title'),
+                            subtitle: Text(
+                              log.createdDate!.standardDateTime(),
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                            onTap: () {
+                              context.push('/logs/${log.id}');
+                            },
+                          ),
+                          hLine()
+                        ],
                       );
                     },
                   ),

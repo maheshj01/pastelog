@@ -30,3 +30,18 @@ void showCircularIndicator(BuildContext context, {Color? color}) {
 void stopCircularIndicator(BuildContext context) {
   Navigator.of(context).pop();
 }
+
+Widget hLine({Color? color, double height = 0.4}) {
+  return Container(
+    height: height,
+    color: color ?? Colors.grey.withOpacity(0.5),
+  );
+}
+
+Widget vLine({Color? color, double width = 0.4, double height = 0.0}) {
+  return Container(
+    width: width,
+    height: height,
+    color: color ?? Colors.grey.withOpacity(0.5),
+  );
+}
