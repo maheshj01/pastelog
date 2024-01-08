@@ -58,17 +58,17 @@ class _ErrorPageState extends State<ErrorPage> {
                   maximumSize: MaterialStateProperty.all(const Size(150, 54)),
                   minimumSize: MaterialStateProperty.all(const Size(150, 54)),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Go Home'),
-                    const SizedBox(
+                    Text('Go Home'),
+                    SizedBox(
                       width: 8,
                     ),
-                    const Icon(Icons.home)
+                    Icon(Icons.home)
                   ],
                 ),
-                onPressed: () => context.go('/')),
+                onPressed: () => context.push('/')),
           ],
         ),
       ),

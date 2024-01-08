@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:pastelog/constants/constants.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/models/log_model.dart';
+import 'package:pastelog/pages/logs_history.dart';
 import 'package:pastelog/services/api_service.dart';
 import 'package:pastelog/services/text_service.dart';
 import 'package:pastelog/themes/themes.dart';
+import 'package:pastelog/utils/extensions.dart';
 import 'package:pastelog/utils/navigator.dart';
 import 'package:pastelog/utils/utility.dart';
 import 'package:pastelog/widgets/LogField.dart';
@@ -24,12 +26,14 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class _HomePageState extends ConsumerState<HomePage>
+    with SingleTickerProviderStateMixin {
   String generateUuid() {
     var uuid = const Uuid();
     return uuid.v1();
   }
 
+  late AnimationController iconController;
   late String uuid;
 
   LogModel logs = LogModel(
@@ -98,6 +102,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void dispose() {
     controller.dispose();
+    iconController.dispose();
     titleController.dispose();
     _isLoading.dispose();
     super.dispose();
@@ -107,16 +112,69 @@ class _HomePageState extends ConsumerState<HomePage> {
     TextApiServiceImpl(),
   );
   final ValueNotifier<bool> _isLoading = ValueNotifier<bool>(false);
+
+  @override
+  void initState() {
+    super.initState();
+    iconController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+  }
+
+  void _openEndDrawer() {
+    _scaffoldKey.currentState!.openEndDrawer();
+  }
+
+  void _closeEndDrawer() {
+    Navigator.of(context).pop();
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Widget animatedIcon() {
+    return GestureDetector(
+      onTap: () {
+        if (iconController.isCompleted) {
+          iconController.reverse();
+          _closeEndDrawer();
+        } else {
+          iconController.forward();
+          _openEndDrawer();
+        }
+      },
+      child: AnimatedIcon(
+          icon: AnimatedIcons.menu_close, progress: iconController),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = ref.watch(settingsNotifierProvider).isDark;
     final size = MediaQuery.of(context).size;
+    final settings = ref.watch(settingsNotifierProvider.notifier);
     return Scaffold(
+        key: _scaffoldKey,
+        onEndDrawerChanged: (open) {
+          if (!open) {
+            iconController.reverse();
+          }
+        },
+        endDrawer: LogsHistory(
+          controller: iconController,
+        ),
         appBar: TitleBar(
           title: appTitle,
           onTap: () {
             context.go('/');
           },
+          actions: [
+            IconButton(
+                onPressed: () {
+                  settings.setTheme(isDark ? ThemeMode.light : ThemeMode.dark);
+                },
+                icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny)),
+            animatedIcon(),
+            20.0.hSpacer()
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           tooltip: 'Import Logs',
@@ -195,6 +253,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         createdDate: DateTime.now(),
                                       );
                                       await _contentUploadStrategy.addLog(log);
+                                      settings.addLog(log);
                                       controller.clear();
                                       titleController.clear();
                                       _isLoading.value = false;

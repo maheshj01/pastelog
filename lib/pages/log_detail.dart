@@ -41,12 +41,20 @@ class _LogsPageState extends ConsumerState<LogsPage> {
     uuid = widget.id ?? '';
   }
 
+  Future<void> saveLog(LogModel log) async {
+    Future.delayed(const Duration(seconds: 2), () {
+      final settings = ref.watch(settingsNotifierProvider.notifier);
+      settings.addLog(log);
+    });
+  }
+
   Future<LogModel> fetchLogs() async {
     /// prevnt  unecessary requestes created on logs tap
     try {
       if (logs.data.isEmpty) {
         logs = await _strategy.fetchLogById(uuid);
       }
+      saveLog(logs);
       return logs;
     } catch (_) {
       throw 'Logs Not found';
