@@ -7,10 +7,13 @@ class GradientButton extends StatefulWidget {
   final String? text;
   final Function()? onPressed;
   final bool isLoading;
+  final Gradient? gradient;
+
   const GradientButton(
       {super.key,
       this.text,
       this.child,
+      this.gradient,
       this.isLoading = false,
       this.onPressed})
       : assert(text != null || child != null);
@@ -22,26 +25,48 @@ class GradientButton extends StatefulWidget {
 class _GradientButtonState extends State<GradientButton> {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return ElevatedButton(
-        onPressed: widget.onPressed,
-        style: ButtonStyle(
-            minimumSize: MaterialStateProperty.resolveWith(
-                (states) => const Size(120, 45))),
-        child: AnimatedCrossFade(
-            duration: const Duration(milliseconds: 600),
-            firstChild: widget.child ??
-                Text(
-                  widget.text!,
-                  style: AppTheme.textTheme.bodyMedium!,
-                ),
-            secondChild: const Padding(
-              padding: EdgeInsets.all(1.0),
-              child: LoadingWidget(
-                width: 2.5,
+      onPressed: widget.onPressed,
+      clipBehavior:
+          Clip.antiAlias, // Buttons don't clip their child by default.
+      style: ElevatedButton.styleFrom(
+        padding:
+            EdgeInsets.zero, // So that the gradient fills the entire button.
+        maximumSize: const Size(120, 45),
+        minimumSize: const Size(120, 45),
+      ),
+      child: SizedBox.expand(
+          child: Ink(
+              decoration: BoxDecoration(
+                gradient: widget.gradient ??
+                    LinearGradient(
+                      colors: <Color>[
+                        colorScheme.primaryContainer,
+                        colorScheme.tertiaryContainer,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
               ),
-            ),
-            crossFadeState: widget.isLoading
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst));
+              child: Center(
+                child: AnimatedCrossFade(
+                    duration: const Duration(milliseconds: 600),
+                    firstChild: widget.child ??
+                        Text(
+                          widget.text!,
+                          style: AppTheme.textTheme.bodyMedium!,
+                        ),
+                    secondChild: const Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: LoadingWidget(
+                        width: 2.5,
+                      ),
+                    ),
+                    crossFadeState: widget.isLoading
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst),
+              ))),
+    );
   }
 }
