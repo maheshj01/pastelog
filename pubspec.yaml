@@ -23,6 +23,7 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
+  animated_vector: ^0.2.0
   cloud_firestore: ^4.14.0
   cupertino_icons: ^1.0.6
   firebase_core: ^2.24.2
@@ -43,7 +44,7 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^2.4.7
-  flutter_launcher_icons: ^0.9.2
+  flutter_launcher_icons: ^0.13.1
   flutter_lints: ^1.0.4
   json_serializable: ^6.7.1
   logger: ^1.4.0

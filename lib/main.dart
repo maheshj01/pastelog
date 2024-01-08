@@ -44,26 +44,6 @@ final settingsNotifierProvider =
 class App extends ConsumerWidget {
   App({super.key});
   final title = 'PasteLog Web';
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDark = ref.watch(settingsNotifierProvider).isDark;
-
-    return MaterialApp.router(
-      title: appTitle,
-      debugShowCheckedModeBanner: !kDebugMode,
-      supportedLocales: const [
-        Locale('en', ''), // English, no country code
-      ],
-      theme: AppTheme.blueThemeData.copyWith(
-          scaffoldBackgroundColor: AppTheme.blueColorScheme.background),
-      darkTheme: AppTheme.darkThemeData.copyWith(
-          scaffoldBackgroundColor: AppTheme.darkColorScheme.background),
-      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
-    );
-  }
-
   final _router = GoRouter(
     errorBuilder: (context, error) {
       return const ErrorPage();
@@ -95,4 +75,23 @@ class App extends ConsumerWidget {
       ),
     ],
   );
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isDark = ref.watch(settingsNotifierProvider).isDark;
+
+    return MaterialApp.router(
+      title: appTitle,
+      debugShowCheckedModeBanner: !kDebugMode,
+      supportedLocales: const [
+        Locale('en', ''), // English, no country code
+      ],
+      theme: AppTheme.blueThemeData.copyWith(
+          scaffoldBackgroundColor: AppTheme.blueColorScheme.background),
+      darkTheme: AppTheme.darkThemeData.copyWith(
+          scaffoldBackgroundColor: AppTheme.darkColorScheme.background),
+      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
+    );
+  }
 }
