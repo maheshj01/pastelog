@@ -39,15 +39,7 @@ class _GradientButtonState extends State<GradientButton> {
       child: SizedBox.expand(
           child: Ink(
               decoration: BoxDecoration(
-                gradient: widget.gradient ??
-                    LinearGradient(
-                      colors: <Color>[
-                        colorScheme.primaryContainer,
-                        colorScheme.tertiaryContainer,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                gradient: widget.gradient ?? AppTheme.gradient,
               ),
               child: Center(
                 child: AnimatedCrossFade(
@@ -55,7 +47,10 @@ class _GradientButtonState extends State<GradientButton> {
                     firstChild: widget.child ??
                         Text(
                           widget.text!,
-                          style: AppTheme.textTheme.bodyMedium!,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: colorScheme.onPrimary,
+                                  ),
                         ),
                     secondChild: const Padding(
                       padding: EdgeInsets.all(1.0),
