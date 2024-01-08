@@ -182,6 +182,7 @@ class _HomePageState extends ConsumerState<HomePage>
                   settings.setTheme(isDark ? ThemeMode.light : ThemeMode.dark);
                 },
                 icon: Icon(!isDark ? Icons.dark_mode : Icons.sunny)),
+            20.0.hSpacer(),
             animatedIcon(),
             20.0.hSpacer()
           ],
