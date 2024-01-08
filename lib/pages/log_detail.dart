@@ -106,18 +106,55 @@ class _LogsPageState extends ConsumerState<LogsPage> {
                               height: 16,
                             ),
                             LogPublishDetails(logModel: log!),
-                            log.title.isNotEmpty
-                                ? Container(
-                                    alignment: Alignment.centerLeft,
-                                    padding: const EdgeInsets.all(16),
-                                    child: Text(
-                                      log.title,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
+                            Row(
+                              children: [
+                                log.title.isNotEmpty
+                                    ? Flexible(
+                                        child: Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: const EdgeInsets.all(16),
+                                          child: Text(
+                                            log.title,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineSmall,
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                                Container(
+                                  height: 100,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.all(16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      LogButton(
+                                        onTap: () {
+                                          saveTextFile(
+                                              controller.text, 'logs.text');
+                                        },
+                                        label: 'Download',
+                                      ),
+                                      const SizedBox(
+                                        width: 24,
+                                      ),
+                                      LogButton(
+                                          onTap: () async {
+                                            showDialog(
+                                                context: context,
+                                                builder: (_) {
+                                                  return ShareDialog(
+                                                      url: Uri.base.toString());
+                                                });
+                                          },
+                                          iconData: Icons.share,
+                                          label: 'Share'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                             ConstrainedBox(
                               constraints:
                                   BoxConstraints(maxHeight: size.height * 0.8),
@@ -127,40 +164,7 @@ class _LogsPageState extends ConsumerState<LogsPage> {
                                 isReadOnly: true,
                               ),
                             ),
-                            Container(
-                              height: 100,
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(16),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  LogButton(
-                                    onTap: () {
-                                      saveTextFile(
-                                          controller.text, 'logs.text');
-                                    },
-                                    label: 'Download',
-                                  ),
-                                  const SizedBox(
-                                    width: 24,
-                                  ),
-                                  LogButton(
-                                      onTap: () async {
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) {
-                                              return ShareDialog(
-                                                  url: Uri.base.toString());
-                                            });
-                                      },
-                                      iconData: Icons.share,
-                                      label: 'Share'),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 200,
-                            ),
+                            200.0.hSpacer(),
                             const Footer()
                           ],
                         )),
@@ -184,8 +188,8 @@ class LogPublishDetails extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichText(
                 text: TextSpan(children: [
@@ -198,21 +202,19 @@ class LogPublishDetails extends StatelessWidget {
                       text: "Today")
                   : TextSpan(text: "on $creationDate")
             ])),
-            const SizedBox(
-              height: 16,
-            ),
+            16.0.hSpacer(),
             RichText(
                 text: TextSpan(children: [
               expiryDate == null
                   ? TextSpan(
                       children: [
                         TextSpan(
-                          text: "Expiry Date:",
+                          text: "Expires:",
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                         TextSpan(
                             style: Theme.of(context).textTheme.titleLarge,
-                            text: 'This log will last forever 😉')
+                            text: ' Never 🤞')
                       ],
                     )
                   : TextSpan(
