@@ -114,7 +114,7 @@ class _LogsPageState extends ConsumerState<LogsPage> {
                                       log.title,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headlineMedium,
+                                          .headlineSmall,
                                     ),
                                   )
                                 : const SizedBox.shrink(),
@@ -328,6 +328,8 @@ class LogButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all(AppTheme.colorScheme.surface),
           minimumSize: MaterialStateProperty.all(const Size(100, 42)),
         ),
         onPressed: () => onTap(),
