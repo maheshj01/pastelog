@@ -46,6 +46,10 @@ class SettingsNotifier extends StateNotifier<Settings> {
     setLogs(logs);
   }
 
+  void clearLogs() {
+    setLogs([]);
+  }
+
   void removeLog(String id) {
     final logs = state.logs.where((element) => element.id != id).toList();
     setLogs(logs);
