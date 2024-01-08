@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,6 +41,7 @@ class _LogsPageState extends ConsumerState<LogsPage> {
   void initState() {
     super.initState();
     uuid = widget.id ?? '';
+    fetchLogs();
   }
 
   Future<void> saveLog(LogModel log) async {
@@ -48,14 +51,14 @@ class _LogsPageState extends ConsumerState<LogsPage> {
     });
   }
 
-  Future<LogModel> fetchLogs() async {
+  Future<void> fetchLogs() async {
     /// prevnt  unecessary requestes created on logs tap
     try {
       if (logs.data.isEmpty) {
         logs = await _strategy.fetchLogById(uuid);
       }
       saveLog(logs);
-      return logs;
+      logController.sink.add(logs);
     } catch (_) {
       throw 'Logs Not found';
     }
@@ -71,6 +74,16 @@ class _LogsPageState extends ConsumerState<LogsPage> {
   final ContentUploadStrategy _strategy =
       ContentUploadStrategy(TextApiServiceImpl());
   final TextEditingController controller = TextEditingController();
+
+  final logController = StreamController<LogModel?>();
+
+  @override
+  void dispose() {
+    logController.close();
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = ref.watch(settingsNotifierProvider).isDark;
@@ -91,8 +104,8 @@ class _LogsPageState extends ConsumerState<LogsPage> {
             16.0.hSpacer()
           ],
         ),
-        body: FutureBuilder<LogModel?>(
-            future: fetchLogs(),
+        body: StreamBuilder<LogModel?>(
+            stream: logController.stream,
             builder: (BuildContext context, AsyncSnapshot<LogModel?> snapshot) {
               if (snapshot.hasError) {
                 return const ErrorPage();
