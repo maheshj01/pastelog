@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pastelog/themes/themes.dart';
 import 'package:pastelog/utils/extensions.dart';
 
 class ExpiryDateSelector extends ConsumerStatefulWidget {
@@ -48,17 +47,16 @@ class ExpiryDateSelectorState extends ConsumerState<ExpiryDateSelector> {
                   child: Row(
                     children: [
                       Text(
-                        expiryDate == null ? "Never" : expiryDate!.formatDate(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(color: AppTheme.colorScheme.primary),
+                        expiryDate == null ? "Never" : expiryDate.formatDate(),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: Theme.of(context).colorScheme.primary),
                       ),
                       const SizedBox(
                         width: 8,
                       ),
                       Icon(Icons.calendar_today,
-                          color: AppTheme.colorScheme.primary, size: 20),
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 20),
                     ],
                   )),
             ),
@@ -67,7 +65,7 @@ class ExpiryDateSelectorState extends ConsumerState<ExpiryDateSelector> {
                 left: 4,
                 right: 2,
                 child: Divider(
-                  color: AppTheme.colorScheme.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   thickness: 3,
                 )),
           ],

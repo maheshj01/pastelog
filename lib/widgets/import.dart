@@ -18,7 +18,7 @@ class _ImportDialogState extends State<ImportDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppTheme.colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -38,11 +38,11 @@ class _ImportDialogState extends State<ImportDialog> {
             Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                color: AppTheme.colorScheme.surface,
+                color: Theme.of(context).colorScheme.surface,
                 child: TextField(
                   controller: controller,
                   decoration: const InputDecoration(
-                      hintText: 'Enter Pastelog or Gist Url'),
+                      hintText: 'Enter Pastelog or Github gist url'),
                 )),
             const SizedBox(
               height: 12,

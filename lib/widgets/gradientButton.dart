@@ -45,13 +45,8 @@ class _GradientButtonState extends State<GradientButton> {
                 child: AnimatedCrossFade(
                     duration: const Duration(milliseconds: 600),
                     firstChild: widget.child ??
-                        Text(
-                          widget.text!,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: colorScheme.onPrimary,
-                                  ),
-                        ),
+                        Text(widget.text!,
+                            style: const TextStyle(fontSize: 20)),
                     secondChild: const Padding(
                       padding: EdgeInsets.all(1.0),
                       child: LoadingWidget(

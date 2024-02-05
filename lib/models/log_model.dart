@@ -24,6 +24,7 @@ class LogModel {
   final String id;
   final String title;
   final String data;
+  final bool isMarkDown;
   final DateTime? expiryDate;
   final LogType type;
   final DateTime? createdDate;
@@ -37,11 +38,9 @@ class LogModel {
       required this.title,
       required this.expiryDate,
       required this.type,
+      this.isMarkDown = false,
       required this.createdDate});
   Map<String, dynamic> toJson() => _$LogModelToJson(this);
-
-
-
 
   LogModel copyWith({
     String? id,
@@ -49,12 +48,14 @@ class LogModel {
     DateTime? expiryDate,
     String? title,
     LogType? type,
+    bool? isMarkDown,
     DateTime? createdDate,
   }) {
     return LogModel(
       id: id ?? this.id,
       title: title ?? this.title,
       data: data ?? this.data,
+      isMarkDown: isMarkDown ?? this.isMarkDown,
       expiryDate: expiryDate ?? this.expiryDate,
       type: type ?? this.type,
       createdDate: createdDate ?? this.createdDate,
@@ -67,6 +68,7 @@ class LogModel {
     result.addAll({'id': id});
     result.addAll({'data': data});
     result.addAll({'title': title});
+    result.addAll({'isMarkDown': isMarkDown});
     if (expiryDate != null) {
       result.addAll({'expiryDate': expiryDate!.millisecondsSinceEpoch});
     }
@@ -83,6 +85,7 @@ class LogModel {
       id: map['id'] ?? '',
       data: map['data'] ?? '',
       title: map['title'] ?? '',
+      isMarkDown: map['isMarkDown'] ?? false,
       expiryDate: map['expiryDate'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['expiryDate'])
           : null,
@@ -95,7 +98,7 @@ class LogModel {
 
   @override
   String toString() {
-    return 'LogModel(id: $id, title: $title, data: $data, expiryDate: $expiryDate, type: $type, createdDate: $createdDate)';
+    return 'LogModel(id: $id, title: $title, data: $data, isMarkDown: $isMarkDown ,expiryDate: $expiryDate, type: $type, createdDate: $createdDate)';
   }
 
   @override
@@ -106,6 +109,7 @@ class LogModel {
         other.id == id &&
         other.title == title &&
         other.data == data &&
+        other.isMarkDown == isMarkDown &&
         other.expiryDate == expiryDate &&
         other.type == type &&
         other.createdDate == createdDate;
@@ -115,6 +119,7 @@ class LogModel {
   int get hashCode {
     return id.hashCode ^
         title.hashCode ^
+        isMarkDown.hashCode ^
         data.hashCode ^
         expiryDate.hashCode ^
         type.hashCode ^

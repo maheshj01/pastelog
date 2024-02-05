@@ -190,6 +190,7 @@ class _LogsPageState extends ConsumerState<LogsPage> {
                                   BoxConstraints(maxHeight: size.height * 0.8),
                               child: LogInputField(
                                 controller: controller,
+                                isMarkDown: snapshot.data!.isMarkDown,
                                 data: snapshot.data!.data,
                                 isReadOnly: true,
                               ),
@@ -279,7 +280,7 @@ class _ShareDialogState extends State<ShareDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppTheme.colorScheme.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -299,7 +300,11 @@ class _ShareDialogState extends State<ShareDialog> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              color: AppTheme.colorScheme.surface,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.colorScheme.surface,
+                  border: Border.all(
+                      color: AppTheme.colorScheme.onSurface, width: 1)),
               child: Row(
                 children: [
                   Expanded(

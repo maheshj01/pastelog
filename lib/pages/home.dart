@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -118,8 +119,8 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   void initState() {
     super.initState();
-    iconController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    iconController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.log != null) {
         logs = widget.log!;
@@ -156,6 +157,8 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
+  bool isPreview = false;
+  bool isMarkdown = false;
   @override
   Widget build(BuildContext context) {
     final isDark = ref.watch(settingsNotifierProvider).isDark;
@@ -213,11 +216,72 @@ class _HomePageState extends ConsumerState<HomePage>
                     controller: titleController,
                     hint: 'Description of the log (optional)',
                   ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: size.height * 0.8),
-                    child: LogInputField(
-                      controller: controller,
-                      data: logs.data,
+                  Container(
+                    margin: const EdgeInsets.all(8),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 2, color: Theme.of(context).dividerColor),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: ToggleButtons(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                ),
+                                children: [
+                                  Padding(
+                                    padding: 24.0.horizontalPadding,
+                                    child: const Text('Edit'),
+                                  ),
+                                  Padding(
+                                    padding: 24.0.horizontalPadding,
+                                    child: const Text('Preview'),
+                                  ),
+                                ],
+                                onPressed: (i) {
+                                  setState(() {
+                                    isPreview = i == 1;
+                                  });
+                                },
+                                isSelected: [!isPreview, isPreview],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const Text('Markdown'),
+                                16.0.hSpacer(),
+                                CupertinoSwitch(
+                                    value: isMarkdown,
+                                    onChanged: (x) {
+                                      setState(() {
+                                        isMarkdown = x;
+                                      });
+                                    }),
+                              ],
+                            )
+                          ],
+                        ),
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints(maxHeight: size.height * 0.8),
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: LogInputField(
+                                controller: controller,
+                                isMarkDown: isPreview && isMarkdown,
+                                isReadOnly: isPreview,
+                                data: controller.text,
+                                hint: hint),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
@@ -259,6 +323,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                         id: uuid,
                                         title: titleController.text.trim(),
                                         type: LogType.text,
+                                        isMarkDown: isMarkdown,
                                         data: controller.text,
                                         expiryDate: expiryDate,
                                         createdDate: DateTime.now(),

@@ -8,7 +8,7 @@ String hint =
       \nNo Sign in required!
 
 
-      \nNote: Do not paste any confidential info here, as these logs will be publicly available to anyone with the link.
+      \nNote: Do not paste any confidential info here, these logs are publicly available to anyone with the link.
       ''';
 
 String about =
