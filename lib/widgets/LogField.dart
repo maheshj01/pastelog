@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:markdown/markdown.dart' as md;
 import 'package:pastelog/constants/strings.dart';
 import 'package:pastelog/main.dart';
 import 'package:pastelog/themes/themes.dart';
@@ -71,7 +72,41 @@ class _LogInputFieldState extends ConsumerState<LogInputField> {
               ? Markdown(
                   selectable: true,
                   data: widget.data ?? '',
-                )
+                  styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
+                  styleSheet: MarkdownStyleSheet(
+                    h1: textTheme.displayLarge,
+                    h2: textTheme.displayMedium,
+                    h3: textTheme.displaySmall,
+                    h4: textTheme.titleLarge,
+                    h5: textTheme.titleMedium,
+                    h6: textTheme.titleSmall,
+                    p: textTheme.bodyLarge,
+                    blockquote: textTheme.bodyLarge!.copyWith(
+                        fontStyle: FontStyle.italic,
+                        // background: Paint()
+                        //   ..color = isDark
+                        //       ? colorScheme.onSurface.withOpacity(0.8)
+                        //       : colorScheme.onSurface.withOpacity(0.1),
+                        color: isDark
+                            ? colorScheme.onSurface.withOpacity(0.5)
+                            : colorScheme.onSurface.withOpacity(0.5)),
+                    code: textTheme.bodyLarge!.copyWith(
+                        color: colorScheme.onSurface,
+                        fontFamily: 'monospace',
+                        fontSize: 14),
+                    codeblockDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: isDark
+                            ? colorScheme.background.withOpacity(0.8)
+                            : colorScheme.background.withOpacity(0.8)),
+                  ),
+                  extensionSet: md.ExtensionSet(
+                    md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+                    <md.InlineSyntax>[
+                      md.EmojiSyntax(),
+                      ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
+                    ],
+                  ))
               : TextField(
                   cursorHeight: 20,
                   controller: controller,

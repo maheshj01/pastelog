@@ -210,11 +210,14 @@ class _HomePageState extends ConsumerState<HomePage>
               constraints: const BoxConstraints(maxWidth: 1024),
               child: Column(
                 children: [
-                  LogInputField(
-                    maxLines: 1,
-                    minLines: 1,
-                    controller: titleController,
-                    hint: 'Description of the log (optional)',
+                  Padding(
+                    padding: 8.0.horizontalPadding,
+                    child: LogInputField(
+                      maxLines: 1,
+                      minLines: 1,
+                      controller: titleController,
+                      hint: 'Description of the log (optional)',
+                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.all(8),
