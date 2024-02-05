@@ -6,9 +6,11 @@ It allows you to publish your logs, and access them from anywhere and any device
 
 ### Features
 - The logs are publicly accessible, no signIn required
-- The logs can be stored forever or have a expiry
-- You can import gists from github
-
+- The logs can be stored forever or can be set to expire after a certain duration
+- You can import logs from pastelog or Github gist
+- You can fork and publish logs
+- Stores log locally for easy access
+- Supports rich content with basic markdown (does not support inline HTML tags)
 
 ### How it works
 
@@ -29,3 +31,14 @@ https://user-images.githubusercontent.com/31410839/178278070-47329147-acc4-4be2-
 4. Acesss your logs via the link on your target device (MacOs)
 
 https://user-images.githubusercontent.com/31410839/178278116-90d734e5-90cc-4122-95fc-2039034aa2ec.mp4
+
+
+# Supports markdown
+
+You can preview the markdown in realtime
+All the logs you publish are publicly available and no signin is required.
+
+![](https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg)
+
+
+Logs published are public and expire after a certain duration if a expiry date is set otherwise we will retain these logs as long as we can :)
