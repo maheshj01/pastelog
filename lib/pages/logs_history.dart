@@ -62,14 +62,16 @@ class _LogsHistoryState extends ConsumerState<LogsHistory> {
                 Row(
                   children: [
                     if (logs.isNotEmpty)
-                      GestureDetector(
+                      InkWell(
+                        mouseCursor: WidgetStateMouseCursor.clickable,
                         onTap: () {
                           showClearDialog();
                         },
                         child: const Icon(Icons.delete),
                       ),
                     20.0.hSpacer(),
-                    GestureDetector(
+                    InkWell(
+                      mouseCursor: WidgetStateMouseCursor.clickable,
                       onTap: () {
                         Navigator.of(context).pop();
                       },

@@ -142,7 +142,8 @@ class _HomePageState extends ConsumerState<HomePage>
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Widget animatedIcon() {
-    return GestureDetector(
+    return InkWell(
+      mouseCursor: WidgetStateMouseCursor.clickable,
       onTap: () {
         if (iconController.isCompleted) {
           iconController.reverse();
