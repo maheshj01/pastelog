@@ -1,8 +1,8 @@
-import 'dart:convert' show utf8;
-import 'dart:html' as html;
+import 'dart:convert' show base64Encode, utf8;
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:web/web.dart' as web;
 
 // void save(Object bytes, String fileName) {
 //   context.callMethod("saveAs", <Object>[
@@ -12,12 +12,16 @@ import 'package:url_launcher/url_launcher.dart';
 // }
 
 void saveTextFile(String text, String filename) {
-  html.AnchorElement()
-    ..href =
-        '${Uri.dataFromString(text, mimeType: 'text/plain', encoding: utf8)}'
-    ..download = filename
-    ..style.display = 'none'
-    ..click();
+  final bytes = utf8.encode(text);
+  final web.HTMLAnchorElement anchor =
+      web.document.createElement('a') as web.HTMLAnchorElement
+        ..href = "data:application/octet-stream;base64,${base64Encode(bytes)}"
+        ..style.display = 'none'
+        ..download = filename;
+  // Insert new elements in the DOM:
+  web.document.body!.appendChild(anchor);
+  anchor.click();
+  web.document.body!.removeChild(anchor);
 }
 
 void showMessage(BuildContext context, String message,
