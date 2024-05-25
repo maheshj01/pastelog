@@ -55,7 +55,7 @@ class _LogsHistoryState extends ConsumerState<LogsHistory> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Logs History',
+                  'History',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 // clear logs

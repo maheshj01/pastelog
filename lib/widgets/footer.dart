@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:pastelog/constants/constants.dart';
 import 'package:pastelog/themes/themes.dart';
 import 'package:pastelog/utils/extensions.dart';
@@ -65,6 +66,11 @@ class Footer extends StatelessWidget {
             Row(
               children: [
                 linkWidget('About', () => _openCustomDialog(context)),
+                const SizedBox(
+                  width: 20,
+                ),
+                linkWidget(
+                    'Report a Bug', () => launchUrl(Uri.parse(reportAbugUrl))),
                 const SizedBox(
                   width: 20,
                 ),
