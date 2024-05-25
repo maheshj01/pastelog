@@ -1,5 +1,3 @@
-/// APP CONSTANTS GO HERE IN THIS FILE
-
 class Constants {
   static const String dateFormatter = 'MMMM dd, y';
   static const String dateTimeFormatter = 'MMMM dd, y hh:mm a';

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class LoadingWidget extends StatelessWidget {
   final Color? color;
   final double width;
-  const LoadingWidget({Key? key, this.color, this.width = 4.0})
-      : super(key: key);
+  const LoadingWidget({super.key, this.color, this.width = 4.0});
 
   @override
   Widget build(BuildContext context) {

@@ -55,8 +55,8 @@ class _ErrorPageState extends State<ErrorPage> {
             ),
             TextButton(
                 style: ButtonStyle(
-                  maximumSize: MaterialStateProperty.all(const Size(150, 54)),
-                  minimumSize: MaterialStateProperty.all(const Size(150, 54)),
+                  maximumSize: WidgetStateProperty.all(const Size(150, 54)),
+                  minimumSize: WidgetStateProperty.all(const Size(150, 54)),
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,

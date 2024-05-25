@@ -89,11 +89,12 @@ class App extends ConsumerWidget {
       supportedLocales: const [
         Locale('en', ''), // English, no country code
       ],
-      theme: AppTheme.blueThemeData.copyWith(
-          scaffoldBackgroundColor: AppTheme.blueColorScheme.background),
-      darkTheme: AppTheme.darkThemeData.copyWith(
-          scaffoldBackgroundColor: AppTheme.darkColorScheme.background),
+      theme: AppTheme.blueThemeData
+          .copyWith(scaffoldBackgroundColor: AppTheme.blueColorScheme.surface),
+      darkTheme: AppTheme.darkThemeData
+          .copyWith(scaffoldBackgroundColor: AppTheme.darkColorScheme.surface),
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+      routeInformationProvider: _router.routeInformationProvider,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
     );
