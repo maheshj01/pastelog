@@ -10,8 +10,8 @@ class TitleBar extends ConsumerStatefulWidget implements PreferredSizeWidget {
   final Function? onTap;
   final List<Widget> actions;
 
-  TitleBar({Key? key, required this.title, this.onTap, this.actions = const []})
-      : super(key: key);
+  const TitleBar(
+      {super.key, required this.title, this.onTap, this.actions = const []});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => TitleBarState();

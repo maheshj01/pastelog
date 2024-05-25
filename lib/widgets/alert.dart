@@ -8,8 +8,7 @@ class AboutPasteLog extends StatelessWidget {
   final Function()? onCancel;
 
   const AboutPasteLog(
-      {Key? key, required this.title, this.onConfirm, this.onCancel})
-      : super(key: key);
+      {super.key, required this.title, this.onConfirm, this.onCancel});
 
   Future<String> getVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();

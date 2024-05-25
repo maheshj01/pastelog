@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:pastelog/themes/themes.dart';
 
@@ -6,8 +5,7 @@ class UrlBuilder extends StatefulWidget {
   final String url;
   final Function onTap;
 
-  const UrlBuilder({Key? key, required this.url, required this.onTap})
-      : super(key: key);
+  const UrlBuilder({super.key, required this.url, required this.onTap});
 
   @override
   State<UrlBuilder> createState() => _UrlBuilderState();

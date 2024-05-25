@@ -7,7 +7,7 @@ import 'package:pastelog/widgets/widgets.dart';
 
 class LogsHistory extends ConsumerStatefulWidget {
   AnimationController? controller;
-  LogsHistory({Key? key, this.controller}) : super(key: key);
+  LogsHistory({super.key, this.controller});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LogsHistoryState();
@@ -95,12 +95,12 @@ class _LogsHistoryState extends ConsumerState<LogsHistory> {
                           log.title.length > 25 ? 25 : log.title.length;
                       final title = log.title.isEmpty
                           ? 'Log ${log.id}'
-                          : log.title.substring(0, length) + '...';
+                          : '${log.title.substring(0, length)}...';
                       return Column(
                         children: [
                           if (index == 0) hLine(),
                           ListTile(
-                            title: Text('$title'),
+                            title: Text(title),
                             subtitle: Text(
                               log.createdDate!.standardDateTime(),
                               style: const TextStyle(fontSize: 12),

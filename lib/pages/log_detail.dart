@@ -305,6 +305,7 @@ class _ShareDialogState extends State<ShareDialog> {
                   color: AppTheme.colorScheme.surface,
                   border: Border.all(
                       color: AppTheme.colorScheme.onSurface, width: 1)),
+              alignment: Alignment.center,
               child: Row(
                 children: [
                   Expanded(
@@ -328,7 +329,6 @@ class _ShareDialogState extends State<ShareDialog> {
                       ))
                 ],
               ),
-              alignment: Alignment.center,
             ),
             const SizedBox(
               height: 12,
@@ -366,8 +366,8 @@ class LogButton extends StatelessWidget {
     return ElevatedButton(
         style: ButtonStyle(
           backgroundColor:
-              MaterialStateProperty.all(AppTheme.colorScheme.surface),
-          minimumSize: MaterialStateProperty.all(const Size(100, 42)),
+              WidgetStateProperty.all(AppTheme.colorScheme.surface),
+          minimumSize: WidgetStateProperty.all(const Size(100, 42)),
         ),
         onPressed: () => onTap(),
         child: Row(

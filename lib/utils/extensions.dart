@@ -137,11 +137,11 @@ extension ContainerPadding on double {
 extension ContainerPaddingAddition on EdgeInsetsGeometry {
   //  16.0.horizontalPadding + 8.0.topPadding,
   EdgeInsetsGeometry operator +(EdgeInsetsGeometry other) {
-    return this.add(other);
+    return add(other);
   }
 
   EdgeInsetsGeometry operator -(EdgeInsetsGeometry other) {
-    return this.subtract(other);
+    return subtract(other);
   }
 
   EdgeInsetsGeometry operator *(double other) {

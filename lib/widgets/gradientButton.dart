@@ -25,7 +25,6 @@ class GradientButton extends StatefulWidget {
 class _GradientButtonState extends State<GradientButton> {
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     return ElevatedButton(
       onPressed: widget.onPressed,
       clipBehavior:

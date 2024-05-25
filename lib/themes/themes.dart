@@ -61,13 +61,13 @@ class AppTheme {
       // Matches manifest.json colors and background color.
       primaryColor: const Color(0xFF030303),
       appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.background,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
         iconTheme: IconThemeData(color: colorScheme.primary),
       ),
 
       iconTheme: IconThemeData(color: colorScheme.onPrimary),
-      canvasColor: colorScheme.background,
+      canvasColor: colorScheme.surface,
       scaffoldBackgroundColor: const Color(0xFF241E30),
       highlightColor: Colors.transparent,
       focusColor: focusColor,
@@ -98,9 +98,7 @@ class AppTheme {
       primaryContainer: const Color(0xFF117378),
       secondary: const Color(0xFFEFF3F3),
       secondaryContainer: const Color(0xFFFAFBFB),
-      background: const Color(0XFFFFFFFF),
       surface: Colors.grey[100]!,
-      onBackground: Colors.white,
       error: Colors.red,
       onError: _lightFillColor,
       onPrimary: _lightFillColor,
@@ -112,9 +110,7 @@ class AppTheme {
     primaryContainer: Color(0xFF1CDEC9),
     secondary: Color(0xFF4D1F7C),
     secondaryContainer: Color(0xFF451B6F),
-    background: Color(0xFF241E30),
-    surface: Color(0xFF1F1929),
-    onBackground: Color(0x0DFFFFFF), // White with 0.05 opacity
+    surface: Color(0xFF1F1929), // White with 0.05 opacity
     error: Colors.red,
     onError: _darkFillColor,
     onPrimary: _darkFillColor,

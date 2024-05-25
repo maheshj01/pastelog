@@ -237,6 +237,12 @@ class _HomePageState extends ConsumerState<HomePage>
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                 ),
+                                onPressed: (i) {
+                                  setState(() {
+                                    isPreview = i == 1;
+                                  });
+                                },
+                                isSelected: [!isPreview, isPreview],
                                 children: [
                                   Padding(
                                     padding: 24.0.horizontalPadding,
@@ -247,12 +253,6 @@ class _HomePageState extends ConsumerState<HomePage>
                                     child: const Text('Preview'),
                                   ),
                                 ],
-                                onPressed: (i) {
-                                  setState(() {
-                                    isPreview = i == 1;
-                                  });
-                                },
-                                isSelected: [!isPreview, isPreview],
                               ),
                             ),
                             Row(
