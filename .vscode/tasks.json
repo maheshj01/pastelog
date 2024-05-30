@@ -1,0 +1,34 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "flutter",
+			"command": "flutter",
+			"args": [
+				"pub",
+				"get"
+			],
+			"problemMatcher": [],
+			"label": "flutter: flutter pub get",
+			"detail": "",
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		},
+		// {
+		// 	"type": "flutter",
+		// 	"command": "flutter",
+		// 	"args": [
+		// 		"build",
+		// 		"web"
+		// 	],
+		// 	"group": "build",
+		// 	"problemMatcher": [],
+		// 	"label": "flutter: flutter build web",
+		// 	"detail": "",
+		// 	"runOptions": {
+		//         "runOn": "folderOpen"
+		//     }
+		// }
+	]
+}
