@@ -2,10 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+
+  --color-primary: #4f46e5;
+  --color-secondary: #10b981;
+  --color-accent: #f59e0b;
+  --color-background: #f3f4f6;
+  --color-surface: #ffffff;
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Merriweather', serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,12 +28,9 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
