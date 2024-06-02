@@ -16,11 +16,11 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        primary: '#4f46e5',  // Custom primary color
-        secondary: '#10b981', // Custom secondary color
-        accent: '#f59e0b',    // Custom accent color
-        background: '#f3f4f6',// Custom background color
-        surface: '#ffffff',   // Custom surface color
+        primary: 'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
+        accent: 'var(--color-accent)',
+        background: 'var(--color-background)',
+        surface: 'var(--color-surface)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'], // Custom font
