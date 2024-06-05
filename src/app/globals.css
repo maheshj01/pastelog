@@ -17,6 +17,16 @@
   --font-serif: 'Merriweather', serif;
 }
 
+[data-theme='dark'] {
+  --background: rgb(226, 154, 154);
+  --foreground: white;
+  --color-primary: #c8c7dd;
+}
+
+/* body in dark mode */
+
+
+
 /* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom,
