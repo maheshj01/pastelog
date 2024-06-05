@@ -17,11 +17,12 @@ export function ThemeSwitcher() {
 
     return (
         <div>
-            <Button isIconOnly aria-label="Light Mode" className='bg-transparent rounded-full p-2'
+            <Button isIconOnly aria-label="Light Mode" className='bg-transparent rounded-full p-2 dark:text-white'
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 size='lg'>
-                {theme === 'dark' ? <SunIcon className='text-black size-12' /> : <MoonIcon className='size-12 text-black' />}
+                {theme === 'dark' ? <SunIcon className='text-black size-12 dark:text-white' /> : <MoonIcon className='size-12 text-black dark:text-white' />}
             </Button>
         </div>
     )
 };
+
