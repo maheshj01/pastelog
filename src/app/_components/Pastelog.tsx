@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/button";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import PSContent from "./PSContent";
@@ -13,7 +13,7 @@ export default function Pastelog() {
             <PSNavbar />
             <div className='min-h-screen'>
                 <div
-                    className="flex flex-col items-center sm:px-4">
+                    className="flex flex-col items-center sm:px-4 w-full">
                     <PSInput
                         className="my-2 dark:bg-gray-800"
                         placeHolder="Pastelog Description"
@@ -21,13 +21,13 @@ export default function Pastelog() {
                         onChange={(e) => { setDescription(e.target.value) }}
                     />
                     <PSContent
-                        className="my-2 dark:bg-gray-800 h-80vh"
+                        className="my-2 dark:bg-gray-800"
                         value={content}
                         onChange={(e) => { setContent(e.target.value) }}
                     />
                     <p>{description}</p>
                     <p>{content}</p>
-                    <div className="flex justify-end pr-4">
+                    <div className="flex w-full md:w-3/4 lg:w-2/3 justify-end">
                         <Button>Save</Button>
                     </div>
                 </div >

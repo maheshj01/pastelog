@@ -15,7 +15,7 @@ const PSInput: React.FC<DescriptionInputProps> = ({ value, onChange, placeHolder
             value={value || ''}
             onChange={onChange}
             placeholder={placeHolder || ''}
-            className={`px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-full md:w-3/4 lg:w-2/3 ${className}`}
+            className={`px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-full md:w-3/4 lg:w-2/3 ${className}`}
         />
     );
 };
