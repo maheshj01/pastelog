@@ -1,6 +1,5 @@
 import {
     Navbar,
-    NavbarBrand,
     NavbarContent,
     NavbarMenu,
     NavbarMenuItem
@@ -9,10 +8,10 @@ import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export default function PSNavbar() {
     return (
-        <Navbar className="bg-primary-50 shadow-sm dark:bg-gray-800">
-            <NavbarBrand className="px-2 ml-0">
-                <p className="font-bold text-inherit">Pastelog</p>
-            </NavbarBrand>
+        <Navbar className="bg-primary-50 shadow-sm dark:bg-gray-800" maxWidth="full">
+            <NavbarContent className="px-2 ml-0">
+                <p className="font-bold text-inherit text-lg">Pastelog</p>
+            </NavbarContent>
             <NavbarContent>
                 <NavbarMenu>
                     <NavbarMenuItem>Home</NavbarMenuItem>
