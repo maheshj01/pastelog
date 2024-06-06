@@ -1,4 +1,6 @@
+import { getDateOffsetBy, parsedDate } from "@/utils/utils";
 import { Button } from "@nextui-org/button";
+import { CalendarDate, DatePicker } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -9,11 +11,14 @@ import PSInput from "./PSInput";
 import PSNavbar from "./PSNavbar";
 import ShortcutWrapper from "./ShortCutWrapper";
 export default function Pastelog() {
+
     const { theme } = useTheme();
     const [description, setDescription] = useState<string>('');
     const [content, setContent] = useState<string>('');
     const [preview, setPreview] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const today = new Date();
+    const [expiryDate, setExpiryDate] = useState<CalendarDate>(getDateOffsetBy(30));
     const logService = new LogService();
     const selected = 'bg-indigo-800 text-slate-50 dark:bg-gray-700 dark:text-slate-50';
     const unSelected = 'text-black bg-indigo-300 dark:bg-gray-900 dark:text-slate-50 ';
@@ -22,10 +27,9 @@ export default function Pastelog() {
         setLoading(true);
         // 30 days from now
         const today = new Date();
-        const expiryDate = new Date(today.setDate(today.getDate() + 30));
         // Publish the pastelog
         const log = new Log(
-            expiryDate,
+            expiryDate.toDate('UTC'),
             content,
             new Date(),
             description,
@@ -96,6 +100,19 @@ export default function Pastelog() {
                         {
                             !preview && (
                                 <div className="flex w-full md:w-3/4 lg:w-2/3 justify-end my-4 px-2">
+                                    <DatePicker
+                                        inputMode="none"
+                                        onChange={(date) => setExpiryDate(date)}
+                                        value={expiryDate}
+                                        maxValue={getDateOffsetBy(365)}
+                                        minValue={parsedDate(today)}
+                                        defaultValue={expiryDate}
+                                        description="Expiry date of the pastelog"
+                                        variant="bordered"
+                                        size="sm"
+                                        color="primary"
+                                        label="Expiry date" className="max-w-[164px]" />
+                                    <div className="w-6" />
                                     <Button
                                         className="bg-gradient-to-r from-indigo-500 to-indigo-600"
                                         onClick={publish}

@@ -10,14 +10,15 @@ export default function Home() {
     if (visited) {
       setIsFirstVisit(false);
     } else {
-      localStorage.setItem('visited', 'true');
+      setIsFirstVisit(true);
+      localStorage.setItem('visited', `${isFirstVisit}`);
     }
   }, []);
 
-  if (isFirstVisit) {
+  if (!isFirstVisit) {
     return <Pastelog />
   }
-  if (!isFirstVisit) {
+  if (isFirstVisit) {
     return (
       <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400">
         <div className="absolute inset-0 bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 backdrop-blur-lg"></div>
