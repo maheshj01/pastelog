@@ -6,7 +6,6 @@ import Pastelog from './_components/Pastelog';
 export default function Home() {
   const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true);
   useEffect(() => {
-    console.log("checking local storage for new user")
     const visited = localStorage.getItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`);
     if (visited) {
       setIsFirstVisit(false);

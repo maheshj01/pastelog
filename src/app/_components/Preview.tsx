@@ -17,7 +17,6 @@ const Preview = (props: { id: string }) => {
 
     async function fetchLogsById() {
         setLoading(true);
-        console.log('fetching logs by id:', id);
         const logById = await logService.fetchLogById(id as string);
         if (!logById) {
             setLoading(false);

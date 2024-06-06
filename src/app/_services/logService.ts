@@ -11,7 +11,6 @@ class LogService {
         querySnapshot.forEach((doc) => {
             logs.push(Log.fromFirestore(doc));
         });
-        console.log("logs:", logs[0]);
         return logs;
     }
 
@@ -19,7 +18,6 @@ class LogService {
         const docRef = doc(this.logCollection, id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
             return Log.fromFirestore(docSnap);
         } else {
             return null;
