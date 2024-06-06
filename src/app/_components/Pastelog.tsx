@@ -11,8 +11,9 @@ export default function Pastelog() {
     const [content, setContent] = useState<string>('');
     const [preview, setPreview] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const selected = 'bg-indigo-800 text-slate-50';
-    const unSelected = 'text-black bg-indigo-300';
+
+    const selected = 'bg-indigo-800 text-slate-50 dark:bg-gray-700 dark:text-slate-50';
+    const unSelected = 'text-black bg-indigo-300 dark:bg-gray-900 dark:text-slate-50 ';
 
     function publish() {
         setLoading(true);
@@ -71,12 +72,13 @@ export default function Pastelog() {
                     {
                         !preview && (
                             <div className="flex w-full md:w-3/4 lg:w-2/3 justify-end my-4 px-2">
-                                <Button color="primary"
+                                <Button
+                                    className="bg-gradient-to-r from-indigo-500 to-indigo-600"
                                     onClick={publish}
                                     isLoading={loading}
                                     disabled={loading}
                                 >
-                                    <div className="px-4">
+                                    <div className="px-4 text-white">
                                         {
                                             loading ? 'Publishing...' :
                                                 'Publish'}
