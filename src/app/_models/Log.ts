@@ -1,5 +1,4 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
-import { title } from "process";
 
 // src/models/Log.ts
 export enum LogType {
@@ -14,6 +13,7 @@ export interface ILog {
     title: string;
     type: LogType;
     isMarkDown: boolean;
+    id?: string;
 }
 
 export class Log implements ILog {
@@ -23,6 +23,7 @@ export class Log implements ILog {
     createdDate: Date;
     type: LogType;
     isMarkDown: boolean;
+    id?: string | undefined;
 
     constructor(
         expiryDate: Date | null,
@@ -30,7 +31,8 @@ export class Log implements ILog {
         createdDate: Date,
         title: string,
         type: LogType,
-        isMarkDown: boolean
+        isMarkDown: boolean,
+        id?: string
     ) {
         this.expiryDate = expiryDate;
         this.data = data;
@@ -38,6 +40,7 @@ export class Log implements ILog {
         this.createdDate = new Date(createdDate);
         this.type = type;
         this.isMarkDown = isMarkDown;
+        this.id = id;
     }
 
     static fromFirestore(doc: QueryDocumentSnapshot<DocumentData, DocumentData>): Log {
@@ -46,9 +49,10 @@ export class Log implements ILog {
             data.expiryDate ? new Date(data.expiryDate) : null,
             data.data,
             new Date(data.createdDate),
-            title,
+            data.title,
             data.type as LogType,
-            data.isMarkDown
+            data.isMarkDown,
+            data.id ? data.id : doc.id
         );
     }
 
@@ -59,7 +63,7 @@ export class Log implements ILog {
             createdDate: this.createdDate.toISOString(),
             title: this.title,
             type: this.type,
-            isMarkDown: this.isMarkDown
+            isMarkDown: this.isMarkDown,
         };
     }
 }

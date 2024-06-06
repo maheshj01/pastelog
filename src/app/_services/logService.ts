@@ -7,7 +7,12 @@ class LogService {
     private logCollection = collection(db, 'logs_dev');
     async fetchLogs(): Promise<Log[]> {
         const querySnapshot = await getDocs(this.logCollection);
-        return querySnapshot.docs.map((doc: any) => Log.fromFirestore(doc));
+        const logs: Log[] = [];
+        querySnapshot.forEach((doc) => {
+            logs.push(Log.fromFirestore(doc));
+        });
+        console.log("logs:", logs[0]);
+        return logs;
     }
 
     async fetchLogById(id: string): Promise<Log | null> {
