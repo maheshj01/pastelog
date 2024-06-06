@@ -25,7 +25,12 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
 
     const customClass = `px-2 py-2 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-primary focus:dark:ring-gray-400 resize-y min-h-80 w-full ${className}`;
     if (preview) {
-        return (<div className={`${customClass} mb-2`}>
+        return (<div
+            style={{
+                height: "70vh",
+                maxHeight: "80vh"
+            }}
+            className={`${customClass} mb-2`}>
             <ReactMarkdown
                 className={customClass}
                 components={{

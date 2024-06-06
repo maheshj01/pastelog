@@ -20,7 +20,6 @@ const Preview = (props: { id: string }) => {
         const logById = await logService.fetchLogById(id as string);
         if (!logById) {
             setLoading(false);
-            console.error('Log not found');
             // router.push('/404');
             return;
         }

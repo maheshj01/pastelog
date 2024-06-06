@@ -32,7 +32,6 @@ class LogService {
             }
             return '';
         } catch (e) {
-            console.error("Error adding document: ", e);
             return '';
         }
     }

@@ -39,7 +39,6 @@ export default function Pastelog() {
         const id = await logService.publishLog(log);
         if (!id) {
             setLoading(false);
-            console.error('Failed to publish log');
             return;
         }
         router.push(`/logs/${id}`);
@@ -55,7 +54,7 @@ export default function Pastelog() {
         <>
             <PSNavbar />
             <ShortcutWrapper onCtrlP={togglePreview}>
-                <div className="min-h-screen relative">
+                <div className="min-h-screen relative xsm:px-2">
                     {loading && (
                         <div className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center z-50">
                             <div className="loader" />
@@ -111,18 +110,17 @@ export default function Pastelog() {
                                         variant="bordered"
                                         size="sm"
                                         color="primary"
-                                        label="Expiry date" className="max-w-[164px]" />
+                                        label="Expiry date"
+                                        className="max-w-[164px] dark:text-white" />
                                     <div className="w-6" />
                                     <Button
-                                        className="bg-gradient-to-r from-indigo-500 to-indigo-600"
+                                        className={`${theme == 'dark' ? 'bg-gradient-to-r from-gray-700 to-gray-800' : `bg-gradient-to-r from-indigo-500 to-indigo-600`}`}
                                         onClick={publish}
                                         isLoading={loading}
-                                        disabled={loading}
+                                        disabled={loading || !content}
                                     >
-                                        <div className="px-4 text-white">
-                                            {
-                                                loading ? 'Publishing...' :
-                                                    'Publish'}
+                                        <div className={`px-4 ${loading || !content ? 'text-gray-600' : 'text-white'}`}>
+                                            {loading ? 'Publishing...' : 'Publish'}
                                         </div>
                                     </Button>
                                 </div>
