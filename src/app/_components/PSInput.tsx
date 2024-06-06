@@ -17,7 +17,7 @@ const PSInput: React.FC<DescriptionInputProps> = ({ value, onChange, disabled, p
             onChange={onChange}
             placeholder={placeHolder || ''}
             disabled={disabled}
-            className={`px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-full md:w-3/4 lg:w-2/3 ${className}`}
+            className={`px-4 py-2 border-3 rounded-lg border-indigo-500 dark:border-gray-800 focus:dark:ring-gray-400 focus:outline-none focus:ring-2 focus:ring-primary w-full md:w-3/4 lg:w-2/3 ${className}`}
         />
     );
 };
