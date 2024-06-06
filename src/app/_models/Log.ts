@@ -1,3 +1,4 @@
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { title } from "process";
 
 // src/models/Log.ts
@@ -39,7 +40,7 @@ export class Log implements ILog {
         this.isMarkDown = isMarkDown;
     }
 
-    static fromFirestore(doc: any): Log {
+    static fromFirestore(doc: QueryDocumentSnapshot<DocumentData, DocumentData>): Log {
         const data = doc.data();
         return new Log(
             data.expiryDate ? new Date(data.expiryDate) : null,

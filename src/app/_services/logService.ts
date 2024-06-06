@@ -14,18 +14,23 @@ class LogService {
         const docRef = doc(this.logCollection, id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
             return Log.fromFirestore(docSnap);
         } else {
             return null;
         }
     }
 
-    async publishLog(log: Log): Promise<void> {
+    async publishLog(log: Log): Promise<string> {
         try {
             const docRef = await addDoc(this.logCollection, log.toFirestore());
-            console.log("Document written with ID: ", docRef.id);
+            if (docRef.id) {
+                return docRef.id;
+            }
+            return '';
         } catch (e) {
             console.error("Error adding document: ", e);
+            return '';
         }
     }
 

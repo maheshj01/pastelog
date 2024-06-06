@@ -1,5 +1,6 @@
 import { Button } from "@nextui-org/button";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Log, { LogType } from "../_models/Log";
 import LogService from "../_services/logService";
@@ -16,7 +17,7 @@ export default function Pastelog() {
     const logService = new LogService();
     const selected = 'bg-indigo-800 text-slate-50 dark:bg-gray-700 dark:text-slate-50';
     const unSelected = 'text-black bg-indigo-300 dark:bg-gray-900 dark:text-slate-50 ';
-
+    const router = useRouter();
     async function publish() {
         setLoading(true);
         // 30 days from now
@@ -31,10 +32,14 @@ export default function Pastelog() {
             LogType.TEXT,
             true
         );
-        await logService.publishLog(log);
-        setTimeout(() => {
+        const id = await logService.publishLog(log);
+        if (!id) {
             setLoading(false);
-        }, 5000);
+            console.error('Failed to publish log');
+            return;
+        }
+        router.push(`/logs/${id}`);
+        setLoading(false);
     }
 
     const togglePreview = React.useCallback(() => {
