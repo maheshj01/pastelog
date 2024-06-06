@@ -5,16 +5,18 @@ interface DescriptionInputProps {
     className?: string;
     placeHolder?: string;
     value?: string;
+    disabled?: boolean,
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const PSInput: React.FC<DescriptionInputProps> = ({ value, onChange, placeHolder, className }) => {
+const PSInput: React.FC<DescriptionInputProps> = ({ value, onChange, disabled, placeHolder, className }) => {
     return (
         <input
             type="text"
             value={value || ''}
             onChange={onChange}
             placeholder={placeHolder || ''}
+            disabled={disabled}
             className={`px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-full md:w-3/4 lg:w-2/3 ${className}`}
         />
     );

@@ -10,10 +10,11 @@ interface PSContentProps {
     placeHolder?: string;
     value?: string;
     preview?: boolean;
+    disabled?: boolean;
     onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, preview, className }) => {
+const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, preview, disabled, className }) => {
     const placeholder: string =
         `Start typing here...
         \nPublish your logs to the cloud and access them from anywhere via a unique link.
@@ -27,6 +28,9 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
         return (<div className={`${customClass} mb-2`}>
             <ReactMarkdown
                 className={customClass}
+                components={{
+                    style: ({ children }) => <div className="prose prose-indigo dark:prose-dark">{children}</div>
+                }}
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}
                 // eslint-disable-next-line react/no-children-prop
@@ -40,6 +44,7 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
             className={`${customClass}`}
             value={value || ''}
             onChange={onChange}
+            disabled={disabled}
             placeholder={placeHolder || placeholder}
             style={{
                 height: "70vh",
