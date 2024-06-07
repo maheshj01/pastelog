@@ -11,6 +11,10 @@
       {
         "source": "**",
         "destination": "/index.html"
+      },
+      {
+        "source": "/logs/**",
+        "destination": "/logs/[id]/index.html"
       }
     ]
   }

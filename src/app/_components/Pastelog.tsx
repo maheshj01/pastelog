@@ -1,3 +1,4 @@
+"use client";
 import { getDateOffsetBy, parsedDate } from "@/utils/utils";
 import { Button } from "@nextui-org/button";
 import { CalendarDate, DatePicker } from "@nextui-org/react";
