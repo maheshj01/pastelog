@@ -81,7 +81,7 @@ export default function Pastelog() {
                                     disabled={loading}
                                 >Edit</Button>
                                 <Button
-                                    className={`rounded-l-none rounded-r-lg ${preview ? selected : unSelected}`}
+                                    className={`rounded-l-none rounded-tr-lg rounded-br-none ${preview ? selected : unSelected}`}
                                     size="lg"
                                     onClick={() => setPreview(true)}
                                     disabled={loading}
@@ -90,7 +90,7 @@ export default function Pastelog() {
                             <div className="w-full max-w-none px-1 prose prose-indigo dark:prose-dark">
                                 <Editor
                                     preview={preview}
-                                    className={theme != 'dark' ? ` bg-slate-200 text-black` : `bg-gray-700 text-white`}
+                                    className={theme != 'dark' ? ` bg-slate-50 text-black` : `bg-gray-700 text-white`}
                                     value={content}
                                     onChange={(e) => { setContent(e.target.value) }}
                                     disabled={loading}
@@ -120,7 +120,7 @@ export default function Pastelog() {
                                         isLoading={loading}
                                         disabled={loading || !content}
                                     >
-                                        <div className={`px-4 ${loading || !content ? 'text-gray-600' : 'text-white'}`}>
+                                        <div className={`px-4 ${loading || !content ? 'text-gray-300' : 'text-white'}`}>
                                             {loading ? 'Publishing...' : 'Publish'}
                                         </div>
                                     </Button>

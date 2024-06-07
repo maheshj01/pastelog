@@ -30,14 +30,15 @@ const Preview = (props: { id: string }) => {
         fetchLogsById()
     }, []);
     return (
-        <div className='flex flex-col items-center  min-h-screen relative'>
+        <div className='flex flex-col items-center h-max'>
             {loading && (
                 <div className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center z-50">
                     <div className="loader" />
                     {/* Publishing...</div> */}
                 </div>
             )}
-            <PSNavbar />
+            <PSNavbar
+            />
             <div className="w-full md:w-3/4 lg:w-2/3 max-w-none px-1 prose prose-indigo dark:prose-dark">
                 <div className='flex flex-col'>
                     <p className="text-black dark:text-slate-50 my-1">{log?.title}</p>

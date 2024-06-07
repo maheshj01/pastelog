@@ -27,8 +27,8 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
     if (preview) {
         return (<div
             style={{
-                height: "70vh",
-                maxHeight: "80vh"
+                height: "100%",
+                maxHeight: "100%"
             }}
             className={`${customClass} mb-2`}>
             <ReactMarkdown
@@ -53,7 +53,7 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
             placeholder={placeHolder || placeholder}
             style={{
                 height: "70vh",
-                maxHeight: "80vh"
+                maxHeight: "100%"
             }}
         />
     );
