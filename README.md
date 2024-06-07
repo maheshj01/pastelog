@@ -1,16 +1,22 @@
 # Pastelog
 
-PasteLog is a simple, fast, and powerful pastebin. It is powered by firebase in the backend.
-It allows you to publish your logs, and access them from anywhere and any device via a unique link.
+PasteLog is a simple, fast, and powerful pastebin. It is powered by NextJs in the frontend and Cloud firestore in the backend.
+It allows you to publish your logs, and access them from anywhere via a unique link.
 
 ### Features
 
 - The logs are publicly accessible, no signIn required
-- The logs can be stored forever or can be set to expire after a certain duration
+- The logs can be stored upto 1 Year or auto expire after the duration
 - You can import logs from pastelog or Github gist
 - You can fork and publish logs
-- Stores log locally for easy access
-- Supports rich content with basic markdown (does not support inline HTML tags)
+- Store logs locally for easy access
+- Supports rich content with basic github falvoured markdown (does not support inline HTML tags)
+- Supports Darkmode
+
+
+<img width="1176" alt="Screenshot 2024-06-06 at 22 14 06" src="https://github.com/firebase/firebase-js-sdk/assets/31410839/7c252c51-b81b-4bde-9ff1-29803f975b57">
+
+
 
 ### How it works
 
