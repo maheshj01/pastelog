@@ -1,17 +1,18 @@
 "use client";
 import Editor from '@/app/_components/Editor';
 import PSNavbar from '@/app/_components/PSNavbar';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DoneIcon from '@mui/icons-material/Done';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import Log from '../_models/Log';
 import LogService from '../_services/logService';
-
-
+import IconButton from './IconButton';
 const Preview = (props: { id: string }) => {
     const logService = new LogService();
     const [loading, setLoading] = useState<boolean>(true);
     const [log, setLog] = useState<Log>();
-
+    const [copied, setCopied] = useState<boolean>(false);
     const { theme } = useTheme();
     const id = props.id;
 
@@ -46,12 +47,32 @@ const Preview = (props: { id: string }) => {
                             </p>
                             <p className="text-black dark:text-slate-50 my-1"> {` ${log?.expiryDate?.toDateString()}`}</p>
                         </div>
-                        <Editor
-                            preview={true}
-                            className={theme !== 'dark' ? ` bg-slate-200 text-black min-h-screen` : `bg-gray-700 text-white min-h-screen`}
-                            value={log?.data}
-                            disabled={loading}
-                        />
+                        <div className="relative">
+                            <IconButton
+                                className='absolute top-2 right-2 '
+                                onClick={() => {
+                                    navigator.clipboard.writeText(log?.data as string);
+                                    setCopied(true);
+                                    setTimeout(() => {
+                                        setCopied(false);
+                                    }, 2000);
+                                }}
+                                ariaLabel="Copy to clipboard"
+                            >{!copied ?
+                                (<ContentCopyIcon />)
+                                :
+                                (<DoneIcon
+                                    color='success'
+                                />)
+                                }
+                            </IconButton>
+                            <Editor
+                                preview={true}
+                                className={`${theme !== 'dark' ? ` bg-slate-200 text-black min-h-screen` : `bg-gray-700 text-white min-h-screen`}`}
+                                value={log?.data}
+                                disabled={loading}
+                            />
+                        </div>
                     </div>
                 )}
             </div>
