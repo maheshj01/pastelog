@@ -23,7 +23,7 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
         \nNote: Do not publish sensitive information here, these logs are public and can be accessed by anyone with the link.
     `;
 
-    const customClass = `px-2 py-2 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-primary focus:dark:ring-gray-400 resize-y min-h-80 w-full reactMarkDown ${className}`;
+    const customClass = `px-2 py-2 rounded-b-lg border-surface focus:ring-secondary focus:outline-none focus:ring-2 focus:ring-2 resize-y min-h-80 w-full reactMarkDown ${className}`;
     if (preview) {
         return (<div
             style={{

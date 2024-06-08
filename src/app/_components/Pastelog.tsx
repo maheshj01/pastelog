@@ -20,8 +20,8 @@ export default function Pastelog() {
     const today = new Date();
     const [expiryDate, setExpiryDate] = useState<CalendarDate>(getDateOffsetBy(30));
     const logService = new LogService();
-    const selected = 'bg-indigo-800 text-slate-50 dark:bg-gray-700 dark:text-slate-50';
-    const unSelected = 'text-black bg-indigo-300 dark:bg-gray-900 dark:text-slate-50 ';
+    const selected = 'bg-secondary text-slate-50 dark:text-slate-50';
+    const unSelected = 'text-black bg-accent dark:text-slate-50 ';
     const router = useRouter();
     async function publish() {
         setLoading(true);
@@ -64,13 +64,13 @@ export default function Pastelog() {
                         aria-disabled={loading}
                         className={`flex flex-col items-center sm:px-4 w-full ${loading ? 'pointer-events-none' : ''}`}>
                         <PSInput
-                            className="my-2 dark:bg-gray-800"
+                            className="my-2"
                             placeHolder="Pastelog Description"
                             value={description}
                             onChange={(e) => { setDescription(e.target.value) }}
                             disabled={loading}
                         />
-                        <div className="flex flex-col items-center w-full md:w-3/4 lg:w-2/3 border-black rounded-lg bg-indigo-500 dark:bg-gray-800">
+                        <div className="flex flex-col items-center w-full md:w-3/4 lg:w-2/3 border-black rounded-lg bg-surface">
                             <div className="flex flex-row justify-start w-full h-12 mb-1">
                                 <Button
                                     className={`rounded-tl-lg rounded-bl-none rounded-r-none ${!preview ? selected : unSelected}`}
@@ -110,10 +110,10 @@ export default function Pastelog() {
                                         size="sm"
                                         color="primary"
                                         label="Expiry date"
-                                        className="max-w-[164px] dark:text-white" />
+                                        className="max-w-[164px]" />
                                     <div className="w-6" />
                                     <Button
-                                        className={`${theme == 'dark' ? 'bg-gradient-to-r from-gray-700 to-gray-800' : `bg-gradient-to-r from-indigo-500 to-indigo-600`}`}
+                                        className={`bg-gradient-to-r from-gray-700 to-gray-800`}
                                         onClick={publish}
                                         isLoading={loading}
                                         disabled={loading || !content}
