@@ -18,7 +18,7 @@ interface PSNavbarProps {
 const PSNavbar: React.FC<PSNavbarProps> = ({ className, sideBarIcon, onToggleSidebar }) => {
     const router = useRouter();
     return (
-        <Navbar className="shadow-sm dark:bg-gray-800" maxWidth="full">
+        <Navbar className="shadow-sm dark:bg-gray-600" maxWidth="full">
             <NavbarContent
                 className="px-2 ml-0">
                 <div className='flex space-x-8'>

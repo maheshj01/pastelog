@@ -25,7 +25,7 @@ export default function Home() {
             )}
 
             {/* Sidebar content goes here */}
-            <div className={`bg-slate-200 dark:bg-gray-500 ${showSideBar ? 'w-64' : 'w-0'} transition-width duration-1000`}>
+            <div className={`bg-slate-200 dark:bg-gray-500 ${showSideBar ? 'w-64' : 'w-0'} transition-width duration-1000 pt-16 overflow-y-auto`}>
                 {/* Add your sidebar content here */}
                 {
                     showSideBar && (
