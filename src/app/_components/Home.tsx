@@ -7,6 +7,7 @@ import IconButton from "./IconButton";
 import PSNavbar from "./PSNavbar";
 import Pastelog from "./Pastelog";
 import { Theme } from './ThemeSwitcher';
+import Sidebar from './Sidebar';
 
 export default function Home() {
     const [showSideBar, setShowSideBar] = useState<boolean>(true);
@@ -45,7 +46,7 @@ export default function Home() {
             >
                 {showSideBar && (
                     <div className="pt-16">
-                        <p>Sidebar content goes here</p>
+                        <Sidebar />
                     </div>
                 )}
             </div>
