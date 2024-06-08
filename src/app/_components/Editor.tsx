@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import React, { ChangeEvent } from "react";
 import rehypeHighlight from 'rehype-highlight';
 import remarkGfm from 'remark-gfm';
+import CodeBlock from './CodeHighlight';
 // import ReactMarkdown from 'react-markdown';
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 interface PSContentProps {
@@ -34,7 +35,8 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
             <ReactMarkdown
                 className={customClass}
                 components={{
-                    style: ({ children }) => <div className="prose prose-indigo dark:prose-dark">{children}</div>
+                    style: ({ children }) => <div className="prose prose-indigo dark:prose-dark">{children}</div>,
+                    code: ({ children }) => <CodeBlock language="javascript" code={children as string} />
                 }}
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}
