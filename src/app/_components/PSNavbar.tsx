@@ -4,13 +4,20 @@ import {
     NavbarMenu,
     NavbarMenuItem
 } from "@nextui-org/navbar";
+import { useRouter } from "next/navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export default function PSNavbar() {
+    const router = useRouter();
     return (
         <Navbar className="shadow-sm dark:bg-gray-800" maxWidth="full">
-            <NavbarContent className="px-2 ml-0">
-                <p className="font-bold text-inherit text-lg">Pastelog</p>
+            <NavbarContent
+                className="px-2 ml-0">
+                <p
+                    onClick={() => {
+                        router.push('/');
+                    }}
+                    className="font-bold text-inherit text-lg px-2 cursor-pointer">Pastelog</p>
             </NavbarContent>
             <NavbarContent>
                 <NavbarMenu>
