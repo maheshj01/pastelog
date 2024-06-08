@@ -1,13 +1,27 @@
 "use client";
 
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IconButton from "./IconButton";
 import PSNavbar from "./PSNavbar";
 import Pastelog from "./Pastelog";
 
 export default function Home() {
     const [showSideBar, setShowSideBar] = useState<boolean>(true);
+
+    const checkWindowSize = () => {
+        if (typeof window !== 'undefined') {
+            if (showSideBar && window.innerWidth <= 768) {
+                setShowSideBar(false);
+            }
+        }
+    };
+
+    useEffect(() => {
+        checkWindowSize();
+        window.addEventListener('resize', checkWindowSize);
+        return () => window.removeEventListener('resize', checkWindowSize);
+    }, []);
 
     return (
         <div className="flex h-screen">
