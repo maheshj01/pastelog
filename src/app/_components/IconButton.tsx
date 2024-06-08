@@ -1,7 +1,7 @@
 import { Button } from '@nextui-org/button';
 
 type IconButtonProps = {
-  onClick: () => void;
+  onClick?: () => void;
   children: React.ReactNode;
   ariaLabel: string;
   className?: string;

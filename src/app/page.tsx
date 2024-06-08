@@ -1,9 +1,9 @@
 "use client";
 import { Button } from '@nextui-org/button';
 import { useEffect, useState } from 'react';
-import Pastelog from './_components/Pastelog';
+import Home from './_components/Home';
 
-export default function Home() {
+export default function Page() {
   const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function Home() {
     );
   }
   if (!isFirstVisit) {
-    return <Pastelog />
+    return <Home />;
   }
   if (isFirstVisit) {
     return (
@@ -46,7 +46,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Hello World</h1>
+      <h1>Loading..</h1>
     </div>
   )
 }

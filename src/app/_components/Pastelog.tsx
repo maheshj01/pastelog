@@ -9,7 +9,6 @@ import Log, { LogType } from "../_models/Log";
 import LogService from "../_services/logService";
 import Editor from "./Editor";
 import PSInput from "./PSInput";
-import PSNavbar from "./PSNavbar";
 import ShortcutWrapper from "./ShortCutWrapper";
 export default function Pastelog() {
 
@@ -53,7 +52,6 @@ export default function Pastelog() {
 
     return (
         <>
-            <PSNavbar />
             <ShortcutWrapper onCtrlP={togglePreview}>
                 <div className="min-h-screen relative xsm:px-2">
                     {loading && (
