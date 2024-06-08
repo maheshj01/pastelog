@@ -1,18 +1,22 @@
 "use client";
 import { Button } from '@nextui-org/button';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Home from './_components/Home';
 
 export default function Page() {
   const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
+  const router = useRouter();
+
   useEffect(() => {
-    const visited = localStorage.getItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`);
-    if (visited) {
+    const f = localStorage.getItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`) ?? 'true';
+    const firstVisit = f === 'true';
+    // console.log(firstVisit, f);
+    if (!firstVisit) {
       setIsFirstVisit(false);
     } else {
       setIsFirstVisit(true);
-      localStorage.setItem('visited', `${isFirstVisit}`);
     }
     setLoading(false);
   }, []);
@@ -37,9 +41,9 @@ export default function Page() {
         <Button color="primary"
           size='lg'
           onClick={() => {
-            setIsFirstVisit(true);
-          }}
-          href="/pastelog"> Get Started </Button>
+            setIsFirstVisit(false);
+            localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
+          }}> Get Started </Button>
       </div>
     );
   }
