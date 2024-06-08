@@ -5,6 +5,7 @@ import Pastelog from './_components/Pastelog';
 
 export default function Home() {
   const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     const visited = localStorage.getItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`);
     if (visited) {
@@ -13,8 +14,16 @@ export default function Home() {
       setIsFirstVisit(true);
       localStorage.setItem('visited', `${isFirstVisit}`);
     }
+    setLoading(false);
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="loader" /> {/* You can replace this with a proper loading spinner */}
+      </div>
+    );
+  }
   if (!isFirstVisit) {
     return <Pastelog />
   }

@@ -31,33 +31,32 @@ const Preview = (props: { id: string }) => {
     }, []);
     return (
         <div className='flex flex-col items-center h-max'>
-            {loading && (
-                <div className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="loader" />
-                    {/* Publishing...</div> */}
-                </div>
-            )}
-            <PSNavbar
-            />
+            <PSNavbar />
             <div className="w-full md:w-3/4 lg:w-2/3 max-w-none px-1 prose prose-indigo dark:prose-dark">
-                <div className='flex flex-col'>
-                    <p className="text-black dark:text-slate-50 my-1">{log?.title}</p>
-                    <div className='flex flex-row'>
-                        <p className="text-black dark:text-slate-50 my-1 font-bold">
-                            {`Expires: `}
-                        </p>
-                        <p className="text-black dark:text-slate-50 my-1"> {` ${log?.expiryDate?.toDateString()}`}</p>
+                {loading ? (
+                    <div className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="loader" />
                     </div>
-                </div>
-                <Editor
-                    preview={true}
-                    className={theme != 'dark' ? ` bg-slate-200 text-black` : `bg-gray-700 text-white`}
-                    value={log?.data}
-                    disabled={loading}
-                />
+                ) : (
+                    <div className='flex flex-col'>
+                        <p className="text-black dark:text-slate-50 my-1">{log?.title}</p>
+                        <div className='flex flex-row'>
+                            <p className="text-black dark:text-slate-50 my-1 font-bold">
+                                {`Expires: `}
+                            </p>
+                            <p className="text-black dark:text-slate-50 my-1"> {` ${log?.expiryDate?.toDateString()}`}</p>
+                        </div>
+                        <Editor
+                            preview={true}
+                            className={theme !== 'dark' ? ` bg-slate-200 text-black min-h-screen` : `bg-gray-700 text-white min-h-screen`}
+                            value={log?.data}
+                            disabled={loading}
+                        />
+                    </div>
+                )}
             </div>
         </div>
-    )
+    );
 }
 
 export default Preview;
