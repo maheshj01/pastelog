@@ -1,9 +1,7 @@
 // src/_components/PSContent.tsx
 import dynamic from "next/dynamic";
 import React, { ChangeEvent } from "react";
-import rehypeHighlight from 'rehype-highlight';
-import remarkGfm from 'remark-gfm';
-import CodeBlock from './CodeHighlight';
+import CodeBlock from "./CodeHighlight";
 // import ReactMarkdown from 'react-markdown';
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 interface PSContentProps {
@@ -35,11 +33,22 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
             <ReactMarkdown
                 className={customClass}
                 components={{
-                    style: ({ children }) => <div className="prose prose-indigo dark:prose-dark">{children}</div>,
-                    code: ({ children }) => <CodeBlock language="javascript" code={children as string} />
+                    code(props) {
+                        const { children, className, node, ref, ...rest } = props
+                        const match = /language-(\w+)/.exec(className || '')
+                        return match ? (
+                            <CodeBlock language={match[1]} {...props}>
+                                {String(children).replace(/\n$/, '')}
+                            </CodeBlock>
+                        ) : (
+                            <code {...rest} className={className}>
+                                {children}
+                            </code>
+                        )
+                    }
                 }}
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeHighlight]}
+                // remarkPlugins={[remarkGfm]}
+                // rehypePlugins={[rehypeHighlight]}
                 // eslint-disable-next-line react/no-children-prop
                 children={value}
             />

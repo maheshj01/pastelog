@@ -4,19 +4,27 @@ import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 interface CodeBlockProps {
     language: string; // The programming language of the code block (e.g., 'javascript', 'python')
-    code: string; // The code to be highlighted
+    children: string; // The code to be highlighted
 }
-
-const CodeBlock: React.FC<CodeBlockProps> = ({ language, code }) => {
+/**
+ *
+ *
+ * @param {*} { language, children, ...rest }
+ * @return {*} 
+ */
+const CodeBlock: React.FC<CodeBlockProps> = ({ language, children, ...rest }) => {
     const { theme } = useTheme();
     return (
         <SyntaxHighlighter
             customStyle={{
-                backgroundColor: 'whitesmoke'
+                padding: '0.5em',
+                backgroundColor: 'whiteSmoke',
             }}
+            {...rest}
+            PreTag={'div'}
             showLineNumbers={true}
             language={language} style={docco}>
-            {code}
+            {children}
         </SyntaxHighlighter>
     );
 };
