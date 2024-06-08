@@ -1,6 +1,7 @@
 // src/_components/PSContent.tsx
 import dynamic from "next/dynamic";
 import React, { ChangeEvent } from "react";
+import remarkGfm from "remark-gfm";
 import CodeBlock from "./CodeHighlight";
 // import ReactMarkdown from 'react-markdown';
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
@@ -22,7 +23,7 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
         \nNote: Do not publish sensitive information here, these logs are public and can be accessed by anyone with the link.
     `;
 
-    const customClass = `px-2 py-2 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-primary focus:dark:ring-gray-400 resize-y min-h-80 w-full ${className}`;
+    const customClass = `px-2 py-2 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-primary focus:dark:ring-gray-400 resize-y min-h-80 w-full reactMarkDown ${className}`;
     if (preview) {
         return (<div
             style={{
@@ -47,7 +48,7 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
                         )
                     }
                 }}
-                // remarkPlugins={[remarkGfm]}
+                remarkPlugins={[remarkGfm]}
                 // rehypePlugins={[rehypeHighlight]}
                 // eslint-disable-next-line react/no-children-prop
                 children={value}
