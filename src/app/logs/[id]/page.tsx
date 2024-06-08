@@ -1,7 +1,7 @@
 import Preview from '@/app/_components/Preview';
 import LogService from '../../_services/logService';
 
-export const dynamicParams = true;
+// export const dynamicParams = true;
 
 export async function generateStaticParams() {
     const logService = new LogService();
