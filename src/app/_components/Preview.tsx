@@ -9,7 +9,7 @@ import LogService from '../_services/logService';
 
 const Preview = (props: { id: string }) => {
     const logService = new LogService();
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [log, setLog] = useState<Log>();
 
     const { theme } = useTheme();
