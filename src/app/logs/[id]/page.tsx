@@ -15,5 +15,6 @@ export default function Page({ params }: { params: { id: string } }) {
     console.log(id);
     return <Preview
         id={id}
+        showNavbar={true}
     />
 };

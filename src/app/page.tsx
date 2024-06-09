@@ -21,6 +21,12 @@ export default function Page() {
     setLoading(false);
   }, []);
 
+
+  const handleGetStarted = () => {
+    setIsFirstVisit(false);
+    localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -32,6 +38,8 @@ export default function Page() {
     return <Home />;
   }
   if (isFirstVisit) {
+
+    const tagLineWords = ['Easy', 'Fast', 'Powerful'];
     return (
       <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400">
         <div className="absolute inset-0 bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 backdrop-blur-lg"></div>
@@ -40,10 +48,7 @@ export default function Page() {
         </div> */}
         <Button color="primary"
           size='lg'
-          onClick={() => {
-            setIsFirstVisit(false);
-            localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
-          }}> Get Started </Button>
+          onClick={handleGetStarted}> Get Started </Button>
       </div>
     );
   }

@@ -1,6 +1,5 @@
 "use client";
 import Editor from '@/app/_components/Editor';
-import PSNavbar from '@/app/_components/PSNavbar';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
 import { useTheme } from 'next-themes';
@@ -8,31 +7,35 @@ import { useEffect, useState } from 'react';
 import Log from '../_models/Log';
 import LogService from '../_services/logService';
 import IconButton from './IconButton';
-const Preview = (props: { id: string }) => {
+import PSNavbar from './PSNavbar';
+
+const Preview = ({ id, showNavbar }: { id: string, showNavbar: boolean }) => {
     const logService = new LogService();
     const [loading, setLoading] = useState<boolean>(true);
     const [log, setLog] = useState<Log>();
     const [copied, setCopied] = useState<boolean>(false);
     const { theme } = useTheme();
-    const id = props.id;
 
-    async function fetchLogsById() {
+    async function fetchLogsById(logId: string) {
         setLoading(true);
-        const logById = await logService.fetchLogById(id as string);
+        const logById = await logService.fetchLogById(logId);
         if (!logById) {
             setLoading(false);
-            // router.push('/404');
+            // handle not found case, maybe show an error message
             return;
         }
         setLog(logById);
         setLoading(false);
     }
     useEffect(() => {
-        fetchLogsById()
-    }, []);
+        if (id) {
+            fetchLogsById(id);
+        }
+    }, [id]);
+
     return (
         <div className='flex flex-col items-center h-max'>
-            <PSNavbar />
+            {(showNavbar && <PSNavbar />)}
             <div className="w-full md:w-3/4 lg:w-2/3 max-w-none px-1 prose prose-indigo dark:prose-dark">
                 {loading ? (
                     <div className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center z-50">
