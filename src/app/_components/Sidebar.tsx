@@ -1,6 +1,7 @@
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
 import Log from "../_models/Log";
 import IconButton from "./IconButton";
+import SidebarItem from './SideBarItem';
 
 interface SidebarProps {
     // id of the selected log
@@ -36,15 +37,13 @@ const Sidebar: React.FC<SidebarProps> = ({ id, logs, loading, onLogClick }) => {
             {/* Scrollable logs list */}
             <div className='overflow-y-auto flex-grow pb-16'>
                 {logs.map((log: Log) => (
-                    <div key={log.id} className="px-2 py-1">
-                        <div
-                            className={`text-sm dark:text-slate-200 cursor-pointer py-2 hover:bg-background transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden text-ellipsis relative ${id == log.id ? 'bg-background' : ''}`}
-                            onClick={() => onLogClick(log.id!)}
-                        >
-                            <span>{log.title.length === 0 ? log.id : log.title}</span>
-                            <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-surface pointer-events-none"></div>
-                        </div>
-                    </div>
+                    <SidebarItem
+                        id={log.id!}
+                        selected={id === log.id}
+                        log={log}
+                        key={log.id}
+                        onLogClick={() => onLogClick(log.id!)}
+                    />
                 ))}
             </div>
         </div>

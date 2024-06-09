@@ -23,6 +23,7 @@ export default function Home({ id }: { id: string | null }) {
         const logService = new LogService();
         const logs = await logService.fetchLogs();
         setLogs(logs);
+        logService.deleteExpiredLogs();
         setLoading(false);
     }
     const checkWindowSize = () => {
