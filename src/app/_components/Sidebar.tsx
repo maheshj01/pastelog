@@ -22,7 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ id, logs, loading, onLogClick }) => {
     return (
         <div className='flex flex-col h-full'>
             {/* Fixed IconButton */}
-            <div className='sticky top-0 z-10 bg-surface pt-2 pb-2'>
+            <div className='sticky top-0 z-10 pt-2 pb-2'>
                 <div className='flex justify-end pr-4'>
                     <IconButton
                         ariaLabel="New Pastelog"

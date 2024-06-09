@@ -2,9 +2,9 @@
 "use client";
 
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
-import { Button } from '@nextui-org/react';
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import IconButton from './IconButton';
 
 export enum Theme {
     LIGHT = "light",
@@ -23,11 +23,14 @@ export function ThemeSwitcher() {
 
     return (
         <div>
-            <Button isIconOnly aria-label="Light Mode" className='bg-transparent rounded-full p-2 dark:text-white'
-                onClick={() => setTheme(theme == Theme.DARK ? 'light' : 'dark')}
-                size='lg'>
+            <IconButton
+                tooltipPlacement='bottom-end'
+                ariaLabel={
+                    theme === 'dark' ? 'Light Mode' : 'Dark Mode'
+
+                } onClick={() => setTheme(theme == Theme.DARK ? 'light' : 'dark')}>
                 {theme === 'dark' ? <SunIcon className='text-black size-12 dark:text-white' /> : <MoonIcon className='size-12 text-black dark:text-white' />}
-            </Button>
+            </IconButton>
         </div>
     )
 };

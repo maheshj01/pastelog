@@ -32,12 +32,17 @@ export default function Home({ id }: { id: string | null }) {
             }
         }
     };
-    const { theme } = useTheme();
+    const { theme, setTheme } = useTheme();
 
     useEffect(() => {
         fetchLogs();
         checkWindowSize();
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        if (mediaQuery.matches) {
+            setTheme(Theme.DARK);
+        } else {
+            setTheme(Theme.LIGHT);
+        }
         window.addEventListener('resize', checkWindowSize);
         return () => window.removeEventListener('resize', checkWindowSize);
     }, []);
