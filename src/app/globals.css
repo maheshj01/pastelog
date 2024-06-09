@@ -23,6 +23,8 @@
   --color-tertiary: #94a3b8;
   --color-surface: #e2e8f0;
   --color-background: #f8fafc;
+  --color-code-surface: #292c2f;
+  --color-code-onSurface: #191b1c;
   --color-accent: #cbd5e1;
 }
 
@@ -32,6 +34,8 @@
   --color-tertiary: #4b5563;
   --color-surface: #6b7280;
   --color-background: #374151;
+  --color-code-surface: #969ca5;
+  --color-code-onSurface: #e2e8f0;
   --color-accent: #9ca3af;
 }
 
