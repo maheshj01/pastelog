@@ -2,6 +2,7 @@
     font-size: 2.25rem;
     font-weight: 700;
     line-height: 1.0;
+    color: var(--color-black);
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
@@ -12,6 +13,7 @@
     font-weight: 700;
     line-height: 1.0;
     margin-top: 0.5em;
+    color: var(--color-black);
     margin-bottom: 0.5em;
 }
 
@@ -20,6 +22,7 @@
     font-weight: 700;
     line-height: 1.0;
     margin-top: 0.5em;
+    color: var(--color-black);
     margin-bottom: 0.5em;
 }
 
@@ -28,6 +31,7 @@
     font-weight: 700;
     line-height: 1.0;
     margin-top: 0.5em;
+    color: var(--color-black);
     margin-bottom: 0.5em;
 }
 
@@ -36,6 +40,7 @@
     font-weight: 700;
     line-height: 1.0;
     margin-top: 0.5em;
+    color: var(--color-black);
     margin-bottom: 0.5em;
 }
 
@@ -44,6 +49,7 @@
     font-weight: 700;
     line-height: 1.0;
     margin-top: 0.5em;
+    color: var(--color-black);
     margin-bottom: 0.5em;
 }
 
@@ -54,6 +60,7 @@
     font-weight: 400;
     line-height: 1.5;
     margin-top: 0.5em;
+    color: var(--color-black);
     margin-bottom: 0.5em;
 }
 
@@ -101,16 +108,16 @@
 
 /* add standard styles for code blocks */
 .reactMarkDown pre {
-    font-size: 1rem;
+    font-size: 0.8rem !important;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 1.2;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
-    color: var(--color-primary);
+    color: black;
     background-color: var(--color-code-surface);
     border-radius: 0.5em;
     /* Padding around highlighted code block */
-    padding: 0em;
+    padding: 0px;
     overflow-x: auto;
 }
 
@@ -124,7 +131,7 @@
     margin-bottom: 0.5em;
     color: var(--color-black);
     border-radius: 0.5em;
-    padding: 0.25em;
+    /* padding: 0.5em 0.7em; */
 }
 
 /* add standard styles for blockquotes */
@@ -136,7 +143,7 @@
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     color: var(--color-black);
-    background-color: var(--color-background);
+    background-color: var(--color-block-surface);
     border-left: 0.25em solid var(--color-primary);
     padding: 0.5em;
 }

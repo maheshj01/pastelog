@@ -12,11 +12,11 @@ import Preview from './Preview';
 import Sidebar from './Sidebar';
 import { Theme } from './ThemeSwitcher';
 
-export default function Home() {
+export default function Home({ id }: { id: string | null }) {
     const [showSideBar, setShowSideBar] = useState<boolean>(true);
     const [logs, setLogs] = useState<Log[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [selectedLog, setSelectedLog] = useState<string | null>(null);
+    const [selectedLogId, setSelectedLogId] = useState<string | null>(id);
 
     async function fetchLogs() {
         setLoading(true);
@@ -48,7 +48,8 @@ export default function Home() {
                 (showSideBar && <IconButton
                     className={`fixed top-2 left-2 z-30 ${showSideBar ? '' : 'ml-0'}`}
                     onClick={() => setShowSideBar(!showSideBar)}
-                    ariaLabel="Toggle sidebar"
+                    ariaLabel="Close Sidebar"
+                    tooltipPlacement='bottom-start'
                 >
                     <ViewSidebarRoundedIcon />
                 </IconButton>
@@ -62,12 +63,13 @@ export default function Home() {
                     <Sidebar
                         loading={loading}
                         logs={logs}
+                        id={selectedLogId}
                         onLogClick={(id) => {
                             console.log(id);
                             if (id) {
-                                setSelectedLog(id!);
+                                setSelectedLogId(id!);
                             } else {
-                                setSelectedLog(null);
+                                setSelectedLogId(null);
                             }
                         }}
                     />
@@ -82,8 +84,8 @@ export default function Home() {
                         onToggleSidebar={() => setShowSideBar(!showSideBar)}
                     />
                     {
-                        selectedLog ? (<Preview
-                            id={selectedLog}
+                        selectedLogId ? (<Preview
+                            id={selectedLogId}
                             showNavbar={false}
                         />) :
                             (<Pastelog />)

@@ -54,12 +54,6 @@ export default function Pastelog() {
         <>
             <ShortcutWrapper onCtrlP={togglePreview}>
                 <div className="min-h-screen relative xsm:px-2">
-                    {loading && (
-                        <div className="absolute inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center z-50">
-                            <div className="loader" />
-                            {/* Publishing...</div> */}
-                        </div>
-                    )}
                     <div
                         aria-disabled={loading}
                         className={`flex flex-col items-center sm:px-4 w-full ${loading ? 'pointer-events-none' : ''}`}>

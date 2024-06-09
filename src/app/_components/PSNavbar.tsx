@@ -18,7 +18,9 @@ interface PSNavbarProps {
 const PSNavbar: React.FC<PSNavbarProps> = ({ className, sideBarIcon, onToggleSidebar }) => {
     const router = useRouter();
     return (
-        <Navbar className="shadow-sm dark:bg-gray-600" maxWidth="full">
+        <Navbar
+            position='sticky'
+            className="bg-background dark:bg-gray-600" maxWidth="full">
             <NavbarContent
                 className="px-2 ml-0">
                 <div className='flex space-x-8'>
@@ -27,7 +29,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ className, sideBarIcon, onToggleSid
                             <IconButton
                                 className='absolute top-2 left-2'
                                 onClick={onToggleSidebar}
-                                ariaLabel="Toggle sidebar"
+                                ariaLabel="Open Sidebar"
                             >
                                 <ViewSidebarRoundedIcon />
                             </IconButton>

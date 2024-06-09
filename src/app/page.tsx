@@ -35,7 +35,7 @@ export default function Page() {
     );
   }
   if (!isFirstVisit) {
-    return <Home />;
+    return <Home id={null} />;
   }
   if (isFirstVisit) {
 

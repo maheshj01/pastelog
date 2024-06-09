@@ -3,12 +3,14 @@ import Log from "../_models/Log";
 import IconButton from "./IconButton";
 
 interface SidebarProps {
+    // id of the selected log
+    id: string | null;
     logs: Log[];
     loading: boolean;
     onLogClick: (id: string | null) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ logs, loading, onLogClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ id, logs, loading, onLogClick }) => {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -34,9 +36,9 @@ const Sidebar: React.FC<SidebarProps> = ({ logs, loading, onLogClick }) => {
             {/* Scrollable logs list */}
             <div className='overflow-y-auto flex-grow pb-16'>
                 {logs.map((log: Log) => (
-                    <div key={log.id} className="p-2">
+                    <div key={log.id} className="px-2 py-1">
                         <div
-                            className="text-sm dark:text-slate-200 cursor-pointer hover:bg-background transition-all duration-100 px-2 py-1 rounded-md whitespace-nowrap overflow-hidden text-ellipsis relative"
+                            className={`text-sm dark:text-slate-200 cursor-pointer py-2 hover:bg-background transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden text-ellipsis relative ${id == log.id ? 'bg-background' : ''}`}
                             onClick={() => onLogClick(log.id!)}
                         >
                             <span>{log.title.length === 0 ? log.id : log.title}</span>

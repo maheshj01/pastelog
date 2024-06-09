@@ -1,4 +1,4 @@
-import Preview from '@/app/_components/Preview';
+import Home from '@/app/_components/Home';
 import LogService from '../../_services/logService';
 
 // This is required for dynamic routing in runtime
@@ -13,8 +13,9 @@ export async function generateStaticParams() {
 export default function Page({ params }: { params: { id: string } }) {
     const { id } = params;
     console.log(id);
-    return <Preview
-        id={id}
-        showNavbar={true}
-    />
+    // return <Preview
+    //     id={id}
+    //     showNavbar={true}
+    // />
+    return <Home id={id} />
 };

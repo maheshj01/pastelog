@@ -1,23 +1,30 @@
 import { Button } from '@nextui-org/button';
-
+import { Tooltip } from "@nextui-org/tooltip";
 type IconButtonProps = {
   onClick?: () => void;
   children: React.ReactNode;
   ariaLabel?: string;
   className?: string;
+  tooltipPlacement?: "top-start" | "top" | "top-end" | "right-start" | "right" | "right-end" | "bottom-start" | "bottom" | "bottom-end" | "left-start" | "left" | "left-end";
 };
 
-const IconButton: React.FC<IconButtonProps> = ({ onClick, children, ariaLabel, className }) => {
+const IconButton: React.FC<IconButtonProps> = ({ onClick, children, ariaLabel, className, tooltipPlacement }) => {
   return (
-    <Button
-      isIconOnly
-      aria-label={ariaLabel}
-      className={`bg-transparent rounded-full p-2 dark:text-white ${className}`}
-      onClick={onClick}
-      size='lg'
+    <Tooltip
+      content={ariaLabel}
+      placement={tooltipPlacement}
+      showArrow={true}
     >
-      {children}
-    </Button>
+      <Button
+        isIconOnly
+        aria-label={ariaLabel}
+        className={`bg-transparent rounded-full p-2 dark:text-white ${className}`}
+        onClick={onClick}
+        size='lg'
+      >
+        {children}
+      </Button>
+    </Tooltip>
   );
 };
 
