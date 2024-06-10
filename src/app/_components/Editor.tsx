@@ -65,7 +65,7 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
             disabled={disabled}
             placeholder={placeHolder || placeholder}
             height="70vh"
-            autoSuggest={true}
+            autoSuggest={false}
             maxHeight="100%"
         />
     );
