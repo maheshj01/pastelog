@@ -35,7 +35,7 @@
   --color-tertiary: #4b5563;
   --color-surface: #6b7280;
   --color-background: #374151;
-  --color-code-surface: #292c2f;
+  --color-sidebar: #111827 --color-code-surface: #292c2f;
   --color-code-onSurface: #e2e8f0;
   --color-accent: #9ca3af;
   --color-block-surface: #46516a;
@@ -73,4 +73,33 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.tagline {
+  display: inline-block;
+  animation: fadeUp 2.5s ease-in-out infinite;
 }

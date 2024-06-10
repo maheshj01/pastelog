@@ -1,18 +1,19 @@
 "use client";
-import { Button } from '@nextui-org/button';
+import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import GradientText from './_components/GradientText';
 import Home from './_components/Home';
 
 export default function Page() {
-  const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [currentTagLine, setCurrentTagLine] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
     const f = localStorage.getItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`) ?? 'true';
     const firstVisit = f === 'true';
-    // console.log(firstVisit, f);
     if (!firstVisit) {
       setIsFirstVisit(false);
     } else {
@@ -21,6 +22,16 @@ export default function Page() {
     setLoading(false);
   }, []);
 
+  const tagLineWords = ['Easy', 'Fast', 'Powerful'];
+  const tagLineDescription = ['Easy to use', 'Fast to load', 'Powerful features'];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTagLine((prev) => (prev + 1) % tagLineWords.length);
+    }, 2500); // Change word every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleGetStarted = () => {
     setIsFirstVisit(false);
@@ -28,35 +39,29 @@ export default function Page() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="loader" /> {/* You can replace this with a proper loading spinner */}
-      </div>
-    );
+    return <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
+      <div className='loader'></div>
+    </div >
   }
+
   if (!isFirstVisit) {
     return <Home id={null} />;
   }
+
   if (isFirstVisit) {
 
-    const tagLineWords = ['Easy', 'Fast', 'Powerful'];
     return (
-      <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400">
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 backdrop-blur-lg"></div>
-        {/* <div className="relative z-10 max-w-2xl p-6 bg-white bg-opacity-80 rounded-lg shadow-lg">
-
-        </div> */}
-        <Button color="primary"
-          size='lg'
-          onClick={handleGetStarted}> Get Started </Button>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
+        {/* bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400"> */}
+        <GradientText className='tagline' text={tagLineWords[currentTagLine]} gradientColors={['#FF0080', '#7928CA']} fontSize="5rem" />
+        <p className="text-2xl mb-16 text-gray-300">
+          <span>Welcome to Pastelog!</span>
+          { }
+        </p>
+        <Button color="primary" onClick={handleGetStarted}>
+          Get Started
+        </Button>
       </div>
     );
   }
-
-  return (
-    <div>
-      <h1>Loading..</h1>
-    </div>
-  )
 }
-
