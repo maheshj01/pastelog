@@ -1,98 +1,113 @@
-import { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-// Example suggestions
-const suggestionsList = [
-    'apple',
-    'banana',
-    'orange',
-    'grape',
-    'pear',
-    'pineapple',
-    'peach',
-    'mango',
-    'melon',
-    'strawberry'
-];
-
-const TextCompletionInput = () => {
+const TextCompletionInput: React.FC = () => {
     const [inputValue, setInputValue] = useState('');
     const [suggestion, setSuggestion] = useState('');
-    const [position, setPosition] = useState(0);
-    const [typing, setTyping] = useState(false);
+    const [cursorPosition, setCursorPosition] = useState(0);
     const [loading, setLoading] = useState(false);
-    const inputRef = useRef(null);
+    const inputRef = useRef<HTMLTextAreaElement>(null);
+    const overlayRef = useRef<HTMLDivElement>(null);
 
     // Handle input change
-    const handleChange = (event: any) => {
-        setTyping(true);
+    const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const value = event.target.value;
+        const newCursorPosition = event.target.selectionStart ?? 0;
         setInputValue(value);
-        const cursorPosition = event.target.selectionStart;
-        setPosition(cursorPosition);
+        setCursorPosition(newCursorPosition);
 
         if (value.endsWith(' ')) {
             setLoading(true);
-            setTyping(false);
-            // sleep for 1 second to simulate a request
-            setTimeout(() => {
-                const randomSuggestion = suggestionsList[Math.floor(Math.random() * suggestionsList.length)];
-                console.log(randomSuggestion);
-                setSuggestion(randomSuggestion);
+            getSuggestion(value.trim()).then((suggestion) => {
+                setSuggestion(suggestion);
                 setLoading(false);
-            }, 2000);
+            });
         } else {
-            setLoading(false);
-        }
-    };
-
-    // Handle key down
-    const handleKeyDown = (event: any) => {
-        if (event.key === 'Tab' && suggestion) {
-            event.preventDefault();
-            setInputValue((prev) => prev + suggestion.substring(inputValue.length));
             setSuggestion('');
         }
     };
 
-    // Calculate the width of the input value up to the cursor position
-    const calculateWidth = (text: string) => {
-        if (inputRef.current) {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            if (context) {
-                const style = window.getComputedStyle(inputRef.current);
-                context.font = style.font;
-                return context.measureText(text).width;
-            }
+    const getSuggestion = async (value: string) => {
+        return new Promise<string>((resolve) => {
+            // Simulating an async request for suggestion
+            setTimeout(() => {
+                const randomSuggestions = [
+                    'is a great feature.',
+                    'helps developers code faster.',
+                    'improves productivity.',
+                    'is powered by AI.',
+                ];
+                const randomIndex = Math.floor(Math.random() * randomSuggestions.length);
+                const randomSuggestion = randomSuggestions[randomIndex];
+                resolve(value + randomSuggestion);
+            }, 1000); // Increased to 1 second to better see the loader
+        });
+    }
+
+
+    // Handle key down
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Tab' && suggestion) {
+            event.preventDefault();
+            const newValue = inputValue.substring(0, cursorPosition) + suggestion.substring(inputValue.trim().length) + ' ';
+            setInputValue(newValue);
+            setCursorPosition(newValue.length);
+            setSuggestion('');
         }
-        return 0;
+    };
+
+    // Update overlay position and content
+    useEffect(() => {
+        if (inputRef.current && overlayRef.current) {
+            const textareaStyles = window.getComputedStyle(inputRef.current);
+            overlayRef.current.style.font = textareaStyles.font;
+            overlayRef.current.style.lineHeight = textareaStyles.lineHeight;
+            overlayRef.current.style.padding = textareaStyles.padding;
+
+            const textBeforeCursor = inputValue.substring(0, cursorPosition);
+            const lines = textBeforeCursor.split('\n');
+            const currentLineText = lines[lines.length - 1];
+
+            const textMetrics = measureText(currentLineText, overlayRef.current);
+            const lineHeight = parseFloat(textareaStyles.lineHeight);
+
+            overlayRef.current.style.left = `${textMetrics.width}px`;
+            overlayRef.current.style.top = `${(lines.length - 1) * lineHeight + 2}px`;
+            overlayRef.current.textContent = suggestion.substring(inputValue.trim().length);
+        }
+    }, [inputValue, cursorPosition, suggestion]);
+
+    // Measure text width
+    const measureText = (text: string, element: HTMLElement) => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        if (context) {
+            context.font = window.getComputedStyle(element).font;
+            return context.measureText(text);
+        }
+        return { width: 0 };
     };
 
     return (
-        <div className="relative inline-block w-128 my-4">
-            <input
-                type="text"
+        <div className="relative inline-block w-full my-4">
+            <textarea
+                className="w-full p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent min-h-64 bg-gray-600"
                 value={inputValue}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 placeholder="Type to get suggestions..."
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', boxSizing: 'border-box', backgroundColor: 'transparent' }}
                 ref={inputRef}
             />
-            <div className="relative">
-                <span style={{ visibility: 'hidden', whiteSpace: 'pre' }}>{inputValue.substring(0, position)}</span>
-                {loading || typing ? null : (
-                    <span style={{
-                        position: 'absolute',
-                        left: calculateWidth(inputValue.substring(0, position)),
-                        top: 0,
-                        color: '#aaa'
-                    }}>
-                        {suggestion.substring(inputValue.length)}
-                    </span>
-                )}
-            </div>
-            <div className="h-6"></div>
+            <div
+                ref={overlayRef}
+                className="absolute pointer-events-none text-gray-400"
+                style={{ whiteSpace: 'pre-wrap', overflow: 'hidden' }}
+            />
+
+            {loading && (
+                <div className="absolute bottom-4 right-4 flex items-center justify-center">
+                    <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-500 rounded-full animate-spin" />
+                </div>
+            )}
         </div>
     );
 };
