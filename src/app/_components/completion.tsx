@@ -1,23 +1,56 @@
+import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
+interface TextCompletionInputProps {
+    customClass?: string;
+    value?: string;
+    onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    disabled?: boolean;
+    placeholder?: string;
+    height?: string;
+    maxHeight?: string;
+    autoSuggest?: boolean;
+}
 
-const TextCompletionInput: React.FC = () => {
-    const [inputValue, setInputValue] = useState('');
+const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
+    customClass = '',
+    value = '',
+    onChange,
+    disabled = false,
+    placeholder = "Type to get suggestions...",
+    height = "70vh",
+    maxHeight = "100%",
+    autoSuggest = false,
+}) => {
+    const [inputValue, setInputValue] = useState(value);
     const [suggestion, setSuggestion] = useState('');
     const [cursorPosition, setCursorPosition] = useState(0);
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
 
+    // Update local state when prop value changes
+    useEffect(() => {
+        setInputValue(value);
+    }, [value]);
+
     // Handle input change
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const value = event.target.value;
+
+        if (onChange) {
+            onChange(event);
+        }
+
+        if (!autoSuggest) {
+            return;
+        }
+        const newValue = event.target.value;
         const newCursorPosition = event.target.selectionStart ?? 0;
-        setInputValue(value);
+        setInputValue(newValue);
         setCursorPosition(newCursorPosition);
 
-        if (value.endsWith(' ')) {
+        if (newValue.endsWith(' ')) {
             setLoading(true);
-            getSuggestion(value.trim()).then((suggestion) => {
+            getSuggestion(newValue.trim()).then((suggestion) => {
                 setSuggestion(suggestion);
                 setLoading(false);
             });
@@ -39,10 +72,9 @@ const TextCompletionInput: React.FC = () => {
                 const randomIndex = Math.floor(Math.random() * randomSuggestions.length);
                 const randomSuggestion = randomSuggestions[randomIndex];
                 resolve(value + randomSuggestion);
-            }, 1000); // Increased to 1 second to better see the loader
+            }, 2000);
         });
     }
-
 
     // Handle key down
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -50,8 +82,12 @@ const TextCompletionInput: React.FC = () => {
             event.preventDefault();
             const newValue = inputValue.substring(0, cursorPosition) + suggestion.substring(inputValue.trim().length) + ' ';
             setInputValue(newValue);
-            setCursorPosition(newValue.length);
+            setCursorPosition(cursorPosition + suggestion.substring(inputValue.trim().length).length + 1);
             setSuggestion('');
+            if (onChange) {
+                const syntheticEvent = { target: { value: newValue } } as React.ChangeEvent<HTMLTextAreaElement>;
+                onChange(syntheticEvent);
+            }
         }
     };
 
@@ -88,24 +124,35 @@ const TextCompletionInput: React.FC = () => {
     };
 
     return (
-        <div className="relative inline-block w-full my-4">
+        <div className="relative inline-block w-full ">
             <textarea
-                className="w-full p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent min-h-64 bg-gray-600"
+                className={`${customClass}`}
                 value={inputValue}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
-                placeholder="Type to get suggestions..."
+                placeholder={placeholder}
+                disabled={disabled}
                 ref={inputRef}
+                style={{
+                    height,
+                    maxHeight,
+                }}
             />
             <div
                 ref={overlayRef}
                 className="absolute pointer-events-none text-gray-400"
-                style={{ whiteSpace: 'pre-wrap', overflow: 'hidden' }}
+                style={{
+                    width: inputRef.current?.offsetWidth ?? 0,
+                    whiteSpace: 'pre-wrap', overflow: 'hidden'
+                }}
             />
 
             {loading && (
-                <div className="absolute bottom-4 right-4 flex items-center justify-center">
-                    <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-500 rounded-full animate-spin" />
+                <div className="absolute -top-6 right-2 flex items-center justify-center">
+                    <Image
+                        width={32}
+                        height={32}
+                        src="/images/gemini.png" alt="Gemini" className='animate-pulse' />
                 </div>
             )}
         </div>

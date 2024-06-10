@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import React, { ChangeEvent } from "react";
 import remarkGfm from "remark-gfm";
 import CodeBlock from "./CodeHighlight";
+import TextCompletionInput from "./completion";
 // import ReactMarkdown from 'react-markdown';
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 interface PSContentProps {
@@ -57,16 +58,15 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
         );
     }
     return (
-        <textarea
-            className={`${customClass}`}
+        <TextCompletionInput
+            customClass={`${customClass}`}
             value={value || ''}
             onChange={onChange}
             disabled={disabled}
             placeholder={placeHolder || placeholder}
-            style={{
-                height: "70vh",
-                maxHeight: "100%"
-            }}
+            height="70vh"
+            autoSuggest={true}
+            maxHeight="100%"
         />
     );
 
