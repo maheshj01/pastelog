@@ -23,6 +23,7 @@ export default function Pastelog() {
     const selected = 'bg-secondary text-slate-50 dark:text-slate-50';
     const unSelected = 'text-black bg-accent dark:text-slate-50 ';
     const router = useRouter();
+
     async function publish() {
         setLoading(true);
         // 30 days from now
@@ -41,14 +42,13 @@ export default function Pastelog() {
             setLoading(false);
             return;
         }
-        router.push(`/logs/${id}`);
+        router.push(`/logs/publish/${id}`);
         setLoading(false);
     }
 
     const togglePreview = React.useCallback(() => {
         setPreview((prev) => !prev);
     }, [])
-
 
     return (
         <>

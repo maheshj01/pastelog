@@ -13,10 +13,7 @@ It allows you to publish your logs, and access them from anywhere via a unique l
 - Supports rich content with basic github falvoured markdown (does not support inline HTML tags)
 - Supports Darkmode
 
-
 <img width="1176" alt="Screenshot 2024-06-06 at 22 14 06" src="https://github.com/firebase/firebase-js-sdk/assets/31410839/7c252c51-b81b-4bde-9ff1-29803f975b57">
-
-
 
 ### How it works
 
@@ -34,14 +31,12 @@ https://user-images.githubusercontent.com/31410839/178278070-47329147-acc4-4be2-
 
 4. Acesss your logs via the link on your target device (MacOs)
 
-
 ### Adds Markdown Support
 
 <img width="824" alt="Screenshot 2024-02-05 at 18 00 47" src="https://github.com/flutter/flutter/assets/31410839/63896d48-867f-477e-8f91-68ff40413147">
 
-
-
 ### Folder Structure
+
 ```
 project-root /
     ├──src
@@ -53,10 +48,11 @@ project-root /
     │    │   ├── components /
     │    │   │   ├── Sidebar.tsx
     │    │   │   ├── Navbar.tsx
-    │    │   │   ├── Home.tsx
-    │    │   │   └── MainContent.js
     │    │   │   │
     │    │   ├── logs /
+    │    │   │   ├──publish
+    │    │   │   │   ├── [id]
+    │    │   │   │   |     ├── page.tsx
     │    │   │   ├──[id]
     │    │   │   │   ├── page.tsx
     │    │   └── layout.tsx
