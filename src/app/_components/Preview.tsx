@@ -46,12 +46,17 @@ const Preview = ({ showNavbar, logId }: { showNavbar: boolean, logId: string }) 
             <div className="w-full md:w-3/4 lg:w-2/3 max-w-none px-1 prose prose-indigo dark:prose-dark">
                 <div className='flex flex-col'>
                     <p className="text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
-                    <div className='flex flex-row'>
-                        <p className="text-black dark:text-slate-50 my-1 font-bold">
-                            {`Expires: `}
-                        </p>
-                        <p className="text-black dark:text-slate-50 my-1"> {` ${previewLog?.expiryDate?.toDateString()}`}</p>
-                    </div>
+
+                    {(
+                        !loading &&
+                        <div className='flex flex-row'>
+                            <p className="text-black dark:text-slate-50 my-1 font-bold">
+                                {`Expires:`}
+                            </p>
+                            <p className="text-black dark:text-slate-50 my-1"> {` ${previewLog?.expiryDate?.toDateString()}`}</p>
+                        </div>
+                    )
+                    }
                     <div className="relative">
                         <IconButton
                             className='absolute top-2 right-2 '
