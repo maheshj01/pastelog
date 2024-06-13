@@ -34,26 +34,26 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
         return () => window.removeEventListener('resize', checkWindowSize);
     }, []);
 
-
     return (
         <div className={`flex ${theme == Theme.DARK ? 'darkTheme' : 'lightTheme'}`}>
-            {
-                (showSideBar && <IconButton
-                    className={`fixed top-2 left-2 z-30 ${showSideBar ? '' : 'ml-0'}`}
-                    onClick={() => {
-                        setShowSideBar(!showSideBar)
-                    }}
-                    ariaLabel="Close Sidebar"
-                    tooltipPlacement='bottom-start'
-                >
-                    <ViewSidebarRoundedIcon />
-                </IconButton>
-                )
-            }
-            <div className='z-10'>
+            <div className="fixed top-0 left-0 z-50 h-screen">
                 <Sidebar />
             </div>
-            <div className="grow w-full">{children}</div>
+            <div className="grow w-full overflow-x-hidden">
+                {(showSideBar && (
+                    <IconButton
+                        className={`fixed top-2 left-2 z-50 ${showSideBar ? '' : 'ml-0'}`}
+                        onClick={() => {
+                            setShowSideBar(!showSideBar);
+                        }}
+                        ariaLabel="Close Sidebar"
+                        tooltipPlacement="bottom-start"
+                    >
+                        <ViewSidebarRoundedIcon />
+                    </IconButton>
+                ))}
+                <div className="relative z-40">{children}</div>
+            </div>
         </div>
     );
 }
