@@ -1,9 +1,7 @@
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import {
     Navbar,
-    NavbarContent,
-    NavbarMenu,
-    NavbarMenuItem
+    NavbarContent
 } from "@nextui-org/navbar";
 import { useRouter } from "next/navigation";
 import { useSidebar } from '../_services/Context';
@@ -23,7 +21,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
     return (
         <Navbar
             position='sticky'
-            className="bg-background dark:bg-gray-600" maxWidth="full">
+            className="bg-background" maxWidth="full">
             <NavbarContent
                 className="px-2 ml-0">
                 <div className='flex space-x-8'>
@@ -46,14 +44,6 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
                         className="font-bold text-inherit text-lg px-2 cursor-pointer">Pastelog</p>
                 </div>
             </NavbarContent>
-            <NavbarContent>
-                <NavbarMenu>
-                    <NavbarMenuItem>Home</NavbarMenuItem>
-                    <NavbarMenuItem>About</NavbarMenuItem>
-                    <NavbarMenuItem>Contact</NavbarMenuItem>
-                </NavbarMenu>
-            </NavbarContent>
-
             <NavbarContent justify="end">
                 <ThemeSwitcher />
             </NavbarContent>

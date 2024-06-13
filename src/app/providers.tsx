@@ -9,11 +9,9 @@ import { SidebarContext } from './_services/Context';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <NextThemesProvider attribute="class" defaultTheme="dark">
-            <NextUIProvider>
-                {children}
-            </NextUIProvider>
-        </NextThemesProvider>
+        <NextUIProvider>
+            {children}
+        </NextUIProvider>
     )
 }
 

@@ -20,7 +20,6 @@ export async function generateStaticParams() {
 export default function LogPage({ params }: { params: { id: string } }) {
     const { id } = params;
     return <Preview
-        showNavbar={true}
         logId={id}
     />;
 };

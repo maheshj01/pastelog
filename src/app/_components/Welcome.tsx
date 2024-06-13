@@ -1,8 +1,8 @@
 "use client";
-import { Button } from '@nextui-org/react';
-import GradientText from './GradientText';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Button } from '../_components/button';
+import GradientText from './GradientText';
 
 export default function Welcome() {
     const tagLineWords = ['Easy', 'Fast', 'Powerful'];
@@ -31,7 +31,9 @@ export default function Welcome() {
                 <span>Welcome to Pastelog!</span>
                 { }
             </p>
-            <Button color="primary" onClick={handleGetStarted}>
+            <Button
+                size={'lg'}
+                onClick={handleGetStarted}>
                 Get Started
             </Button>
         </div>

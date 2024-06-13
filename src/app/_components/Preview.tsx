@@ -9,9 +9,8 @@ import Log from '../_models/Log';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
 import IconButton from './IconButton';
-import PSNavbar from './PSNavbar';
 
-const Preview = ({ showNavbar, logId }: { showNavbar: boolean, logId: string }) => {
+const Preview = ({ logId }: { logId: string }) => {
     const logService = new LogService();
     const [loading, setLoading] = useState<boolean>(true);
     const [copied, setCopied] = useState<boolean>(false);
@@ -39,10 +38,7 @@ const Preview = ({ showNavbar, logId }: { showNavbar: boolean, logId: string }) 
         }
     }, [logId]);
     return (
-        <div className={`flex flex-col items-center h-fit transition-all duration-200 ${showSideBar ? 'pl-64' : 'pl-0'}`}>
-            {(showNavbar && <PSNavbar
-                sideBarIcon={!showSideBar}
-            />)}
+        <div className={`flex flex-col items-center h-fit`}>
             <div className="w-full md:w-3/4 lg:w-2/3 max-w-none px-1 prose prose-indigo dark:prose-dark">
                 <div className='flex flex-col'>
                     <p className="text-black dark:text-slate-50 my-1">{previewLog?.title}</p>

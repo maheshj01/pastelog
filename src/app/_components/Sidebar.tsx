@@ -1,5 +1,4 @@
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
-import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Log from "../_models/Log";
@@ -7,7 +6,6 @@ import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
 import IconButton from "./IconButton";
 import SidebarItem from './SideBarItem';
-import { Theme } from './ThemeSwitcher';
 
 const Sidebar: React.FC = ({ }) => {
     const { id, setSelected, setId, showSideBar, setShowSideBar } = useSidebar();
@@ -39,7 +37,6 @@ const Sidebar: React.FC = ({ }) => {
     useEffect(() => {
         fetchLogs();
     }, []);
-    const { theme } = useTheme();
     if (loading) {
         return (
             <div className={`flex items-center justify-center min-h-screen ${showSideBar ? 'w-64' : 'w-0'}`}>
@@ -50,8 +47,8 @@ const Sidebar: React.FC = ({ }) => {
 
     return (
         <div
-            className={`fixed top-0 left-0 bottom-0 bg-surface overflow-y-auto ${theme == Theme.DARK ? 'darkTheme' : 'lightTheme'}`}>
-            <div className={`flex flex-col h-full transition-width duration-1000 ${showSideBar ? 'w-64' : 'w-0'}`}>
+            className={`fixed top-0 left-0 bottom-0 bg-surface overflow-y-auto`}>
+            <div className={`flex flex-col h-full transition-width duration-700 ${showSideBar ? 'w-64' : 'w-0'}`}>
                 {/* Fixed IconButton */}
                 <div className='sticky top-0 z-10 pt-2 pb-2'>
                     <div className='flex justify-end pr-4'>

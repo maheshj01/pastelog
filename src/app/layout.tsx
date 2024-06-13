@@ -1,8 +1,7 @@
 "use client";
 
-import { useTheme } from 'next-themes';
 import { Inter } from "next/font/google";
-import { Theme } from './_components/ThemeSwitcher';
+import { ThemeProvider } from './_components/ThemeProvider';
 import "./globals.css";
 import { Providers, SidebarProvider } from "./providers";
 
@@ -13,16 +12,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { theme } = useTheme();
-
   return (
     <html lang="en">
       <body
-        className={`${inter.className} bg-background dark:bg-gray-600 ${theme == Theme.DARK ? 'darkTheme' : 'lightTheme'}`}>
+        className={`${inter.className}`}>
         <Providers>
-          <SidebarProvider>
-            {children}
-          </SidebarProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            themes={['purple', 'red', 'blue', 'green', 'dark']}
+            disableTransitionOnChange
+          >
+            <SidebarProvider>
+              {children}
+            </SidebarProvider>
+          </ThemeProvider>
         </Providers>
       </body>
     </html>
