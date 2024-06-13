@@ -39,7 +39,7 @@ const Preview = ({ showNavbar, logId }: { showNavbar: boolean, logId: string }) 
         }
     }, [logId]);
     return (
-        <div className={`flex flex-col items-center h-fit ${showSideBar ? 'pl-64' : 'pl-0'}`}>
+        <div className={`flex flex-col items-center h-fit transition-all duration-200 ${showSideBar ? 'pl-64' : 'pl-0'}`}>
             {(showNavbar && <PSNavbar
                 sideBarIcon={!showSideBar}
             />)}

@@ -6,6 +6,7 @@ import {
     NavbarMenuItem
 } from "@nextui-org/navbar";
 import { useRouter } from "next/navigation";
+import { useSidebar } from '../_services/Context';
 import IconButton from './IconButton';
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
@@ -15,8 +16,10 @@ interface PSNavbarProps {
     onToggleSidebar?: () => void;
 }
 
-const PSNavbar: React.FC<PSNavbarProps> = ({ className, sideBarIcon, onToggleSidebar }) => {
+const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
     const router = useRouter();
+    const { showSideBar, setShowSideBar } = useSidebar();
+
     return (
         <Navbar
             position='sticky'
@@ -28,7 +31,9 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ className, sideBarIcon, onToggleSid
                         sideBarIcon && (
                             <IconButton
                                 className='absolute top-2 left-2'
-                                onClick={onToggleSidebar}
+                                onClick={() => {
+                                    setShowSideBar(!showSideBar)
+                                }}
                                 ariaLabel="Open Sidebar"
                             >
                                 <ViewSidebarRoundedIcon />
@@ -36,7 +41,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ className, sideBarIcon, onToggleSid
                         )}
                     <p
                         onClick={() => {
-                            router.push('/');
+                            router.push('/logs');
                         }}
                         className="font-bold text-inherit text-lg px-2 cursor-pointer">Pastelog</p>
                 </div>
