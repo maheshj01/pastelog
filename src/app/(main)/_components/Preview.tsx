@@ -2,6 +2,9 @@
 import Editor from '@/app/(main)/_components/Editor';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
+import { Button } from '@nextui-org/button';
+import { Tooltip } from '@nextui-org/react';
+import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -32,6 +35,15 @@ const Preview = ({ logId }: { logId: string }) => {
         setLoading(false);
     }
 
+    const downloadImage = () => {
+        const preview = document.getElementById('preview');
+        html2canvas(preview!).then(function (canvas) {
+            const link = document.createElement('a');
+            link.download = 'pastelog.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    }
     useEffect(() => {
         if (logId) {
             fetchLogsById();
@@ -45,11 +57,25 @@ const Preview = ({ logId }: { logId: string }) => {
 
                     {(
                         !loading &&
-                        <div className='flex flex-row'>
-                            <p className="text-black dark:text-slate-50 my-1 font-bold">
-                                {`Expires:`}
-                            </p>
-                            <p className="text-black dark:text-slate-50 my-1"> {` ${previewLog?.expiryDate?.toDateString()}`}</p>
+                        <div className='flex flex-row justify-between'>
+                            <div className=''>
+                                <p className="text-black dark:text-slate-50 my-1 font-bold">
+                                    {`Expires:`}
+                                </p>
+                                <p className="text-black dark:text-slate-50 my-1"> {` ${previewLog?.expiryDate?.toDateString()}`}</p>
+                            </div>
+                            <Tooltip
+                                content='Download to Image'
+                                placement='top'
+                                showArrow={true}
+                            >
+                                <Button
+                                    variant='bordered'
+                                    className='border-code-onSurface'
+                                    onClick={downloadImage}>
+                                    {'download'}
+                                </Button>
+                            </Tooltip>
                         </div>
                     )
                     }
@@ -74,14 +100,14 @@ const Preview = ({ logId }: { logId: string }) => {
                         </IconButton>
                         <Editor
                             preview={true}
-                            className={`${theme !== 'dark' ? ` min-h-screen` : `text-white min-h-screen`}`}
+                            className={`bg-background ${theme !== 'dark' ? ` min-h-screen` : `text-white min-h-screen`}`}
                             value={previewLog?.data}
                             disabled={loading}
                         />
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

@@ -27,6 +27,7 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
     const customClass = `px-2 py-2 rounded-b-lg border-surface focus:ring-secondary focus:outline-none focus:ring-2 focus:ring-2 resize-y min-h-80 w-full reactMarkDown ${className}`;
     if (preview) {
         return (<div
+            id='preview'
             style={{
                 height: "100%",
                 maxHeight: "100%"
