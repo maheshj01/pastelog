@@ -35,27 +35,27 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
 
     // Handle input change
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-
         if (onChange) {
             onChange(event);
         }
-
+        const newValue = event.target.value;
+        setInputValue(newValue);
         if (!autoSuggest) {
             return;
-        }
-        const newValue = event.target.value;
-        const newCursorPosition = event.target.selectionStart ?? 0;
-        setInputValue(newValue);
-        setCursorPosition(newCursorPosition);
-
-        if (newValue.endsWith(' ')) {
-            setLoading(true);
-            getSuggestion(newValue.trim()).then((suggestion) => {
-                setSuggestion(suggestion);
-                setLoading(false);
-            });
         } else {
-            setSuggestion('');
+            const newCursorPosition = event.target.selectionStart ?? 0;
+            setCursorPosition(newCursorPosition);
+
+            if (newValue.endsWith(' ')) {
+                setLoading(true);
+                getSuggestion(newValue.trim()).then((suggestion) => {
+                    setSuggestion(suggestion);
+                    setLoading(false);
+                });
+            } else {
+                setSuggestion('');
+            }
+
         }
     };
 
@@ -92,25 +92,25 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
     };
 
     // Update overlay position and content
-    useEffect(() => {
-        if (inputRef.current && overlayRef.current) {
-            const textareaStyles = window.getComputedStyle(inputRef.current);
-            overlayRef.current.style.font = textareaStyles.font;
-            overlayRef.current.style.lineHeight = textareaStyles.lineHeight;
-            overlayRef.current.style.padding = textareaStyles.padding;
+    // useEffect(() => {
+    //     if (inputRef.current && overlayRef.current) {
+    //         const textareaStyles = window.getComputedStyle(inputRef.current);
+    //         overlayRef.current.style.font = textareaStyles.font;
+    //         overlayRef.current.style.lineHeight = textareaStyles.lineHeight;
+    //         overlayRef.current.style.padding = textareaStyles.padding;
 
-            const textBeforeCursor = inputValue.substring(0, cursorPosition);
-            const lines = textBeforeCursor.split('\n');
-            const currentLineText = lines[lines.length - 1];
+    //         const textBeforeCursor = inputValue.substring(0, cursorPosition);
+    //         const lines = textBeforeCursor.split('\n');
+    //         const currentLineText = lines[lines.length - 1];
 
-            const textMetrics = measureText(currentLineText, overlayRef.current);
-            const lineHeight = parseFloat(textareaStyles.lineHeight);
+    //         const textMetrics = measureText(currentLineText, overlayRef.current);
+    //         const lineHeight = parseFloat(textareaStyles.lineHeight);
 
-            overlayRef.current.style.left = `${textMetrics.width}px`;
-            overlayRef.current.style.top = `${(lines.length - 1) * lineHeight + 2}px`;
-            overlayRef.current.textContent = suggestion.substring(inputValue.trim().length);
-        }
-    }, [inputValue, cursorPosition, suggestion]);
+    //         overlayRef.current.style.left = `${textMetrics.width}px`;
+    //         overlayRef.current.style.top = `${(lines.length - 1) * lineHeight + 2}px`;
+    //         overlayRef.current.textContent = suggestion.substring(inputValue.trim().length);
+    //     }
+    // }, [inputValue, cursorPosition, suggestion]);
 
     // Measure text width
     const measureText = (text: string, element: HTMLElement) => {
@@ -129,10 +129,10 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
                 className={`${customClass}`}
                 value={inputValue}
                 onChange={handleChange}
-                onKeyDown={handleKeyDown}
+                // onKeyDown={handleKeyDown}
                 placeholder={placeholder}
                 disabled={disabled}
-                ref={inputRef}
+                // ref={inputRef}
                 style={{
                     height,
                     maxHeight,

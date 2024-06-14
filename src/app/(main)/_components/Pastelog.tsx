@@ -3,6 +3,7 @@ import { getDateOffsetBy, parsedDate } from "@/utils/utils";
 import { Button as PSButton } from "@nextui-org/button";
 import { CalendarDate, DatePicker } from "@nextui-org/react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Log, { LogType } from "../_models/Log";
@@ -119,8 +120,11 @@ export default function Pastelog() {
                                 </div>
                             )}
                         <div
-                            className="h-32"
+                            className="h-16"
                         />
+                        <div className="mb-8 h-32 flex justify-center items-center">
+                            <Link color="#2563eb" href='/policies'> Terms of service</Link>
+                        </div>
                     </div >
                 </div >
             </ShortcutWrapper>

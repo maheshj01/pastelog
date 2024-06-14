@@ -16,6 +16,7 @@
     --color-code-onSurface: #191b1c;
     --color-accent: #cbd5e1;
     --color-block-surface: #e2ebf3;
+    --color-link: #2563eb;
   }
 
   .dark {
@@ -29,6 +30,7 @@
     --color-code-onSurface: #e2e8f0;
     --color-accent: #9ca3af;
     --color-block-surface: #46516a;
+    --color-link: #7aafe1;
   }
 }
 

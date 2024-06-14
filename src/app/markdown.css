@@ -90,7 +90,7 @@
     line-height: 1.5;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
-    color: var(--color-primary);
+    color: var(--color-link);
     text-decoration: none;
 }
 
