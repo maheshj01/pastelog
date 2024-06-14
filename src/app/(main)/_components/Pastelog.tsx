@@ -1,6 +1,6 @@
 "use client";
 import { getDateOffsetBy, parsedDate } from "@/utils/utils";
-import { Button } from "@nextui-org/button";
+import { Button as PSButton } from "@nextui-org/button";
 import { CalendarDate, DatePicker } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,7 @@ import LogService from "../_services/logService";
 import Editor from "./Editor";
 import PSInput from "./PSInput";
 import ShortcutWrapper from "./ShortCutWrapper";
+import { Button } from './button';
 export default function Pastelog() {
 
     const { theme } = useTheme();
@@ -66,18 +67,18 @@ export default function Pastelog() {
                         />
                         <div className="flex flex-col items-center w-full md:w-3/4 lg:w-2/3 border-black rounded-lg bg-surface">
                             <div className="flex flex-row justify-start w-full h-12 mb-1">
-                                <Button
+                                <PSButton
                                     className={`rounded-tl-lg rounded-bl-none rounded-r-none ${!preview ? selected : unSelected}`}
                                     size="lg"
                                     onClick={() => setPreview(false)}
                                     disabled={loading}
-                                >Edit</Button>
-                                <Button
+                                >Edit</PSButton>
+                                <PSButton
                                     className={`rounded-l-none rounded-tr-lg rounded-br-none ${preview ? selected : unSelected}`}
                                     size="lg"
                                     onClick={() => setPreview(true)}
                                     disabled={loading}
-                                >Preview</Button>
+                                >Preview</PSButton>
                             </div>
                             <div className="w-full max-w-none px-1 prose prose-indigo dark:prose-dark">
                                 <Editor
@@ -109,7 +110,6 @@ export default function Pastelog() {
                                     <Button
                                         className={`bg-gradient-to-r from-gray-700 to-gray-800`}
                                         onClick={publish}
-                                        isLoading={loading}
                                         disabled={loading || !content}
                                     >
                                         <div className={`px-4 ${loading || !content ? 'text-gray-300' : 'text-white'}`}>

@@ -1,6 +1,6 @@
 // src/services/LogService.ts
 import { addDoc, collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
-import { db } from '../../utils/firebase';
+import { db } from '../../../utils/firebase';
 import { Log } from '../_models/Log';
 
 class LogService {

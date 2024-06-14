@@ -1,7 +1,7 @@
 "use client";
 
 import { Inter } from "next/font/google";
-import { ThemeProvider } from './_components/ThemeProvider';
+import { ThemeProvider } from './(main)/_components/ThemeProvider';
 import "./globals.css";
 import { Providers, SidebarProvider } from "./providers";
 

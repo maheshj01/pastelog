@@ -117,7 +117,7 @@
     background-color: var(--color-code-surface);
     border-radius: 0.5em;
     /* Padding around highlighted code block */
-    padding: 0px;
+    padding: 15px;
     overflow-x: auto;
 }
 
@@ -129,9 +129,9 @@
     line-height: 1.5;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
-    color: var(--color-black);
+    color: var(--color-code-onSurface);
     border-radius: 0.5em;
-    /* padding: 0.5em 0.7em; */
+    /* padding: 0.5em 0.5em; */
 }
 
 /* add standard styles for blockquotes */

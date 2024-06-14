@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Welcome from './_components/Welcome';
+import Welcome from './(main)/_components/Welcome';
 
 export default function Page() {
   const [isFirstVisit, setIsFirstVisit] = useState(true);

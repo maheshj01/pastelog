@@ -1,6 +1,6 @@
 
-import Preview from '@/app/_components/Preview';
-import LogService from '@/app/_services/logService';
+import Preview from '@/app/(main)/_components/Preview';
+import LogService from '@/app/(main)/_services/logService';
 
 // This is required for dynamic routing in runtime
 export const dynamicParams = true;

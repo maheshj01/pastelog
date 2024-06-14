@@ -1,8 +1,8 @@
 "use client";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Button } from '../_components/button';
 import GradientText from './GradientText';
+import { Button } from './button';
 
 export default function Welcome() {
     const tagLineWords = ['Easy', 'Fast', 'Powerful'];

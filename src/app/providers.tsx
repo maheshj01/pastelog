@@ -2,10 +2,9 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react';
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ReactNode, useState } from 'react';
-import Log from './_models/Log';
-import { SidebarContext } from './_services/Context';
+import Log from './(main)/_models/Log';
+import { SidebarContext } from './(main)/_services/Context';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (

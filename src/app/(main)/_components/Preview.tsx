@@ -1,5 +1,5 @@
 "use client";
-import Editor from '@/app/_components/Editor';
+import Editor from '@/app/(main)/_components/Editor';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
 import { useTheme } from 'next-themes';
@@ -74,7 +74,7 @@ const Preview = ({ logId }: { logId: string }) => {
                         </IconButton>
                         <Editor
                             preview={true}
-                            className={`${theme !== 'dark' ? ` bg-slate-200 text-black min-h-screen` : `bg-gray-700 text-white min-h-screen`}`}
+                            className={`${theme !== 'dark' ? ` min-h-screen` : `text-white min-h-screen`}`}
                             value={previewLog?.data}
                             disabled={loading}
                         />

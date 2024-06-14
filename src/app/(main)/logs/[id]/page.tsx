@@ -1,6 +1,6 @@
+import Preview from '@/app/(main)/_components/Preview';
 import type { Metadata } from "next";
 import LogService from '../../_services/logService';
-import Preview from '@/app/_components/Preview';
 
 // This is required for dynamic routing in runtime
 export const dynamicParams = true;
