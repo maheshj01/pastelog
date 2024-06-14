@@ -32,6 +32,7 @@ export default function Welcome() {
                 { }
             </p>
             <Button
+                className='bg-gradient-to-br from-indigo-500  to-indigo-700'
                 size={'lg'}
                 onClick={handleGetStarted}>
                 Get Started
