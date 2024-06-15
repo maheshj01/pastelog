@@ -1,4 +1,3 @@
-
 import Preview from '@/app/(main)/_components/Preview';
 import LogService from '@/app/(main)/_services/logService';
 
@@ -8,6 +7,7 @@ export const dynamicParams = true;
 export async function generateStaticParams() {
     const logService = new LogService();
     const logs = await logService.fetchLogs();
+    // const logs = await logService.fetchLogsFromLocal();
     return logs.map(log => ({ id: log.id }));
 }
 export default function PublishPage({ params }: { params: { id: string } }) {
