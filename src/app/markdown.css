@@ -1,3 +1,9 @@
+.reactMarkDown {
+    /* word-break: break-all;
+    white-space: pre-wrap; */
+    word-wrap: break-word;
+}
+
 .reactMarkDown h1 {
     font-size: 2.25rem;
     font-weight: 700;

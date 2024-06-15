@@ -15,7 +15,7 @@ import { Button } from './button';
 export default function Pastelog() {
 
     const { theme } = useTheme();
-    const [description, setDescription] = useState<string>('');
+    const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>('');
     const [preview, setPreview] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -28,16 +28,15 @@ export default function Pastelog() {
 
     async function publish() {
         setLoading(true);
-        // 30 days from now
         const today = new Date();
-        // Publish the pastelog
         const log = new Log(
             expiryDate.toDate('UTC'),
             content,
             new Date(),
-            description,
             LogType.TEXT,
-            true
+            true,
+            title,
+            false,
         );
         const id = await logService.publishLog(log);
         if (!id) {
@@ -62,8 +61,8 @@ export default function Pastelog() {
                         <PSInput
                             className="my-2"
                             placeHolder="Pastelog Description"
-                            value={description}
-                            onChange={(e) => { setDescription(e.target.value) }}
+                            value={title}
+                            onChange={(e) => { setTitle(e.target.value) }}
                             disabled={loading}
                         />
                         <div className="flex flex-col items-center w-full md:w-3/4 lg:w-2/3 border-black rounded-lg bg-surface">

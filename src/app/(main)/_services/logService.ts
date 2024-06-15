@@ -4,12 +4,15 @@ import { db } from '../../../utils/firebase';
 import { Log } from '../_models/Log';
 
 class LogService {
-    private logCollection = collection(db, 'logs_dev');
+    private logCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION}`);
     async fetchLogs(): Promise<Log[]> {
         const querySnapshot = await getDocs(this.logCollection);
         const logs: Log[] = [];
         querySnapshot.forEach((doc) => {
-            logs.push(Log.fromFirestore(doc));
+            const log = Log.fromFirestore(doc);
+            if (!log.isExpired) {
+                logs.push(Log.fromFirestore(doc));
+            }
         });
         return logs;
     }

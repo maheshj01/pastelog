@@ -10,33 +10,37 @@ export interface ILog {
     expiryDate: Date | null;
     data: string;
     createdDate: Date;
-    title: string;
+    title?: string | '';
     type: LogType;
     isMarkDown: boolean;
     id?: string;
+    isExpired?: boolean | false;
 }
 
 export class Log implements ILog {
     expiryDate: Date | null;
     data: string;
-    title: string;
+    title?: string | '';
     createdDate: Date;
     type: LogType;
     isMarkDown: boolean;
+    isExpired?: boolean | false;
     id?: string | undefined;
 
     constructor(
         expiryDate: Date | null,
         data: string,
         createdDate: Date,
-        title: string,
         type: LogType,
         isMarkDown: boolean,
+        title?: string | '',
+        isExpired?: boolean | false,
         id?: string
     ) {
         this.expiryDate = expiryDate;
         this.data = data;
         this.title = title;
+        this.isExpired = isExpired;
         this.createdDate = new Date(createdDate);
         this.type = type;
         this.isMarkDown = isMarkDown;
@@ -49,9 +53,10 @@ export class Log implements ILog {
             data.expiryDate ? new Date(data.expiryDate) : null,
             data.data,
             new Date(data.createdDate),
-            data.title,
             data.type as LogType,
             data.isMarkDown,
+            data.title ? data.title : '',
+            data.isExpired,
             data.id ? data.id : doc.id
         );
     }
@@ -61,9 +66,10 @@ export class Log implements ILog {
             expiryDate: this.expiryDate ? this.expiryDate.toISOString() : null,
             data: this.data,
             createdDate: this.createdDate.toISOString(),
-            title: this.title,
+            title: this.title ? this.title : '',
             type: this.type,
             isMarkDown: this.isMarkDown,
+            isExpired: this.isExpired
         };
     }
 }

@@ -77,12 +77,17 @@ const Preview = ({ logId }: { logId: string }) => {
                     {(
                         !loading &&
                         <div className='flex flex-row justify-between'>
-                            <div className=''>
-                                <p className="text-black dark:text-slate-50 my-1 font-bold">
-                                    {`Expires:`}
-                                </p>
-                                <p className="text-black dark:text-slate-50 my-1"> {` ${previewLog?.expiryDate?.toDateString()}`}</p>
-                            </div>
+                            {
+                                previewLog?.expiryDate ?
+                                    <div>
+                                        <p className="text-black dark:text-slate-50 my-1 font-bold">
+                                            {`Expires:`}
+                                        </p>
+                                        <p className="text-black dark:text-slate-50 my-1"> {` ${previewLog?.expiryDate?.toDateString()}`}</p>
+                                    </div>
+                                    : <div></div>
+
+                            }
                             <Tooltip
                                 content='Download to Image'
                                 placement='top'
