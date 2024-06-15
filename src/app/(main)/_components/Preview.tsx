@@ -3,11 +3,11 @@ import Editor from '@/app/(main)/_components/Editor';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
 import { Button } from '@nextui-org/button';
-import { Tooltip } from '@nextui-org/react';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 import Log from '../_models/Log';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
@@ -22,6 +22,60 @@ const Preview = ({ logId }: { logId: string }) => {
     const { showSideBar } = useSidebar();
 
     const router = useRouter();
+
+
+    function Download() {
+        return (
+            <Dropdown
+                size='md'
+                className='min-w-32 w-fit'
+                placement='bottom-start' >
+                <DropdownTrigger>
+                    <Button
+                        variant='bordered'
+                        className='border-code-onSurface'>
+                        {'download'}
+                    </Button>
+
+                </DropdownTrigger>
+                <DropdownMenu
+                    aria-label="download"
+                    // disabledKeys={["edit", "delete"]}
+                    onAction={handleonAction}
+                >
+                    <DropdownItem key="image">Image</DropdownItem>
+                    <DropdownItem key="text">Text</DropdownItem>
+                    {/* <DropdownItem key="delete" className="text-danger" color="danger">
+                        Delete file
+                    </DropdownItem> */}
+                </DropdownMenu>
+            </Dropdown>
+        );
+    }
+
+
+    function handleonAction(key: Key) {
+        switch (key) {
+            case 'image':
+                downloadImage();
+                break;
+            case 'text':
+                downloadText();
+                break;
+            default:
+                break;
+        }
+    }
+
+    const downloadText = () => {
+        if (!previewLog?.data) return;
+        const element = document.createElement("a");
+        const file = new Blob([previewLog.data], { type: 'text/plain' });
+        element.href = URL.createObjectURL(file);
+        element.download = "pastelog.txt";
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+    }
 
     async function fetchLogsById() {
         setLoading(true);
@@ -81,25 +135,14 @@ const Preview = ({ logId }: { logId: string }) => {
                                 previewLog?.expiryDate ?
                                     <div>
                                         <p className="text-black dark:text-slate-50 my-1 font-bold">
-                                            {`Expires:`}
+                                            {`Expires`}
                                         </p>
                                         <p className="text-black dark:text-slate-50 my-1"> {` ${previewLog?.expiryDate?.toDateString()}`}</p>
                                     </div>
                                     : <div></div>
 
                             }
-                            <Tooltip
-                                content='Download to Image'
-                                placement='top'
-                                showArrow={true}
-                            >
-                                <Button
-                                    variant='bordered'
-                                    className='border-code-onSurface'
-                                    onClick={downloadImage}>
-                                    {'download'}
-                                </Button>
-                            </Tooltip>
+                            <Download />
                         </div>
                     )
                     }
