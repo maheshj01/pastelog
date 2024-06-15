@@ -22,7 +22,7 @@ export default function Pastelog() {
     const today = new Date();
     const [expiryDate, setExpiryDate] = useState<CalendarDate>(getDateOffsetBy(30));
     const logService = new LogService();
-    const selected = 'bg-secondary text-slate-50 dark:text-slate-50';
+    const selected = 'dark:bg-gray-600 bg-gray-400 text-slate-50 dark:text-slate-50';
     const unSelected = 'text-black bg-accent dark:text-slate-50 ';
     const router = useRouter();
 
