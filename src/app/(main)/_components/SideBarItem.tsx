@@ -1,8 +1,8 @@
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 import { Key, useState } from 'react';
 import Log from "../_models/Log";
 import LogService from '../_services/logService';
+import PSDropdown from "./Dropdown";
 
 interface SidebarItemProps {
     id: string;
@@ -16,25 +16,15 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const [isHovered, setIsHovered] = useState(false);
 
     function MoreOptions() {
-        return (
-            <Dropdown
-                size='md'
-                className='min-w-32 w-fit'
-                placement='bottom-start'
-            >
-                <DropdownTrigger>
-                    <EllipsisHorizontalIcon
-                        className='h-7 w-7 cursor-pointer hover:text-black-500 transition-all duration-100'
-                    />
-                </DropdownTrigger>
-                <DropdownMenu
-                    aria-label="menu"
-                    onAction={handleonAction}
-                >
-                    <DropdownItem key="share">Share</DropdownItem>
-                    <DropdownItem key="delete">Delete</DropdownItem>
-                </DropdownMenu>
-            </Dropdown>
+        const options = ['Share', 'Delete'];
+
+        return (<PSDropdown
+            options={options}
+            onClick={handleonAction}
+            className="custom-dropdown-class">
+            <EllipsisHorizontalIcon
+                className='h-5 w-7 cursor-pointer transition-all duration-100' />
+        </PSDropdown>
         );
     }
 

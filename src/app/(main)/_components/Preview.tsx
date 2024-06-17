@@ -1,17 +1,16 @@
 "use client";
 import Editor from '@/app/(main)/_components/Editor';
 import { formatReadableDate } from '@/utils/utils';
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
-import { Button } from '@nextui-org/button';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Key, useEffect, useState } from 'react';
 import Log from '../_models/Log';
-import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
+import PSDropdown from './Dropdown';
 import IconButton from './IconButton';
 
 const Preview = ({ logId }: { logId: string }) => {
@@ -20,46 +19,35 @@ const Preview = ({ logId }: { logId: string }) => {
     const [copied, setCopied] = useState<boolean>(false);
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
     const { theme } = useTheme();
-    const { showSideBar } = useSidebar();
+    const router = useRouter();
+    const isPublishRoute = usePathname().includes('/logs/publish');
 
-    function Download() {
-        return (
-            <Dropdown
-                size='md'
-                className='min-w-32 w-fit'
-                placement='bottom-start' >
-                <DropdownTrigger>
-                    <Button
-                        variant='bordered'
-                        className='border-code-onSurface'>
-                        {'download'}
-                    </Button>
-
-                </DropdownTrigger>
-                <DropdownMenu
-                    aria-label="download"
-                    // disabledKeys={["edit", "delete"]}
-                    onAction={handleonAction}
-                >
-                    <DropdownItem key="image">Image</DropdownItem>
-                    <DropdownItem key="text">Text</DropdownItem>
-                    {/* <DropdownItem key="delete" className="text-danger" color="danger">
-                        Delete file
-                    </DropdownItem> */}
-                </DropdownMenu>
-            </Dropdown>
+    function More() {
+        const options = ['Image', 'Text'];
+        if (!logService.isLogPresentLocally(logId)) options.push('Save');
+        return (<PSDropdown
+            options={options}
+            onClick={handleonAction}
+            placement='bottom-end'
+            className="custom-dropdown-class">
+            <EllipsisHorizontalIcon
+                className='h-7 w-7 cursor-pointer dark:text-slate-100 transition-all duration-100' />
+        </PSDropdown>
         );
     }
 
 
     function handleonAction(key: Key) {
+        console.log(key);
         switch (key) {
-            case 'image':
+            case '0':
                 downloadImage();
                 break;
-            case 'text':
+            case '1':
                 downloadText();
                 break;
+            case '2':
+                logService.saveLogToLocal(previewLog!);
             default:
                 break;
         }
@@ -140,7 +128,17 @@ const Preview = ({ logId }: { logId: string }) => {
                                     : <div></div>
 
                             }
-                            <Download />
+                            {isPublishRoute && (
+                                <div className='space-x-2'>
+                                    {/* <Button
+                                        variant='bordered'
+                                        className='border-code-onSurface'
+                                        onClick={() => { }}>
+                                        {'save'}
+                                    </Button> */}
+                                    <More />
+                                </div>
+                            )}
                         </div>
                     )
                     }

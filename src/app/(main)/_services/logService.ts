@@ -82,6 +82,11 @@ class LogService {
         }
     }
 
+    async isLogPresentLocally(id: string): Promise<boolean> {
+        const logs = await this.fetchLogsFromLocal();
+        return logs.some(log => log.id === id);
+    }
+
     // Local Storage Methods
     private saveLogsToLocal(logs: Log[]): void {
         if (typeof window !== 'undefined') {
