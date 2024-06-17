@@ -28,7 +28,6 @@ export default function Pastelog() {
 
     async function publish() {
         setLoading(true);
-        const today = new Date();
         const log = new Log(
             expiryDate.toDate('UTC'),
             content,
