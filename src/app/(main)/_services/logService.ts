@@ -1,6 +1,6 @@
 // src/services/LogService.ts
 
-import { addDoc, collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
 import { Log } from '../_models/Log';
 
@@ -38,15 +38,17 @@ class LogService {
         try {
             const docRef = await addDoc(this.logCollection, log.toFirestore());
             if (docRef.id) {
+                console.log("published at", docRef.id);
                 await this.saveLogToLocal({
                     ...log, id: docRef.id,
                     toFirestore: function () {
                         throw new Error('Function not implemented.');
                     }
                 });
-                return docRef.id;
+                return docRef.id!
             }
-            return '';
+            console.log("publish failed");
+            return await this.fetchLogFromLocalById(docRef.id) ? docRef.id : '';
         } catch (e) {
             return '';
         }
@@ -56,6 +58,18 @@ class LogService {
         const docRef = doc(this.logCollection, id);
         await updateDoc(docRef, log.toFirestore());
         await this.saveLogToLocal(log);
+    }
+
+    async markExpiredById(id: string): Promise<void> {
+        const docRef = doc(this.logCollection, id);
+        await updateDoc(docRef, { isExpired: true });
+        await this.deleteLogFromLocal(id);
+    }
+
+    async deleteLogById(id: string): Promise<void> {
+        const docRef = doc(this.logCollection, id);
+        await deleteDoc(docRef);
+        await this.deleteLogFromLocal(id);
     }
 
     async deleteExpiredLogs(): Promise<void> {

@@ -21,7 +21,6 @@ const Preview = ({ logId }: { logId: string }) => {
     const [copied, setCopied] = useState<boolean>(false);
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
     const { theme } = useTheme();
-    const router = useRouter();
     const pathName = usePathname()
     const isPublishRoute = pathName.includes('/logs/publish');
     const { isOpen, onOpen, onClose } = useDisclosure();

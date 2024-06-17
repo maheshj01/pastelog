@@ -21,12 +21,12 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     function MoreOptions() {
-        const options = ['Share', 'Delete'];
+        const options = ['Share', 'Delete', 'Delete Local'];
 
         return (<PSDropdown
             options={options}
             onClick={handleonAction}
-            className="custom-dropdown-class">
+            className="dropdown-class">
             <EllipsisHorizontalIcon
                 className='h-5 w-7 cursor-pointer transition-all duration-100' />
         </PSDropdown>
@@ -49,6 +49,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
         const logService = new LogService();
         switch (key) {
             case '1':
+                await logService.deleteLogById(id);
+                onRefresh();
+                break;
+            case '2':
                 await logService.deleteLogFromLocal(id);
                 onRefresh();
                 break;
