@@ -4,6 +4,7 @@ import { formatReadableDate } from '@/utils/utils';
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
+import { useDisclosure } from '@nextui-org/react';
 import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
 import { usePathname, useRouter } from 'next/navigation';
@@ -12,6 +13,7 @@ import Log from '../_models/Log';
 import LogService from '../_services/logService';
 import PSDropdown from './Dropdown';
 import IconButton from './IconButton';
+import ShareDialog from './Share';
 
 const Preview = ({ logId }: { logId: string }) => {
     const logService = new LogService();
@@ -20,11 +22,28 @@ const Preview = ({ logId }: { logId: string }) => {
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
     const { theme } = useTheme();
     const router = useRouter();
-    const isPublishRoute = usePathname().includes('/logs/publish');
+    const pathName = usePathname()
+    const isPublishRoute = pathName.includes('/logs/publish');
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const [shareContent, setShareContent] = useState({
+        title: "Share Pastelog",
+        content: process.env.NEXT_PUBLIC_BASE_URL + pathName,
+    });
+
+    const handleShare = () => {
+        // Copy link to clipboard
+        navigator.clipboard.writeText(`${window.location.origin}/logs/publish/${previewLog?.id}`);
+        onClose(); // Close the dialog after sharing
+    };
+
 
     function More() {
-        const options = ['Image', 'Text'];
-        if (!logService.isLogPresentLocally(logId)) options.push('Save');
+        const options = ['Image', 'Text', 'Share'];
+        if (!logService.isLogPresentLocally(logId)) {
+
+            options.push('Save');
+        }
         return (<PSDropdown
             options={options}
             onClick={handleonAction}
@@ -47,6 +66,8 @@ const Preview = ({ logId }: { logId: string }) => {
                 downloadText();
                 break;
             case '2':
+                onOpen();
+            case '3':
                 logService.saveLogToLocal(previewLog!);
             default:
                 break;
@@ -137,6 +158,13 @@ const Preview = ({ logId }: { logId: string }) => {
                                         {'save'}
                                     </Button> */}
                                     <More />
+                                    <ShareDialog
+                                        isOpen={isOpen}
+                                        onClose={onClose}
+                                        onShare={handleShare}
+                                        title={shareContent.title}
+                                        content={shareContent.content}
+                                    />
                                 </div>
                             )}
                         </div>
