@@ -1,5 +1,6 @@
 "use client";
 import Editor from '@/app/(main)/_components/Editor';
+import { formatReadableDate } from '@/utils/utils';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
 import { Button } from '@nextui-org/button';
@@ -20,9 +21,6 @@ const Preview = ({ logId }: { logId: string }) => {
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
     const { theme } = useTheme();
     const { showSideBar } = useSidebar();
-
-    const router = useRouter();
-
 
     function Download() {
         return (
@@ -137,7 +135,7 @@ const Preview = ({ logId }: { logId: string }) => {
                                         <p className="text-black dark:text-slate-50 my-1 font-bold">
                                             {`Expires`}
                                         </p>
-                                        <p className="text-black dark:text-slate-50 my-1"> {` ${previewLog?.expiryDate?.toDateString()}`}</p>
+                                        <p className="text-black dark:text-slate-50 my-1"> {` ${formatReadableDate(previewLog?.expiryDate)}`}</p>
                                     </div>
                                     : <div></div>
 

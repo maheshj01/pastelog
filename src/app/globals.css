@@ -17,6 +17,7 @@
     --color-accent: #cbd5e1;
     --color-block-surface: #e2ebf3;
     --color-link: #2563eb;
+    --color-input-background: #f1f5f9
   }
 
   .dark {
@@ -24,13 +25,14 @@
     --color-secondary: #374151;
     --color-tertiary: #4b5563;
     --color-surface: #6b7280;
-    --color-background: #374151;
+    --color-background: #292f39;
     --color-sidebar: #111827;
     --color-code-surface: #222324;
     --color-code-onSurface: #e2e8f0;
     --color-accent: #9ca3af;
     --color-block-surface: #46516a;
     --color-link: #7aafe1;
+    --color-input-background: #5f6877;
   }
 }
 

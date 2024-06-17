@@ -1,19 +1,21 @@
+"use client";
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Log from "../_models/Log";
 import { useSidebar } from '../_services/Context';
-import LogService from '../_services/logService';
 import IconButton from "./IconButton";
+import LogService from '../_services/logService';
 import SidebarItem from './SideBarItem';
 
-const Sidebar: React.FC = ({ }) => {
-    const { id, setSelected, setId, showSideBar, setShowSideBar } = useSidebar();
+const Sidebar: React.FC = () => {
+    const { id, setSelected, setId, showSideBar } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
     const [logs, setLogs] = useState<Log[]>([]);
+    const [refresh, setRefresh] = useState<boolean>(false);
     const router = useRouter();
 
-    function onLogClick(log: Log | null) {
+    const onLogClick = useCallback((log: Log | null) => {
         if (log) {
             setSelected(log);
             setId(log.id!);
@@ -23,20 +25,23 @@ const Sidebar: React.FC = ({ }) => {
             setId(null);
             router.push(`/logs`);
         }
-    }
+    }, [router, setSelected, setId]);
 
-    async function fetchLogs() {
+    const fetchLogs = useCallback(async () => {
         setLoading(true);
         const logService = new LogService();
-        const logs = await logService.fetchLogs();
+        const logs = await logService.fetchLogsFromLocal();
         setLogs(logs);
-        logService.deleteExpiredLogs();
+        await logService.deleteExpiredLogs();
         setLoading(false);
-    }
+    }, []);
 
     useEffect(() => {
         fetchLogs();
-    }, []);
+    }, [fetchLogs, refresh]);
+
+    const handleRefresh = () => setRefresh(prev => !prev);
+
     if (loading) {
         return (
             <div className={`flex items-center justify-center min-h-screen ${showSideBar ? 'w-64' : 'w-0'}`}>
@@ -46,8 +51,7 @@ const Sidebar: React.FC = ({ }) => {
     }
 
     return (
-        <div
-            className={`fixed top-0 left-0 bottom-0 bg-surface overflow-y-auto`}>
+        <div className={`fixed top-0 left-0 bottom-0 bg-surface overflow-y-auto`}>
             <div className={`flex flex-col h-full transition-width duration-700 ${showSideBar ? 'w-64' : 'w-0'}`}>
                 {/* Fixed IconButton */}
                 <div className='sticky top-0 z-10 pt-2 pb-2'>
@@ -70,12 +74,13 @@ const Sidebar: React.FC = ({ }) => {
                             log={log}
                             key={log.id}
                             onLogClick={() => onLogClick(log)}
+                            onRefresh={handleRefresh} // Pass the refresh function
                         />
                     ))}
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default Sidebar;
