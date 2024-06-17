@@ -37,26 +37,33 @@ https://user-images.githubusercontent.com/31410839/178278070-47329147-acc4-4be2-
 
 ### Folder Structure
 
-```
-project-root /
+<!-- current folder structure -->
+
+root /
     ├──src
     │    ├── app /
-    │    │   ├── models /
-    │    │   │   ├── Log.ts
-    │    │   ├── services /
-    │    │   │   ├── LogService.ts
-    │    │   ├── components /
-    │    │   │   ├── Sidebar.tsx
-    │    │   │   ├── Navbar.tsx
-    │    │   │   │
-    │    │   ├── logs /
-    │    │   │   ├──publish
-    │    │   │   │   ├── [id]
-    │    │   │   │   |     ├── page.tsx
-    │    │   │   ├──[id]
-    │    │   │   │   ├── page.tsx
-    │    │   └── layout.tsx
-    │    │   └── global.css
-    │    │   └── page.tsx
-
-```
+    │    │    ├── (main)/
+    │    │    │    ├── _models/
+    │    │    │    │   ├── Log.ts
+    │    │    │    ├── _services/
+    │    │    │    │   ├── LogService.ts
+    │    │    │    ├── _components/
+    │    │    │    │   ├── Sidebar.tsx
+    │    │    │    │   ├── Navbar.tsx
+    │    │    │    │   ├── MainContent.tsx
+    │    │    │    │   │
+    │    │    │    ├── logs /
+    │    │    │    │   ├──[id]
+    │    │    │    │   │   └── page.tsx
+    │    │    │    │   └── layout.tsx
+    │    │    │    │   └── page.tsx
+    │    │    ├── (publish)/
+    │    │    │    ├── logs /
+    │    │    │    │   ├── publish /
+    │    │    │    │   │    ├──[id]/
+    │    │    │    │   │        └── page.tsx
+    │    │    │    └── layout.tsx
+    │    │    │
+    │    │    └── layout.tsx
+    │    │    └── global.css
+    │    │    └── page.tsx
