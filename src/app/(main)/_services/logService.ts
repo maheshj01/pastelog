@@ -8,11 +8,6 @@ class LogService {
     private logCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION}`);
 
     async fetchLogs(): Promise<Log[]> {
-        const logsFromLocal = await this.fetchLogsFromLocal();
-        if (logsFromLocal.length > 0) {
-            return logsFromLocal;
-        }
-
         const querySnapshot = await getDocs(this.logCollection);
         const logs: Log[] = [];
         querySnapshot.forEach((doc) => {
