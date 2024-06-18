@@ -42,8 +42,10 @@ const Preview = ({ logId }: { logId: string }) => {
 
     function More() {
         const options = ['Image', 'Text', 'Share'];
+        // if (!isPublishRoute) {
+        //     options.push('Share');
+        // }
         if (!logService.isLogPresentLocally(logId)) {
-
             options.push('Save');
         }
         return (<PSDropdown
