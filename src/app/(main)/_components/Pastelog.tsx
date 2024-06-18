@@ -42,7 +42,8 @@ export default function Pastelog() {
             setLoading(false);
             return;
         }
-        router.push(`/logs/publish/${id}`);
+        // Push the route and then reload the page
+        router.push(`/logs/${id}`);
         setLoading(false);
     }
 
