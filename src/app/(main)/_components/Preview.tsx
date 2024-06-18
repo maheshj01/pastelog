@@ -7,9 +7,10 @@ import DoneIcon from '@mui/icons-material/Done';
 import { useDisclosure } from '@nextui-org/react';
 import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Key, useEffect, useState } from 'react';
 import Log from '../_models/Log';
+import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
 import PSDropdown from './Dropdown';
 import IconButton from './IconButton';
@@ -17,6 +18,8 @@ import ShareDialog from './Share';
 
 const Preview = ({ logId }: { logId: string }) => {
     const logService = new LogService();
+    const { setId } = useSidebar();
+
     const [loading, setLoading] = useState<boolean>(true);
     const [copied, setCopied] = useState<boolean>(false);
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
@@ -125,6 +128,7 @@ const Preview = ({ logId }: { logId: string }) => {
     };
     useEffect(() => {
         if (logId) {
+            setId(logId);
             fetchLogsById();
         }
     }, [logId]);
