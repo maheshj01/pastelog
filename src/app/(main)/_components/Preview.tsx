@@ -1,5 +1,6 @@
 "use client";
 import Editor from '@/app/(main)/_components/Editor';
+import { showToast } from '@/utils/toast_utils';
 import { formatReadableDate } from '@/utils/utils';
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -184,6 +185,7 @@ const Preview = ({ logId }: { logId: string }) => {
                                 setTimeout(() => {
                                     setCopied(false);
                                 }, 2000);
+                                showToast("success", <p> Copied to Clipboard! </p>);
                             }}
                             ariaLabel="Copy to clipboard"
                         >{!copied ?
@@ -202,7 +204,7 @@ const Preview = ({ logId }: { logId: string }) => {
                         />
                     </div>
                 </div>
-            </div>
+            </div >
         </div >
     );
 }
