@@ -18,12 +18,12 @@ const Sidebar: React.FC = () => {
 
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
-            // setSelected(log);
-            // setId(log.id!);
+            setSelected(log);
+            setId(log.id!);
             router.push(`/logs/${log.id}`);
         } else {
-            // setSelected(null);
-            // setId(null);
+            setSelected(null);
+            setId(null);
             router.push(`/logs`);
         }
     }, []);
@@ -42,19 +42,18 @@ const Sidebar: React.FC = () => {
     }, [fetchLogs, refresh]);
 
     const handleRefresh = () => setRefresh(prev => !prev);
-    const githubLogo = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/1200px-GitHub_Invertocat_Logo.svg.png';
     return (
         <div className={`fixed top-0 left-0 bottom-0 bg-surface overflow-y-auto`}>
             <div className='absolute bottom-10 left-10'>
                 {/* github link */}
 
-                <Link href={process.env.NEXT_PUBLIC_GITHUB_REPO ?? 'https://github.com/maheshmnj/pastelog'} passHref={true}
+                <Link href={process.env.NEXT_PUBLIC_GITHUB_REPO ?? ''} passHref={true}
                     target='_blank'
                 >
                     <Image
                         width={32}
                         height={32}
-                        src={githubLogo} alt={'Github repo'} />
+                        src={process.env.NEXT_PUBLIC_GITHUB_LOGO ?? ''} alt={'Github repo'} />
                 </Link>
             </div>
             {loading ? (
