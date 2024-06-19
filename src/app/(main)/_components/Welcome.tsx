@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import LogService from '../_services/logService';
 import GradientText from './GradientText';
 import { Button } from './button';
 
@@ -9,7 +10,7 @@ export default function Welcome() {
     const tagLineDescription = ['Easy to use', 'Fast to load', 'Powerful features'];
     const [currentTagLine, setCurrentTagLine] = useState(0);
     const router = useRouter();
-
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentTagLine((prev) => (prev + 1) % tagLineWords.length);
@@ -18,9 +19,37 @@ export default function Welcome() {
         return () => clearInterval(interval);
     }, []);
 
-    const handleGetStarted = () => {
-        localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
-        router.push('/logs');
+    const saveLocally = async () => {
+        const logService = new LogService();
+        const log = await logService.fetchLogById('getting-started');
+        if (log) {
+            logService.saveLogToLocal(log);
+        }
+    }
+
+    const handleGetStarted = async () => {
+        setLoading(true); // Set loading state to true immediately
+
+        const timeoutPromise = new Promise<void>(resolve => {
+            setTimeout(() => {
+                console.log('Get Started');
+                setLoading(false); // Set loading state to false after timeout
+                router.push('/logs');
+                resolve(); // Resolve the promise after timeout completes
+            }, 2000);
+        });
+
+        // Create a promise that resolves when timeoutPromise resolves
+        const result = await Promise.race([
+            timeoutPromise,
+            new Promise<void>(resolve => {
+                console.log('loading');
+                // Here you can perform any actions that should happen after the timeout
+                localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
+                saveLocally();
+                resolve();
+            })
+        ]);
     };
 
     return (
@@ -35,7 +64,9 @@ export default function Welcome() {
                 className='bg-gradient-to-br from-indigo-500  to-indigo-700'
                 size={'lg'}
                 onClick={handleGetStarted}>
-                Get Started
+                {loading ? (
+                    <div className="loader mx-6 py-1" />
+                ) : "Get Started"}
             </Button>
         </div>
     );
