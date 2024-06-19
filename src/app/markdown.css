@@ -1,0 +1,237 @@
+.reactMarkDown {
+    /* word-break: break-all;
+    white-space: pre-wrap; */
+    word-wrap: break-word;
+}
+
+.reactMarkDown h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.0;
+    color: var(--color-black);
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* add standard styles for headings */
+.reactMarkDown h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.0;
+    margin-top: 0.5em;
+    color: var(--color-black);
+    margin-bottom: 0.5em;
+}
+
+.reactMarkDown h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.0;
+    margin-top: 0.5em;
+    color: var(--color-black);
+    margin-bottom: 0.5em;
+}
+
+.reactMarkDown h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.0;
+    margin-top: 0.5em;
+    color: var(--color-black);
+    margin-bottom: 0.5em;
+}
+
+.reactMarkDown h5 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.0;
+    margin-top: 0.5em;
+    color: var(--color-black);
+    margin-bottom: 0.5em;
+}
+
+.reactMarkDown h6 {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.0;
+    margin-top: 0.5em;
+    color: var(--color-black);
+    margin-bottom: 0.5em;
+}
+
+/* add standard styles for paragraphs */
+
+.reactMarkDown p {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    color: var(--color-black);
+    margin-bottom: 0.5em;
+}
+
+/* add standard styles for lists */
+
+.reactMarkDown ul {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.reactMarkDown ol {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* add standard styles for links */
+
+.reactMarkDown a {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: var(--color-link);
+    text-decoration: none;
+}
+
+/* add standard styles for images */
+
+.reactMarkDown img {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    max-width: 100%;
+    height: auto;
+}
+
+/* add standard styles for code blocks */
+.reactMarkDown pre {
+    font-size: 0.8rem !important;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: black;
+    background-color: var(--color-code-surface);
+    border-radius: 0.5em;
+    /* Padding around highlighted code block */
+    padding: 15px;
+    overflow-x: auto;
+}
+
+/* add standard styles for inline code */
+
+.reactMarkDown code {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: var(--color-code-onSurface);
+    border-radius: 0.5em;
+    /* padding: 0.5em 0.5em; */
+}
+
+/* Styles for inline code blocks */
+.reactMarkDown code:not(pre code) {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    background-color: var(--color-code-surface);
+    color: var(--color-code-onSurface);
+    border-radius: 0.5em;
+    padding: 0.2em 0.4em;
+    /* Add padding for inline code blocks */
+}
+
+/* add backtick styles for inline code */
+
+/* .reactMarkDown code::before:not(pre code) {
+    content: '"`"',
+}
+
+.reactMarkDown code::after:not(pre code) {
+    content: '"`"',
+}
+
+*/
+/* add standard styles for horizontal rules */
+
+.reactMarkDown hr {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: var(--color-black);
+    background-color: var(--color-black);
+    border: 0;
+    height: 1px;
+}
+
+/* add standard styles for blockquotes */
+
+.reactMarkDown blockquote {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: var(--color-black);
+    background-color: var(--color-block-surface);
+    border-left: 0.25em solid var(--color-primary);
+    padding: 0.5em;
+}
+
+/* add standard styles for tables */
+
+.reactMarkDown table {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.reactMarkDown th {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: var(--color-black);
+    background-color: var(--color-background);
+    border: 1px solid var(--color-background);
+    padding: 0.5em;
+}
+
+.reactMarkDown td {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: var(--color-black);
+    background-color: var(--color-background);
+    border: 1px solid var(--color-background);
+    padding: 0.5em;
+}
+
+/* standard css for bold */
+
+.reactMarkDown strong {
+    font-weight: 700;
+    color: var(--color-black);
+}

@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* import markdown.css */
+@import url('./markdown.css');
+@import url('./style.css');
+
+@layer base {
+  :root {
+    --color-primary: #e2e8f0;
+    --color-secondary: #475569;
+    --color-tertiary: #94a3b8;
+    --color-surface: #e2e8f0;
+    --color-background: #f8fafc;
+    --color-code-surface: #ecf4fd;
+    --color-code-onSurface: #191b1c;
+    --color-accent: #cbd5e1;
+    --color-block-surface: #e2ebf3;
+    --color-link: #2563eb;
+    --color-input-background: #f1f5f9
+  }
+
+  .dark {
+    --color-primary: #1f2937;
+    --color-secondary: #374151;
+    --color-tertiary: #4b5563;
+    --color-surface: #6b7280;
+    --color-background: #292f39;
+    --color-sidebar: #111827;
+    --color-code-surface: #222324;
+    --color-code-onSurface: #e2e8f0;
+    --color-accent: #9ca3af;
+    --color-block-surface: #46516a;
+    --color-link: #7aafe1;
+    --color-input-background: #5f6877;
+  }
+}
+
+html,
+body {
+  @apply bg-background text-foreground;
+}
+
+/* body {
+  color: rgb(var(--foreground-rgb));
+  height: 100vh;
+  background: linear-gradient(to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+} */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

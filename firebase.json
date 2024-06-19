@@ -1,0 +1,26 @@
+{
+  "hosting": {
+    "target": "pastelog",
+    "public": ".next/static",
+    "site": "pastelog",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html",
+        "run": {
+          "serviceId": "pastelog",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/logs/**",
+        "destination": "/logs/[id]/index.html"
+      }
+    ]
+  }
+}

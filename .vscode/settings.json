@@ -1,0 +1,20 @@
+{
+   "files.autoSaveDelay": 3000,
+   "editor.formatOnSave": true,
+   "files.exclude": {
+      //  "build":true,
+      "test": true,
+      //    ".vscode":false,
+      //    ".*":true,
+      "web": false,
+      "build": false,
+      "windows": true,
+      "macos": true,
+   },
+   "dart.flutterSdkPath": "/Users/mahesh/Documents/flutter",
+   "dart.debugExternalLibraries": true,
+   "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll": "explicit"
+   },
+}
