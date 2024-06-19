@@ -93,6 +93,7 @@ const Preview = ({ logId }: { logId: string }) => {
         setLoading(true);
         const log = await logService.fetchLogById(logId);
         if (!log) {
+            console.error('Log not found');
             setLoading(false);
             // handle not found case, maybe show an error message
             return;

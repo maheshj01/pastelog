@@ -17,15 +17,15 @@ const Sidebar: React.FC = () => {
 
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
-            setSelected(log);
-            setId(log.id!);
+            // setSelected(log);
+            // setId(log.id!);
             router.push(`/logs/${log.id}`);
         } else {
-            setSelected(null);
-            setId(null);
+            // setSelected(null);
+            // setId(null);
             router.push(`/logs`);
         }
-    }, [router, setSelected, setId]);
+    }, []);
 
     const fetchLogs = useCallback(async () => {
         setLoading(true);

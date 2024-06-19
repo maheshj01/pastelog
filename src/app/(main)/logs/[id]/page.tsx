@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 export async function generateStaticParams() {
     const logService = new LogService();
     const logs = await logService.fetchLogs();
+    // logs.forEach(log => console.log(log.id));
     return logs.map(log => ({ id: log.id }));
 }
 
