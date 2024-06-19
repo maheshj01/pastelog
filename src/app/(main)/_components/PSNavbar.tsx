@@ -6,7 +6,6 @@ import {
 import { useRouter } from "next/navigation";
 import { useSidebar } from '../_services/Context';
 import IconButton from './IconButton';
-import { ThemeSwitcher } from "./ThemeSwitcher";
 
 interface PSNavbarProps {
     className?: string;
@@ -42,11 +41,8 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
                             router.push('/logs');
                             router.refresh();
                         }}
-                        className="font-bold text-inherit text-lg px-2 cursor-pointer">Pastelog</p>
+                        className="font-bold text-inherit text-lg px-2 cursor-pointer">Logo Here</p>
                 </div>
-            </NavbarContent>
-            <NavbarContent justify="end">
-                <ThemeSwitcher />
             </NavbarContent>
         </Navbar>
     )

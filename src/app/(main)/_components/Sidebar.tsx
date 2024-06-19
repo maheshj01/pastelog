@@ -71,7 +71,6 @@ const Sidebar: React.FC = () => {
                             onClick={() => onLogClick(log)}
                             className="px-2 w-full mx-2 py-1 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 dark:text-white"
                         >
-
                             {log.title}
                         </div>
                     ))}

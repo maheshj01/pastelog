@@ -2,11 +2,9 @@
 
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import { useTheme } from 'next-themes';
-import { useEffect } from 'react';
 import IconButton from "../_components/IconButton";
 import PSNavbar from '../_components/PSNavbar';
 import Sidebar from '../_components/Sidebar';
-import { Theme } from '../_components/ThemeSwitcher';
 import { useSidebar } from '../_services/Context';
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
@@ -22,20 +20,8 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
         }
     };
 
-    useEffect(() => {
-        checkWindowSize();
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        if (mediaQuery.matches) {
-            setTheme(Theme.DARK);
-        } else {
-            setTheme(Theme.LIGHT);
-        }
-        window.addEventListener('resize', checkWindowSize);
-        return () => window.removeEventListener('resize', checkWindowSize);
-    }, []);
-
     return (
-        <div className={`flex ${theme === Theme.DARK ? 'dark' : 'light'}`}>
+        <div className={`flex light`}>
             <div className={`fixed top-0 left-0 z-50 h-screen overflow-y-auto ${showSideBar ? 'w-64' : 'w-0'}`}>
                 <Sidebar />
             </div>
