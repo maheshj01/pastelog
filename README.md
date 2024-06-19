@@ -2,9 +2,7 @@
 
 Creating Stunning Rich Text Logs with markdown Support and Code Highlighting and sharing them with the world.
 
-### Demo
-
-<video src='https://github.com/maheshmnj/pastelog/assets/31410839/c4e4469b-3acb-45e1-a258-0d8593d1e831'/>
+<img width="764" alt="cover" src="https://github.com/maheshmnj/pastelog/assets/31410839/e75cfac7-93f8-4734-a0cc-d95872522230">
 
 ### Features
 
@@ -56,12 +54,14 @@ NEXT_PUBLIC_BASE_URL=https://pastelog.web.app
 npm run dev
 ```
 
-<img width="1176" alt="Screenshot 2024-06-06 at 22 14 06" src="https://github.com/firebase/firebase-js-sdk/assets/31410839/7c252c51-b81b-4bde-9ff1-29803f975b57">
+### Demo
+
+<video src='https://github.com/maheshmnj/pastelog/assets/31410839/c4e4469b-3acb-45e1-a258-0d8593d1e831' width=180/>
 
 ### Folder Structure
 
 <!-- current folder structure -->
-
+```
 root /
 ├──src
 │ ├── app /
@@ -90,3 +90,4 @@ root /
 │ │ └── layout.tsx
 │ │ └── global.css
 │ │ └── page.tsx
+```
