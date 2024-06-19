@@ -1,12 +1,11 @@
 "use client";
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Log from "../_models/Log";
 import { useSidebar } from '../_services/Context';
-import IconButton from "./IconButton";
 import LogService from '../_services/logService';
-import SidebarItem from './SideBarItem';
+import IconButton from "./IconButton";
 
 const Sidebar: React.FC = () => {
     const { id, setSelected, setId, showSideBar } = useSidebar();
@@ -68,14 +67,13 @@ const Sidebar: React.FC = () => {
                 {/* Scrollable logs list */}
                 <div className='overflow-y-auto flex-grow pb-16'>
                     {logs.map((log: Log) => (
-                        <SidebarItem
-                            id={log.id!}
-                            selected={id === log.id}
-                            log={log}
-                            key={log.id}
-                            onLogClick={() => onLogClick(log)}
-                            onRefresh={handleRefresh} // Pass the refresh function
-                        />
+                        <div key={log.id}
+                            onClick={() => onLogClick(log)}
+                            className="px-2 w-full mx-2 py-1 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 dark:text-white"
+                        >
+
+                            {log.title}
+                        </div>
                     ))}
                 </div>
             </div>
