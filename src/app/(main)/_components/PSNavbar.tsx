@@ -16,7 +16,7 @@ interface PSNavbarProps {
 
 const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
     const router = useRouter();
-    const { showSideBar, setShowSideBar } = useSidebar();
+    const { showSideBar, setShowSideBar, setId, setSelected } = useSidebar();
 
     return (
         <Navbar
@@ -39,6 +39,8 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
                         )}
                     <p
                         onClick={() => {
+                            setId(null)
+                            setSelected(null)
                             router.push('/logs');
                         }}
                         className="font-bold text-inherit text-lg px-2 cursor-pointer">Pastelog</p>
