@@ -72,21 +72,24 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             onMouseLeave={() => setIsHovered(false)}
         >
             <div
-                className={`text-sm dark:text-slate-200 cursor-pointer py-3 hover:bg-background transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden text-ellipsis relative ${selected ? 'bg-background' : ''}`}
+                className={`text-sm dark:text-slate-200 cursor-pointer py-3 hover:bg-background transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative ${selected ? 'bg-background' : ''}`}
                 onClick={() => onLogClick(log)}
             >
                 <div className='flex justify-between items-center'>
-                    <span>{log.title!.length === 0 ? log.id : log.title}</span>
-                    {(selected || isHovered) && <MoreOptions />}
-                    <ShareDialog
-                        isOpen={isOpen}
-                        onClose={onClose}
-                        onShare={handleShare}
-                        title={shareContent.title}
-                        content={shareContent.content}
-                    />
+                    <div className='flex-grow overflow-hidden'>
+                        <span className="block overflow-hidden text-ellipsis whitespace-nowrap">{log.title!.length === 0 ? log.id : log.title}</span>
+                        <ShareDialog
+                            isOpen={isOpen}
+                            onClose={onClose}
+                            onShare={handleShare}
+                            title={shareContent.title}
+                            content={shareContent.content}
+                        />
+                    </div>
+                    <div className='flex-shrink-0 ml-2'>
+                        {(selected || isHovered) && <MoreOptions />}
+                    </div>
                 </div>
-                <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-surface pointer-events-none"></div>
             </div>
         </div>
     );

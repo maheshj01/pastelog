@@ -24,11 +24,11 @@ export default function Page() {
     </div >
   }
 
-  if (!isFirstVisit) {
-    router.push('/logs');
-  } else {
-    return (
-      <Welcome />
-    );
-  }
+  // if (!isFirstVisit) {
+  //   router.push('/logs');
+  // } else {
+  return (
+    <Welcome />
+  );
+  // }
 }
