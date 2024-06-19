@@ -2,7 +2,6 @@
 
 import { Inter } from "next/font/google";
 import { ThemeProvider } from './(main)/_components/ThemeProvider';
-import ToastProvider from "./(main)/_components/ToastProvider";
 import "./globals.css";
 import { Providers, SidebarProvider } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
@@ -24,9 +23,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <SidebarProvider>
-              <ToastProvider>
-                {children}
-              </ToastProvider>
+              {children}
             </SidebarProvider>
           </ThemeProvider>
         </Providers>

@@ -40,6 +40,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
                     <p
                         onClick={() => {
                             router.push('/logs');
+                            router.refresh();
                         }}
                         className="font-bold text-inherit text-lg px-2 cursor-pointer">Pastelog</p>
                 </div>

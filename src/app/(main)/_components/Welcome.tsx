@@ -1,8 +1,7 @@
 "use client";
+import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import GradientText from './GradientText';
-import { Button } from './button';
 
 export default function Welcome() {
     const tagLineWords = ['Easy', 'Fast', 'Powerful'];
@@ -26,7 +25,6 @@ export default function Welcome() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
             {/* bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400"> */}
-            <GradientText className='tagline' text={tagLineWords[currentTagLine]} gradientColors={['#FF0080', '#7928CA']} fontSize="5rem" />
             <p className="text-2xl mb-16 text-gray-300">
                 <span>Welcome to Pastelog!</span>
                 { }
