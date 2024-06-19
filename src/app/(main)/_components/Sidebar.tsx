@@ -1,5 +1,7 @@
 "use client";
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import Log from "../_models/Log";
@@ -7,7 +9,6 @@ import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
 import IconButton from "./IconButton";
 import SidebarItem from './SideBarItem';
-
 const Sidebar: React.FC = () => {
     const { id, setSelected, setId, showSideBar } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
@@ -41,10 +42,21 @@ const Sidebar: React.FC = () => {
     }, [fetchLogs, refresh]);
 
     const handleRefresh = () => setRefresh(prev => !prev);
-
+    const githubLogo = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/1200px-GitHub_Invertocat_Logo.svg.png';
     return (
         <div className={`fixed top-0 left-0 bottom-0 bg-surface overflow-y-auto`}>
+            <div className='absolute bottom-10 left-10'>
+                {/* github link */}
 
+                <Link href={process.env.NEXT_PUBLIC_GITHUB_REPO ?? 'https://github.com/maheshmnj/pastelog'} passHref={true}
+                    target='_blank'
+                >
+                    <Image
+                        width={32}
+                        height={32}
+                        src={githubLogo} alt={'Github repo'} />
+                </Link>
+            </div>
             {loading ? (
                 <div className={`flex items-center justify-center min-h-screen ${showSideBar ? 'w-64' : 'w-0'}`}>
                     <div className="loader" /> {/* You can replace this with a proper loading spinner */}
