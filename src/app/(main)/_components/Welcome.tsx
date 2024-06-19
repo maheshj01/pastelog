@@ -48,12 +48,12 @@ export default function Welcome() {
                     setLoading(false); // Set loading state to false after timeout
                     router.push('/logs');
                     resolve(); // Resolve the promise after timeout completes
-                }, 2000);
+                }, 2500);
             });
 
             // Perform actions that should happen while waiting for timeout
-            localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
             saveLocally();
+            localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
         } catch (error) {
             console.error('Error in handleGetStarted:', error);
             setLoading(false); // Ensure loading state is false on error
