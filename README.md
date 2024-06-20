@@ -54,13 +54,10 @@ NEXT_PUBLIC_GITHUB_LOGO=https://upload.wikimedia.org/wikipedia/commons/thumb/c/c
 npm run dev
 ```
 
-### Demo
-
-<video src='https://github.com/maheshmnj/pastelog/assets/31410839/c4e4469b-3acb-45e1-a258-0d8593d1e831' width=180/>
-
 ### Folder Structure
 
 <!-- current folder structure -->
+
 ```
 root /
 ├──src
@@ -91,3 +88,7 @@ root /
 │ │ └── global.css
 │ │ └── page.tsx
 ```
+
+### Demo
+
+<video src='https://github.com/maheshmnj/pastelog/assets/31410839/c4e4469b-3acb-45e1-a258-0d8593d1e831' width=180/>
