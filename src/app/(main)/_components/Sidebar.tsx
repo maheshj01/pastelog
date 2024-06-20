@@ -44,7 +44,7 @@ const Sidebar: React.FC = () => {
     const handleRefresh = () => setRefresh(prev => !prev);
     return (
         <div className={`fixed top-0 left-0 bottom-0 bg-surface overflow-y-auto`}>
-            <div className='absolute bottom-10 left-10'>
+            <div className='absolute bottom-10 left-8'>
                 {/* github link */}
 
                 <Link href={process.env.NEXT_PUBLIC_GITHUB_REPO ?? ''} passHref={true}
