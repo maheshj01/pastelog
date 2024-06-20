@@ -111,7 +111,12 @@ class LogService {
     async fetchLogsFromLocal(): Promise<Log[]> {
         if (typeof window !== 'undefined') {
             const logs = localStorage.getItem('logs');
-            return logs ? JSON.parse(logs) : [];
+            // filter expired
+            if (logs) {
+                const parsedLogs = JSON.parse(logs) as Log[];
+                return parsedLogs.filter(log => !log.isExpired);
+            }
+            return [];
         }
         return [];
     }

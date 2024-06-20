@@ -31,9 +31,9 @@ const Sidebar: React.FC = () => {
     const fetchLogs = useCallback(async () => {
         setLoading(true);
         const logService = new LogService();
+        await logService.deleteExpiredLogs();
         const logs = await logService.fetchLogsFromLocal();
         setLogs(logs);
-        await logService.deleteExpiredLogs();
         setLoading(false);
     }, []);
 
