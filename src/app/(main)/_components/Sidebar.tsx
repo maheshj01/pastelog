@@ -1,7 +1,6 @@
 "use client";
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import Log from "../_models/Log";
@@ -44,17 +43,24 @@ const Sidebar: React.FC = () => {
     const handleRefresh = () => setRefresh(prev => !prev);
     return (
         <div className={`fixed top-0 left-0 bottom-0 bg-surface overflow-y-auto`}>
-            <div className='absolute bottom-10 left-8'>
+            <div className='absolute bottom-5 left-6'>
                 {/* github link */}
 
-                <Link href={process.env.NEXT_PUBLIC_GITHUB_REPO ?? ''} passHref={true}
+                {/* <Link href={process.env.NEXT_PUBLIC_GITHUB_REPO ?? ''} passHref={true}
                     target='_blank'
+                > */}
+                <IconButton
+                    ariaLabel='Github'
+                    onClick={() => {
+                        window.open(process.env.NEXT_PUBLIC_GITHUB_REPO ?? '', '_blank');
+                    }}
                 >
                     <Image
                         width={32}
                         height={32}
                         src={process.env.NEXT_PUBLIC_GITHUB_LOGO ?? ''} alt={'Github repo'} />
-                </Link>
+                </IconButton>
+                {/* </Link> */}
             </div>
             {loading ? (
                 <div className={`flex items-center justify-center min-h-screen ${showSideBar ? 'w-64' : 'w-0'}`}>
@@ -74,7 +80,7 @@ const Sidebar: React.FC = () => {
                 </div>
 
                 {/* Scrollable logs list */}
-                <div className='overflow-y-auto flex-grow pb-16'>
+                <div className='overflow-y-auto flex-grow pb-4 mb-16'>
                     {logs.map((log: Log) => (
                         <SidebarItem
                             id={log.id!}
