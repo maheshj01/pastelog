@@ -43,7 +43,7 @@ NEXT_PUBLIC_NEW_USER_VISITED=visited
 NEXT_PUBLIC_CONTACT_EMAIL=
 NEXT_PUBLIC_GITHUB_REPO=https://github.com/maheshmnj/pastelog
 NEXT_PUBLIC_PRIVACY_POLICY=/logs/publish/1R5Kx9fQRBHe85SUOG89
-NEXT_PUBLIC_BASE_URL=https://pastelog.web.app
+NEXT_PUBLIC_BASE_URL=https://pastelog.vercel.app
 NEXT_PUBLIC_GITHUB_LOGO=https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/1200px-GitHub_Invertocat_Logo.svg.png
 ```
 
