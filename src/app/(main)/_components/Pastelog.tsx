@@ -90,34 +90,32 @@ export default function Pastelog() {
                                 />
                             </div>
                         </div>
-                        {
-                            !preview && (
-                                <div className="flex w-full md:w-3/4 lg:w-2/3 justify-end my-4 px-2">
-                                    <DatePicker
-                                        inputMode="none"
-                                        onChange={(date) => setExpiryDate(date)}
-                                        value={expiryDate}
-                                        maxValue={getDateOffsetBy(365)}
-                                        minValue={parsedDate(today)}
-                                        defaultValue={expiryDate}
-                                        description="Expiry date of the pastelog"
-                                        variant="bordered"
-                                        size="sm"
-                                        color="primary"
-                                        label="Expiry date"
-                                        className="max-w-[164px]" />
-                                    <div className="w-6" />
-                                    <Button
-                                        className={`bg-gradient-to-r from-gray-700 to-gray-800`}
-                                        onClick={publish}
-                                        disabled={loading || !content}
-                                    >
-                                        <div className={`px-4 ${loading || !content ? 'text-gray-300' : 'text-white'}`}>
-                                            {loading ? 'Publishing...' : 'Publish'}
-                                        </div>
-                                    </Button>
+                        <div className="flex w-full md:w-3/4 lg:w-2/3 justify-end my-4 px-2">
+                            <DatePicker
+                                inputMode="none"
+                                onChange={(date) => setExpiryDate(date)}
+                                value={expiryDate}
+                                maxValue={getDateOffsetBy(365)}
+                                minValue={parsedDate(today)}
+                                defaultValue={expiryDate}
+                                description="Expiry date"
+                                variant="bordered"
+                                size="sm"
+                                selectorIcon={true}
+                                color="primary"
+                                label="Expiry date"
+                                className="max-w-[164px]" />
+                            <div className="w-6" />
+                            <Button
+                                className={`bg-gradient-to-r from-gray-700 to-gray-800`}
+                                onClick={publish}
+                                disabled={loading || !content}
+                            >
+                                <div className={`px-4 ${loading || !content ? 'text-gray-300' : 'text-white'}`}>
+                                    {loading ? 'Publishing...' : 'Publish'}
                                 </div>
-                            )}
+                            </Button>
+                        </div>
                         <div
                             className="h-16"
                         />
