@@ -40,7 +40,8 @@ export default function Welcome() {
 
     const handleGetStarted = async () => {
         setLoading(true); // Set loading state to true immediately
-
+        saveLocally();
+        localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
         try {
             await new Promise<void>(resolve => {
                 setTimeout(() => {
@@ -50,10 +51,7 @@ export default function Welcome() {
                     resolve(); // Resolve the promise after timeout completes
                 }, 2500);
             });
-
             // Perform actions that should happen while waiting for timeout
-            saveLocally();
-            localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
         } catch (error) {
             console.error('Error in handleGetStarted:', error);
             setLoading(false); // Ensure loading state is false on error
