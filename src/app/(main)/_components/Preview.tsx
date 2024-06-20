@@ -9,7 +9,8 @@ import { useDisclosure } from '@nextui-org/react';
 import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
-import { Key, useEffect, useState } from 'react';
+import React, { Key, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Log from '../_models/Log';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
@@ -40,6 +41,16 @@ const Preview = ({ logId }: { logId: string }) => {
         onClose(); // Close the dialog after sharing
     };
 
+    const toastId = React.useRef('clipboard-toast');
+    const notify = () => {
+        if (!toast.isActive(toastId.current!)) {
+            showToast("success", <p> Copied to Clipboard! </p >,
+                {
+                    toastId: 'clipboard-toast',
+                }
+            );
+        }
+    }
 
     function More() {
         const options = ['Image', 'Text', 'Share'];
@@ -186,7 +197,7 @@ const Preview = ({ logId }: { logId: string }) => {
                                 setTimeout(() => {
                                     setCopied(false);
                                 }, 2000);
-                                showToast("success", <p> Copied to Clipboard! </p>);
+                                notify();
                             }}
                             ariaLabel="Copy to clipboard"
                         >{!copied ?
