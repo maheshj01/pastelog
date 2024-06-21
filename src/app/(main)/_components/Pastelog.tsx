@@ -1,13 +1,13 @@
 "use client";
-import { getDateOffsetBy, parsedDate } from "@/utils/utils";
+import { getDateOffsetBy } from "@/utils/utils";
 import { Button as PSButton } from "@nextui-org/button";
-import { CalendarDate, DatePicker } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Log, { LogType } from "../_models/Log";
 import LogService from "../_services/logService";
+import { DatePicker } from "./DatePicker";
 import Editor from "./Editor";
 import PSInput from "./PSInput";
 import ShortcutWrapper from "./ShortCutWrapper";
@@ -20,7 +20,7 @@ export default function Pastelog() {
     const [preview, setPreview] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const today = new Date();
-    const [expiryDate, setExpiryDate] = useState<CalendarDate>(getDateOffsetBy(30));
+    const [expiryDate, setExpiryDate] = useState<Date>(getDateOffsetBy(30));
     const logService = new LogService();
     const selected = 'dark:bg-gray-600 bg-gray-400 text-slate-50 dark:text-slate-50';
     const unSelected = 'text-black bg-accent dark:text-slate-50 ';
@@ -29,7 +29,7 @@ export default function Pastelog() {
     async function publish() {
         setLoading(true);
         const log = new Log(
-            expiryDate.toDate('UTC'),
+            expiryDate,
             content,
             new Date(),
             LogType.TEXT,
@@ -92,22 +92,13 @@ export default function Pastelog() {
                         </div>
                         <div className="flex w-full md:w-3/4 lg:w-2/3 justify-end my-4 px-2">
                             <DatePicker
-                                inputMode="none"
-                                onChange={(date) => setExpiryDate(date)}
-                                value={expiryDate}
-                                maxValue={getDateOffsetBy(365)}
-                                minValue={parsedDate(today)}
-                                defaultValue={expiryDate}
-                                description="Expiry date"
-                                variant="bordered"
-                                size="sm"
-                                selectorIcon={true}
-                                color="primary"
-                                label="Expiry date"
-                                className="max-w-[164px]" />
+                                onSelect={(date: Date) => setExpiryDate(date!)}
+                                selected={expiryDate}
+                            />
+
                             <div className="w-6" />
                             <Button
-                                className={`bg-gradient-to-r from-gray-700 to-gray-800`}
+                                className={`bg-gray-700`}
                                 onClick={publish}
                                 disabled={loading || !content}
                             >
@@ -124,7 +115,7 @@ export default function Pastelog() {
                         </div>
                     </div >
                 </div >
-            </ShortcutWrapper>
+            </ShortcutWrapper >
         </>
     );
 }
