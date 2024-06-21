@@ -1,12 +1,15 @@
+import { showToast } from "@/utils/toast_utils";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { useDisclosure } from "@nextui-org/react";
-import { usePathname } from "next/navigation";
-import { Key, useState } from 'react';
+import { useRouter } from "next/navigation";
+import React, { Key, useState } from "react";
+import { toast } from "react-toastify";
 import Log from "../_models/Log";
+import { useSidebar } from "../_services/Context";
 import LogService from '../_services/logService';
+import DeleteDialog from "./Delete";
 import PSDropdown from "./Dropdown";
 import ShareDialog from "./Share";
-
 interface SidebarItemProps {
     id: string;
     log: Log;
@@ -17,14 +20,16 @@ interface SidebarItemProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick, onRefresh }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const pathName = usePathname();
-    const { isOpen, onOpen, onClose } = useDisclosure();
-
+    const { id: selectedId, setId: setSelectedId } = useSidebar();
+    const { isOpen: isShareOpen, onOpen: onShareOpen, onClose: onShareClose } = useDisclosure();
+    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
+    const router = useRouter();
     function MoreOptions() {
-        const options = ['Share', 'Delete', 'Delete Local'];
+        const options = ['Share', 'Delete'];
 
         return (<PSDropdown
             options={options}
+            placement="bottom-start"
             onClick={handleonAction}
             className="dropdown-class">
             <EllipsisHorizontalIcon
@@ -37,31 +42,58 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
         title: "Share Pastelog",
         content: process.env.NEXT_PUBLIC_BASE_URL + '/logs/publish/' + id,
     });
+    const [deleteContent, setDeleteContent] = useState({
+        title: "Are you sure you want to Delete?",
+        content: 'By deleting this log, you will lose access to it.'
+    });
 
     const handleShare = () => {
         // Copy link to clipboard
         navigator.clipboard.writeText(shareContent.content);
-        onClose(); // Close the dialog after sharing
+        onShareClose(); // Close the dialog after sharing
     };
-
 
     async function handleonAction(key: Key) {
         const logService = new LogService();
         switch (key) {
             case '1':
-                await logService.deleteLogById(id);
-                onRefresh();
-                break;
-            case '2':
-                await logService.deleteLogFromLocal(id);
-                onRefresh();
+                // await logService.deleteLogById(id);
+                // onRefresh();
+                onDeleteOpen();
                 break;
             case '0':
-                onOpen();
+                onShareOpen();
                 break;
             default:
                 break;
         }
+    }
+
+    const toastId = React.useRef('delete-toast');
+    const notify = (message: string) => {
+        if (!toast.isActive(toastId.current!)) {
+            showToast("success", <p> {message} </p >,
+                {
+                    toastId: 'delete-toast',
+                }
+            );
+        }
+    }
+    async function handleDelete(local: boolean) {
+        const logService = new LogService();
+        if (local) {
+            await logService.deleteLogById(id);
+            await logService.deleteLogFromLocal(id);
+            notify('Log Deleted Successfully');
+        } else {
+            await logService.deleteLogById(id);
+            notify('Log deleted from Server Only');
+        }
+        if (id == selectedId) {
+            setSelectedId(null);
+            router.push('/logs');
+        }
+        onRefresh();
     }
 
     return (
@@ -79,11 +111,18 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                     <div className='flex-grow overflow-hidden'>
                         <span className="block overflow-hidden text-ellipsis whitespace-nowrap">{log.title!.length === 0 ? log.id : log.title}</span>
                         <ShareDialog
-                            isOpen={isOpen}
-                            onClose={onClose}
+                            isOpen={isShareOpen}
+                            onClose={onShareClose}
                             onShare={handleShare}
                             title={shareContent.title}
                             content={shareContent.content}
+                        />
+                        <DeleteDialog
+                            isOpen={isDeleteOpen}
+                            onClose={onDeleteClose}
+                            onDelete={handleDelete}
+                            title={deleteContent.title}
+                            content={deleteContent.content}
                         />
                     </div>
                     <div className='flex-shrink-0 ml-2'>
