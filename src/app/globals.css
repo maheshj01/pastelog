@@ -17,7 +17,8 @@
     --color-accent: #cbd5e1;
     --color-block-surface: #e2ebf3;
     --color-link: #2563eb;
-    --color-input-background: #f1f5f9
+    --color-input-background: #f1f5f9;
+    --color-selection: #98b6f8;
   }
 
   .dark {
@@ -33,12 +34,25 @@
     --color-block-surface: #46516a;
     --color-link: #7aafe1;
     --color-input-background: #5f6877;
+    --color-selection: #AFAFAF;
   }
 }
 
 html,
 body {
   @apply bg-background text-foreground;
+}
+
+::-moz-selection {
+  background: var(--color-primary);
+}
+
+::-webkit-selection {
+  background: var(--color-primary);
+}
+
+::selection {
+  background: var(--color-primary);
 }
 
 /* body {
