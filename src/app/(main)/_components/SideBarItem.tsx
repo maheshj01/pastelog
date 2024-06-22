@@ -105,9 +105,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
         >
             <div
                 className={`text-sm dark:text-slate-200 cursor-pointer py-3 hover:bg-background transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative ${selected ? 'bg-background' : ''}`}
+                onClick={() => onLogClick(log)}
             >
                 <div className='flex justify-between items-center'>
-                    <div onClick={() => onLogClick(log)}
+                    <div
                         className='flex-grow overflow-hidden'>
                         <span className="block overflow-hidden text-ellipsis whitespace-nowrap">{log.title!.length === 0 ? log.id : log.title}</span>
                         <ShareDialog

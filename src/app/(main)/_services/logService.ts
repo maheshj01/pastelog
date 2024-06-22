@@ -114,7 +114,18 @@ class LogService {
             // filter expired
             if (logs) {
                 const parsedLogs = JSON.parse(logs) as Log[];
-                return parsedLogs.filter(log => !log.isExpired);
+                // Convert createdDate strings back to Date objects
+                parsedLogs.forEach(log => {
+                    log.createdDate = new Date(log.createdDate);
+                    if (log.expiryDate) {
+                        log.expiryDate = new Date(log.expiryDate);
+                    }
+                });
+
+                const filtered = parsedLogs.filter(log => !log.isExpired);
+
+                // sort by created date in reverse order
+                return filtered.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
             }
             return [];
         }
