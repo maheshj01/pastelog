@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
 
     const handleRefresh = () => setRefresh(prev => !prev);
     return (
-        <div className={`fixed top-0 left-0 bottom-0 bg-surface overflow-y-auto`}>
+        <div className={`fixed top-0 left-0 bottom-0 bg-surface dark:bg-gray-700 overflow-y-auto`}>
             <div className='absolute bottom-5 left-6'>
                 {/* github link */}
 
