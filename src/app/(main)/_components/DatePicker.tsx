@@ -6,7 +6,7 @@ import { Button } from "./button";
 import { Calendar } from "./calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
-export function DatePicker({ selected, onSelect }: { selected?: Date; onSelect: any }) {
+export function DatePicker({ selected, onSelect, label }: { selected?: Date; onSelect: any, label?: string }) {
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const today = new Date();
     return (
@@ -19,12 +19,12 @@ export function DatePicker({ selected, onSelect }: { selected?: Date; onSelect: 
                 <div className='flex flex-col'>
                     <Button
                         variant="outline"
-                        className={cn('w-[200px] justify-start text-left font-normal', !selected && 'text-muted-foreground')}
+                        className={cn('w-[160px] justify-start text-left font-normal', !selected && 'text-muted-foreground')}
                     >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {selected ? format(selected, 'PPP') : <span>Pick a date</span>}
+                        {selected ? format(selected, 'PP') : <span>Pick a date</span>}
                     </Button>
-                    <p className="px-2 cursor-pointer">Select Expiry Date</p>
+                    {(label && <p className="px-2 cursor-pointer">{label}</p>)}
                 </div>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 bg-background">
