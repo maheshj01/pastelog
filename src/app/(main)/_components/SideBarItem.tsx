@@ -44,7 +44,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     });
     const [deleteContent, setDeleteContent] = useState({
         title: "Are you sure you want to Delete?",
-        content: 'By deleting this log, you will lose access to it.'
+        content: 'This action cannot be undone. This log will be deleted from your device and will no longer be available.'
     });
 
     const handleShare = () => {
@@ -82,12 +82,12 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     async function handleDelete(local: boolean) {
         const logService = new LogService();
         if (local) {
-            await logService.deleteLogById(id);
+            // await logService.deleteLogById(id);
             await logService.deleteLogFromLocal(id);
             notify('Log Deleted Successfully');
         } else {
-            await logService.deleteLogById(id);
-            notify('Log deleted from Server Only');
+            // await logService.deleteLogById(id);
+            // notify('Log deleted from Server Only');
         }
         if (id == selectedId) {
             setSelectedId(null);

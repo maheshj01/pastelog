@@ -1,4 +1,4 @@
-import { Button, Checkbox, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import React from "react";
 
 interface DeleteDialogProps {
@@ -23,9 +23,9 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, onClose, onDelete, 
                     <>
                         <ModalHeader className="flex flex-col">{title}</ModalHeader>
                         <ModalBody>
-                            <p>{content}</p>
+                            <p className='text-sm'>{content}</p>
                             <div className="flex py-2 px-1 justify-between">
-                                <Checkbox
+                                {/* <Checkbox
                                     color="default"
                                     isSelected={deleteLocal}
                                     onChange={() => setDeleteLocal(!deleteLocal)}
@@ -33,8 +33,10 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, onClose, onDelete, 
                                         label: "text-small",
                                     }}
                                 >
-                                    Delete the log locally as well.
-                                </Checkbox>
+                                </Checkbox> */}
+                                <p className='text-sm text-gray-600'>
+                                    Note that this log will still be available at its unique link until it expires.
+                                </p>
                             </div>
                         </ModalBody>
                         <ModalFooter>
