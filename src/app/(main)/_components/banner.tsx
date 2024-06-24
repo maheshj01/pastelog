@@ -18,7 +18,6 @@ const Banner: React.FC<BannerProps> = ({ children, className, show }) => {
         }
     }, [message, children]);
 
-
     useEffect(() => {
     }, [show, showRemote, message]);
 
@@ -31,13 +30,9 @@ const Banner: React.FC<BannerProps> = ({ children, className, show }) => {
                 transform: show && showRemote ? 'translateY(0)' : 'translateY(-100%)',
             }}
         >
-            <div ref={contentRef} className="flex items-center justify-center text-center bg-emerald-600">
-                <div className='grow'><p className='text-white'>{message}</p></div>
+            <div ref={contentRef} className="flex items-center justify-center text-center bg-primary">
+                <div className='grow'><p className='text-white text-sm'>{message}</p></div>
                 {children}
-            </div>
-            {/* Debugging info */}
-            <div className="text-xs text-gray-500">
-                Show: {show.toString()}, Message: {message}
             </div>
         </div>
     );
