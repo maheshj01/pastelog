@@ -27,7 +27,7 @@ const Banner: React.FC<BannerProps> = ({ children, message, className, show }) =
             }}
         >
             <div ref={contentRef} className="flex items-center justify-center text-center bg-emerald-600">
-                <div className='grow'><p>{message}</p></div>
+                <div className='grow'><p className='text-white'>{message}</p></div>
                 {children}
             </div>
         </div>
