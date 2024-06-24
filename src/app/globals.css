@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --color-primary: #e2e8f0;
+    --color-primary: #34d399;
     --color-secondary: #475569;
     --color-tertiary: #94a3b8;
     --color-surface: #e2e8f0;
@@ -22,7 +22,7 @@
   }
 
   .dark {
-    --color-primary: #1f2937;
+    --color-primary: #065f46;
     --color-secondary: #374151;
     --color-tertiary: #4b5563;
     --color-surface: #6b7280;
@@ -36,6 +36,12 @@
     --color-input-background: #5f6877;
     --color-selection: #AFAFAF;
   }
+}
+
+[data-theme="dark"] .rdp,
+.dark .rdp {
+  --rdp-accent-color: var(--rdp-accent-color-dark);
+  --rdp-background-color: var(--rdp-background-color-dark);
 }
 
 html,
