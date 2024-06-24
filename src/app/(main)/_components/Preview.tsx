@@ -73,7 +73,6 @@ const Preview = ({ logId }: { logId: string }) => {
 
 
     function handleonAction(key: Key) {
-        console.log(key);
         switch (key) {
             case '0':
                 downloadImage();
@@ -104,7 +103,6 @@ const Preview = ({ logId }: { logId: string }) => {
         setLoading(true);
         const log = await logService.fetchLogById(logId);
         if (!log) {
-            console.error('Log not found');
             setLoading(false);
             // handle not found case, maybe show an error message
             return;
@@ -138,7 +136,6 @@ const Preview = ({ logId }: { logId: string }) => {
             link.href = canvas.toDataURL('image/png');
             link.click();
         }).catch(error => {
-            console.error('Error capturing the canvas:', error);
         });
     };
     useEffect(() => {

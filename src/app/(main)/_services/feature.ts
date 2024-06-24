@@ -8,9 +8,7 @@ class FeatureService {
     updateBannerState = async (show: boolean, message: string) => {
         try {
             await updateDoc(doc(db, this.featureCollection ?? 'feature', this.bannerDocument ?? 'banner'), { show, message });
-            console.log('Banner state updated successfully');
         } catch (error) {
-            console.error('Error updating banner state:', error);
         }
     };
 }

@@ -20,7 +20,6 @@ const Banner: React.FC<BannerProps> = ({ children, className, show }) => {
 
 
     useEffect(() => {
-        console.log('Banner state updated:', { show, message });
     }, [show, showRemote, message]);
 
     return (

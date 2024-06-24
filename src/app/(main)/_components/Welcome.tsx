@@ -45,7 +45,6 @@ export default function Welcome() {
         try {
             await new Promise<void>(resolve => {
                 setTimeout(() => {
-                    console.log('Get Started');
                     setLoading(false); // Set loading state to false after timeout
                     router.push('/logs');
                     resolve(); // Resolve the promise after timeout completes
@@ -53,7 +52,6 @@ export default function Welcome() {
             });
             // Perform actions that should happen while waiting for timeout
         } catch (error) {
-            console.error('Error in handleGetStarted:', error);
             setLoading(false); // Ensure loading state is false on error
         }
     };

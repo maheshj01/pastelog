@@ -38,7 +38,6 @@ class LogService {
         try {
             const docRef = await addDoc(this.logCollection, log.toFirestore());
             if (docRef.id) {
-                console.log("published at", docRef.id);
                 await this.saveLogToLocal({
                     ...log, id: docRef.id,
                     toFirestore: function () {
@@ -47,7 +46,6 @@ class LogService {
                 });
                 return docRef.id!
             }
-            console.log("publish failed");
             return await this.fetchLogFromLocalById(docRef.id) ? docRef.id : '';
         } catch (e) {
             return '';
@@ -90,9 +88,7 @@ class LogService {
 
         try {
             await Promise.all(updatePromises);
-            console.log('All expired logs have been updated');
         } catch (error) {
-            console.error('Error in deleteExpiredLogs:', error);
         }
     }
 

@@ -1,6 +1,6 @@
 # Pastelog
 
-Create Stunning Rich Text Logs with markdown Support and Code Highlighting and share it with the world.
+Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.
 
 <img width="764" alt="cover" src="https://github.com/maheshmnj/pastelog/assets/31410839/e75cfac7-93f8-4734-a0cc-d95872522230">
 
