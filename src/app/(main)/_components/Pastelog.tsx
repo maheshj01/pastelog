@@ -83,7 +83,6 @@ export default function Pastelog() {
                                     >Preview</PSButton>
                                 </div>
                                 <DatePicker
-
                                     onSelect={(date: Date) => setExpiryDate(date!)}
                                     selected={expiryDate}
                                 />

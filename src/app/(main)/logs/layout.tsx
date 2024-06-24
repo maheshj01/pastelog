@@ -52,7 +52,9 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                 )}
                 <div className="relative z-40 h-screen overflow-y-auto">
                     <div className="flex flex-col min-h-full">
-                        <PSNavbar sideBarIcon={!showSideBar} />
+                        <PSNavbar
+                            className='sticky top-0 z-40'
+                            sideBarIcon={!showSideBar} />
                         <main className="flex-grow">
                             {children}
                         </main>

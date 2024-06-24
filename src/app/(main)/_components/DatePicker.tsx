@@ -32,6 +32,8 @@ export function DatePicker({ selected, onSelect, label }: { selected?: Date; onS
                     mode="single"
                     fromDate={today}
                     selected={selected}
+                    defaultMonth={selected}
+                    toDate={new Date(today.getFullYear() + 10, today.getMonth() + 1, 0)}
                     onSelect={(e) => {
                         if (onSelect) {
                             onSelect(e);
