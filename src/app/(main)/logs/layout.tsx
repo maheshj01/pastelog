@@ -1,6 +1,5 @@
 "use client";
 
-import ClearIcon from '@mui/icons-material/Clear';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import { useTheme } from 'next-themes';
 import React, { useEffect } from 'react';
@@ -8,7 +7,6 @@ import IconButton from "../_components/IconButton";
 import PSNavbar from '../_components/PSNavbar';
 import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
-import Banner from '../_components/banner';
 import { useSidebar } from '../_services/Context';
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
@@ -54,7 +52,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                 )}
                 <div className="relative z-40 h-screen overflow-y-auto">
                     <div className="flex flex-col min-h-full">
-                        <Banner
+                        {/* <Banner
                             className='sticky top-0 z-40'
                             show={show}
                             message="Pastelog is under maintenance, Your existing logs won't be accessible, But you can still publish new logs" >
@@ -65,7 +63,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                                     <ClearIcon />
                                 </IconButton>
                             </div>
-                        </Banner>
+                        </Banner> */}
                         <PSNavbar
                             className='sticky top-0 z-40'
                             sideBarIcon={!showSideBar} />
