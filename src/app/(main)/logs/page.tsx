@@ -1,10 +1,12 @@
-"use client";
-
+import { Metadata } from 'next';
 import Pastelog from "../_components/Pastelog";
-import { useSidebar } from '../_services/Context';
 
+export const metadata: Metadata = {
+    title: "Pastelog",
+    description: "Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.",
+
+};
 export default function LogsPage() {
-    const { showSideBar, setShowSideBar, id } = useSidebar();
     return (
         <div className={`grow`}>
             {/* Main content */}
