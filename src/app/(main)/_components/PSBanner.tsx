@@ -8,7 +8,7 @@ type BannerProps = {
     show: boolean;
 };
 
-const Banner: React.FC<BannerProps> = ({ children, className, show }) => {
+const PSBanner: React.FC<BannerProps> = ({ children, className, show }) => {
     const [height, setHeight] = useState<number | undefined>(undefined);
     const contentRef = useRef<HTMLDivElement>(null);
     const { show: showRemote, message } = useBannerState();
@@ -38,4 +38,4 @@ const Banner: React.FC<BannerProps> = ({ children, className, show }) => {
     );
 };
 
-export default Banner;
+export default PSBanner;
