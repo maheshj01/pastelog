@@ -109,7 +109,7 @@ export default function Pastelog() {
                                 onClick={publish}
                                 disabled={loading || !content}
                             >
-                                <div className={`px-4 ${loading || !content ? 'text-gray-300' : 'text-white'}`}>
+                                <div className={`px-4 ${loading || !content ? 'text-gray-300' : 'text-primary-foreground'}`}>
                                     {loading ? 'Publishing...' : 'Publish'}
                                 </div>
                             </Button>
