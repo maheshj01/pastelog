@@ -1,18 +1,20 @@
 "use client";
 
+import ClearIcon from '@mui/icons-material/Clear';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import { useTheme } from 'next-themes';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import IconButton from "../_components/IconButton";
 import PSNavbar from '../_components/PSNavbar';
 import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
+import Banner from '../_components/banner';
 import { useSidebar } from '../_services/Context';
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
     const { showSideBar, setShowSideBar } = useSidebar();
-
+    const [show, setShow] = React.useState(true);
     const checkWindowSize = async () => {
         if (typeof window !== 'undefined') {
             if (showSideBar && window.innerWidth <= 768) {
@@ -52,6 +54,18 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                 )}
                 <div className="relative z-40 h-screen overflow-y-auto">
                     <div className="flex flex-col min-h-full">
+                        <Banner
+                            className='sticky top-0 z-40'
+                            show={show}
+                            message="Pastelog is under maintenance, Your existing logs won't be accessible, But you can still publish new logs" >
+                            <div className='px-2'>
+                                <IconButton
+                                    ariaLabel='Close Banner'
+                                    onClick={() => setShow(false)}>
+                                    <ClearIcon />
+                                </IconButton>
+                            </div>
+                        </Banner>
                         <PSNavbar
                             className='sticky top-0 z-40'
                             sideBarIcon={!showSideBar} />
