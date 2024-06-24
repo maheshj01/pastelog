@@ -1,22 +1,25 @@
 "use client";
 
+import ClearIcon from '@mui/icons-material/Clear';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import { useTheme } from 'next-themes';
 import React, { useEffect } from 'react';
+import Banner from '../_components/Banner';
 import IconButton from "../_components/IconButton";
 import PSNavbar from '../_components/PSNavbar';
 import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
+import useBannerState from '../_services/BannerState';
 import { useSidebar } from '../_services/Context';
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
     const { showSideBar, setShowSideBar } = useSidebar();
+    const bannerState = useBannerState();
     const [show, setShow] = React.useState(true);
     const checkWindowSize = async () => {
         if (typeof window !== 'undefined') {
             if (showSideBar && window.innerWidth <= 768) {
-                console.log('Closing sidebar');
                 setShowSideBar(false);
             }
         }
@@ -52,7 +55,8 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                 )}
                 <div className="relative z-40 h-screen overflow-y-auto">
                     <div className="flex flex-col min-h-full">
-                        {/* <Banner
+                        <Banner
+                            key={`${bannerState.show}-${bannerState.message}`}
                             className='sticky top-0 z-40'
                             show={show}
                             message="Pastelog is under maintenance, Your existing logs won't be accessible, But you can still publish new logs" >
@@ -63,7 +67,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                                     <ClearIcon />
                                 </IconButton>
                             </div>
-                        </Banner> */}
+                        </Banner>
                         <PSNavbar
                             className='sticky top-0 z-40'
                             sideBarIcon={!showSideBar} />
