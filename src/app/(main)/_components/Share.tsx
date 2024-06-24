@@ -1,5 +1,7 @@
+import { showToast } from "@/utils/toast_utils";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import React from "react";
+import { toast } from "react-toastify";
 import { Button } from "./button";
 
 interface ShareDialogProps {
@@ -11,6 +13,20 @@ interface ShareDialogProps {
 }
 
 const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, title, content }) => {
+    const toastId = React.useRef('copied-toast');
+    const notify = () => {
+        if (!toast.isActive(toastId.current!)) {
+            showToast("success", <p> Link copied! </p >,
+                {
+                    toastId: 'copied-toast',
+                    style: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        color: 'white',
+                    }
+                }
+            );
+        }
+    }
     return (
         <Modal size="md" isOpen={isOpen} onClose={onClose} isDismissable={true}>
             <ModalContent>
@@ -19,6 +35,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, tit
                     <div className="h-8 border-1 w-full rounded-md flex items-center px-2 overflow-hidden text-ellipsis ">
                         {content}
                     </div>
+                    <p className='text-sm mt-6 text-gray-400'> Note: This log will be available to anyone with the link.</p>
                 </ModalBody>
                 <ModalFooter>
                     <Button
@@ -27,7 +44,10 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, tit
                         Close
                     </Button>
                     <Button
-                        onClick={onShare}
+                        onClick={() => {
+                            notify();
+                            onShare();
+                        }}
                         className={`bg-gradient-to-r from-gray-700 to-gray-800`}>
                         Copy
                     </Button>
