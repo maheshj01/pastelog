@@ -1,6 +1,6 @@
 // src/services/LogService.ts
 
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
 import { Log } from '../_models/Log';
 
@@ -50,6 +50,18 @@ class LogService {
         } catch (e) {
             return '';
         }
+    }
+
+    async publishLogWithId(log: Log, id: string): Promise<string> {
+        const docRef = doc(this.logCollection, id);
+        await setDoc(docRef, log.toFirestore());
+        await this.saveLogToLocal({
+            ...log, id: docRef.id,
+            toFirestore: function () {
+                throw new Error('Function not implemented.');
+            }
+        });
+        return docRef.id;
     }
 
     async updateLog(id: string, log: Log): Promise<void> {
