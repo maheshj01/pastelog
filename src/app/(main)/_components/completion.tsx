@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
+import { MarkdownFormatter } from '../_services/MDFormatter';
 
 interface TextCompletionInputProps {
     customClass?: string;
@@ -28,9 +29,11 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
+    const markdownFormatter = useRef(new MarkdownFormatter(value));
 
     useEffect(() => {
         setInputValue(value);
+        markdownFormatter.current.setValue(value);
     }, [value]);
 
     const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -39,6 +42,7 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         }
         const newValue = event.target.value;
         setInputValue(newValue);
+        markdownFormatter.current.setValue(newValue);
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -100,110 +104,79 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         const textarea = inputRef.current;
         if (!textarea) return;
 
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const selectedText = inputValue.substring(start, end);
-
-        const newValue =
-            inputValue.substring(0, start) +
-            `${syntax}${selectedText}${syntax}` +
-            inputValue.substring(end);
-
-        updateValue(newValue, start + syntax.length, end + syntax.length);
+        const { value, newCursorPos } = markdownFormatter.current.applyFormatting(
+            textarea.selectionStart,
+            textarea.selectionEnd,
+            syntax
+        );
+        updateValue(value, newCursorPos);
     };
 
     const applyLinkFormatting = () => {
         const textarea = inputRef.current;
         if (!textarea) return;
 
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const selectedText = inputValue.substring(start, end);
-
-        const newValue =
-            inputValue.substring(0, start) +
-            `[${selectedText}]()` +
-            inputValue.substring(end);
-
-        updateValue(newValue, end + 3);
+        const { value, newCursorPos } = markdownFormatter.current.applyLinkFormatting(
+            textarea.selectionStart,
+            textarea.selectionEnd
+        );
+        updateValue(value, newCursorPos);
     };
 
     const applyListFormatting = (listSyntax: string) => {
         const textarea = inputRef.current;
         if (!textarea) return;
 
-        const start = textarea.selectionStart;
-        const lineStart = inputValue.lastIndexOf('\n', start - 1) + 1;
-
-        const newValue =
-            inputValue.substring(0, lineStart) +
-            listSyntax +
-            inputValue.substring(lineStart);
-
-        updateValue(newValue, start + listSyntax.length);
+        const { value, newCursorPos } = markdownFormatter.current.applyListFormatting(
+            textarea.selectionStart,
+            listSyntax
+        );
+        updateValue(value, newCursorPos);
     };
 
     const applyCodeBlockFormatting = () => {
         const textarea = inputRef.current;
         if (!textarea) return;
 
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const selectedText = inputValue.substring(start, end);
-
-        const newValue =
-            inputValue.substring(0, start) +
-            `\n\`\`\`\n${selectedText}\n\`\`\`\n` +
-            inputValue.substring(end);
-
-        updateValue(newValue, end + 8);
+        const { value, newCursorPos } = markdownFormatter.current.applyCodeBlockFormatting(
+            textarea.selectionStart,
+            textarea.selectionEnd
+        );
+        updateValue(value, newCursorPos);
     };
 
     const applyBlockquoteFormatting = () => {
         const textarea = inputRef.current;
         if (!textarea) return;
 
-        const start = textarea.selectionStart;
-        const lineStart = inputValue.lastIndexOf('\n', start - 1) + 1;
-
-        const newValue =
-            inputValue.substring(0, lineStart) +
-            '> ' +
-            inputValue.substring(lineStart);
-
-        updateValue(newValue, start + 2);
+        const { value, newCursorPos } = markdownFormatter.current.applyBlockquoteFormatting(
+            textarea.selectionStart
+        );
+        updateValue(value, newCursorPos);
     };
 
     const applyHeadingFormatting = (level: number) => {
         const textarea = inputRef.current;
         if (!textarea) return;
 
-        const start = textarea.selectionStart;
-        const lineStart = inputValue.lastIndexOf('\n', start - 1) + 1;
-        const headingSyntax = '#'.repeat(level) + ' ';
-
-        const newValue =
-            inputValue.substring(0, lineStart) +
-            headingSyntax +
-            inputValue.substring(lineStart);
-
-        updateValue(newValue, start + headingSyntax.length);
+        const { value, newCursorPos } = markdownFormatter.current.applyHeadingFormatting(
+            textarea.selectionStart,
+            level
+        );
+        updateValue(value, newCursorPos);
     };
 
     const insertHorizontalRule = () => {
         const textarea = inputRef.current;
         if (!textarea) return;
 
-        const start = textarea.selectionStart;
-        const newValue =
-            inputValue.substring(0, start) +
-            '\n---\n' +
-            inputValue.substring(start);
-
-        updateValue(newValue, start + 5);
+        const { value, newCursorPos } = markdownFormatter.current.insertHorizontalRule(
+            textarea.selectionStart
+        );
+        updateValue(value, newCursorPos);
     };
 
-    const updateValue = (newValue: string, selectionStart: number, selectionEnd?: number) => {
+    const updateValue = (newValue: string, newCursorPos: number) => {
         setInputValue(newValue);
         if (onChange) {
             const syntheticEvent = {
@@ -214,8 +187,8 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
 
         setTimeout(() => {
             if (inputRef.current) {
-                inputRef.current.selectionStart = selectionStart;
-                inputRef.current.selectionEnd = selectionEnd || selectionStart;
+                inputRef.current.selectionStart = newCursorPos;
+                inputRef.current.selectionEnd = newCursorPos;
                 inputRef.current.focus();
             }
         }, 0);
