@@ -38,6 +38,7 @@ export default function Pastelog() {
             false,
         );
         const id = await logService.publishLog(log);
+        // const id = await logService.publishLogWithId(log, 'shortcuts');
         if (!id) {
             setLoading(false);
             return;
