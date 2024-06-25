@@ -10,7 +10,7 @@ interface DeleteDialogProps {
 }
 
 const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, onClose, onDelete, title, content }) => {
-    const [deleteLocal, setDeleteLocal] = React.useState<boolean>(false);
+    const [deleteLocal, setDeleteLocal] = React.useState<boolean>(true);
 
     return (
         <Modal
