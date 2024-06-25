@@ -32,9 +32,9 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
                 height: "100%",
                 maxHeight: "100%"
             }}
-            className={`${customClass} mb-2`}>
+        >
             <ReactMarkdown
-                className={customClass}
+                className={`${customClass} mb-2`}
                 components={{
                     code(props) {
                         const { children, className, node, ref, ...rest } = props
