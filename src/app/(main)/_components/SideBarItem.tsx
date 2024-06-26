@@ -25,8 +25,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const router = useRouter();
     function MoreOptions() {
-        const options = ['Share', 'Delete'];
-
+        const options = ['Share', 'Delete', 'Republish'];
         return (<PSDropdown
             options={options}
             placement="bottom-start"
@@ -64,6 +63,9 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             case '0':
                 onShareOpen();
                 break;
+            case '2':
+                setSelectedId(null);
+                router.push(`/logs?id=${id}`);
             default:
                 break;
         }

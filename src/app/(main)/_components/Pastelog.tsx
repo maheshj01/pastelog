@@ -4,7 +4,7 @@ import { Button as PSButton } from "@nextui-org/button";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Log, { LogType } from "../_models/Log";
 import LogService from "../_services/logService";
 import { DatePicker } from "./DatePicker";
@@ -12,7 +12,8 @@ import Editor from "./Editor";
 import PSInput from "./PSInput";
 import ShortcutWrapper from "./ShortCutWrapper";
 import { Button } from './button';
-export default function Pastelog() {
+
+export default function Pastelog({ id }: { id?: string }) {
 
     const { theme } = useTheme();
     const [title, setTitle] = useState<string>('');
@@ -47,6 +48,19 @@ export default function Pastelog() {
         router.push(`/logs/publish/${id}`);
         setLoading(false);
     }
+
+    useEffect(() => {
+        if (id) {
+            logService.fetchLogById(id).then((log) => {
+                if (log) {
+                    setTitle(log.title!);
+                    setContent(log.data!);
+                    setExpiryDate(log.expiryDate!);
+                }
+            });
+        }
+    }, [id])
+
 
     const togglePreview = React.useCallback(() => {
         setPreview((prev) => !prev);

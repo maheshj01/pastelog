@@ -1,7 +1,6 @@
 "use client";
 import Editor from '@/app/(main)/_components/Editor';
 import { showToast } from '@/utils/toast_utils';
-import { toast } from 'react-toastify';
 import { formatReadableDate } from '@/utils/utils';
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -11,6 +10,7 @@ import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
 import React, { Key, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Log from '../_models/Log';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
