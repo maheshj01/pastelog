@@ -30,17 +30,27 @@ export default function Welcome() {
         return () => clearInterval(interval);
     }, []);
 
-    const saveLocally = async () => {
+    const saveLocally = async (documentIds: string[]) => {
         const logService = new LogService();
-        const log = await logService.fetchLogById('getting-started');
-        if (log) {
-            logService.saveLogToLocal(log);
+        for (const id of documentIds) {
+            try {
+                const log = await logService.fetchLogById(id);
+                if (log) {
+                    await logService.saveLogToLocal(log);
+                } else {
+                    console.warn(`Document with ID: ${id} not found`);
+                }
+            } catch (error) {
+                console.error(`Error saving document with ID: ${id}`, error);
+            }
         }
+
+        console.log('Finished saving documents locally');
     }
 
     const handleGetStarted = async () => {
         setLoading(true); // Set loading state to true immediately
-        saveLocally();
+        saveLocally(['getting-started', 'shortcuts']);
         localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
         try {
             await new Promise<void>(resolve => {
