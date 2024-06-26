@@ -19,7 +19,7 @@ function LogsContent() {
 
 export default function LogsPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className='flex justify-center items-center min-h-screen'>Loading...</div>}>
             <LogsContent />
         </Suspense>
     );
