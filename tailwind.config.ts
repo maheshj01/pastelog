@@ -21,10 +21,10 @@ const config: Config = {
         DEFAULT: {
           css: {
             'code::before': {
-              content: '&nbsp;&nbsp;',
+              content: '""',
             },
             'code::after': {
-              content: '&nbsp;&nbsp;',
+              content: '""',
             },
           },
         },
