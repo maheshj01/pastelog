@@ -46,9 +46,9 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
         content: 'This action cannot be undone. This log will be deleted from your device and will no longer be available.'
     });
 
-    const handleShare = () => {
-        // Copy link to clipboard
-        navigator.clipboard.writeText(shareContent.content);
+    const handlePreview = () => {
+        // new tab
+        window.open(shareContent.content, '_blank');
         onShareClose(); // Close the dialog after sharing
     };
 
@@ -116,7 +116,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                         <ShareDialog
                             isOpen={isShareOpen}
                             onClose={onShareClose}
-                            onShare={handleShare}
+                            onShare={handlePreview}
                             title={shareContent.title}
                             content={shareContent.content}
                         />

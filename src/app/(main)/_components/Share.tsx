@@ -1,9 +1,10 @@
 import { showToast } from "@/utils/toast_utils";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { ClipboardCopyIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { toast } from "react-toastify";
+import IconButton from "./IconButton";
 import { Button } from "./button";
-
 interface ShareDialogProps {
     isOpen: boolean;
     onClose: () => void;
@@ -32,24 +33,28 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, tit
             <ModalContent>
                 <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
                 <ModalBody>
-                    <div className="h-8 border-1 w-full rounded-md flex items-center px-2 overflow-hidden text-ellipsis ">
-                        {content}
+                    <div className="flex items-center">
+                        <div className="grow h-8 border-1 w-full rounded-md flex items-center px-2 overflow-hidden text-ellipsis ">
+                            {content}
+                        </div>
+                        <div>
+                            <IconButton ariaLabel="Copy" onClick={notify}>
+                                <ClipboardCopyIcon className="size-6 text-black dark:text-white" />
+                            </IconButton>
+                        </div>
                     </div>
                     <p className='text-sm mt-6 text-gray-400'> Note: This log will be available to anyone with the link.</p>
                 </ModalBody>
                 <ModalFooter>
                     <Button
-                        variant={"destructive"}
+                        variant="destructive"
                         onClick={onClose}>
                         Close
                     </Button>
                     <Button
-                        onClick={() => {
-                            notify();
-                            onShare();
-                        }}
+                        onClick={onShare}
                         className={`bg-gradient-to-r from-gray-700 to-gray-800`}>
-                        Copy
+                        <p className='mx-2'>Preview</p> <EyeOpenIcon />
                     </Button>
                 </ModalFooter>
             </ModalContent>
