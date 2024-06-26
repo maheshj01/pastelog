@@ -1,3 +1,7 @@
+### [0.4.0] - Jun 26, 2024
+
+- Feat: Import log from a link [Issue #20](https://github.com/maheshmnj/pastelog/issues/20)
+
 ### [0.3.0] - Jun 25, 2024
 
 - Adds Keyboard Shortcuts
