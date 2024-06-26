@@ -38,7 +38,10 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, tit
                             {content}
                         </div>
                         <div>
-                            <IconButton ariaLabel="Copy" onClick={notify}>
+                            <IconButton ariaLabel="Copy" onClick={() => {
+                                navigator.clipboard.writeText(content);
+                                notify();
+                            }}>
                                 <ClipboardCopyIcon className="size-6 text-black dark:text-white" />
                             </IconButton>
                         </div>

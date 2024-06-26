@@ -1,9 +1,9 @@
 // src/services/LogService.ts
 
+import axios from 'axios';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
-import { Log } from '../_models/Log';
-
+import { Log, LogType } from '../_models/Log';
 class LogService {
     private logCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION}`);
 
@@ -161,6 +161,34 @@ class LogService {
         const logs = await this.fetchLogsFromLocal();
         const updatedLogs = logs.filter(log => log.id !== id);
         this.saveLogsToLocal(updatedLogs);
+    }
+
+    async importLogFromGist(gistId: string): Promise<Log> {
+        try {
+            // Fetch the gist data
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_GITHUB_GIST_API}/${gistId}`);
+            const gist = response.data;
+            console.log(gist);
+
+            // Find the first file in the gist (assuming the gist has only one file)
+            const firstFileName = Object.keys(gist.files)[0];
+            const file = gist.files[firstFileName];
+            const desc = gist.description;
+            const content = file.content;
+            if (!file) {
+                throw new Error('No file found in the gist');
+            }
+            const log = new Log(null, content, new Date(), LogType.TEXT, false, desc, false);
+            return log;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 404) {
+                    throw new Error('Gist not found');
+                }
+                throw new Error(`Failed to fetch gist: ${error.message}`);
+            }
+            throw error;
+        }
     }
 }
 
