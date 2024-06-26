@@ -1,23 +1,23 @@
-# Use the official Node.js image.
+# Use the official Node.js 18 image as a parent image
 FROM node:18-alpine
 
-# Create and change to the app directory.
-WORKDIR /usr/src/app
+# Set the working directory
+WORKDIR /app
 
-# Copy application dependency manifests to the container image.
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies.
-RUN npm install
+# Install dependencies
+RUN npm ci
 
-# Copy local code to the container image.
+# Copy the rest of your app's source code
 COPY . .
 
-# Build the application.
+# Build your Next.js app
 RUN npm run build
 
-# Run the web service on container startup.
-CMD [ "npm", "start" ]
-
-# Expose the port the app runs on
+# Expose the port your app runs on
 EXPOSE 3000
+
+# Start the app
+CMD ["npm", "start"]
