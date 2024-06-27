@@ -3,10 +3,11 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import { useTheme } from 'next-themes';
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import IconButton from "../_components/IconButton";
 import PSBanner from '../_components/PSBanner';
 import PSNavbar from '../_components/PSNavbar';
+import RouteClient from '../_components/RouteClient';
 import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
 import useBannerState from '../_services/BannerState';
@@ -14,9 +15,10 @@ import { useSidebar } from '../_services/Context';
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
-    const { showSideBar, setShowSideBar } = useSidebar();
+    const { showSideBar, setShowSideBar, id } = useSidebar();
     const bannerState = useBannerState();
     const [show, setShow] = React.useState(true);
+
     const checkWindowSize = async () => {
         if (typeof window !== 'undefined') {
             if (showSideBar && window.innerWidth <= 768) {
@@ -35,7 +37,8 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
         }
         window.addEventListener('resize', checkWindowSize);
         return () => window.removeEventListener('resize', checkWindowSize);
-    }, []);
+    }, [setTheme])
+
 
     return (
         <div className={`flex ${theme === Theme.DARK ? 'dark' : 'light'}`}>
@@ -77,6 +80,9 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                     </div>
                 </div>
             </div>
+            <Suspense fallback={<div>Loading...</div>}>
+                <RouteClient />
+            </Suspense>
         </div>
     );
 }

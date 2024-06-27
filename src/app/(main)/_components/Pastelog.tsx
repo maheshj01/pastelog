@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Log, { LogType } from "../_models/Log";
+import Analytics from "../_services/Analytics";
 import LogService from "../_services/logService";
 import { DatePicker } from "./DatePicker";
 import Editor from "./Editor";
@@ -67,15 +68,13 @@ export default function Pastelog({ id }: { id?: string }) {
             setLoading(false);
             return;
         }
-        // Push the route and then reload the page
         router.push(`/logs/publish/${id}`);
         setLoading(false);
+        Analytics.logEvent('publish_pastelog', { id: id, action: 'click' });
     }
 
     async function handleImport(url: string) {
         try {
-
-            // if url has gist.github.com
             if (url.includes('gist.github.com')) {
                 const id = url.split('/').pop();
                 console.log(id);
@@ -84,6 +83,7 @@ export default function Pastelog({ id }: { id?: string }) {
                     setTitle(log.title!);
                     setContent(log.data!);
                     notify(false, "Log imported successfully");
+                    Analytics.logEvent('import_gist', { id: id, action: 'click' });
                     onImportClose();
                 }
             }
@@ -97,6 +97,7 @@ export default function Pastelog({ id }: { id?: string }) {
                     setExpiryDate(log.expiryDate!);
                     notify(false, "Log imported successfully");
                     onImportClose();
+                    Analytics.logEvent('import_pastelog', { id: id, action: 'click' });
                 } else {
                     notify(true, "Invalid Pastelog URL");
                 }
@@ -157,7 +158,10 @@ export default function Pastelog({ id }: { id?: string }) {
                                     >Preview</PSButton>
                                 </div>
                                 <DatePicker
-                                    onSelect={(date: Date) => setExpiryDate(date!)}
+                                    onSelect={(date: Date) => {
+                                        setExpiryDate(date!);
+                                        Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
+                                    }}
                                     selected={expiryDate}
                                 />
                             </div>
