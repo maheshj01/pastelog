@@ -1,6 +1,7 @@
 ### [0.4.1] - Jun 27, 2024
 
 - Fix line breaks in the log
+- Improve the landingpage UI
 
 ### [0.4.0] - Jun 26, 2024
 
