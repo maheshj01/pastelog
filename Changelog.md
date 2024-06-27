@@ -1,3 +1,7 @@
+### [0.4.1] - Jun 27, 2024
+
+- Fix line breaks in the log
+
 ### [0.4.0] - Jun 26, 2024
 
 - Feat: Import log from a link [Issue #20](https://github.com/maheshmnj/pastelog/issues/20)
