@@ -1,17 +1,20 @@
 # Pastelog
 
-Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.
+Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with a unique URL. The logs are publicly accessible and auto expire after the specified date.
 
 <img width="764" alt="cover" src="https://github.com/maheshmnj/pastelog/assets/31410839/e75cfac7-93f8-4734-a0cc-d95872522230">
 
 ### Features
 
-- The logs are publicly accessible, no signIn required
-- The logs auto expire and can be stored upto 1 year
-- Store logs locally for easy access
+- The logs are publicly accessible, no SignIn required
+- The logs auto expire after the specified date
+- Stores logs locally for quick access
 - Supports rich text content with github falvoured markdown and code highlighting
-- Supports Darkmode and Lightmode
 - Export logs as image and plain text
+- Import logs from Github gist or from Pastelog Url
+- Markdown Keyboard shortucts support to help you write faster
+- Supports Darkmode for better readability
+- Share logs with a unique URL
 
 ### Building the project
 
