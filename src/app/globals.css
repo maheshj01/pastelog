@@ -61,6 +61,12 @@ body {
   background: var(--color-primary);
 }
 
+.line-break {
+  white-space: pre-wrap;
+  /* line height */
+  line-height: 1.5;
+}
+
 /* body {
   color: rgb(var(--foreground-rgb));
   height: 100vh;

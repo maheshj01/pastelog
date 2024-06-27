@@ -170,7 +170,9 @@ export default function Pastelog({ id }: { id?: string }) {
                                     preview={preview}
                                     className={theme != 'dark' ? ` bg-slate-50 text-black` : `bg-gray-700 text-white`}
                                     value={content}
-                                    onChange={(e) => { setContent(e.target.value) }}
+                                    onChange={(e) => {
+                                        setContent(e.target.value)
+                                    }}
                                     disabled={loading}
                                 />
                             </div>
