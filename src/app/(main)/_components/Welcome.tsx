@@ -12,6 +12,7 @@ export default function Welcome() {
     const tagLineDescription = ['Easy to use', 'Fast to load', 'Powerful features'];
     const [currentTagLine, setCurrentTagLine] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [index, setIndex] = useState<number | null>(null);
     const [darkTheme, setDarkTheme] = useState(false); // State for dark theme
     const router = useRouter();
     const scrollByScreenHeight = () => {
@@ -70,8 +71,41 @@ export default function Welcome() {
         setDarkTheme(prev => !prev); // Toggle between dark and light themes
     };
 
+    const scrollToSection = (sectionIndex: number) => {
+        setIndex(sectionIndex - 1);
+        const sections = document.querySelectorAll('section');
+        if (sections[sectionIndex!]) {
+            sections[sectionIndex!].scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    const sectionTitles = [
+        "Introduction",
+        "Beautiful Markdown",
+        "Keyboard Shortcuts",
+        "Create and Share",
+        "Dark Mode",
+        "Save Locally"
+    ];
+
     return (
         <div className={`min-h-screen ${darkTheme ? 'bg-gray-800' : 'bg-gray-900'} text-white`}>
+
+            <div className="fixed top-15 left-0 right-0 flex justify-center py-6 px-6 z-50">
+                {/* add a list of horizontal features */}
+                <div className="flex flex-wrap items-center justify-center gap-2 mb-8 rounded-3xl p-4 border-2">
+                    {sectionTitles.slice(1).map((title, secIndex) => (
+                        <div
+                            key={secIndex}
+                            className={`px-4 py-2 ${index == secIndex ? 'text-primary' : 'text-white'}`}
+                            onClick={() => scrollToSection(secIndex + 1)}
+                        >
+                            {title}
+                        </div>
+                    ))}
+                </div>
+
+            </div>
             {/* Section 1: Introduction */}
             <section className="flex flex-col items-center justify-center min-h-screen">
                 <GradientText className='tagline' text={tagLineWords[currentTagLine]} gradientColors={['#FF0080', '#7928CA']} fontSize="5rem" />
@@ -196,6 +230,6 @@ export default function Welcome() {
                     />
                 </div>
             </section>
-        </div>
+        </div >
     );
 }
