@@ -3,27 +3,15 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import { useTheme } from 'next-themes';
-import { usePathname, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
 import IconButton from "../_components/IconButton";
 import PSBanner from '../_components/PSBanner';
 import PSNavbar from '../_components/PSNavbar';
+import RouteClient from '../_components/RouteClient';
 import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
-import Analytics from '../_services/Analytics';
 import useBannerState from '../_services/BannerState';
 import { useSidebar } from '../_services/Context';
-
-function LogsLayoutClient({ onRouteChange }: { onRouteChange: (url: string) => void }) {
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-
-    useEffect(() => {
-        onRouteChange(pathname);
-    }, [pathname, searchParams, onRouteChange]);
-
-    return null;
-}
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
@@ -51,23 +39,6 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
         return () => window.removeEventListener('resize', checkWindowSize);
     }, [setTheme])
 
-
-    const handleRouteChange = (url: string) => {
-        console.log('route change', url);
-        switch (url) {
-            case '/':
-                Analytics.logPageView(url, 'Welcome');
-                break;
-            case '/logs':
-                Analytics.logPageView(url, 'New Log');
-                break;
-            case `/logs/${id}`:
-                Analytics.logPageView(url, 'individual log');
-                break;
-            default:
-                break;
-        }
-    };
 
     return (
         <div className={`flex ${theme === Theme.DARK ? 'dark' : 'light'}`}>
@@ -110,7 +81,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                 </div>
             </div>
             <Suspense fallback={<div>Loading...</div>}>
-                <LogsLayoutClient onRouteChange={handleRouteChange} />
+                <RouteClient />
             </Suspense>
         </div>
     );

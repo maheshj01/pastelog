@@ -1,41 +1,12 @@
 "use client";
-import { usePathname, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
+import RouteClient from './(main)/_components/RouteClient';
 import Welcome from './(main)/_components/Welcome';
-import Analytics from './(main)/_services/Analytics';
-
-function LogsLayoutClient({ onRouteChange }: { onRouteChange: (url: string) => void }) {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    onRouteChange(pathname);
-  }, [pathname, searchParams, onRouteChange]);
-
-  return null;
-}
-
 
 export default function Page() {
   const [isFirstVisit, setIsFirstVisit] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  const handleRouteChange = (url: string) => {
-    console.log('route change', url);
-    switch (url) {
-      case '/':
-        Analytics.logPageView(url, 'Welcome');
-        break;
-      case '/logs':
-        Analytics.logPageView(url, 'New Log');
-        break;
-      case '/logs/[id]':
-        Analytics.logPageView(url, 'individual log');
-        break;
-      default:
-        break;
-    }
-  };
   useEffect(() => {
     const f = localStorage.getItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`) ?? 'true';
     const firstVisit = f === 'true';
@@ -54,7 +25,7 @@ export default function Page() {
   }
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <LogsLayoutClient onRouteChange={handleRouteChange} />
+      <RouteClient />
       <Welcome />
     </Suspense>
   );
