@@ -161,7 +161,10 @@ export default function Pastelog({ id }: { id?: string }) {
                                     >Preview</PSButton>
                                 </div>
                                 <DatePicker
-                                    onSelect={(date: Date) => setExpiryDate(date!)}
+                                    onSelect={(date: Date) => {
+                                        setExpiryDate(date!);
+                                        Analytics.logEvent('set_expiry_date', { date: date });
+                                    }}
                                     selected={expiryDate}
                                 />
                             </div>
