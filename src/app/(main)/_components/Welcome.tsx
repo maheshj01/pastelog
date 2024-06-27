@@ -13,7 +13,6 @@ export default function Welcome() {
     const [loading, setLoading] = useState(false);
     const [darkTheme, setDarkTheme] = useState(false); // State for dark theme
     const router = useRouter();
-
     const scrollByScreenHeight = () => {
         const currentScrollY = window.scrollY;
         const nextScrollY = currentScrollY + window.innerHeight;
@@ -25,7 +24,7 @@ export default function Welcome() {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentTagLine((prev) => (prev + 1) % tagLineWords.length);
-        }, 2500); // Change word every 2.5 seconds
+        }, 2500);
 
         return () => clearInterval(interval);
     }, []);
@@ -55,14 +54,13 @@ export default function Welcome() {
         try {
             await new Promise<void>(resolve => {
                 setTimeout(() => {
-                    setLoading(false); // Set loading state to false after timeout
+                    setLoading(false);
                     router.push('/logs');
-                    resolve(); // Resolve the promise after timeout completes
+                    resolve();
                 }, 2500);
             });
-            // Perform actions that should happen while waiting for timeout
         } catch (error) {
-            setLoading(false); // Ensure loading state is false on error
+            setLoading(false);
         }
     };
 
