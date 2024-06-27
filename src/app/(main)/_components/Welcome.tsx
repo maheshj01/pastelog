@@ -3,6 +3,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Analytics from "../_services/Analytics";
 import LogService from '../_services/logService';
 import GradientText from './GradientText';
 import { Button } from './button';
@@ -59,6 +60,7 @@ export default function Welcome() {
                     resolve();
                 }, 2500);
             });
+            Analytics.logEvent('get_started', { action: 'click' });
         } catch (error) {
             setLoading(false);
         }

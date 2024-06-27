@@ -68,16 +68,13 @@ export default function Pastelog({ id }: { id?: string }) {
             setLoading(false);
             return;
         }
-        // Push the route and then reload the page
         router.push(`/logs/publish/${id}`);
         setLoading(false);
-        Analytics.logEvent('publish_pastelog', { id: id });
+        Analytics.logEvent('publish_pastelog', { id: id, action: 'click' });
     }
 
     async function handleImport(url: string) {
         try {
-
-            // if url has gist.github.com
             if (url.includes('gist.github.com')) {
                 const id = url.split('/').pop();
                 console.log(id);
@@ -86,7 +83,7 @@ export default function Pastelog({ id }: { id?: string }) {
                     setTitle(log.title!);
                     setContent(log.data!);
                     notify(false, "Log imported successfully");
-                    Analytics.logEvent('import_gist', { id: id });
+                    Analytics.logEvent('import_gist', { id: id, action: 'click' });
                     onImportClose();
                 }
             }
@@ -100,7 +97,7 @@ export default function Pastelog({ id }: { id?: string }) {
                     setExpiryDate(log.expiryDate!);
                     notify(false, "Log imported successfully");
                     onImportClose();
-                    Analytics.logEvent('import_pastelog', { id: id });
+                    Analytics.logEvent('import_pastelog', { id: id, action: 'click' });
                 } else {
                     notify(true, "Invalid Pastelog URL");
                 }
@@ -163,7 +160,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                 <DatePicker
                                     onSelect={(date: Date) => {
                                         setExpiryDate(date!);
-                                        Analytics.logEvent('set_expiry_date', { date: date });
+                                        Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
                                     }}
                                     selected={expiryDate}
                                 />

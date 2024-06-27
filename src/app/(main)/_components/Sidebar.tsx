@@ -21,7 +21,7 @@ const Sidebar: React.FC = () => {
             setSelected(log);
             setId(log.id!);
             router.push(`/logs/${log.id}`);
-            Analytics.logEvent('change_log', { id: log.id });
+            Analytics.logEvent('change_log', { id: log.id, action: 'click' });
         } else {
             setSelected(null);
             setId(null);

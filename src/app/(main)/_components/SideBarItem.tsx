@@ -60,16 +60,16 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                 // await logService.deleteLogById(id);
                 // onRefresh();
                 onDeleteOpen();
-                Analytics.logEvent('delete_log', { id: id });
+                Analytics.logEvent('delete_log', { id: id, action: 'click' });
                 break;
             case '0':
                 onShareOpen();
-                Analytics.logEvent('share_log', { id: id });
+                Analytics.logEvent('share_log', { id: id, action: 'click' });
                 break;
             case '2':
                 setSelectedId(null);
                 router.push(`/logs?id=${id}`);
-                Analytics.logEvent('republish_log', { id: id });
+                Analytics.logEvent('republish_log', { id: id, action: 'click' });
             default:
                 break;
         }
