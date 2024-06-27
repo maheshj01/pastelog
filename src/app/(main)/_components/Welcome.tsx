@@ -75,7 +75,7 @@ export default function Welcome() {
             {/* Section 1: Introduction */}
             <section className="flex flex-col items-center justify-center min-h-screen">
                 <GradientText className='tagline' text={tagLineWords[currentTagLine]} gradientColors={['#FF0080', '#7928CA']} fontSize="5rem" />
-                <p className="text-2xl mb-16">
+                <p className="text-2xl mb-16 text-center">
                     Welcome to Pastelog!
                 </p>
                 <Button
@@ -99,7 +99,7 @@ export default function Welcome() {
 
             {/* Section 2: Feature 1 */}
             <section className="flex flex-col items-center justify-center min-h-screen">
-                <p className="text-3xl my-8">
+                <p className="text-3xl my-8 text-center">
                     Beautiful Markdown with Syntax Highlighting
                 </p>
                 <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
@@ -114,8 +114,26 @@ export default function Welcome() {
                 </div>
             </section>
 
+            {/* Section 3: Feature 2 */}
             <section className="flex flex-col items-center justify-center min-h-screen">
-                <p className="text-3xl my-8">
+                <p className="text-3xl my-8 text-center">
+                    Keyboard Shortcuts for Faster Editing
+                </p>
+                <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
+                    {/* video without any controls on loop */}
+                    <video
+                        src="https://github.com/maheshmnj/pastelog/assets/31410839/b5e91e3e-6f7e-43cd-8b0f-f8c769dabfe1"
+                        autoPlay
+                        loop
+                        muted
+                        className="w-full h-full rounded-lg shadow-lg"
+                    />
+
+                </div>
+            </section>
+            {/* Section 4: Feature 3 */}
+            <section className="flex flex-col items-center justify-center min-h-screen">
+                <p className="text-3xl my-8 text-center">
                     Create and Share Logs
                 </p>
                 <p>Create stunning logs in minutes with markdown support and share with anyone using a unique URL</p>
@@ -133,10 +151,10 @@ export default function Welcome() {
                 </div>
             </section>
 
-            {/* Section 3: Feature 2 */}
+            {/* Section 5: Feature 4 */}
             <section className="flex flex-col items-center justify-center min-h-screen">
                 <div className="flex flex-col items-center justify-between w-full max-w-3xl">
-                    <p className="text-3xl my-8">
+                    <p className="text-3xl my-8 text-center">
                         {/* dark mode */}
                         Dark Mode
                     </p>
@@ -161,12 +179,12 @@ export default function Welcome() {
                 </div>
             </section>
 
-            {/* Section 4: Feature 3 */}
+            {/* Section 6: Feature 5 */}
             <section className="flex flex-col items-center justify-center min-h-screen">
                 <p className="text-3xl my-8">
                     Save Logs Locally
                 </p>
-                <p>Your logs are saved locally for easy access</p>
+                <p className="text-center">Your logs are saved locally and can be accessed in the sidebar for quick access.</p>
                 <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
                     <Image
                         src={"/images/local.png"}
@@ -178,8 +196,6 @@ export default function Welcome() {
                     />
                 </div>
             </section>
-
-            {/* Additional sections for more features */}
         </div>
     );
 }
