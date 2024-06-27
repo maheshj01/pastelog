@@ -97,7 +97,7 @@ export default function Welcome() {
                     {sectionTitles.slice(1).map((title, secIndex) => (
                         <div
                             key={secIndex}
-                            className={`px-4 py-2 ${index == secIndex ? 'text-primary' : 'text-white'}`}
+                            className={`px-4 py-2 cursor-pointer ${index == secIndex ? 'text-primary' : 'text-white'}`}
                             onClick={() => scrollToSection(secIndex + 1)}
                         >
                             {title}
@@ -132,8 +132,8 @@ export default function Welcome() {
             </section>
 
             {/* Section 2: Feature 1 */}
-            <section className="flex flex-col items-center justify-center min-h-screen">
-                <p className="text-3xl my-8 text-center">
+            <section className="flex flex-col items-center justify-center min-h-screen pt-8">
+                <p className="text-3xl mt-8 mb-4 text-center">
                     Beautiful Markdown with Syntax Highlighting
                 </p>
                 <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
@@ -149,8 +149,8 @@ export default function Welcome() {
             </section>
 
             {/* Section 3: Feature 2 */}
-            <section className="flex flex-col items-center justify-center min-h-screen">
-                <p className="text-3xl my-8 text-center">
+            <section className="flex flex-col items-center justify-center min-h-screen pt-8">
+                <p className="text-3xl mt-8 mb-4 text-center">
                     Keyboard Shortcuts for Faster Editing
                 </p>
                 <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
@@ -166,8 +166,8 @@ export default function Welcome() {
                 </div>
             </section>
             {/* Section 4: Feature 3 */}
-            <section className="flex flex-col items-center justify-center min-h-screen">
-                <p className="text-3xl my-8 text-center">
+            <section className="flex flex-col items-center justify-center min-h-screen pt-8">
+                <p className="text-3xl mt-8 mb-4 text-center">
                     Create and Share Logs
                 </p>
                 <p>Create stunning logs in minutes with markdown support and share with anyone using a unique URL</p>
@@ -186,7 +186,7 @@ export default function Welcome() {
             </section>
 
             {/* Section 5: Feature 4 */}
-            <section className="flex flex-col items-center justify-center min-h-screen">
+            <section className="flex flex-col items-center justify-center min-h-screen pt-8">
                 <div className="flex flex-col items-center justify-between w-full max-w-3xl">
                     <p className="text-3xl my-8 text-center">
                         {/* dark mode */}
@@ -214,8 +214,8 @@ export default function Welcome() {
             </section>
 
             {/* Section 6: Feature 5 */}
-            <section className="flex flex-col items-center justify-center min-h-screen">
-                <p className="text-3xl my-8">
+            <section className="flex flex-col items-center justify-center min-h-screen pt-8">
+                <p className="text-3xl mt-8 mb-4 text-center">
                     Save Logs Locally
                 </p>
                 <p className="text-center">Your logs are saved locally and can be accessed in the sidebar for quick access.</p>
