@@ -4,6 +4,7 @@
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import Analytics from '../_services/Analytics';
 import IconButton from './IconButton';
 
 export enum Theme {
@@ -28,7 +29,10 @@ export function ThemeSwitcher() {
                 ariaLabel={
                     theme === 'dark' ? 'Light Mode' : 'Dark Mode'
 
-                } onClick={() => setTheme(theme == Theme.DARK ? 'light' : 'dark')}>
+                } onClick={() => {
+                    setTheme(theme == Theme.DARK ? 'light' : 'dark');
+                    Analytics.logThemeChange(theme === 'dark' ? 'light' : 'dark');
+                }}>
                 {theme === 'dark' ? <SunIcon className='text-black size-12 dark:text-white' /> : <MoonIcon className='size-12 text-black dark:text-white' />}
             </IconButton>
         </div>

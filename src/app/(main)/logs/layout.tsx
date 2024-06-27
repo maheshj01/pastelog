@@ -3,20 +3,34 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import { useTheme } from 'next-themes';
-import React, { useEffect } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import React, { Suspense, useEffect } from 'react';
 import IconButton from "../_components/IconButton";
 import PSBanner from '../_components/PSBanner';
 import PSNavbar from '../_components/PSNavbar';
 import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
+import Analytics from '../_services/Analytics';
 import useBannerState from '../_services/BannerState';
 import { useSidebar } from '../_services/Context';
 
+function LogsLayoutClient({ onRouteChange }: { onRouteChange: (url: string) => void }) {
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+
+    useEffect(() => {
+        onRouteChange(pathname);
+    }, [pathname, searchParams, onRouteChange]);
+
+    return null;
+}
+
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
-    const { showSideBar, setShowSideBar } = useSidebar();
+    const { showSideBar, setShowSideBar, id } = useSidebar();
     const bannerState = useBannerState();
     const [show, setShow] = React.useState(true);
+
     const checkWindowSize = async () => {
         if (typeof window !== 'undefined') {
             if (showSideBar && window.innerWidth <= 768) {
@@ -35,7 +49,25 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
         }
         window.addEventListener('resize', checkWindowSize);
         return () => window.removeEventListener('resize', checkWindowSize);
-    }, []);
+    }, [setTheme])
+
+
+    const handleRouteChange = (url: string) => {
+        console.log('route change', url);
+        switch (url) {
+            case '/':
+                Analytics.logPageView(url, 'Welcome');
+                break;
+            case '/logs':
+                Analytics.logPageView(url, 'New Log');
+                break;
+            case `/logs/${id}`:
+                Analytics.logPageView(url, 'individual log');
+                break;
+            default:
+                break;
+        }
+    };
 
     return (
         <div className={`flex ${theme === Theme.DARK ? 'dark' : 'light'}`}>
@@ -77,6 +109,9 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                     </div>
                 </div>
             </div>
+            <Suspense fallback={<div>Loading...</div>}>
+                <LogsLayoutClient onRouteChange={handleRouteChange} />
+            </Suspense>
         </div>
     );
 }
