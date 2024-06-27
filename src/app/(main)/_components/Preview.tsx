@@ -12,6 +12,7 @@ import { usePathname } from 'next/navigation';
 import React, { Key, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Log from '../_models/Log';
+import Analytics from '../_services/Analytics';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
 import PSDropdown from './Dropdown';
@@ -50,6 +51,7 @@ const Preview = ({ logId }: { logId: string }) => {
                 }
             );
         }
+        Analytics.logEvent('copy_clipboard', { id: logId });
     }
 
     function More() {
@@ -76,9 +78,12 @@ const Preview = ({ logId }: { logId: string }) => {
         switch (key) {
             case '0':
                 downloadImage();
+                Analytics.logEvent('download_image', { id: logId });
+
                 break;
             case '1':
                 downloadText();
+                Analytics.logEvent('download_text', { id: logId });
                 break;
             case '2':
                 onOpen();

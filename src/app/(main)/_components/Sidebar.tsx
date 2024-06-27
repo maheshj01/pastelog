@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import Log from "../_models/Log";
+import Analytics from '../_services/Analytics';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
 import IconButton from "./IconButton";
@@ -20,10 +21,12 @@ const Sidebar: React.FC = () => {
             setSelected(log);
             setId(log.id!);
             router.push(`/logs/${log.id}`);
+            Analytics.logEvent('change_log', { id: log.id });
         } else {
             setSelected(null);
             setId(null);
             router.push(`/logs`);
+            Analytics.logEvent('new_log');
         }
     }, []);
 

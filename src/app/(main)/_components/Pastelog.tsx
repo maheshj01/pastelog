@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Log, { LogType } from "../_models/Log";
+import Analytics from "../_services/Analytics";
 import LogService from "../_services/logService";
 import { DatePicker } from "./DatePicker";
 import Editor from "./Editor";
@@ -70,6 +71,7 @@ export default function Pastelog({ id }: { id?: string }) {
         // Push the route and then reload the page
         router.push(`/logs/publish/${id}`);
         setLoading(false);
+        Analytics.logEvent('publish_pastelog', { id: id });
     }
 
     async function handleImport(url: string) {
@@ -84,6 +86,7 @@ export default function Pastelog({ id }: { id?: string }) {
                     setTitle(log.title!);
                     setContent(log.data!);
                     notify(false, "Log imported successfully");
+                    Analytics.logEvent('import_gist', { id: id });
                     onImportClose();
                 }
             }
@@ -97,6 +100,7 @@ export default function Pastelog({ id }: { id?: string }) {
                     setExpiryDate(log.expiryDate!);
                     notify(false, "Log imported successfully");
                     onImportClose();
+                    Analytics.logEvent('import_pastelog', { id: id });
                 } else {
                     notify(true, "Invalid Pastelog URL");
                 }
