@@ -1,3 +1,6 @@
+
+<img src='./public/images/frame.png' width='160px'>
+
 # Pastelog
 
 Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with a unique URL. The logs are publicly accessible and auto expire after the specified date.
