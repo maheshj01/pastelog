@@ -38,26 +38,25 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
                                 <ViewSidebarRoundedIcon />
                             </IconButton>
                         )}
-                    <div className='flex items-center justify-center space-x-1 cursor-pointer'
+                    <div className="py-6 h-16 w-12 mb-4 cursor-pointer"
                         onClick={() => {
                             setId(null)
                             setSelected(null)
                             router.push('/logs');
                         }}
+
                     >
-                        <div className="py-6 px-6 h-24 w-24">
-                            <Image
-                                src={"/images/frame.png"}
-                                alt="Logo"
-                                layout="responsive"
-                                width={6}
-                                height={6}
-                                className="transition-transform duration-500 transform hover:scale-105"
-                            />
-                        </div>
-                        {/* <p
-                            className="font-bold text-inherit text-lg px-2 cursor-pointer">Pastelog</p> */}
+                        <Image
+                            src={"/images/frame.png"}
+                            alt="Logo"
+                            layout="responsive"
+                            width={6}
+                            height={6}
+                            className="transition-transform duration-500 transform hover:scale-105"
+                        />
                     </div>
+                    {/* <p
+                            className="font-bold text-inherit text-lg px-2 cursor-pointer">Pastelog</p> */}
                 </div>
             </NavbarContent>
             <NavbarContent justify="end">
