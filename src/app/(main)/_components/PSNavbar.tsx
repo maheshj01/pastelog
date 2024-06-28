@@ -38,7 +38,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
                                 <ViewSidebarRoundedIcon />
                             </IconButton>
                         )}
-                    <div className="py-6 h-16 w-12 mb-4 cursor-pointer"
+                    <div className="py-6 h-11 w-11 flex items-center cursor-pointer"
                         onClick={() => {
                             setId(null)
                             setSelected(null)
