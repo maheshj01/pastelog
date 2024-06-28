@@ -2,6 +2,8 @@
 
 - Fix line breaks in the log
 - Improve the landingpage UI
+- Added a new Logo
+
 
 ### [0.4.0] - Jun 26, 2024
 
