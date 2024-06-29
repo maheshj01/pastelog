@@ -82,6 +82,7 @@ export default function Welcome() {
     const sectionTitles = [
         "Introduction",
         "Beautiful Markdown",
+        "Powered By Gemini",
         "Keyboard Shortcuts",
         "Create and Share",
         "Dark Mode",
@@ -94,9 +95,8 @@ export default function Welcome() {
                 <Image
                     src={"/images/frame.png"}
                     alt="Logo"
-                    layout="responsive"
-                    width={6}
-                    height={6}
+                    width={70}
+                    height={70}
                     className="transition-transform duration-500 transform hover:scale-105"
                 />
             </div>
@@ -157,6 +157,24 @@ export default function Welcome() {
                 </div>
             </section>
 
+            <section className="flex flex-col items-center justify-center min-h-screen pt-8">
+                <p className="text-3xl mt-8 mb-4 text-center">
+                    Powered By Gemini
+                </p>
+                <p className="text-center"> Powered by Gemini, you can effortlessly summarize logs with just one click. </p>
+                <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
+                    {/* video without any controls on loop */}
+                    <video
+                        src="https://github.com/maheshmnj/pastelog/assets/31410839/0eecf88c-a198-43ff-958a-47fb192fae73"
+                        autoPlay
+                        loop
+                        muted
+                        className="w-full h-full rounded-lg shadow-lg"
+                    />
+
+                </div>
+            </section>
+
             {/* Section 3: Feature 2 */}
             <section className="flex flex-col items-center justify-center min-h-screen pt-8">
                 <p className="text-3xl mt-8 mb-4 text-center">
@@ -180,7 +198,7 @@ export default function Welcome() {
                     Create and Share Logs
                 </p>
                 <p>Create stunning logs in minutes with markdown support and share with anyone using a unique URL</p>
-                <p> Supports exporting logs in Image or Text format</p>
+                <p className="text-center"> Supports exporting logs in Image or Text format</p>
                 <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
                     {/* video without any controls on loop */}
                     <video
@@ -201,7 +219,7 @@ export default function Welcome() {
                         {/* dark mode */}
                         Dark Mode
                     </p>
-                    <p>Toggle between dark and light themes</p>
+                    <p className="text-center">Toggle between dark and light themes</p>
                     <Button
                         className='mt-4 bg-gray-700 hover:bg-gray-600'
                         onClick={toggleTheme}
