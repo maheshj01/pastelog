@@ -21,7 +21,7 @@ import GeminiDialog from './Gemini';
 import IconButton from './IconButton';
 import ShareDialog from './Share';
 
-const Preview = ({ logId }: { logId: string }) => {
+const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
     const { setId, apiKey, setApiKey } = useSidebar();
 
@@ -287,4 +287,4 @@ const Preview = ({ logId }: { logId: string }) => {
     );
 }
 
-export default Preview;
+export default PreviewPage;
