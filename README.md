@@ -4,6 +4,8 @@
 
 Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with a unique URL. The logs are publicly accessible and auto expire after the specified date. Powered By Next.js, Firebase and Gemini API.
 
+[Product Hunt](https://www.producthunt.com/products/pastelog)
+
 <img width="764" alt="cover" src="https://github.com/maheshmnj/pastelog/assets/31410839/e75cfac7-93f8-4734-a0cc-d95872522230">
 
 ### Features
