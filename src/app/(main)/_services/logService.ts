@@ -1,5 +1,6 @@
 // src/services/LogService.ts
 
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from 'axios';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
@@ -190,6 +191,25 @@ class LogService {
             throw error;
         }
     }
+
+    getSummary = async (apiKey: string, text: string) => {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey!);
+
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+            const prompt = "Summarize the following text: " + text;
+
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const summary = response.text();
+
+            return summary
+        } catch (error) {
+            console.error("Error querying Gemini:", error);
+        } finally {
+        }
+    };
 }
 
 export default LogService;
