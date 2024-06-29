@@ -1,4 +1,4 @@
-<img src='./public/images/frame.png' width='160px'>
+![Banner (1)](https://github.com/maheshmnj/pastelog/assets/31410839/34127d75-f01d-47df-a223-033f1ed5379a)
 
 # Pastelog
 
