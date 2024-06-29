@@ -2,6 +2,7 @@
 import Editor from '@/app/(main)/_components/Editor';
 import { showToast } from '@/utils/toast_utils';
 import { formatReadableDate } from '@/utils/utils';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
@@ -51,10 +52,33 @@ const Preview = ({ logId }: { logId: string }) => {
         onClose(); // Close the dialog after sharing
     };
 
-    const onSummarizeClicked = () => {
-        console.log('ApI key', apiKey);
+    const onSummarizeClicked = async () => {
+        console.log('API key', apiKey);
         setSummaryLoading(true);
-        setTimeout(() => { setSummaryLoading(false); }, 5000);
+
+        try {
+            // Initialize the Gemini API with your API key
+            const genAI = new GoogleGenerativeAI(apiKey!);
+
+            // For text-only input, use the gemini-pro model
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+            // Prepare your prompt
+            const prompt = "Summarize the following text: " + previewLog?.data;
+
+            // Generate content
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+
+            // Set the summary in your state or do something with it
+            setSummaryContent(text);
+        } catch (error) {
+            console.error("Error querying Gemini:", error);
+            // Handle the error appropriately (e.g., show an error message to the user)
+        } finally {
+            setSummaryLoading(false);
+        }
     };
 
     const onGeminiApiSave = (key: string) => {
