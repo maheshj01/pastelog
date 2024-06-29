@@ -8,6 +8,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import { useDisclosure } from '@nextui-org/react';
 import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import React, { Key, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -16,12 +17,14 @@ import Analytics from '../_services/Analytics';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
 import PSDropdown from './Dropdown';
+import GeminiDialog from './Gemini';
 import IconButton from './IconButton';
+import MDPreview from './MDPreview';
 import ShareDialog from './Share';
 
-const Preview = ({ logId }: { logId: string }) => {
+const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
-    const { setId } = useSidebar();
+    const { setId, apiKey, setApiKey } = useSidebar();
 
     const [loading, setLoading] = useState<boolean>(true);
     const [copied, setCopied] = useState<boolean>(false);
@@ -30,16 +33,41 @@ const Preview = ({ logId }: { logId: string }) => {
     const pathName = usePathname()
     const isPublishRoute = pathName.includes('/logs/publish');
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: geminiOpen, onOpen: onGeminiOpen, onClose: onGeminiClose } = useDisclosure();
+    const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
+    // const [summaryContent, setSummaryContent] = useState<string>('');
 
     const [shareContent, setShareContent] = useState({
         title: "Share Pastelog",
         content: process.env.NEXT_PUBLIC_BASE_URL + pathName,
     });
+    const [geminiContent, setGeminiContent] = useState({
+        title: "Gemini",
+        content: 'With the power of Gemini, you can summarize the content of the log. Enter your API key to get started.',
+    });
 
     const handleShare = () => {
-        // Copy link to clipboard
         navigator.clipboard.writeText(`${window.location.origin}/logs/publish/${previewLog?.id}`);
-        onClose(); // Close the dialog after sharing
+        onClose();
+    };
+
+    const onSummarizeClicked = async () => {
+        try {
+            setSummaryLoading(true);
+            const summary = await logService.getSummary(apiKey!, previewLog?.data!)
+            previewLog!.summary = summary!;
+            logService.updateLog(logId, previewLog!);
+        } catch (error) {
+            console.error("Error querying Gemini:", error);
+        } finally {
+            setSummaryLoading(false);
+        }
+    };
+
+    const onGeminiApiSave = (key: string) => {
+        if (key) {
+            setApiKey(key);
+        }
     };
 
     const toastId = React.useRef('clipboard-toast');
@@ -153,8 +181,55 @@ const Preview = ({ logId }: { logId: string }) => {
         <div className={`flex flex-col items-center h-fit`}>
             <div className="w-full md:w-3/4 lg:w-2/3 max-w-none px-1 prose prose-indigo dark:prose-dark">
                 <div className='flex flex-col'>
-                    <p className="text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
-
+                    <div className='flex items-center py-2'>
+                        <div className='grow'>
+                            <p className="text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
+                        </div>
+                        <Image
+                            src={"/images/gemini.png"}
+                            alt="Logo"
+                            width={32}
+                            height={32}
+                            onClick={() => {
+                                if (summaryLoading) {
+                                    return;
+                                }
+                                if (apiKey === undefined || apiKey === null || apiKey === '') {
+                                    onGeminiOpen();
+                                    Analytics.logEvent('gemini_open', { id: logId });
+                                } else {
+                                    onSummarizeClicked();
+                                }
+                            }}
+                            className={`cursor-pointer transition-transform duration-500 transform hover:scale-150 h-8 m-0 p-0 ${summaryLoading ? 'animate-pulse transform scale-150' : ''}`}
+                        />
+                        <GeminiDialog
+                            isOpen={geminiOpen}
+                            onClose={onGeminiClose}
+                            onSave={onGeminiApiSave}
+                            title={geminiContent.title}
+                            content={geminiContent.content}
+                        />
+                    </div>
+                    <div className='rounded-xl px-4 py-3 bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500'>
+                        <p className="text-white mb-2 font-bold text-lg">
+                            Summary
+                        </p>
+                        {summaryLoading ? (
+                            <div className="flex items-center justify-center py-4">
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                            </div>
+                        ) : previewLog?.summary ? (
+                            <div className="bg-white bg-opacity-10 rounded-lg p-3">
+                                <MDPreview
+                                    className='text-white'
+                                    value={previewLog?.summary}
+                                />
+                            </div>
+                        ) : (
+                            <p className="text-white italic">No summary available. Tap the Gemini Icon to generate the Summary</p>
+                        )}
+                    </div>
                     {(
                         !loading &&
                         <div className='flex flex-row justify-between'>
@@ -223,4 +298,4 @@ const Preview = ({ logId }: { logId: string }) => {
     );
 }
 
-export default Preview;
+export default PreviewPage;

@@ -1,9 +1,8 @@
-
 <img src='./public/images/frame.png' width='160px'>
 
 # Pastelog
 
-Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with a unique URL. The logs are publicly accessible and auto expire after the specified date.
+Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with a unique URL. The logs are publicly accessible and auto expire after the specified date. Powered By Next.js, Firebase and Gemini API.
 
 <img width="764" alt="cover" src="https://github.com/maheshmnj/pastelog/assets/31410839/e75cfac7-93f8-4734-a0cc-d95872522230">
 
@@ -18,6 +17,7 @@ Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting
 - Markdown Keyboard shortucts support to help you write faster
 - Supports Darkmode for better readability
 - Share logs with a unique URL
+- Summarize logs using the Google Gemini API (Uses Ephemeral API key storage)
 
 ### Building the project
 

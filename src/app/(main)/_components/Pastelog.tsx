@@ -60,6 +60,7 @@ export default function Pastelog({ id }: { id?: string }) {
             LogType.TEXT,
             true,
             title,
+            '',
             false,
         );
         const id = await logService.publishLog(log);

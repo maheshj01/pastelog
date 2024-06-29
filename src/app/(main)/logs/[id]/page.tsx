@@ -1,4 +1,4 @@
-import Preview from '@/app/(main)/_components/Preview';
+import PreviewPage from '@/app/(main)/_components/PreviewPage';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function LogPage({ params }: { params: { id: string } }) {
     const { id } = params;
-    return <Preview
+    return <PreviewPage
         logId={id}
     />;
 };

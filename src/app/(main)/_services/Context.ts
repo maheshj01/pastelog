@@ -5,22 +5,26 @@ import Log from '../_models/Log';
 
 interface SidebarContextProps {
     id: string | null;
+    apiKey: string | null;
     selected: Log | null;
     showSideBar: boolean;
     setId: (id: string | null) => void;
     setSelected: (log: Log | null) => void;
     setShowSideBar: (showSideBar: boolean) => void;
+    setApiKey: (apiKey: string | null) => void;
     toggleSideBar: () => void;  // Include toggleSideBar in the context props
 }
 
 export const SidebarContext = createContext<SidebarContextProps>({
     id: null,
     selected: null,
+    apiKey: null,
     showSideBar: false,
     setId: () => { },
+    setApiKey: () => { },
     setSelected: () => { },
     setShowSideBar: () => { },
-    toggleSideBar: () => { },  // Default implementation
+    toggleSideBar: () => { },
 });
 
 export function useSidebar() {

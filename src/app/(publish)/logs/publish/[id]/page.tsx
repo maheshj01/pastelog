@@ -1,6 +1,5 @@
 
-import Preview from '@/app/(main)/_components/Preview';
-import LogService from '@/app/(main)/_services/logService';
+import PreviewPage from '@/app/(main)/_components/PreviewPage';
 import { Metadata } from 'next';
 
 // This is required for dynamic routing in runtime
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function PublishPage({ params }: { params: { id: string } }) {
     const { id } = params;
-    return <Preview
+    return <PreviewPage
         logId={id}
     />
 };
