@@ -14,6 +14,7 @@ export interface ILog {
     type: LogType;
     isMarkDown: boolean;
     id?: string;
+    summary?: string;
     isExpired?: boolean | false;
 }
 
@@ -25,6 +26,7 @@ export class Log implements ILog {
     type: LogType;
     isMarkDown: boolean;
     isExpired?: boolean | false;
+    summary?: string;
     id?: string | undefined;
 
     constructor(
@@ -34,6 +36,7 @@ export class Log implements ILog {
         type: LogType,
         isMarkDown: boolean,
         title?: string | '',
+        summary?: string,
         isExpired?: boolean | false,
         id?: string
     ) {
@@ -43,6 +46,7 @@ export class Log implements ILog {
         this.isExpired = isExpired;
         this.createdDate = new Date(createdDate);
         this.type = type;
+        this.summary = summary;
         this.isMarkDown = isMarkDown;
         this.id = id;
     }
@@ -56,6 +60,7 @@ export class Log implements ILog {
             data.type as LogType,
             data.isMarkDown,
             data.title ? data.title : '',
+            data.summary,
             data.isExpired,
             data.id ? data.id : doc.id
         );
@@ -68,6 +73,7 @@ export class Log implements ILog {
             createdDate: this.createdDate.toISOString(),
             title: this.title ? this.title : '',
             type: this.type,
+            summary: this.summary,
             isMarkDown: this.isMarkDown,
             isExpired: this.isExpired
         };

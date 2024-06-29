@@ -19,6 +19,7 @@ import LogService from '../_services/logService';
 import PSDropdown from './Dropdown';
 import GeminiDialog from './Gemini';
 import IconButton from './IconButton';
+import MDPreview from './MDPreview';
 import ShareDialog from './Share';
 
 const PreviewPage = ({ logId }: { logId: string }) => {
@@ -34,7 +35,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: geminiOpen, onOpen: onGeminiOpen, onClose: onGeminiClose } = useDisclosure();
     const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
-    const [summaryContent, setSummaryContent] = useState<string>('');
+    // const [summaryContent, setSummaryContent] = useState<string>('');
 
     const [shareContent, setShareContent] = useState({
         title: "Share Pastelog",
@@ -46,16 +47,16 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     });
 
     const handleShare = () => {
-        // Copy link to clipboard
         navigator.clipboard.writeText(`${window.location.origin}/logs/publish/${previewLog?.id}`);
-        onClose(); // Close the dialog after sharing
+        onClose();
     };
 
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
             const summary = await logService.getSummary(apiKey!, previewLog?.data!)
-            setSummaryContent(summary!);
+            previewLog!.summary = summary!;
+            logService.updateLog(logId, previewLog!);
         } catch (error) {
             console.error("Error querying Gemini:", error);
         } finally {
@@ -65,7 +66,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
 
     const onGeminiApiSave = (key: string) => {
         if (key) {
-            console.log('key', key);
             setApiKey(key);
         }
     };
@@ -211,14 +211,25 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                             content={geminiContent.content}
                         />
                     </div>
-                    {(summaryContent &&
-                        (<div>
-                            <p className="text-black dark:text-slate-50 mb-1 font-bold">
-                                {`Summary`}
-                            </p>
-                            <p className="text-black dark:text-slate-50 my-1"> {`${summaryContent}`}</p>
-                        </div>)
-                    )}
+                    <div className='rounded-xl px-4 py-3 bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500'>
+                        <p className="text-white mb-2 font-bold text-lg">
+                            Summary
+                        </p>
+                        {summaryLoading ? (
+                            <div className="flex items-center justify-center py-4">
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                            </div>
+                        ) : previewLog?.summary ? (
+                            <div className="bg-white bg-opacity-10 rounded-lg p-3">
+                                <MDPreview
+                                    className='text-white'
+                                    value={previewLog?.summary}
+                                />
+                            </div>
+                        ) : (
+                            <p className="text-white italic">No summary available. Tap the Gemini Icon to generate the Summary</p>
+                        )}
+                    </div>
                     {(
                         !loading &&
                         <div className='flex flex-row justify-between'>

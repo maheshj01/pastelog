@@ -179,7 +179,7 @@ class LogService {
             if (!file) {
                 throw new Error('No file found in the gist');
             }
-            const log = new Log(null, content, new Date(), LogType.TEXT, false, desc, false);
+            const log = new Log(null, content, new Date(), LogType.TEXT, false, desc, '', false);
             return log;
         } catch (error) {
             if (axios.isAxiosError(error)) {

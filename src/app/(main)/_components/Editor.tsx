@@ -4,6 +4,7 @@ import React, { ChangeEvent } from "react";
 import remarkGfm from "remark-gfm";
 import CodeBlock from "./CodeHighlight";
 import TextCompletionInput from "./completion";
+import MDPreview from "./MDPreview";
 // import ReactMarkdown from 'react-markdown';
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 interface PSContentProps {
@@ -27,41 +28,10 @@ const Editor: React.FC<PSContentProps> = ({ value, onChange, placeHolder, previe
 
     const customClass = `px-2 py-2 rounded-b-lg border-surface focus:ring-secondary focus:outline-none focus:ring-2 focus:ring-2 resize-y min-h-80 w-full reactMarkDown ${className}`;
     if (preview) {
-        return (<div
-            id='preview'
-            style={{
-                height: "100%",
-                maxHeight: "100%"
-            }}
-        >
-            <ReactMarkdown
-                className={`${customClass} mb-2`}
-                components={{
-                    // p tags
-                    p({ children }) {
-                        return <p className='line-break'>{children}</p>;
-                    },
-                    code(props) {
-                        const { children, className, node, ref, ...rest } = props
-                        const match = /language-(\w+)/.exec(className || '')
-                        return match ? (
-                            <CodeBlock language={match[1]} {...props}>
-                                {String(children).replace(/\n$/, '')}
-                            </CodeBlock>
-                        ) : (
-                            <code {...rest} className={className}>
-                                {children}
-                            </code>
-                        )
-                    }
-                }}
-                remarkPlugins={[remarkGfm]}
-                // rehypePlugins={[rehypeHighlight]}
-                // eslint-disable-next-line react/no-children-prop
-                children={value}
-            />
-        </div>
-        );
+        return <MDPreview
+            className={customClass}
+            value={value}
+        />;
     }
     return (
         <TextCompletionInput
