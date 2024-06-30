@@ -99,6 +99,10 @@ root /
 │ │ └── page.tsx
 ```
 
+### Summarize Logs with Gemini
+
+<video src='https://github.com/maheshmnj/pastelog/assets/31410839/0eecf88c-a198-43ff-958a-47fb192fae73' width=180/>
+
 ### Demo
 
 <video src='https://github.com/maheshmnj/pastelog/assets/31410839/c4e4469b-3acb-45e1-a258-0d8593d1e831' width=180/>
