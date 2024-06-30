@@ -192,13 +192,13 @@ class LogService {
         }
     }
 
-    getSummary = async (apiKey: string, text: string) => {
+    getSummary = async (apiKey: string, log: Log) => {
         try {
             const genAI = new GoogleGenerativeAI(apiKey!);
 
             const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-            const prompt = "Summarize the following text: " + text;
+            const prompt = `Summarize the following text by taking the title: ${log.title} and its description:` + log.data;
 
             const result = await model.generateContent(prompt);
             const response = await result.response;

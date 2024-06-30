@@ -54,7 +54,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
-            const summary = await logService.getSummary(apiKey!, previewLog?.data!)
+            const summary = await logService.getSummary(apiKey!, previewLog!)
             previewLog!.summary = summary!;
             logService.updateLog(logId, previewLog!);
         } catch (error) {
