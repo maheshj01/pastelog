@@ -91,7 +91,7 @@ export default function Welcome() {
 
     return (
         <div className={`min-h-screen ${darkTheme ? 'bg-gray-800' : 'bg-gray-900'} text-white`}>
-            <div className="fixed top-0 left-0 right-0 flex justify-center py-2 px-6 z-50 bg-gray-900">
+            <div className={`${darkTheme ? 'bg-gray-800' : 'bg-gray-900'} fixed top-0 left-0 right-0 flex justify-center py-2 px-6 z-50`}>
                 <div className="fixed top-0 left-0 py-6 px-6 h-32 w-32 z-200">
                     <Image
                         src={"/images/frame.png"}
@@ -101,7 +101,7 @@ export default function Welcome() {
                         className="transition-transform duration-500 transform hover:scale-105"
                     />
                 </div>
-                <div className="flex flex-wrap items-center justify-center gap-2 mb-2 rounded-3xl p-4 border-2">
+                <div className={`flex flex-wrap items-center justify-center gap-2 mb-2 rounded-3xl p-4 border-2`}>
                     {sectionTitles.slice(1).map((title, secIndex) => (
                         <div
                             key={secIndex}
