@@ -1,3 +1,14 @@
+### [0.5.1] - July 02, 2024
+
+- Apply text formatting to trimmed text on keyboard shortcuts
+- add tooltip to gemini icon
+- fix share dialog UI
+- add import icon
+- fix policies text color
+- Summary is local Only
+- fix: horizontal line was not visible
+- update summary prompt
+
 ### [0.5.0] - Jun 29, 2024
 
 - Summarize log using Gemini
