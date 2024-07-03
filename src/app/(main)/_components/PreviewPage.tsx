@@ -5,7 +5,7 @@ import { formatReadableDate } from '@/utils/utils';
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
-import { useDisclosure } from '@nextui-org/react';
+import { Tooltip, useDisclosure } from '@nextui-org/react';
 import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
@@ -185,24 +185,28 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                         <div className='grow'>
                             <p className="text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
                         </div>
-                        <Image
-                            src={"/images/gemini.png"}
-                            alt="Logo"
-                            width={32}
-                            height={32}
-                            onClick={() => {
-                                if (summaryLoading) {
-                                    return;
-                                }
-                                if (apiKey === undefined || apiKey === null || apiKey === '') {
-                                    onGeminiOpen();
-                                    Analytics.logEvent('gemini_open', { id: logId });
-                                } else {
-                                    onSummarizeClicked();
-                                }
-                            }}
-                            className={`cursor-pointer transition-transform duration-500 transform hover:scale-150 h-8 m-0 p-0 ${summaryLoading ? 'animate-pulse transform scale-150' : ''}`}
-                        />
+                        <Tooltip
+                            content="Tap to Summarize"
+                            placement='top-start'>
+                            <Image
+                                src={"/images/gemini.png"}
+                                alt="Logo"
+                                width={32}
+                                height={32}
+                                onClick={() => {
+                                    if (summaryLoading) {
+                                        return;
+                                    }
+                                    if (apiKey === undefined || apiKey === null || apiKey === '') {
+                                        onGeminiOpen();
+                                        Analytics.logEvent('gemini_open', { id: logId });
+                                    } else {
+                                        onSummarizeClicked();
+                                    }
+                                }}
+                                className={`cursor-pointer transition-transform duration-500 transform hover:scale-150 h-8 m-0 p-0 ${summaryLoading ? 'animate-pulse transform scale-150' : ''}`}
+                            />
+                        </Tooltip>
                         <GeminiDialog
                             isOpen={geminiOpen}
                             onClose={onGeminiClose}
