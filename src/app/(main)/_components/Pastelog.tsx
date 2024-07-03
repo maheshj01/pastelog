@@ -79,7 +79,6 @@ export default function Pastelog({ id }: { id?: string }) {
         try {
             if (url.includes('gist.github.com')) {
                 const id = url.split('/').pop();
-                console.log(id);
                 const log = await logService.importLogFromGist(id!);
                 if (log) {
                     setTitle(log.title!);

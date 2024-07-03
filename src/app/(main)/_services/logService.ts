@@ -96,7 +96,9 @@ class LogService {
             if (log.expiryDate && log.expiryDate < today) {
                 updatePromises.push(
                     updateDoc(doc.ref, { isExpired: true })
-                        .catch((error) => console.error(`Error updating log ${log.id}:`, error))
+                        .catch((error) => {
+                            console.error(`Error deleting:`, error);
+                        })
                 );
             }
         });
@@ -168,12 +170,9 @@ class LogService {
 
     async importLogFromGist(gistId: string): Promise<Log> {
         try {
-            // Fetch the gist data
             const response = await axios.get(`${process.env.NEXT_PUBLIC_GITHUB_GIST_API}/${gistId}`);
             const gist = response.data;
-            console.log(gist);
 
-            // Find the first file in the gist (assuming the gist has only one file)
             const firstFileName = Object.keys(gist.files)[0];
             const file = gist.files[firstFileName];
             const desc = gist.description;
