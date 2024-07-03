@@ -42,11 +42,8 @@ export default function Welcome() {
                     console.warn(`Document with ID: ${id} not found`);
                 }
             } catch (error) {
-                console.error(`Error saving document with ID: ${id}`, error);
             }
         }
-
-        console.log('Finished saving documents locally');
     }
 
     const handleGetStarted = async () => {

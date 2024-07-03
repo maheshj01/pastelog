@@ -6,6 +6,8 @@ interface TextCompletionInputProps {
     customClass?: string;
     value?: string;
     onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onUndo: () => void;
+    onRedo: () => void;
     disabled?: boolean;
     placeholder?: string;
     height?: string;
@@ -17,6 +19,8 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
     customClass = '',
     value = '',
     onChange,
+    onUndo,
+    onRedo,
     disabled = false,
     placeholder = "Type to get suggestions...",
     height = "70vh",
@@ -24,8 +28,6 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
     autoSuggest = false,
 }) => {
     const [inputValue, setInputValue] = useState(value);
-    const [suggestion, setSuggestion] = useState('');
-    const [cursorPosition, setCursorPosition] = useState(0);
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
@@ -40,9 +42,11 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         if (onChange) {
             onChange(event);
         }
+
         const newValue = event.target.value;
         setInputValue(newValue);
         markdownFormatter.current.setValue(newValue);
+
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -67,6 +71,18 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
                 case 'u':
                     event.preventDefault();
                     applyListFormatting('- ');
+                    break;
+                case 'z':
+                    event.preventDefault();
+                    if (event.shiftKey) {
+                        onRedo();
+                    } else {
+                        onUndo();
+                    }
+                    break;
+                case 'y':
+                    event.preventDefault();
+                    onRedo();
                     break;
             }
         }

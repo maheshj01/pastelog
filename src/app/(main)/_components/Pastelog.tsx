@@ -79,7 +79,6 @@ export default function Pastelog({ id }: { id?: string }) {
         try {
             if (url.includes('gist.github.com')) {
                 const id = url.split('/').pop();
-                console.log(id);
                 const log = await logService.importLogFromGist(id!);
                 if (log) {
                     setTitle(log.title!);
@@ -172,6 +171,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                     preview={preview}
                                     className={theme != 'dark' ? ` bg-slate-50 text-black` : `bg-gray-700 text-white`}
                                     value={content}
+                                    isRepublish={id ? true : false}
                                     onChange={(e) => {
                                         setContent(e.target.value)
                                     }}

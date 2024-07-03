@@ -17,16 +17,12 @@ class Analytics {
     public logEvent(eventName: string, eventParams?: { [key: string]: any }): void {
         if (analytics) {
             logEvent(analytics, eventName, eventParams);
-        } else {
-            console.log('Analytics event:', eventName, eventParams);
         }
     }
 
     public setUserProperty(name: string, value: string): void {
         if (analytics) {
             setUserProperties(analytics, { [name]: value });
-        } else {
-            console.log('Set user property:', name, value);
         }
     }
 
