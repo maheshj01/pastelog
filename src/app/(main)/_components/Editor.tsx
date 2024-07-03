@@ -1,10 +1,8 @@
 // src/_components/PSContent.tsx
 import dynamic from "next/dynamic";
 import React, { ChangeEvent } from "react";
-import remarkGfm from "remark-gfm";
-import CodeBlock from "./CodeHighlight";
-import TextCompletionInput from "./completion";
 import MDPreview from "./MDPreview";
+import TextCompletionInput from "./completion";
 // import ReactMarkdown from 'react-markdown';
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 interface PSContentProps {
