@@ -14,13 +14,30 @@ export class MarkdownFormatter {
     }
 
     public applyFormatting(start: number, end: number, syntax: string): { value: string, newCursorPos: number } {
-        const selectedText = this.value.substring(start, end);
+        let selectedText = this.value.substring(start, end);
+
+        const trimmedText = selectedText.trim();
+
+        if (trimmedText === '') {
+            return { value: this.value, newCursorPos: end };
+        }
+
+        const trimStart = selectedText.indexOf(trimmedText);
+        const trimEnd = trimStart + trimmedText.length;
+
+        const formattedText =
+            selectedText.substring(0, trimStart) +
+            `${syntax}${trimmedText}${syntax}` +
+            selectedText.substring(trimEnd);
+
         const newValue =
             this.value.substring(0, start) +
-            `${syntax}${selectedText}${syntax}` +
+            formattedText +
             this.value.substring(end);
 
-        return { value: newValue, newCursorPos: end + syntax.length * 2 };
+        const newCursorPos = start + formattedText.length;
+
+        return { value: newValue, newCursorPos };
     }
 
     public applyLinkFormatting(start: number, end: number): { value: string, newCursorPos: number } {
