@@ -30,7 +30,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const [copied, setCopied] = useState<boolean>(false);
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
     const { theme } = useTheme();
-    const pathName = usePathname()
+    const pathName = usePathname();
     const isPublishRoute = pathName.includes('/logs/publish');
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: geminiOpen, onOpen: onGeminiOpen, onClose: onGeminiClose } = useDisclosure();
@@ -56,7 +56,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
             setSummaryLoading(true);
             const summary = await logService.getSummary(apiKey!, previewLog!)
             previewLog!.summary = summary!;
-            logService.updateLog(logId, previewLog!);
+            logService.saveLogToLocal(previewLog!);
         } catch (error) {
             console.error("Error querying Gemini:", error);
         } finally {

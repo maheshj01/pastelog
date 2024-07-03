@@ -28,6 +28,8 @@ class LogService {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const log = Log.fromFirestore(docSnap);
+            const local = await this.fetchLogFromLocalById(id);
+            log!.summary = local?.summary!;
             this.saveLogToLocal(log);
             return log;
         } else {
