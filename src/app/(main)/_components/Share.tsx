@@ -34,8 +34,10 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, tit
                 <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
                 <ModalBody>
                     <div className="flex items-center">
-                        <div className="grow h-8 border-1 w-full rounded-md flex items-center px-2 overflow-hidden text-ellipsis ">
-                            {content}
+                        <div className="grow h-8 border-1 w-full rounded-md flex items-center px-2 overflow-hidden whitespace-nowrap text-ellipsis">
+                            <span className="block w-full overflow-hidden text-ellipsis">
+                                {content}
+                            </span>
                         </div>
                         <div>
                             <IconButton ariaLabel="Copy" onClick={() => {
