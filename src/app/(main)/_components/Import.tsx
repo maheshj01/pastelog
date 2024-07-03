@@ -1,5 +1,5 @@
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
-import { EyeOpenIcon } from "@radix-ui/react-icons";
+import { UploadIcon } from "@radix-ui/react-icons";
 import React, { useEffect, useState } from "react";
 import PSInput from "./PSInput";
 import { Button } from "./button";
@@ -40,7 +40,7 @@ const ImportDialog: React.FC<ImportDialogProps> = ({ isOpen, onClose, onImport, 
                             onImport(url);
                         }}
                         className={`bg-gradient-to-r from-gray-700 to-gray-800`}>
-                        <p className='mx-2'>Import</p> <EyeOpenIcon />
+                        <p className='mx-2'>Import</p> <UploadIcon />
                     </Button>
                 </ModalFooter>
             </ModalContent>

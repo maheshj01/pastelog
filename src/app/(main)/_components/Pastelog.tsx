@@ -3,6 +3,7 @@ import { showToast } from "@/utils/toast_utils";
 import { getDateOffsetBy } from "@/utils/utils";
 import { Button as PSButton } from "@nextui-org/button";
 import { useDisclosure } from "@nextui-org/react";
+import { UploadIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -183,8 +184,9 @@ export default function Pastelog({ id }: { id?: string }) {
                                 onSelect={(date: Date) => setExpiryDate(date!)}
                                 selected={expiryDate}
                             /> */}
-                            <div className="flex justify-center items-center border px-4 py-2 w-[164px] cursor-pointer" onClick={onImportOpen}>
+                            <div className="flex justify-around items-center border px-4 py-2 w-[164px] cursor-pointer" onClick={onImportOpen}>
                                 Import
+                                <UploadIcon />
                             </div>
                             <ImportDialog
                                 isOpen={isImportOpen}
