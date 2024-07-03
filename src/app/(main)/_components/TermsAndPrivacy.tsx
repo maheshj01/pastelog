@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const TermsAndPrivacy = () => {
     return (
-        <div className="bg-gray-100 min-h-screen">
+        <div className="min-h-screen text-black">
             <div className="max-w-4xl mx-auto bg-white shadow-md p-8">
                 <h1 className="text-3xl font-bold mb-6">Terms of Use and Privacy Policy</h1>
                 <div className="mb-8">
