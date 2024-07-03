@@ -7,6 +7,7 @@ import { db } from '../../../utils/firebase';
 import { Log, LogType } from '../_models/Log';
 class LogService {
     private logCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION}`);
+    private draftKey = 'draft';
 
     async fetchLogs(): Promise<Log[]> {
         const querySnapshot = await getDocs(this.logCollection);
@@ -211,6 +212,28 @@ class LogService {
         } finally {
         }
     };
+
+    async fetchDraft(): Promise<Log | null> {
+        if (typeof window !== 'undefined') {
+            const draft = localStorage.getItem(this.draftKey);
+            if (draft) {
+                const log = JSON.parse(draft) as Log;
+                log.createdDate = new Date(log.createdDate);
+                if (log.expiryDate) {
+                    log.expiryDate = new Date(log.expiryDate);
+                }
+                return log;
+            }
+            return null;
+        }
+        return null;
+    }
+
+    async saveDraft(log: Log): Promise<void> {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem(this.draftKey, JSON.stringify(log));
+        }
+    }
 }
 
 export default LogService;

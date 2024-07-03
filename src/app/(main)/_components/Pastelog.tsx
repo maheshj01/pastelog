@@ -1,13 +1,14 @@
 "use client";
 import { showToast } from "@/utils/toast_utils";
 import { getDateOffsetBy } from "@/utils/utils";
+import { debounce } from "@mui/material";
 import { Button as PSButton } from "@nextui-org/button";
 import { useDisclosure } from "@nextui-org/react";
 import { UploadIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Log, { LogType } from "../_models/Log";
 import Analytics from "../_services/Analytics";
@@ -35,6 +36,7 @@ export default function Pastelog({ id }: { id?: string }) {
         title: "Import Log",
         content: 'Paste a Pastelog link or a Gist URL to import a log.',
     });
+    const [draftSaved, setDraftSaved] = useState<boolean>(false);
 
     const { isOpen: isImportOpen, onOpen: onImportOpen, onClose: onImportClose } = useDisclosure();
     const toastId = React.useRef('import-toast');
@@ -119,10 +121,51 @@ export default function Pastelog({ id }: { id?: string }) {
                     setExpiryDate(log.expiryDate!);
                 }
             });
+        } else {
+            setTimeout(() => {
+                logService.fetchDraft().then((draft) => {
+                    console.log(draft);
+                    if (draft) {
+                        console.log("draft fetched");
+                        setTitle(draft.title!);
+                        setContent(draft.data!);
+                        setExpiryDate(draft.expiryDate!);
+                    }
+                })
+            }, 2000);
         }
     }, [id])
 
+    useEffect(() => { }, [content])
 
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setDraftSaved(false)
+        setContent(e.target.value);
+        if (content) {
+            debouncedSave(content);
+        }
+        // Cleanup function to cancel debounced call if component unmounts
+        return () => debouncedSave.clear();
+    };
+
+
+    // Create a memoized debounced function for saving
+    const debouncedSave = useCallback(
+        debounce((newContent) => {
+            logService.saveDraft(new Log(
+                expiryDate,
+                newContent,
+                new Date(),
+                LogType.TEXT,
+                true,
+                title,
+                '',
+                false,
+            ));
+            setDraftSaved(true)
+        }, 2000),
+        [expiryDate, title] // Dependencies that, if changed, will cause the debounced function to be recreated
+    );
     const togglePreview = React.useCallback(() => {
         setPreview((prev) => !prev);
     }, [])
@@ -172,9 +215,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                     className={theme != 'dark' ? ` bg-slate-50 text-black` : `bg-gray-700 text-white`}
                                     value={content}
                                     isRepublish={id ? true : false}
-                                    onChange={(e) => {
-                                        setContent(e.target.value)
-                                    }}
+                                    onChange={handleChange}
                                     disabled={loading}
                                 />
                             </div>
@@ -184,8 +225,10 @@ export default function Pastelog({ id }: { id?: string }) {
                                 onSelect={(date: Date) => setExpiryDate(date!)}
                                 selected={expiryDate}
                             /> */}
-                            <div className="flex justify-around items-center border px-4 py-2 w-[164px] cursor-pointer" onClick={onImportOpen}>
-                                Import
+
+                            {(draftSaved && <div className="text-green-700 italic flex items-center mx-4">{'Draft Saved'}</div>)}
+                            <div className="flex justify-center items-center border py-2 space-x-3 rounded px-6 cursor-pointer" onClick={onImportOpen}>
+                                <p> Import</p>
                                 <UploadIcon />
                             </div>
                             <ImportDialog
