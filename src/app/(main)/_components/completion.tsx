@@ -110,11 +110,24 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
                     break;
             }
         }
+        // if new line
+        if (event.key === 'Enter') {
+            onEnter(event);
+        }
         if ((event.ctrlKey || event.metaKey) && event.key >= '1' && event.key <= '6') {
             event.preventDefault();
             applyHeadingFormatting(parseInt(event.key));
         }
     };
+
+    const onEnter = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        const lastLine = inputRef.current?.value.substring(0, inputRef.current.selectionStart).split('\n').pop();
+        // check if the last line is a non empty ListItem
+        if (lastLine && lastLine.trim().startsWith('- ') && lastLine.length > 2) {
+            event.preventDefault();
+            updateValue(value + '\n- ', value.length + 3);
+        }
+    }
 
     const applyFormatting = (syntax: string) => {
         const textarea = inputRef.current;
