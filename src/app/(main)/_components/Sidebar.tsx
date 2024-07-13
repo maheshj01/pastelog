@@ -1,8 +1,8 @@
 "use client";
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { FaGithub } from "react-icons/fa";
 import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
 import { useSidebar } from '../_services/Context';
@@ -46,7 +46,7 @@ const Sidebar: React.FC = () => {
     const handleRefresh = () => setRefresh(prev => !prev);
     return (
         <div className={`fixed top-0 left-0 bottom-0 bg-surface dark:bg-gray-700 overflow-y-auto`}>
-            <div className='absolute bottom-5 left-6'>
+            <div className='absolute bottom-4 left-4'>
                 {/* github link */}
 
                 {/* <Link href={process.env.NEXT_PUBLIC_GITHUB_REPO ?? ''} passHref={true}
@@ -58,10 +58,7 @@ const Sidebar: React.FC = () => {
                         window.open(process.env.NEXT_PUBLIC_GITHUB_REPO ?? '', '_blank');
                     }}
                 >
-                    <Image
-                        width={32}
-                        height={32}
-                        src={process.env.NEXT_PUBLIC_GITHUB_LOGO ?? ''} alt={'Github repo'} />
+                    <FaGithub className='size-6 text-black dark:text-white' />
                 </IconButton>
                 {/* </Link> */}
             </div>
