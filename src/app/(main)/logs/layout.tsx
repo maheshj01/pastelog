@@ -12,10 +12,11 @@ import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
 import useBannerState from '../_services/BannerState';
 import { useSidebar } from '../_services/Context';
+import ShortcutWrapper from '../_components/ShortCutWrapper';
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
-    const { showSideBar, setShowSideBar, id } = useSidebar();
+    const { showSideBar, toggleSideBar, setShowSideBar, id } = useSidebar();
     const bannerState = useBannerState();
     const [show, setShow] = React.useState(true);
 
@@ -41,48 +42,50 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
 
 
     return (
-        <div className={`flex ${theme === Theme.DARK ? 'dark' : 'light'}`}>
-            <div className={`fixed top-0 left-0 z-50 h-screen overflow-y-auto ${showSideBar ? 'w-64' : 'w-0'}`}>
-                <Sidebar />
-            </div>
-            <div className={`flex-grow w-full overflow-x-hidden transition-all duration-200 ${showSideBar ? 'pl-64' : 'pl-0'}`}>
-                {showSideBar && (
-                    <IconButton
-                        className={`fixed top-2 left-2 z-50`}
-                        onClick={() => setShowSideBar(!showSideBar)}
-                        ariaLabel="Close Sidebar"
-                        tooltipPlacement="bottom-start"
-                    >
-                        <FiSidebar className='text-2xl' />
-                    </IconButton>
-                )}
-                <div className="relative z-40 h-screen overflow-y-auto">
-                    <div className="flex flex-col min-h-full">
-                        <PSBanner
-                            key={`${bannerState.show}-${bannerState.message}`}
-                            className='sticky top-0 z-40'
-                            show={show}
-                            message="Pastelog is under maintenance, Your existing logs won't be accessible, But you can still publish new logs" >
-                            <div className='px-2'>
-                                <IconButton
-                                    ariaLabel='Close Banner'
-                                    onClick={() => setShow(false)}>
-                                    <ClearIcon />
-                                </IconButton>
-                            </div>
-                        </PSBanner>
-                        <PSNavbar
-                            className='sticky top-0 z-40'
-                            sideBarIcon={!showSideBar} />
-                        <main className="flex-grow">
-                            {children}
-                        </main>
+        <ShortcutWrapper onCtrlShiftM={toggleSideBar}>
+            <div className={`flex ${theme === Theme.DARK ? 'dark' : 'light'}`}>
+                <div className={`fixed top-0 left-0 z-50 h-screen overflow-y-auto ${showSideBar ? 'w-64' : 'w-0'}`}>
+                    <Sidebar />
+                </div>
+                <div className={`flex-grow w-full overflow-x-hidden transition-all duration-200 ${showSideBar ? 'pl-64' : 'pl-0'}`}>
+                    {showSideBar && (
+                        <IconButton
+                            className={`fixed top-2 left-2 z-50`}
+                            onClick={() => setShowSideBar(!showSideBar)}
+                            ariaLabel="Close Sidebar"
+                            tooltipPlacement="bottom-start"
+                        >
+                            <FiSidebar className='text-2xl' />
+                        </IconButton>
+                    )}
+                    <div className="relative z-40 h-screen overflow-y-auto">
+                        <div className="flex flex-col min-h-full">
+                            <PSBanner
+                                key={`${bannerState.show}-${bannerState.message}`}
+                                className='sticky top-0 z-40'
+                                show={show}
+                                message="Pastelog is under maintenance, Your existing logs won't be accessible, But you can still publish new logs" >
+                                <div className='px-2'>
+                                    <IconButton
+                                        ariaLabel='Close Banner'
+                                        onClick={() => setShow(false)}>
+                                        <ClearIcon />
+                                    </IconButton>
+                                </div>
+                            </PSBanner>
+                            <PSNavbar
+                                className='sticky top-0 z-40'
+                                sideBarIcon={!showSideBar} />
+                            <main className="flex-grow">
+                                {children}
+                            </main>
+                        </div>
                     </div>
                 </div>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <RouteClient />
+                </Suspense>
             </div>
-            <Suspense fallback={<div>Loading...</div>}>
-                <RouteClient />
-            </Suspense>
-        </div>
+        </ShortcutWrapper>
     );
 }

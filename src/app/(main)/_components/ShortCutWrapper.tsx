@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 
 interface ShortcutWrapperProps {
-    onCtrlShiftP: () => void;
-    onCtrlShiftM: () => void;
+    onCtrlShiftP?: () => void;
+    onCtrlShiftM?: () => void;
     children: React.ReactNode;
 }
 
@@ -10,12 +10,16 @@ const ShortcutWrapper: React.FC<ShortcutWrapperProps> = ({ onCtrlShiftP, onCtrlS
     const handleKeyPress = useCallback((event: KeyboardEvent) => {
         if (event.ctrlKey && event.key === 'p') {
             event.preventDefault();
-            onCtrlShiftP();
+            if (onCtrlShiftP) {
+                onCtrlShiftP();
+            }
         }
         // toggle Sidebar ctrl+shift + h
         if (event.ctrlKey && event.key === 'm') {
             event.preventDefault();
-            onCtrlShiftM();
+            if (onCtrlShiftM) {
+                onCtrlShiftM();
+            }
         }
 
     }, [onCtrlShiftP, onCtrlShiftM]);

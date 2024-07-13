@@ -131,7 +131,7 @@ export default function Pastelog({ id }: { id?: string }) {
 
     return (
         <>
-            <ShortcutWrapper onCtrlShiftP={togglePreview} onCtrlShiftM={toggleSideBar}>
+            <ShortcutWrapper onCtrlShiftP={togglePreview}>
                 <div className="min-h-screen relative xsm:px-2">
                     <div
                         aria-disabled={loading}
