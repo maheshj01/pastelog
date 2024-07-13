@@ -125,6 +125,21 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         if (!textarea) return;
 
         const cursorPosition = textarea.selectionStart;
+
+        const codeBlockRegex = /```[\s\S]*?```/g;
+        let match;
+        let isInCodeBlock = false;
+        while ((match = codeBlockRegex.exec(value)) !== null) {
+            if (cursorPosition > match.index && cursorPosition < match.index + match[0].length) {
+                isInCodeBlock = true;
+                break;
+            }
+        }
+
+        if (isInCodeBlock) {
+            return;
+        }
+
         const lines = textarea.value.substring(0, cursorPosition).split('\n');
         const currentLine = lines[lines.length - 1];
 
@@ -135,7 +150,10 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
             const [, indent, bullet, content] = unorderedListMatch;
             if (content.trim() === '') {
                 // Empty list item, remove it
-                updateValue(textarea.value.slice(0, cursorPosition - currentLine.length) + indent, cursorPosition - currentLine.length + indent.length);
+                updateValue(
+                    value.slice(0, cursorPosition - currentLine.length) + indent + '\n' + value.slice(cursorPosition),
+                    cursorPosition - currentLine.length + indent.length + 1
+                );
             } else {
                 // Continue the list
                 const newItem = `\n${indent}${bullet} `;
@@ -151,7 +169,10 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
             const [, indent, number, content] = orderedListMatch;
             if (content.trim() === '') {
                 // Empty list item, remove it
-                updateValue(textarea.value.slice(0, cursorPosition - currentLine.length) + indent, cursorPosition - currentLine.length + indent.length);
+                updateValue(
+                    value.slice(0, cursorPosition - currentLine.length) + indent + '\n' + value.slice(cursorPosition),
+                    cursorPosition - currentLine.length + indent.length + 1
+                );
             } else {
                 // Continue the list with incremented number
                 const nextNumber = parseInt(number) + 1;
