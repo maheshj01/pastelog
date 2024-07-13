@@ -118,7 +118,87 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
             event.preventDefault();
             applyHeadingFormatting(parseInt(event.key));
         }
+
+        if (event.key === 'Tab') {
+            const textarea = inputRef.current;
+            if (!textarea) return;
+
+            event.preventDefault(); // Prevent default tab behavior
+
+            const value = textarea.value;
+            const selectionStart = textarea.selectionStart;
+            const selectionEnd = textarea.selectionEnd;
+
+            // Check if we're inside a code block
+            const codeBlockRegex = /```[\s\S]*?```/g;
+            let match;
+            let isInCodeBlock = false;
+            while ((match = codeBlockRegex.exec(value)) !== null) {
+                if (selectionStart >= match.index && selectionEnd <= match.index + match[0].length) {
+                    isInCodeBlock = true;
+                    break;
+                }
+            }
+
+            if (isInCodeBlock) {
+                const beforeSelection = value.substring(0, selectionStart);
+                const selection = value.substring(selectionStart, selectionEnd);
+                const afterSelection = value.substring(selectionEnd);
+
+                let newSelection: string;
+                let newSelectionStart: number;
+                let newSelectionEnd: number;
+
+                if (event.shiftKey) {
+                    // Outdent
+                    newSelection = selection.replace(/^(\t|    )/gm, '');
+                    const removedTabs = selection.length - newSelection.length;
+                    newSelectionStart = selectionStart;
+                    newSelectionEnd = selectionEnd - removedTabs;
+                } else {
+                    // Indent
+                    newSelection = selection.replace(/^/gm, '\t');
+                    const addedTabs = newSelection.length - selection.length;
+                    newSelectionStart = selectionStart;
+                    newSelectionEnd = selectionEnd + addedTabs;
+                }
+
+                const newValue = beforeSelection + newSelection + afterSelection;
+
+                setInputValue(newValue);
+                if (onChange) {
+                    const syntheticEvent = {
+                        target: { value: newValue }
+                    } as React.ChangeEvent<HTMLTextAreaElement>;
+                    onChange(syntheticEvent);
+                }
+
+                // Set the selection after the state update
+                setTimeout(() => {
+                    if (textarea) {
+                        textarea.setSelectionRange(newSelectionStart, newSelectionEnd);
+                    }
+                }, 0);
+            } else {
+                // Outside code block, insert tab at cursor position
+                const newValue = value.substring(0, selectionStart) + '\t' + value.substring(selectionEnd);
+                setInputValue(newValue);
+                if (onChange) {
+                    const syntheticEvent = {
+                        target: { value: newValue }
+                    } as React.ChangeEvent<HTMLTextAreaElement>;
+                    onChange(syntheticEvent);
+                }
+                setTimeout(() => {
+                    if (textarea) {
+                        textarea.setSelectionRange(selectionStart + 1, selectionStart + 1);
+                    }
+                }, 0);
+            }
+        }
     };
+
+
 
     const onEnter = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         const textarea = inputRef.current;
