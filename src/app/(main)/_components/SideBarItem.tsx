@@ -17,9 +17,10 @@ interface SidebarItemProps {
     selected: boolean;
     onLogClick: (id: Log) => void;
     onRefresh: () => void;
+    className?: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick, onRefresh }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick, onRefresh, className }) => {
     const [isHovered, setIsHovered] = useState(false);
     const { id: selectedId, setId: setSelectedId } = useSidebar();
     const { isOpen: isShareOpen, onOpen: onShareOpen, onClose: onShareClose } = useDisclosure();
@@ -110,7 +111,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             onMouseLeave={() => setIsHovered(false)}
         >
             <div
-                className={`text-sm dark:text-slate-200 cursor-pointer py-3 hover:bg-background transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative ${selected ? 'bg-background' : ''}`}
+                className={`text-sm dark:text-slate-200 cursor-pointer py-3 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative ${selected ? 'bg-background' : ''} ${className}`}
                 onClick={() => onLogClick(log)}
             >
                 <div className='flex justify-between items-center'>

@@ -129,6 +129,7 @@ const Sidebar: React.FC = () => {
                             selected={id === log.id}
                             log={log}
                             key={log.id}
+                            className={id === log.id ? 'hover:bg-background' : 'hover:dark:bg-slate-600 hover:bg-slate-300 '}
                             onLogClick={() => onLogClick(log)}
                             onRefresh={handleRefresh} // Pass the refresh function
                         />
