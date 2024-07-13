@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Log, { LogType } from "../_models/Log";
 import Analytics from "../_services/Analytics";
+import { useSidebar } from "../_services/Context";
 import LogService from "../_services/logService";
 import { DatePicker } from "./DatePicker";
 import Editor from "./Editor";
@@ -38,6 +39,7 @@ export default function Pastelog({ id }: { id?: string }) {
 
     const { isOpen: isImportOpen, onOpen: onImportOpen, onClose: onImportClose } = useDisclosure();
     const toastId = React.useRef('import-toast');
+    const { setShowSideBar, showSideBar, toggleSideBar } = useSidebar();
 
     const notify = (error: boolean, message: string) => {
         if (!toast.isActive(toastId.current!)) {
@@ -129,7 +131,7 @@ export default function Pastelog({ id }: { id?: string }) {
 
     return (
         <>
-            <ShortcutWrapper onCtrlP={togglePreview}>
+            <ShortcutWrapper onCtrlShiftP={togglePreview} onCtrlShiftM={toggleSideBar}>
                 <div className="min-h-screen relative xsm:px-2">
                     <div
                         aria-disabled={loading}
