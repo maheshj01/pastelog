@@ -53,7 +53,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                         ariaLabel="Close Sidebar"
                         tooltipPlacement="bottom-start"
                     >
-                        <FiSidebar />
+                        <FiSidebar className='text-2xl' />
                     </IconButton>
                 )}
                 <div className="relative z-40 h-screen overflow-y-auto">
