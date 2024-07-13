@@ -1,3 +1,11 @@
+### [0.5.2] - July 12, 2024
+Adds Following Shortcuts
+
+ - Shift + Tab in a code block for selected text should remove tabs
+ - Return Key continues ordered/unordered list from previous line
+ - Toggle Sidebar ctrl + m
+ - Add Keyboard Shortcuts Guide in Sidebar
+
 ### [0.5.1] - July 02, 2024
 
 - Apply text formatting to trimmed text on keyboard shortcuts
