@@ -121,13 +121,46 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
     };
 
     const onEnter = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        const lastLine = inputRef.current?.value.substring(0, inputRef.current.selectionStart).split('\n').pop();
-        // check if the last line is a non empty ListItem
-        if (lastLine && lastLine.trim().startsWith('- ') && lastLine.length > 2) {
+        const textarea = inputRef.current;
+        if (!textarea) return;
+
+        const cursorPosition = textarea.selectionStart;
+        const lines = textarea.value.substring(0, cursorPosition).split('\n');
+        const currentLine = lines[lines.length - 1];
+
+        // Check for unordered list
+        const unorderedListMatch = currentLine.match(/^(\s*)(-|\*|\+)\s+(.*)$/);
+        if (unorderedListMatch) {
             event.preventDefault();
-            updateValue(value + '\n- ', value.length + 3);
+            const [, indent, bullet, content] = unorderedListMatch;
+            if (content.trim() === '') {
+                // Empty list item, remove it
+                updateValue(textarea.value.slice(0, cursorPosition - currentLine.length) + indent, cursorPosition - currentLine.length + indent.length);
+            } else {
+                // Continue the list
+                const newItem = `\n${indent}${bullet} `;
+                updateValue(textarea.value.slice(0, cursorPosition) + newItem + textarea.value.slice(cursorPosition), cursorPosition + newItem.length);
+            }
+            return;
         }
-    }
+
+        // Check for ordered list
+        const orderedListMatch = currentLine.match(/^(\s*)(\d+)\.?\s+(.*)$/);
+        if (orderedListMatch) {
+            event.preventDefault();
+            const [, indent, number, content] = orderedListMatch;
+            if (content.trim() === '') {
+                // Empty list item, remove it
+                updateValue(textarea.value.slice(0, cursorPosition - currentLine.length) + indent, cursorPosition - currentLine.length + indent.length);
+            } else {
+                // Continue the list with incremented number
+                const nextNumber = parseInt(number) + 1;
+                const newItem = `\n${indent}${nextNumber}. `;
+                updateValue(textarea.value.slice(0, cursorPosition) + newItem + textarea.value.slice(cursorPosition), cursorPosition + newItem.length);
+            }
+            return;
+        }
+    };
 
     const applyFormatting = (syntax: string) => {
         const textarea = inputRef.current;
