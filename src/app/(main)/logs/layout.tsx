@@ -1,9 +1,9 @@
 "use client";
 
 import ClearIcon from '@mui/icons-material/Clear';
-import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import { useTheme } from 'next-themes';
 import React, { Suspense, useEffect } from 'react';
+import { FiSidebar } from "react-icons/fi";
 import IconButton from "../_components/IconButton";
 import PSBanner from '../_components/PSBanner';
 import PSNavbar from '../_components/PSNavbar';
@@ -53,7 +53,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                         ariaLabel="Close Sidebar"
                         tooltipPlacement="bottom-start"
                     >
-                        <ViewSidebarRoundedIcon />
+                        <FiSidebar />
                     </IconButton>
                 )}
                 <div className="relative z-40 h-screen overflow-y-auto">
