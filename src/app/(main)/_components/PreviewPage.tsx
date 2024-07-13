@@ -43,7 +43,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     });
     const [geminiContent, setGeminiContent] = useState({
         title: "Gemini",
-        content: 'With the power of Gemini, you can summarize the content of the log. Enter your API key to get started.',
+        content: 'With the power of Gemini, you can summarize long notes content. Enter your API key to get started.',
     });
 
     const handleShare = () => {
