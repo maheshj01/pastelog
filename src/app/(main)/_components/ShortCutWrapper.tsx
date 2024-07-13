@@ -1,17 +1,24 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 interface ShortcutWrapperProps {
-    onCtrlP: () => void;
+    onCtrlShiftP: () => void;
+    onCtrlShiftM: () => void;
     children: React.ReactNode;
 }
 
-const ShortcutWrapper: React.FC<ShortcutWrapperProps> = ({ onCtrlP, children }) => {
+const ShortcutWrapper: React.FC<ShortcutWrapperProps> = ({ onCtrlShiftP, onCtrlShiftM, children }) => {
     const handleKeyPress = useCallback((event: KeyboardEvent) => {
         if (event.ctrlKey && event.key === 'p') {
             event.preventDefault();
-            onCtrlP();
+            onCtrlShiftP();
         }
-    }, [onCtrlP]);
+        // toggle Sidebar ctrl+shift + h
+        if (event.ctrlKey && event.key === 'm') {
+            event.preventDefault();
+            onCtrlShiftM();
+        }
+
+    }, [onCtrlShiftP, onCtrlShiftM]);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyPress);

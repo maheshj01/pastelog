@@ -1,10 +1,10 @@
-import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
 import {
     Navbar,
     NavbarContent
 } from "@nextui-org/navbar";
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
+import { FiSidebar } from 'react-icons/fi';
 import { useSidebar } from '../_services/Context';
 import IconButton from './IconButton';
 import { ThemeSwitcher } from "./ThemeSwitcher";
@@ -35,7 +35,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
                                 }}
                                 ariaLabel="Open Sidebar"
                             >
-                                <ViewSidebarRoundedIcon />
+                                <FiSidebar className='text-2xl' />
                             </IconButton>
                         )}
                     <div className="py-6 h-11 w-11 flex items-center cursor-pointer"

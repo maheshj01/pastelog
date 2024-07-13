@@ -110,9 +110,156 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
                     break;
             }
         }
+        // if new line
+        if (event.key === 'Enter') {
+            onEnter(event);
+        }
         if ((event.ctrlKey || event.metaKey) && event.key >= '1' && event.key <= '6') {
             event.preventDefault();
             applyHeadingFormatting(parseInt(event.key));
+        }
+
+        if (event.key === 'Tab') {
+            const textarea = inputRef.current;
+            if (!textarea) return;
+
+            event.preventDefault(); // Prevent default tab behavior
+
+            const value = textarea.value;
+            const selectionStart = textarea.selectionStart;
+            const selectionEnd = textarea.selectionEnd;
+
+            // Check if we're inside a code block
+            const codeBlockRegex = /```[\s\S]*?```/g;
+            let match;
+            let isInCodeBlock = false;
+            while ((match = codeBlockRegex.exec(value)) !== null) {
+                if (selectionStart >= match.index && selectionEnd <= match.index + match[0].length) {
+                    isInCodeBlock = true;
+                    break;
+                }
+            }
+
+            if (isInCodeBlock) {
+                const beforeSelection = value.substring(0, selectionStart);
+                const selection = value.substring(selectionStart, selectionEnd);
+                const afterSelection = value.substring(selectionEnd);
+
+                let newSelection: string;
+                let newSelectionStart: number;
+                let newSelectionEnd: number;
+
+                if (event.shiftKey) {
+                    // Outdent
+                    newSelection = selection.replace(/^(\t|    )/gm, '');
+                    const removedTabs = selection.length - newSelection.length;
+                    newSelectionStart = selectionStart;
+                    newSelectionEnd = selectionEnd - removedTabs;
+                } else {
+                    // Indent
+                    newSelection = selection.replace(/^/gm, '\t');
+                    const addedTabs = newSelection.length - selection.length;
+                    newSelectionStart = selectionStart;
+                    newSelectionEnd = selectionEnd + addedTabs;
+                }
+
+                const newValue = beforeSelection + newSelection + afterSelection;
+
+                setInputValue(newValue);
+                if (onChange) {
+                    const syntheticEvent = {
+                        target: { value: newValue }
+                    } as React.ChangeEvent<HTMLTextAreaElement>;
+                    onChange(syntheticEvent);
+                }
+
+                // Set the selection after the state update
+                setTimeout(() => {
+                    if (textarea) {
+                        textarea.setSelectionRange(newSelectionStart, newSelectionEnd);
+                    }
+                }, 0);
+            } else {
+                // Outside code block, insert tab at cursor position
+                const newValue = value.substring(0, selectionStart) + '\t' + value.substring(selectionEnd);
+                setInputValue(newValue);
+                if (onChange) {
+                    const syntheticEvent = {
+                        target: { value: newValue }
+                    } as React.ChangeEvent<HTMLTextAreaElement>;
+                    onChange(syntheticEvent);
+                }
+                setTimeout(() => {
+                    if (textarea) {
+                        textarea.setSelectionRange(selectionStart + 1, selectionStart + 1);
+                    }
+                }, 0);
+            }
+        }
+    };
+
+
+
+    const onEnter = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        const textarea = inputRef.current;
+        if (!textarea) return;
+
+        const cursorPosition = textarea.selectionStart;
+
+        const codeBlockRegex = /```[\s\S]*?```/g;
+        let match;
+        let isInCodeBlock = false;
+        while ((match = codeBlockRegex.exec(value)) !== null) {
+            if (cursorPosition > match.index && cursorPosition < match.index + match[0].length) {
+                isInCodeBlock = true;
+                break;
+            }
+        }
+
+        if (isInCodeBlock) {
+            return;
+        }
+
+        const lines = textarea.value.substring(0, cursorPosition).split('\n');
+        const currentLine = lines[lines.length - 1];
+
+        // Check for unordered list
+        const unorderedListMatch = currentLine.match(/^(\s*)(-|\*|\+)\s+(.*)$/);
+        if (unorderedListMatch) {
+            event.preventDefault();
+            const [, indent, bullet, content] = unorderedListMatch;
+            if (content.trim() === '') {
+                // Empty list item, remove it
+                updateValue(
+                    value.slice(0, cursorPosition - currentLine.length) + indent + '\n' + value.slice(cursorPosition),
+                    cursorPosition - currentLine.length + indent.length + 1
+                );
+            } else {
+                // Continue the list
+                const newItem = `\n${indent}${bullet} `;
+                updateValue(textarea.value.slice(0, cursorPosition) + newItem + textarea.value.slice(cursorPosition), cursorPosition + newItem.length);
+            }
+            return;
+        }
+
+        // Check for ordered list
+        const orderedListMatch = currentLine.match(/^(\s*)(\d+)\.?\s+(.*)$/);
+        if (orderedListMatch) {
+            event.preventDefault();
+            const [, indent, number, content] = orderedListMatch;
+            if (content.trim() === '') {
+                // Empty list item, remove it
+                updateValue(
+                    value.slice(0, cursorPosition - currentLine.length) + indent + '\n' + value.slice(cursorPosition),
+                    cursorPosition - currentLine.length + indent.length + 1
+                );
+            } else {
+                // Continue the list with incremented number
+                const nextNumber = parseInt(number) + 1;
+                const newItem = `\n${indent}${nextNumber}. `;
+                updateValue(textarea.value.slice(0, cursorPosition) + newItem + textarea.value.slice(cursorPosition), cursorPosition + newItem.length);
+            }
+            return;
         }
     };
 
