@@ -16,7 +16,7 @@ Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting
 - Supports rich text content with github falvoured markdown and code highlighting
 - Export logs as image and plain text
 - Import logs from Github gist or from Pastelog Url
-- Markdown Keyboard shortucts support to help you write faster
+- Intelligent editor with Markdown Keyboard shortcuts support to help you write faster
 - Supports Darkmode for better readability
 - Share logs with a unique URL
 - Summarize logs using the Google Gemini API (Uses Ephemeral API key storage)
