@@ -72,7 +72,6 @@ export default function Pastelog({ id }: { id?: string }) {
                 isMarkDown: true,
             }
             );
-            console.log('publishing', log.toFirestore());
             const id = await logService.publishLog(log);
             // const id = await logService.publishLogWithId(log, 'shortcuts');
             if (!id) {

@@ -52,7 +52,7 @@ class LogService {
         try {
             const docRef = await addDoc(this.logCollection, log.toFirestore());
             // Todo Save log to local only if userId is null
-            if (docRef.id) {
+            if (docRef.id && !log.userId) {
                 await this.saveLogToLocal({
                     ...log, id: docRef.id,
                     toFirestore: function () {
