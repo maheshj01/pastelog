@@ -49,29 +49,36 @@ const Sidebar: React.FC = () => {
 
     const fetchLogs = useCallback(async () => {
         setLoading(true);
-        await logService.deleteExpiredLogs();
-        if (user) {
-            const isFirstLogin = await authService.isFirstTimeLogin(user.uid);
-            // user logs have not been synced yet
-            if (isFirstLogin) {
+        try {
+            await logService.deleteExpiredLogs();
+            if (user && user.uid) {
+                const isFirstLogin = await authService.isFirstTimeLogin(user.uid);
+                if (isFirstLogin) {
+                    const logs = await logService.fetchLogsFromLocal();
+                    setLogs(logs);
+                } else {
+                    const fetchedLogs = await logService.getLogsByUserId(user.uid)
+                    setLogs(fetchedLogs);
+                }
+            } else {
                 const logs = await logService.fetchLogsFromLocal();
                 setLogs(logs);
-            } else {
-                const fetchedLogs = await logService.getLogsByUserId(user.uid)
-                setLogs(fetchedLogs);
             }
-        } else {
-            const logs = await logService.fetchLogsFromLocal();
-            setLogs(logs);
+            setLoading(false);
+        } catch (_) {
+            console.log("Error fetching logs");
+            setLoading(false);
         }
-        setLoading(false);
     }, [user]);
 
     useEffect(() => {
         const unsubscribe = authService.onAuthStateChanged((user) => {
             setUser(user);
-            fetchLogs(); // Refresh logs when user logs in
+            if (user) {
+                fetchLogs();
+            }
         });
+        fetchLogs();
         return () => unsubscribe();
     }, [fetchLogs, refresh]);
 
@@ -88,11 +95,17 @@ const Sidebar: React.FC = () => {
     const handleLogout = async () => {
         try {
             await authService.signOut();
+            setUser(null);
+            // Clear the logs state immediately
+            setLogs([]);
+            // Fetch logs from local storage after logout
+            const localLogs = await logService.fetchLogsFromLocal();
+            setLogs(localLogs);
+            router.push('/logs');
         } catch (error) {
             console.error("Error signing out:", error);
         }
     };
-
 
     function UserLogin() {
         return (
