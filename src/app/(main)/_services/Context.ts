@@ -1,5 +1,6 @@
 // Context.tsx
 
+import { User as FirebaseUser } from 'firebase/auth';
 import { createContext, useContext } from 'react';
 import Log from '../_models/Log';
 
@@ -9,6 +10,8 @@ interface SidebarContextProps {
     selected: Log | null;
     showSideBar: boolean;
     setId: (id: string | null) => void;
+    user: FirebaseUser | null;
+    setUser: (user: FirebaseUser | null) => void;
     setSelected: (log: Log | null) => void;
     setShowSideBar: (showSideBar: boolean) => void;
     setApiKey: (apiKey: string | null) => void;
@@ -19,8 +22,10 @@ export const SidebarContext = createContext<SidebarContextProps>({
     id: null,
     selected: null,
     apiKey: null,
+    user: null,
     showSideBar: false,
     setId: () => { },
+    setUser: () => { },
     setApiKey: () => { },
     setSelected: () => { },
     setShowSideBar: () => { },

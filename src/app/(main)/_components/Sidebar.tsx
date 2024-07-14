@@ -1,27 +1,29 @@
 "use client";
-import { PencilSquareIcon } from '@heroicons/react/24/solid';
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@radix-ui/react-hover-card";
+import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
+import { Tooltip } from '@nextui-org/react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { FaGithub } from "react-icons/fa";
-import { MdOutlineKeyboardCommandKey } from "react-icons/md";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
+import { AuthService } from '../_services/AuthService';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
+import PSDropdown from './Dropdown';
 import IconButton from "./IconButton";
+import ShortCutsGuide from './ShortcutsGuide';
 import SidebarItem from './SideBarItem';
 
 const Sidebar: React.FC = () => {
-    const { id, setSelected, setId, showSideBar } = useSidebar();
+    const { id, setSelected, setId, showSideBar, user, setUser } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
     const [logs, setLogs] = useState<Log[]>([]);
     const [refresh, setRefresh] = useState<boolean>(false);
     const router = useRouter();
+    const authService = new AuthService();
+    const logService = new LogService();
+    const [isFirstLogin, setIsFirstLogin] = useState<boolean>(false);
 
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
@@ -37,76 +39,115 @@ const Sidebar: React.FC = () => {
         }
     }, []);
 
+    const handleFirstTimeLogin = async (userId: string) => {
+        setLoading(true);
+        await logService.updateLogsForNewUser(userId);
+        await fetchLogs(); // Refresh logs after updating
+        setIsFirstLogin(false);
+        setLoading(false);
+    };
+
     const fetchLogs = useCallback(async () => {
         setLoading(true);
-        const logService = new LogService();
-        await logService.deleteExpiredLogs();
-        const logs = await logService.fetchLogsFromLocal();
-        setLogs(logs);
-        setLoading(false);
-    }, []);
+        try {
+            await logService.deleteExpiredLogs();
+            if (user && user.uid) {
+                const isFirstLogin = await authService.isFirstTimeLogin(user.uid);
+                if (isFirstLogin) {
+                    const logs = await logService.fetchLogsFromLocal();
+                    setLogs(logs);
+                } else {
+                    const fetchedLogs = await logService.getLogsByUserId(user.uid)
+                    setLogs(fetchedLogs);
+                }
+            } else {
+                const logs = await logService.fetchLogsFromLocal();
+                setLogs(logs);
+            }
+            setLoading(false);
+        } catch (_) {
+            console.log("Error fetching logs");
+            setLoading(false);
+        }
+    }, [user]);
 
     useEffect(() => {
+        const unsubscribe = authService.onAuthStateChanged((user) => {
+            setUser(user);
+            if (user) {
+                fetchLogs();
+            }
+        });
         fetchLogs();
+        return () => unsubscribe();
     }, [fetchLogs, refresh]);
-    const ShortcutsMap = [
-        { keys: 'Ctrl + M', description: 'Toggle Preview' },
-        { keys: 'Ctrl + P', description: 'Toggle Sidebar' },
-        { keys: 'Ctrl/Cmd + B', description: 'Bold' },
-        { keys: 'Ctrl/Cmd + I', description: 'Italic' },
-        { keys: 'Ctrl/Cmd + Shift + X', description: 'Strikethrough' },
-        { keys: 'Ctrl/Cmd + Shift + [1-6]', description: 'Heading' },
-        { keys: 'Ctrl/Cmd + K', description: 'Link' },
-        { keys: 'Ctrl/Cmd + E', description: 'Code' },
-        { keys: 'Ctrl/Cmd + Shift + C', description: 'Code Block' },
-        { keys: 'Ctrl/Cmd + U', description: 'Unordered List' },
-        { keys: 'Ctrl/Cmd + Shift + O', description: 'Ordered List' },
-        { keys: 'Ctrl/Cmd + Shift + .', description: 'Blockquote' },
-        { keys: 'Ctrl/Cmd + Shift + -', description: 'Horizontal Rule' },
-        { keys: 'Tab / Shift + Tab', description: 'Indent/Unindent Code Block' },
-    ]
-
-    function ShortCutsGuide() {
-        return (<HoverCard>
-            <HoverCardTrigger asChild>
-                <div className='cursor-pointer'>
-                    <MdOutlineKeyboardCommandKey className='size-6 text-black dark:text-white' />
-                </div>
-            </HoverCardTrigger>
-            <HoverCardContent side='top' align='start' className="z-30">
-                <div className="p-4 bg-white dark:bg-gray-950 shadow-lg rounded-lg">
-                    <div className="flex items-center justify-between">
-                        <div className="text-lg font-bold"> Keyboard Shortcuts</div>
-                    </div>
-                    <div className="mt-2">
-                        {[...Array(ShortcutsMap.length)].map((_, index) => {
-                            const shortcut: any = ShortcutsMap[index];
-                            return (
-                                <div key={index}>
-                                    {index === 2 && <p className='text-md my-2 font-bold'>Markdown Shortcuts</p>}
-                                    <div className="flex justify-between">
-                                        <div className="flex space-x-2">
-                                            <MdOutlineKeyboardCommandKey className='text-black dark:text-white' />
-                                            <span className="text-sm">{shortcut.keys}</span>
-                                        </div>
-                                        <span className="text-sm">{shortcut.description}</span>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </HoverCardContent>
-        </HoverCard>
-        );
-    }
 
     const handleRefresh = () => setRefresh(prev => !prev);
+
+    const handleLogin = async () => {
+        try {
+            await authService.signInWithGoogle();
+        } catch (error) {
+            console.error("Error signing in:", error);
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            await authService.signOut();
+            setUser(null);
+            // Clear the logs state immediately
+            setLogs([]);
+            // Fetch logs from local storage after logout
+            const localLogs = await logService.fetchLogsFromLocal();
+            setLogs(localLogs);
+            router.push('/logs');
+        } catch (error) {
+            console.error("Error signing out:", error);
+        }
+    };
+
+    function UserLogin() {
+        return (
+            <div className='sticky bottom-0 bg-surface dark:bg-gray-700 p-4 border-t border-gray-200 dark:border-gray-600'>
+                {user ? (
+                    <PSDropdown
+                        options={['SignOut']}
+                        placement="bottom-start"
+                        onClick={handleLogout}
+                        className="dropdown-class">
+                        <div className='cursor-pointer'>
+                            <Tooltip content={'Profile'}>
+                                <Image src={user.photoURL!}
+                                    height={36}
+                                    width={36}
+                                    alt={user.displayName!} className='rounded-full mr-2 border-1 border-white' />
+                            </Tooltip>
+                        </div>
+                    </PSDropdown>
+                    // <HoverCard>
+                    //     <HoverCardTrigger asChild>
+                    //     </HoverCardTrigger>
+                    //     <HoverCardContent >
+
+                    //     </HoverCardContent>
+                    // </HoverCard>
+                ) : (
+                    <IconButton
+                        ariaLabel='Google Login'
+                        onClick={handleLogin}>
+                        <FaGoogle className='size-6 text-black dark:text-white' />
+                    </IconButton>
+                )}
+            </div>
+        )
+    }
+
     return (
         <div className={`fixed top-0 left-0 bottom-0 bg-surface dark:bg-gray-700 overflow-y-auto z-20`}>
             {loading ? (
                 <div className={`flex items-center justify-center min-h-screen ${showSideBar ? 'w-64' : 'w-0'}`}>
-                    <div className="loader" /> {/* You can replace this with a proper loading spinner */}
+                    <div className="loader" />
                 </div>
             ) : (<div className={`flex flex-col h-full transition-width duration-700 ${showSideBar ? 'w-64' : 'w-0'}`}>
                 {/* Fixed IconButton */}
@@ -120,9 +161,8 @@ const Sidebar: React.FC = () => {
                         </IconButton>
                     </div>
                 </div>
-
                 {/* Scrollable logs list */}
-                <div className='overflow-y-auto flex-grow pb-4'>
+                <div className='overflow-y-auto flex-grow pb-2'>
                     {logs.map((log: Log) => (
                         <SidebarItem
                             id={log.id!}
@@ -135,20 +175,25 @@ const Sidebar: React.FC = () => {
                         />
                     ))}
                 </div>
-                <div className='flex justify-between px-4 items-center'>
-                    <IconButton
-                        ariaLabel='Github'
-                        onClick={() => {
-                            window.open(process.env.NEXT_PUBLIC_GITHUB_REPO ?? '', '_blank');
-                        }}
-                    >
-                        <FaGithub className='size-6 text-black dark:text-white' />
-                    </IconButton>
+                <div className='flex px-2 items-center'>
                     <div>
                         <ShortCutsGuide />
                     </div>
+                    <div className='flex flex-grow justify-end items-center space-x-1'>
+                        <IconButton
+                            ariaLabel='Github'
+                            onClick={() => {
+                                window.open(process.env.NEXT_PUBLIC_GITHUB_REPO ?? '', '_blank');
+                            }}
+                        >
+                            <FaGithub className='size-6 text-black dark:text-white' />
+                        </IconButton>
+                        <UserLogin />
+                    </div>
+
                 </div>
-            </div>)}
+            </div>
+            )}
         </div>
     );
 };

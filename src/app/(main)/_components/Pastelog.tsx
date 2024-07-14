@@ -39,7 +39,7 @@ export default function Pastelog({ id }: { id?: string }) {
 
     const { isOpen: isImportOpen, onOpen: onImportOpen, onClose: onImportClose } = useDisclosure();
     const toastId = React.useRef('import-toast');
-    const { setShowSideBar, showSideBar, toggleSideBar } = useSidebar();
+    const { setShowSideBar, showSideBar, toggleSideBar, user } = useSidebar();
 
     const notify = (error: boolean, message: string) => {
         if (!toast.isActive(toastId.current!)) {
@@ -54,27 +54,38 @@ export default function Pastelog({ id }: { id?: string }) {
             );
         }
     }
+
     async function publish() {
-        setLoading(true);
-        const log = new Log(
-            expiryDate,
-            content,
-            new Date(),
-            LogType.TEXT,
-            true,
-            title,
-            '',
-            false,
-        );
-        const id = await logService.publishLog(log);
-        // const id = await logService.publishLogWithId(log, 'shortcuts');
-        if (!id) {
+        try {
+
+            setLoading(true);
+            const log = new Log({
+                expiryDate: expiryDate,
+                data: content,
+                type: LogType.TEXT,
+                title: title,
+                createdDate: new Date(),
+                isExpired: false,
+                summary: '',
+                isPublic: false,
+                userId: user ? user.uid : null,
+                isMarkDown: true,
+            }
+            );
+            const id = await logService.publishLog(log);
+            // const id = await logService.publishLogWithId(log, 'shortcuts');
+            if (!id) {
+                setLoading(false);
+                return;
+            }
+            router.push(`/logs/publish/${id}`);
             setLoading(false);
-            return;
+            Analytics.logEvent('publish_pastelog', { id: id, action: 'click' });
+        } catch (e) {
+            console.log(e);
+            notify(true, "Failed to publish log");
+            setLoading(false);
         }
-        router.push(`/logs/publish/${id}`);
-        setLoading(false);
-        Analytics.logEvent('publish_pastelog', { id: id, action: 'click' });
     }
 
     async function handleImport(url: string) {

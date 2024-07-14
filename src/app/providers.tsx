@@ -5,7 +5,7 @@ import { NextUIProvider } from '@nextui-org/react';
 import { ReactNode, useState } from 'react';
 import Log from './(main)/_models/Log';
 import { SidebarContext } from './(main)/_services/Context';
-
+import { User as FirebaseUser } from 'firebase/auth';
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <NextUIProvider>
@@ -20,11 +20,14 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     const [selected, setSelected] = useState<Log | null>(null);
     const [showSideBar, setShowSideBar] = useState<boolean>(true);
     const [apiKey, setApiKey] = useState<string | null>(null);  // Add apiKey to the state
-
+    const [user, setUser] = useState<FirebaseUser | null>(null);
     const toggleSideBar = () => setShowSideBar((prevState) => !prevState);
 
     return (
-        <SidebarContext.Provider value={{ id, selected, showSideBar, setId, setSelected, setShowSideBar, toggleSideBar, apiKey, setApiKey, }
+        <SidebarContext.Provider value={{
+            id, selected, showSideBar, setId, setSelected,
+            user, setUser, setShowSideBar, toggleSideBar, apiKey, setApiKey,
+        }
         }>
             {children}
         </SidebarContext.Provider>
