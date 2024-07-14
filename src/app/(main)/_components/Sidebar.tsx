@@ -1,11 +1,7 @@
 "use client";
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
-import { Tooltip } from '@nextui-org/react';
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@radix-ui/react-hover-card";
+import { Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@radix-ui/react-hover-card';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -15,7 +11,6 @@ import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
-import PSDropdown from './Dropdown';
 import IconButton from "./IconButton";
 import ShortCutsGuide from './ShortcutsGuide';
 import SidebarItem from './SideBarItem';
@@ -117,34 +112,68 @@ const Sidebar: React.FC = () => {
         return (
             <div className='sticky bottom-0 bg-surface dark:bg-gray-700 p-4 border-t border-gray-200 dark:border-gray-600'>
                 {user ? (
-                    <PSDropdown
-                        options={['SignOut']}
-                        placement="bottom-start"
-                        onClick={handleLogout}
-                        className="dropdown-class">
-                        <div className='cursor-pointer'>
-                            <Tooltip content={'Profile'}>
-                                <Image src={user.photoURL!}
-                                    height={36}
-                                    width={36}
-                                    alt={user.displayName!} className='rounded-full mr-2 border-1 border-white' />
-                            </Tooltip>
-                        </div>
-                    </PSDropdown>
+                    <Popover>
+                        <PopoverTrigger>
+                            <div className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-lg relative'>
+                                {/* {!loading && (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="w-12 h-12 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
+                                    </div>
+                                )} */}
+                                <Image
+                                    src={user.photoURL!}
+                                    alt="User profile"
+                                    width={32}
+                                    height={32}
+                                    className="rounded-full"
+                                />
+                            </div>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-60 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-300">
+                            <div className='shadow-md'>
+                                <div className="flex items-center space-x-2 p-2">
+                                    <Image
+                                        src={user.photoURL!}
+                                        alt="User profile"
+                                        width={32}
+                                        height={32}
+                                        className="rounded-full"
+                                    />
+                                    <div className="flex flex-col">
+                                        <div className="text-sm text-black dark:text-white">{user.displayName}</div>
+                                        <div className="text-xs text-gray-500 dark:text-gray-300">{user.email}</div>
+                                    </div>
+                                </div>
+                                <button
+                                    className="mt-4 w-full py-2 text-sm font-medium text-center text-white bg-red-500 rounded-lg hover:bg-red-600"
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
                 ) : (
                     <HoverCard>
-                        <HoverCardTrigger asChild>
-                            <div>
+                        <HoverCardTrigger>
+                            <div className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-lg'>
                                 <div className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-lg'
-                                    onClick={handleLogin}>
+                                    onClick={handleLogin}
+                                >
                                     <FaGoogle className='size-6 text-black dark:text-white' />
                                 </div>
                             </div>
                         </HoverCardTrigger>
-                        <HoverCardContent side='top' align='start' className="z-30 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-300">
+                        <HoverCardContent className="w-60 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-300">
                             <div className="text-sm text-black dark:text-white">
                                 Sign in to sync notes with cloud
                             </div>
+                            <button
+                                className="mt-4 w-full py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+                                onClick={handleLogin}
+                            >
+                                <FaGoogle className='inline-block mr-2' /> Sign in with Google
+                            </button>
                         </HoverCardContent>
                     </HoverCard>
                 )}
