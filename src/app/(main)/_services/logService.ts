@@ -2,7 +2,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from 'axios';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
 import { Log, LogType } from '../_models/Log';
 class LogService {
@@ -37,22 +37,57 @@ class LogService {
         }
     }
 
+    async getGuestLogs(): Promise<Log[]> {
+        const q = query(this.logCollection, where('userId', '==', null));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => Log.fromFirestore(doc));
+    }
+
+    async getLogsByUserId(userId: string): Promise<Log[]> {
+        const q = query(this.logCollection, where('userId', '==', userId));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => Log.fromFirestore(doc));
+    }
+
     async publishLog(log: Log): Promise<string> {
         try {
             const docRef = await addDoc(this.logCollection, log.toFirestore());
+            // Todo Save log to local only if userId is null
             if (docRef.id) {
-                await this.saveLogToLocal({
-                    ...log, id: docRef.id,
-                    toFirestore: function () {
-                        throw new Error('Function not implemented.');
-                    }
-                });
+                // await this.saveLogToLocal({
+                //     ...log, id: docRef.id,
+                //     toFirestore: function () {
+                //         throw new Error('Function not implemented.');
+                //     }
+                // });
                 return docRef.id!
             }
             return await this.fetchLogFromLocalById(docRef.id) ? docRef.id : '';
         } catch (e) {
             return '';
         }
+    }
+
+    async updateLogsForNewUser(userId: string): Promise<void> {
+        const logs = await this.fetchLogsFromLocal();
+        const updatePromises: Promise<void>[] = [];
+
+        for (const log of logs) {
+            if (!log.userId) {
+                log.userId = userId;
+                log.isPublic = false; // Set default value for isPublic
+
+                // Update in Firebase
+                const docRef = doc(this.logCollection, log.id);
+                updatePromises.push(updateDoc(docRef, log.toFirestore()));
+
+                // Update in local storage
+                updatePromises.push(this.saveLogToLocal(log));
+                console.log('Updating log:', log.id);
+            }
+        }
+
+        await Promise.all(updatePromises);
     }
 
     async publishLogWithId(log: Log, id: string): Promise<string> {
@@ -83,6 +118,11 @@ class LogService {
         const docRef = doc(this.logCollection, id);
         await deleteDoc(docRef);
         await this.deleteLogFromLocal(id);
+    }
+
+    async getAllLogs(): Promise<Log[]> {
+        const querySnapshot = await getDocs(this.logCollection);
+        return querySnapshot.docs.map(doc => Log.fromFirestore(doc));
     }
 
     async deleteExpiredLogs(): Promise<void> {
@@ -180,7 +220,16 @@ class LogService {
             if (!file) {
                 throw new Error('No file found in the gist');
             }
-            const log = new Log(null, content, new Date(), LogType.TEXT, false, desc, '', false);
+            const log = new Log({
+                data: content,
+                type: LogType.TEXT,
+                isMarkDown: false,
+                title: desc,
+                createdDate: new Date(),
+                isPublic: true,
+                isExpired: false,
+                summary: '',
+            });
             return log;
         } catch (error) {
             if (axios.isAxiosError(error)) {
