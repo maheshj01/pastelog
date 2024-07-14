@@ -30,7 +30,6 @@ class LogService {
             const log = Log.fromFirestore(docSnap);
             const local = await this.fetchLogFromLocalById(id);
             log!.summary = local?.summary!;
-            this.saveLogToLocal(log);
             return log;
         } else {
             return null;
@@ -54,17 +53,17 @@ class LogService {
             const docRef = await addDoc(this.logCollection, log.toFirestore());
             // Todo Save log to local only if userId is null
             if (docRef.id) {
-                // await this.saveLogToLocal({
-                //     ...log, id: docRef.id,
-                //     toFirestore: function () {
-                //         throw new Error('Function not implemented.');
-                //     }
-                // });
+                await this.saveLogToLocal({
+                    ...log, id: docRef.id,
+                    toFirestore: function () {
+                        throw new Error('Function not implemented.');
+                    }
+                });
                 return docRef.id!
             }
             return await this.fetchLogFromLocalById(docRef.id) ? docRef.id : '';
         } catch (e) {
-            return '';
+            throw new Error(`Failed to publish log:${e}`);
         }
     }
 

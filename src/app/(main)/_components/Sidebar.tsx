@@ -16,11 +16,10 @@ import ShortCutsGuide from './ShortcutsGuide';
 import SidebarItem from './SideBarItem';
 
 const Sidebar: React.FC = () => {
-    const { id, setSelected, setId, showSideBar } = useSidebar();
+    const { id, setSelected, setId, showSideBar, user, setUser } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
     const [logs, setLogs] = useState<Log[]>([]);
     const [refresh, setRefresh] = useState<boolean>(false);
-    const [user, setUser] = useState<any>(null);
     const router = useRouter();
     const authService = new AuthService();
     const logService = new LogService();
@@ -100,10 +99,10 @@ const Sidebar: React.FC = () => {
                         className="dropdown-class">
                         <div className='cursor-pointer'>
                             <Tooltip content={'Profile'}>
-                                <Image src={user.photoURL}
+                                <Image src={user.photoURL!}
                                     height={36}
                                     width={36}
-                                    alt={user.displayName} className='rounded-full mr-2 border-1 border-white' />
+                                    alt={user.displayName!} className='rounded-full mr-2 border-1 border-white' />
                             </Tooltip>
                         </div>
                     </PSDropdown>

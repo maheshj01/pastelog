@@ -15,7 +15,7 @@ export interface ILog {
     isMarkDown: boolean;
     id?: string;
     summary?: string;
-    userId?: string;
+    userId?: string | null;
     public?: boolean | false;
     isExpired?: boolean | false;
 }
@@ -29,7 +29,7 @@ export class Log implements ILog {
     isMarkDown: boolean;
     isExpired?: boolean | false;
     summary?: string;
-    userId?: string;
+    userId?: string | null;
     isPublic?: boolean | false;
     id?: string | undefined;
 
@@ -41,7 +41,7 @@ export class Log implements ILog {
         isMarkDown,
         title = '',
         summary = '',
-        userId,
+        userId = null,
         isPublic = false,
         isExpired = false,
         id
@@ -53,7 +53,7 @@ export class Log implements ILog {
         isMarkDown: boolean,
         title?: string,
         summary?: string,
-        userId?: string,
+        userId?: string | null,
         isPublic?: boolean,
         isExpired?: boolean,
         id?: string
@@ -101,7 +101,6 @@ export class Log implements ILog {
             isPublic: this.isPublic,
             isMarkDown: this.isMarkDown,
             isExpired: this.isExpired,
-            id: this.id
         };
     }
 }
