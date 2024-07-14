@@ -100,7 +100,8 @@ export class Log implements ILog {
             userId: this.userId,
             isPublic: this.isPublic,
             isMarkDown: this.isMarkDown,
-            isExpired: this.isExpired
+            isExpired: this.isExpired,
+            id: this.id
         };
     }
 }

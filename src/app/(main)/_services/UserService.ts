@@ -26,4 +26,9 @@ export class UserService {
         const userRef = doc(this.usersCollection, userId);
         await updateDoc(userRef, { lastLoginAt: Timestamp.now() });
     }
+
+    async updateFirstTimeUserLogs(userId: string): Promise<void> {
+        const userRef = doc(this.usersCollection, userId);
+        await updateDoc(userRef, { firstTimeUserLogUpdated: true });
+    }
 }

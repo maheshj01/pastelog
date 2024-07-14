@@ -71,7 +71,6 @@ class LogService {
     async updateLogsForNewUser(userId: string): Promise<void> {
         const logs = await this.fetchLogsFromLocal();
         const updatePromises: Promise<void>[] = [];
-
         for (const log of logs) {
             if (!log.userId) {
                 log.userId = userId;
@@ -79,7 +78,7 @@ class LogService {
 
                 // Update in Firebase
                 const docRef = doc(this.logCollection, log.id);
-                updatePromises.push(updateDoc(docRef, log.toFirestore()));
+                updatePromises.push(setDoc(docRef, log.toFirestore()));
 
                 // Update in local storage
                 updatePromises.push(this.saveLogToLocal(log));
@@ -168,14 +167,15 @@ class LogService {
             if (logs) {
                 const parsedLogs = JSON.parse(logs) as Log[];
                 // Convert createdDate strings back to Date objects
-                parsedLogs.forEach(log => {
+                const logInstances = parsedLogs.map((log) => {
                     log.createdDate = new Date(log.createdDate);
                     if (log.expiryDate) {
                         log.expiryDate = new Date(log.expiryDate);
                     }
+                    return new Log(log)
                 });
 
-                const filtered = parsedLogs.filter(log => !log.isExpired);
+                const filtered = logInstances.filter(log => !log.isExpired);
 
                 // sort by created date in reverse order
                 return filtered.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());

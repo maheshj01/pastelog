@@ -14,10 +14,10 @@ export class AuthService {
         const provider = new GoogleAuthProvider();
         const result = await signInWithPopup(auth, provider);
         await this.createOrUpdateUserInFirestore(result.user);
-        // const isFirstLogin = await this.isFirstTimeLogin(result.user.uid);
-        // if (isFirstLogin) {
-        //     await this.handleFirstTimeLogin(result.user);
-        // }
+        const isFirstLogin = await this.isFirstTimeLogin(result.user.uid);
+        if (isFirstLogin) {
+            await this.handleFirstTimeLogin(result.user);
+        }
         return result.user;
     }
 
@@ -41,14 +41,15 @@ export class AuthService {
     }
 
     private async isFirstTimeLogin(userId: string): Promise<boolean> {
-        const hasLoggedInBefore = localStorage.getItem(`user_${userId}_logged_in`);
+        const hasLoggedInBefore = localStorage.getItem(`user_${userId}_has_logged_in`) === 'true';
         return !hasLoggedInBefore;
     }
 
     private async handleFirstTimeLogin(user: FirebaseUser): Promise<void> {
         const logService = new LogService();
         await logService.updateLogsForNewUser(user.uid);
-        localStorage.setItem(`user_${user.uid}_logged_in`, 'true');
+        localStorage.setItem(`user_${user.uid}_has_logged_in`, 'true');
+
     }
 
     getCurrentUser(): FirebaseUser | null {
