@@ -68,24 +68,21 @@ class LogService {
     }
 
     async updateLogsForNewUser(userId: string): Promise<void> {
-        const logs = await this.fetchLogsFromLocal();
+        const logs = await this.fetchLogsFromLocal('logs');
         const updatePromises: Promise<void>[] = [];
         for (const log of logs) {
             if (!log.userId) {
                 log.userId = userId;
                 log.isPublic = false; // Set default value for isPublic
-
                 // Update in Firebase
                 const docRef = doc(this.logCollection, log.id);
                 updatePromises.push(setDoc(docRef, log.toFirestore()));
-
-                // Update in local storage
-                updatePromises.push(this.saveLogToLocal(log));
                 console.log('Updating log:', log.id);
             }
         }
 
         await Promise.all(updatePromises);
+        localStorage.removeItem('logs');
     }
 
     async publishLogWithId(log: Log, id: string): Promise<string> {
@@ -155,14 +152,13 @@ class LogService {
     // Local Storage Methods
     private saveLogsToLocal(logs: Log[]): void {
         if (typeof window !== 'undefined') {
-            localStorage.setItem('logs', JSON.stringify(logs));
+            localStorage.setItem(process.env.NEXT_PUBLIC_LOCAL_GUEST_COLLECTION ?? 'logs', JSON.stringify(logs));
         }
     }
 
-    async fetchLogsFromLocal(): Promise<Log[]> {
+    async fetchLogsFromLocal(collection?: string): Promise<Log[]> {
         if (typeof window !== 'undefined') {
-            const logs = localStorage.getItem('logs');
-            // filter expired
+            const logs = localStorage.getItem(collection ? collection : process.env.NEXT_PUBLIC_LOCAL_GUEST_COLLECTION ?? '');
             if (logs) {
                 const parsedLogs = JSON.parse(logs) as Log[];
                 // Convert createdDate strings back to Date objects
