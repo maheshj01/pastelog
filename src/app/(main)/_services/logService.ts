@@ -43,9 +43,40 @@ class LogService {
     }
 
     async getLogsByUserId(userId: string): Promise<Log[]> {
-        const q = query(this.logCollection, where('userId', '==', userId));
-        const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(doc => Log.fromFirestore(doc));
+        // Fetch user-specific logs with isExpired = false
+        const userQuery = query(
+            this.logCollection,
+            where('userId', '==', userId),
+            where('isExpired', '==', false)
+        );
+        const userQuerySnapshot = await getDocs(userQuery);
+        const userLogs = userQuerySnapshot.docs.map(doc => Log.fromFirestore(doc));
+
+        // Fetch public logs
+        const publicIdLogs = ['getting-started', 'shortcuts'];
+        const publicLogPromises = publicIdLogs.map(async (id) => {
+            const docRef = doc(this.logCollection, id);
+            const docSnap = await getDoc(docRef);
+            return docSnap.exists() ? Log.fromFirestore(docSnap) : null;
+        });
+
+        const publicLogs = (await Promise.all(publicLogPromises)).filter((log): log is Log => log !== null);
+
+        // Combine user logs and public logs
+        const combinedLogs = [...userLogs, ...publicLogs];
+
+        // Remove duplicates (in case a user has a personal copy of a public log)
+        const uniqueLogs = combinedLogs.reduce((acc: Log[], current) => {
+            const x = acc.find(item => item.id === current.id);
+            if (!x) {
+                return acc.concat([current]);
+            } else {
+                return acc;
+            }
+        }, []);
+
+        // Sort logs by createdDate in descending order
+        return uniqueLogs.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
     }
 
     async publishLog(log: Log): Promise<string> {
@@ -70,14 +101,14 @@ class LogService {
     async updateLogsForNewUser(userId: string): Promise<void> {
         const logs = await this.fetchLogsFromLocal('logs');
         const updatePromises: Promise<void>[] = [];
+        const publicLogs = ['getting-started', 'shortcuts'];
         for (const log of logs) {
-            if (!log.userId) {
+            if (!log.userId && !publicLogs.includes(log.id!)) {
                 log.userId = userId;
                 log.isPublic = false; // Set default value for isPublic
                 // Update in Firebase
                 const docRef = doc(this.logCollection, log.id);
                 updatePromises.push(setDoc(docRef, log.toFirestore()));
-                console.log('Updating log:', log.id);
             }
         }
 
@@ -157,6 +188,7 @@ class LogService {
     }
 
     async fetchLogsFromLocal(collection?: string): Promise<Log[]> {
+        console.log("fetch from local")
         if (typeof window !== 'undefined') {
             const logs = localStorage.getItem(collection ? collection : process.env.NEXT_PUBLIC_LOCAL_GUEST_COLLECTION ?? '');
             if (logs) {
