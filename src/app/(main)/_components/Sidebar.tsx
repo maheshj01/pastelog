@@ -50,21 +50,27 @@ const Sidebar: React.FC = () => {
     const fetchLogs = useCallback(async () => {
         setLoading(true);
         await logService.deleteExpiredLogs();
-        // const fetchedLogs = user
-        //     ? await logService.getLogsByUserId(user.uid)
-        //     : await logService.getGuestLogs();
-        const logs = await logService.fetchLogsFromLocal();
-        setLogs(logs);
+        if (user) {
+            const isFirstLogin = await authService.isFirstTimeLogin(user.uid);
+            // user logs have not been synced yet
+            if (isFirstLogin) {
+                const logs = await logService.fetchLogsFromLocal();
+                setLogs(logs);
+            } else {
+                const fetchedLogs = await logService.getLogsByUserId(user.uid)
+                setLogs(fetchedLogs);
+            }
+        } else {
+            const logs = await logService.fetchLogsFromLocal();
+            setLogs(logs);
+        }
         setLoading(false);
     }, [user]);
 
     useEffect(() => {
-        fetchLogs();
         const unsubscribe = authService.onAuthStateChanged((user) => {
             setUser(user);
-            if (user) {
-                fetchLogs(); // Refresh logs when user logs in
-            }
+            fetchLogs(); // Refresh logs when user logs in
         });
         return () => unsubscribe();
     }, [fetchLogs, refresh]);

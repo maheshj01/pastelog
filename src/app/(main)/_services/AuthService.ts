@@ -40,7 +40,7 @@ export class AuthService {
         }
     }
 
-    private async isFirstTimeLogin(userId: string): Promise<boolean> {
+    async isFirstTimeLogin(userId: string): Promise<boolean> {
         const hasLoggedInBefore = localStorage.getItem(`user_${userId}_has_logged_in`) === 'true';
         return !hasLoggedInBefore;
     }
