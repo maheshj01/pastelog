@@ -1,9 +1,14 @@
 "use client";
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { Tooltip } from '@nextui-org/react';
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@radix-ui/react-hover-card";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
@@ -14,7 +19,6 @@ import PSDropdown from './Dropdown';
 import IconButton from "./IconButton";
 import ShortCutsGuide from './ShortcutsGuide';
 import SidebarItem from './SideBarItem';
-
 const Sidebar: React.FC = () => {
     const { id, setSelected, setId, showSideBar, user, setUser } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
@@ -24,6 +28,7 @@ const Sidebar: React.FC = () => {
     const authService = new AuthService();
     const logService = new LogService();
     const [isFirstLogin, setIsFirstLogin] = useState<boolean>(false);
+    const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
@@ -107,6 +112,7 @@ const Sidebar: React.FC = () => {
         }
     };
 
+
     function UserLogin() {
         return (
             <div className='sticky bottom-0 bg-surface dark:bg-gray-700 p-4 border-t border-gray-200 dark:border-gray-600'>
@@ -126,23 +132,29 @@ const Sidebar: React.FC = () => {
                         </div>
                     </PSDropdown>
                 ) : (
-                    <IconButton
-                        ariaLabel='Google Sign In'
-                        onClick={handleLogin}>
-                        <FaGoogle className='size-6 text-black dark:text-white' />
-                    </IconButton>
+                    <HoverCard>
+                        <HoverCardTrigger asChild>
+                            <div>
+                                <div className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-lg'
+                                    onClick={handleLogin}>
+                                    <FaGoogle className='size-6 text-black dark:text-white' />
+                                </div>
+                            </div>
+                        </HoverCardTrigger>
+                        <HoverCardContent side='top' align='start' className="z-30 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-300">
+                            <div className="text-sm text-black dark:text-white">
+                                Sign in to sync notes with cloud
+                            </div>
+                        </HoverCardContent>
+                    </HoverCard>
                 )}
             </div>
-        )
+        );
     }
 
     return (
         <div className={`fixed top-0 left-0 bottom-0 bg-surface dark:bg-gray-700 overflow-y-auto z-20`}>
-            {loading ? (
-                <div className={`flex items-center justify-center min-h-screen ${showSideBar ? 'w-64' : 'w-0'}`}>
-                    <div className="loader" />
-                </div>
-            ) : (<div className={`flex flex-col h-full transition-width duration-700 ${showSideBar ? 'w-64' : 'w-0'}`}>
+            <div className={`flex flex-col h-full transition-width duration-700 ${showSideBar ? 'w-64' : 'w-0'}`}>
                 {/* Fixed IconButton */}
                 <div className='sticky top-0 z-10 pt-2 pb-2'>
                     <div className='flex justify-end pr-4'>
@@ -155,19 +167,25 @@ const Sidebar: React.FC = () => {
                     </div>
                 </div>
                 {/* Scrollable logs list */}
-                <div className='overflow-y-auto flex-grow pb-2'>
-                    {logs.map((log: Log) => (
-                        <SidebarItem
-                            id={log.id!}
-                            selected={id === log.id}
-                            log={log}
-                            key={log.id}
-                            className={id === log.id ? 'hover:bg-background' : 'hover:dark:bg-slate-600 hover:bg-slate-300 '}
-                            onLogClick={() => onLogClick(log)}
-                            onRefresh={handleRefresh} // Pass the refresh function
-                        />
-                    ))}
-                </div>
+                {loading ? (
+                    <div className={`flex items-center justify-center flex-grow ${showSideBar ? 'w-64' : 'w-0'}`}>
+                        <div className="loader" />
+                    </div>
+                ) :
+                    (<div className='overflow-y-auto flex-grow pb-2'>
+                        {logs.map((log: Log) => (
+                            <SidebarItem
+                                id={log.id!}
+                                selected={id === log.id}
+                                log={log}
+                                key={log.id}
+                                className={id === log.id ? 'hover:bg-background' : 'hover:dark:bg-slate-600 hover:bg-slate-300 '}
+                                onLogClick={() => onLogClick(log)}
+                                onRefresh={handleRefresh} // Pass the refresh function
+                            />
+                        ))}
+                    </div>
+                    )}
                 <div className='flex px-2 items-center'>
                     <div>
                         <ShortCutsGuide />
@@ -186,7 +204,7 @@ const Sidebar: React.FC = () => {
 
                 </div>
             </div>
-            )}
+
         </div>
     );
 };
