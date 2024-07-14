@@ -22,7 +22,7 @@ import { Button } from './button';
 
 export default function Pastelog({ id }: { id?: string }) {
 
-    const { theme } = useTheme();
+    const { theme, setTheme } = useTheme();
     const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>('');
     const [preview, setPreview] = useState<boolean>(false);
@@ -140,9 +140,15 @@ export default function Pastelog({ id }: { id?: string }) {
         setPreview((prev) => !prev);
     }, [])
 
+    const toggleTheme = () => {
+        setTheme(theme === 'dark' ? 'light' : 'dark');
+    };
+
     return (
         <>
-            <ShortcutWrapper onCtrlShiftP={togglePreview}>
+            <ShortcutWrapper onCtrlShiftP={togglePreview} onCtrlShiftD={toggleTheme} onCtrlShiftN={() => {
+                router.push('/logs');
+            }}>
                 <div className="min-h-screen relative xsm:px-2">
                     <div
                         aria-disabled={loading}

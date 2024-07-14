@@ -2,24 +2,25 @@
 
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
 import { FiSidebar } from "react-icons/fi";
 import IconButton from "../_components/IconButton";
 import PSBanner from '../_components/PSBanner';
 import PSNavbar from '../_components/PSNavbar';
 import RouteClient from '../_components/RouteClient';
+import ShortcutWrapper from '../_components/ShortCutWrapper';
 import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
 import useBannerState from '../_services/BannerState';
 import { useSidebar } from '../_services/Context';
-import ShortcutWrapper from '../_components/ShortCutWrapper';
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
     const { showSideBar, toggleSideBar, setShowSideBar, id } = useSidebar();
     const bannerState = useBannerState();
     const [show, setShow] = React.useState(true);
-
+    const router = useRouter();
     const checkWindowSize = async () => {
         if (typeof window !== 'undefined') {
             if (showSideBar && window.innerWidth <= 768) {
@@ -27,7 +28,9 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
             }
         }
     };
-
+    const toggleTheme = () => {
+        setTheme(theme === 'dark' ? 'light' : 'dark');
+    };
     useEffect(() => {
         checkWindowSize();
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -42,7 +45,9 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
 
 
     return (
-        <ShortcutWrapper onCtrlShiftM={toggleSideBar}>
+        <ShortcutWrapper onCtrlShiftH={toggleSideBar} onCtrlShiftD={toggleTheme} onCtrlShiftN={() => {
+            router.push('/logs');
+        }} >
             <div className={`flex ${theme === Theme.DARK ? 'dark' : 'light'}`}>
                 <div className={`fixed top-0 left-0 z-50 h-screen overflow-y-auto ${showSideBar ? 'w-64' : 'w-0'}`}>
                     <Sidebar />

@@ -2,27 +2,42 @@ import React, { useCallback, useEffect } from 'react';
 
 interface ShortcutWrapperProps {
     onCtrlShiftP?: () => void;
-    onCtrlShiftM?: () => void;
+    onCtrlShiftH?: () => void;
+    onCtrlShiftN?: () => void;
+    onCtrlShiftD?: () => void;
     children: React.ReactNode;
 }
 
-const ShortcutWrapper: React.FC<ShortcutWrapperProps> = ({ onCtrlShiftP, onCtrlShiftM, children }) => {
+const ShortcutWrapper: React.FC<ShortcutWrapperProps> = ({ onCtrlShiftP, onCtrlShiftH, onCtrlShiftN, onCtrlShiftD, children }) => {
     const handleKeyPress = useCallback((event: KeyboardEvent) => {
-        if (event.ctrlKey && event.key === 'p') {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
             event.preventDefault();
             if (onCtrlShiftP) {
                 onCtrlShiftP();
             }
         }
         // toggle Sidebar ctrl+shift + h
-        if (event.ctrlKey && event.key === 'm') {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'h') {
             event.preventDefault();
-            if (onCtrlShiftM) {
-                onCtrlShiftM();
+            if (onCtrlShiftH) {
+                onCtrlShiftH();
             }
         }
-
-    }, [onCtrlShiftP, onCtrlShiftM]);
+        // new log
+        if ((event.ctrlKey || event.metaKey) && event.key === 'n') {
+            event.preventDefault();
+            if (onCtrlShiftN) {
+                onCtrlShiftN();
+            }
+        }
+        // toggle darkMode
+        if ((event.ctrlKey || event.metaKey) && event.key === 'd') {
+            event.preventDefault();
+            if (onCtrlShiftD) {
+                onCtrlShiftD();
+            }
+        }
+    }, [onCtrlShiftP, onCtrlShiftH, onCtrlShiftN, onCtrlShiftD]);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyPress);

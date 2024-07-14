@@ -125,16 +125,9 @@ const Sidebar: React.FC = () => {
                             </Tooltip>
                         </div>
                     </PSDropdown>
-                    // <HoverCard>
-                    //     <HoverCardTrigger asChild>
-                    //     </HoverCardTrigger>
-                    //     <HoverCardContent >
-
-                    //     </HoverCardContent>
-                    // </HoverCard>
                 ) : (
                     <IconButton
-                        ariaLabel='Google Login'
+                        ariaLabel='Google Sign In'
                         onClick={handleLogin}>
                         <FaGoogle className='size-6 text-black dark:text-white' />
                     </IconButton>

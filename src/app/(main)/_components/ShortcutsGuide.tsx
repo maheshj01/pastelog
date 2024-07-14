@@ -10,8 +10,9 @@ import { MdOutlineKeyboardCommandKey } from "react-icons/md";
 export default function ShortCutsGuide() {
 
     const ShortcutsMap = [
-        { keys: 'Ctrl + M', description: 'Toggle Preview' },
-        { keys: 'Ctrl + P', description: 'Toggle Sidebar' },
+        { keys: 'Ctrl/Cmd + H', description: 'Toggle Preview' },
+        { keys: 'Ctrl/Cmd + P', description: 'Toggle Sidebar' },
+        { keys: 'Ctrl/Cmd + D', description: 'Toggle DarkMode' },
         { keys: 'Ctrl/Cmd + B', description: 'Bold' },
         { keys: 'Ctrl/Cmd + I', description: 'Italic' },
         { keys: 'Ctrl/Cmd + Shift + X', description: 'Strikethrough' },
@@ -41,7 +42,7 @@ export default function ShortCutsGuide() {
                         const shortcut: any = ShortcutsMap[index];
                         return (
                             <div key={index}>
-                                {index === 2 && <p className='text-md my-2 font-bold'>Markdown Shortcuts</p>}
+                                {index === 3 && <p className='text-md my-2 font-bold'>Markdown Shortcuts</p>}
                                 <div className="flex justify-between">
                                     <div className="flex space-x-2">
                                         <MdOutlineKeyboardCommandKey className='text-black dark:text-white' />
