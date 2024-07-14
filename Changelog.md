@@ -1,10 +1,16 @@
+### [0.5.3] - July 13, 2024
+
+- Adds Authentication [Issue #37](https://github.com/maheshmnj/pastelog/issues/37) With Cloud Sync
+- Add `new log` and `toggle theme` keyboard shortcut
+
 ### [0.5.2] - July 12, 2024
+
 Adds Following Shortcuts
 
- - Shift + Tab in a code block for selected text should remove tabs
- - Return Key continues ordered/unordered list from previous line
- - Toggle Sidebar ctrl + m
- - Add Keyboard Shortcuts Guide in Sidebar
+- Shift + Tab in a code block for selected text should remove tabs
+- Return Key continues ordered/unordered list from previous line
+- Toggle Sidebar ctrl + m
+- Add Keyboard Shortcuts Guide in Sidebar
 
 ### [0.5.1] - July 02, 2024
 
