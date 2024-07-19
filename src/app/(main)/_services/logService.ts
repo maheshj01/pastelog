@@ -82,17 +82,20 @@ class LogService {
     async publishLog(log: Log): Promise<string> {
         try {
             const docRef = await addDoc(this.logCollection, log.toFirestore());
-            // Todo Save log to local only if userId is null
-            if (docRef.id && !log.userId) {
-                await this.saveLogToLocal({
-                    ...log, id: docRef.id,
-                    toFirestore: function () {
-                        throw new Error('Function not implemented.');
-                    }
-                });
+            if (docRef.id) {
+                // if user not loggedIn save to local
+                if (!log.userId) {
+                    await this.saveLogToLocal({
+                        ...log, id: docRef.id,
+                        toFirestore: function () {
+                            throw new Error('Function not implemented.');
+                        }
+                    });
+                }
                 return docRef.id!
+            } else {
+                throw new Error("Failed to publish log");
             }
-            return await this.fetchLogFromLocalById(docRef.id) ? docRef.id : '';
         } catch (e) {
             throw new Error(`Failed to publish log:${e}`);
         }
