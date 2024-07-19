@@ -22,7 +22,7 @@ interface SidebarItemProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick, onRefresh, className }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const { id: selectedId, setId: setSelectedId } = useSidebar();
+    const { id: selectedId, setId: setSelectedId, user } = useSidebar();
     const { isOpen: isShareOpen, onOpen: onShareOpen, onClose: onShareClose } = useDisclosure();
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const router = useRouter();
@@ -57,17 +57,17 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     async function handleonAction(key: Key) {
         const logService = new LogService();
         switch (key) {
-            case '1':
+            case 'Delete':
                 // await logService.deleteLogById(id);
                 // onRefresh();
                 onDeleteOpen();
                 Analytics.logEvent('delete_log', { id: id, action: 'click' });
                 break;
-            case '0':
+            case 'Share':
                 onShareOpen();
                 Analytics.logEvent('share_log', { id: id, action: 'click' });
                 break;
-            case '2':
+            case 'Republish':
                 setSelectedId(null);
                 router.push(`/logs?id=${id}`);
                 Analytics.logEvent('republish_log', { id: id, action: 'click' });
