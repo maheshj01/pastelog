@@ -24,7 +24,7 @@ const PSDropdown: React.FC<PSDropdownProps> = ({ options, onClick, children, cla
                 onAction={onClick}
             >
                 {options.map((option, index) => (
-                    <DropdownItem key={index}>{option}</DropdownItem>
+                    <DropdownItem key={option}>{option}</DropdownItem>
                 ))}
             </DropdownMenu>
         </Dropdown>

@@ -13,7 +13,6 @@ export function DatePicker({ selected, onSelect, label }: { selected?: Date; onS
         <Popover
             open={isPopoverOpen}
             onOpenChange={setIsPopoverOpen}
-
         >
             <PopoverTrigger asChild>
                 <div className='flex flex-col'>

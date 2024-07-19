@@ -104,19 +104,18 @@ const PreviewPage = ({ logId }: { logId: string }) => {
 
     function handleonAction(key: Key) {
         switch (key) {
-            case '0':
+            case 'Image':
                 downloadImage();
                 Analytics.logEvent('download_image', { id: logId });
-
                 break;
-            case '1':
+            case 'Text':
                 downloadText();
                 Analytics.logEvent('download_text', { id: logId });
                 break;
-            case '2':
+            case 'Share':
                 onOpen();
-            case '3':
-                logService.saveLogToLocal(previewLog!);
+            // case '3':
+            //     logService.saveLogToLocal(previewLog!);
             default:
                 break;
         }
