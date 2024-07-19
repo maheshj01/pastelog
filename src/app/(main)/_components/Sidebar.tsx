@@ -5,7 +5,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@radix-ui/react-h
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FaGithub, FaGoogle } from "react-icons/fa";
+import { FaBug, FaGithub, FaGoogle } from "react-icons/fa";
 import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
@@ -114,7 +114,7 @@ const Sidebar: React.FC = () => {
                 {user ? (
                     <Popover>
                         <PopoverTrigger>
-                            <div className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-lg relative'>
+                            <div className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-full relative hover:scale-125 transition-all duration-300'>
                                 {/* {!loading && (
                                     <div className="absolute inset-0 flex items-center justify-center">
                                         <div className="w-12 h-12 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
@@ -123,8 +123,8 @@ const Sidebar: React.FC = () => {
                                 <Image
                                     src={user.photoURL!}
                                     alt="User profile"
-                                    width={32}
-                                    height={32}
+                                    width={36}
+                                    height={36}
                                     className="rounded-full"
                                 />
                             </div>
@@ -215,21 +215,25 @@ const Sidebar: React.FC = () => {
                         ))}
                     </div>
                     )}
-                <div className='flex px-2 items-center'>
-                    <div>
-                        <ShortCutsGuide />
-                    </div>
-                    <div className='flex flex-grow justify-end items-center space-x-1'>
-                        <IconButton
-                            ariaLabel='Github'
-                            onClick={() => {
-                                window.open(process.env.NEXT_PUBLIC_GITHUB_REPO ?? '', '_blank');
-                            }}
-                        >
-                            <FaGithub className='size-6 text-black dark:text-white' />
-                        </IconButton>
-                        <UserLogin />
-                    </div>
+                <div className='flex items-center justify-evenly'>
+                    <ShortCutsGuide />
+                    <IconButton
+                        ariaLabel='Report a Bug'
+                        onClick={() => {
+                            window.open(`${process.env.NEXT_PUBLIC_GITHUB_REPO}/issues/new` ?? '', '_blank');
+                        }}
+                    >
+                        <FaBug className='size-6 text-black dark:text-white' />
+                    </IconButton>
+                    <IconButton
+                        ariaLabel='Github'
+                        onClick={() => {
+                            window.open(process.env.NEXT_PUBLIC_GITHUB_REPO ?? '', '_blank');
+                        }}
+                    >
+                        <FaGithub className='size-6 text-black dark:text-white' />
+                    </IconButton>
+                    <UserLogin />
 
                 </div>
             </div>
