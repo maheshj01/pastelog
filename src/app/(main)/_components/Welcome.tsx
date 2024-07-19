@@ -126,7 +126,12 @@ export default function Welcome() {
                         <div className="loader mx-6 py-1" />
                     ) : "Get Started"}
                 </Button>
-
+                <p className="text-center mt-32 mb-4">Show Your support on ProductHunt</p>
+                <a href="https://www.producthunt.com/posts/pastelog?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-pastelog" target="_blank">
+                    <Image
+                        width={250} height={54}
+                        src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=466669&theme=light" alt="Pastelog - Create&#0032;stunning&#0032;rich&#0032;text&#0032;notes&#0032;in&#0032;minutes | Product Hunt" />
+                </a>
                 <div className='animate-pulse fixed bottom-10 text-white cursor-pointer'>
                     <ChevronDownIcon
                         color="white"
