@@ -1,5 +1,6 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import React from "react";
+import { useSidebar } from "../_services/Context";
 
 interface DeleteDialogProps {
     isOpen: boolean;
@@ -11,7 +12,7 @@ interface DeleteDialogProps {
 
 const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, onClose, onDelete, title, content }) => {
     const [deleteLocal, setDeleteLocal] = React.useState<boolean>(true);
-
+    const { user } = useSidebar();
     return (
         <Modal
             isOpen={isOpen}
@@ -34,9 +35,10 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, onClose, onDelete, 
                                     }}
                                 >
                                 </Checkbox> */}
-                                <p className='text-sm text-gray-600'>
+                                {!user && (<p className='text-sm text-gray-600'>
                                     Note that this log will still be available at its unique link until it expires.
                                 </p>
+                                )}
                             </div>
                         </ModalBody>
                         <ModalFooter>

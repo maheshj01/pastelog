@@ -88,12 +88,12 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     }
     async function handleDelete(local: boolean) {
         const logService = new LogService();
-        if (local) {
+        if (!user) {
             // await logService.deleteLogById(id);
             await logService.deleteLogFromLocal(id);
             notify('Log Deleted Successfully');
         } else {
-            // await logService.deleteLogById(id);
+            await logService.deleteLogById(id);
             // notify('Log deleted from Server Only');
         }
         if (id == selectedId) {
