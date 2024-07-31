@@ -86,9 +86,9 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
     };
 
     const toastId = React.useRef('clipboard-toast');
-    const notify = () => {
+    const notify = (message: string) => {
         if (!toast.isActive(toastId.current!)) {
-            showToast("success", <p> Copied to Clipboard! </p >,
+            showToast("success", <p> {message} </p >,
                 {
                     toastId: 'clipboard-toast',
                 }
@@ -103,7 +103,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
         setTimeout(() => {
             setCopied(false);
         }, 2000);
-        notify();
+        notify('Copied to Clipboard!');
     }
 
     return (
@@ -147,6 +147,10 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
                             <Button
                                 className='bg-primary'
                                 onClick={() => {
+                                    if (previewLog.data === '') {
+                                        notify('Cannot save empty log');
+                                        return
+                                    }
                                     if (onAction) {
                                         onAction(true);
                                     }

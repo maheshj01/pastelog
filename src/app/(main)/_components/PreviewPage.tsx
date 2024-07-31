@@ -172,7 +172,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                 loading={loading}
                                 onAction={handleOnEdit}
                                 setLoading={setLoading}
-                                previewLog={previewLog!}
+                                previewLog={isEditing ? editedLog! : previewLog!}
                                 isEditing={isEditing}
                                 setIsEditing={setIsEditing}
                                 isPublishRoute={isPublishRoute}
