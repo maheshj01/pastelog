@@ -1,3 +1,7 @@
+### [0.5.4] - July 31, 2024
+
+- Add Edit feature
+
 ### [0.5.3] - July 13, 2024
 
 - Adds Authentication [Issue #37](https://github.com/maheshmnj/pastelog/issues/37) With Cloud Sync

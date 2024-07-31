@@ -26,9 +26,10 @@ interface PreviewActionProps {
     loading: boolean,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
     onAction?: (update: boolean) => void;
+    className?: string
 }
 
-const PreviewAction: React.FC<PreviewActionProps> = ({ loading, setLoading, previewLog, isEditing, setIsEditing, isPublishRoute, onAction }) => {
+const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLoading, previewLog, isEditing, setIsEditing, isPublishRoute, onAction }) => {
     const { user } = useSidebar();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const logService = new LogService();
@@ -106,7 +107,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ loading, setLoading, prev
     }
 
     return (
-        <div className='flex justify-between items-center'>
+        <div className={`flex justify-between items-center ${className}`}>
 
             <div className='flex justify-end space-x-2'>
                 <IconButton

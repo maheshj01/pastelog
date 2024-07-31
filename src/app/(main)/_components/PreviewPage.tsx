@@ -156,6 +156,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
 
                             }
                             <PreviewAction
+className='py-2'
                                 loading={loading}
                                 onAction={handleOnEdit}
                                 setLoading={setLoading}
