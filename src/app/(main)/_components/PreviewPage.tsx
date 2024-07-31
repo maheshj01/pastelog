@@ -10,6 +10,7 @@ import Log from '../_models/Log';
 import Analytics from '../_services/Analytics';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
+import { DatePicker } from "./DatePicker";
 import GeminiDialog from './Gemini';
 import MDPreview from './MDPreview';
 import PreviewAction from './PreviewAction';
@@ -19,7 +20,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const { setId, apiKey, setApiKey, user } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
-    const [editedContent, setEditedContent] = useState<string>('');
+    const [editedLog, seteditedLog] = useState<Log | null>(null);
     const { theme } = useTheme();
     const pathName = usePathname();
     const isPublishRoute = pathName.includes('/logs/publish');
@@ -59,26 +60,25 @@ const PreviewPage = ({ logId }: { logId: string }) => {
             // handle not found case, maybe show an error message
             return;
         }
-        setpreviewLog(log);
+        setpreviewLog(new Log({ ...log }));
+        seteditedLog(new Log({ ...log }));
         setLoading(false);
     }
     useEffect(() => {
         if (logId) {
             setId(logId);
             fetchLogsById();
+
         }
     }, [logId]);
 
     const handleOnEdit = async (hasUpdated: boolean) => {
         setLoading(true);
         if (hasUpdated) {
-            const updatedLog = previewLog;
-            updatedLog!.data = editedContent;
-            await logService.updateLog(logId, updatedLog!);
-            setpreviewLog(updatedLog);
+            await logService.updateLog(logId, editedLog!);
+            setpreviewLog(new Log({ ...editedLog! }));
         } else {
-            setEditedContent(previewLog!.data);
-            setpreviewLog(previewLog);
+            seteditedLog(new Log({ ...previewLog! }));
         }
         setIsEditing(false);
         setLoading(false);
@@ -145,7 +145,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                         !loading &&
                         <div className='flex flex-row justify-between items-center'>
                             {
-                                previewLog?.expiryDate ?
+                                (!isEditing) ? (previewLog?.expiryDate ?
                                     <div>
                                         <p className="text-black dark:text-slate-50 my-1 font-bold">
                                             {`Expires`}
@@ -153,10 +153,22 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                         <p className="text-black dark:text-slate-50 my-1"> {` ${formatReadableDate(previewLog?.expiryDate)}`}</p>
                                     </div>
                                     : <div></div>
+                                ) : (
+                                    <DatePicker
+                                        onSelect={(date: Date) => {
+                                            seteditedLog(prevLog => new Log({
+                                                ...prevLog!,
+                                                expiryDate: date
+                                            }));
+                                            Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
+                                        }}
+                                        selected={editedLog?.expiryDate!}
+                                    />
+                                )
 
                             }
                             <PreviewAction
-className='py-2'
+                                className='py-2'
                                 loading={loading}
                                 onAction={handleOnEdit}
                                 setLoading={setLoading}
@@ -171,10 +183,13 @@ className='py-2'
                     <Editor
                         preview={isEditing ? false : true}
                         className={`bg-background ${theme !== 'dark' ? ` min-h-screen` : `text-white min-h-screen mt-2`}`}
-                        value={isEditing ? editedContent : previewLog?.data}
+                        value={isEditing ? editedLog!.data : previewLog?.data}
                         onChange={(e) => {
                             if (isEditing) {
-                                setEditedContent(e.target.value);
+                                seteditedLog(prevLog => new Log({
+                                    ...prevLog!,
+                                    data: e.target.value
+                                }));
                             }
                         }}
                         disabled={loading || !isEditing}
