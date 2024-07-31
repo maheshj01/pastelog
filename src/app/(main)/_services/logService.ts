@@ -133,8 +133,12 @@ class LogService {
 
     async updateLog(id: string, log: Log): Promise<void> {
         const docRef = doc(this.logCollection, id);
-        await updateDoc(docRef, log.toFirestore());
-        await this.saveLogToLocal(log);
+        const data = log.toFirestore();
+        console.log("updating:", id, data);
+        // await this.saveLogToLocal(log);
+        // Remove any undefined fields
+        Object.keys(data).forEach(key => data[key] === undefined && delete data[key]);
+        await updateDoc(docRef, data);
     }
 
     async markExpiredById(id: string): Promise<void> {

@@ -1,55 +1,36 @@
 "use client";
 import Editor from '@/app/(main)/_components/Editor';
-import { showToast } from '@/utils/toast_utils';
 import { formatReadableDate } from '@/utils/utils';
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DoneIcon from '@mui/icons-material/Done';
 import { Tooltip, useDisclosure } from '@nextui-org/react';
-import html2canvas from 'html2canvas';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import React, { Key, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
 import Log from '../_models/Log';
 import Analytics from '../_services/Analytics';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
-import PSDropdown from './Dropdown';
 import GeminiDialog from './Gemini';
-import IconButton from './IconButton';
 import MDPreview from './MDPreview';
-import ShareDialog from './Share';
+import PreviewAction from './PreviewAction';
 
 const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
-    const { setId, apiKey, setApiKey } = useSidebar();
-
+    const { setId, apiKey, setApiKey, user } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
-    const [copied, setCopied] = useState<boolean>(false);
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
+    const [editedContent, setEditedContent] = useState<string>('');
     const { theme } = useTheme();
     const pathName = usePathname();
     const isPublishRoute = pathName.includes('/logs/publish');
-    const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: geminiOpen, onOpen: onGeminiOpen, onClose: onGeminiClose } = useDisclosure();
     const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
-    // const [summaryContent, setSummaryContent] = useState<string>('');
+    const [isEditing, setIsEditing] = useState<boolean>(false);
 
-    const [shareContent, setShareContent] = useState({
-        title: "Share Pastelog",
-        content: process.env.NEXT_PUBLIC_BASE_URL + pathName,
-    });
     const [geminiContent, setGeminiContent] = useState({
         title: "Gemini",
         content: 'With the power of Gemini, you can summarize long notes content. Enter your API key to get started.',
     });
-
-    const handleShare = () => {
-        navigator.clipboard.writeText(`${window.location.origin}/logs/publish/${previewLog?.id}`);
-        onClose();
-    };
 
     const onSummarizeClicked = async () => {
         try {
@@ -70,67 +51,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         }
     };
 
-    const toastId = React.useRef('clipboard-toast');
-    const notify = () => {
-        if (!toast.isActive(toastId.current!)) {
-            showToast("success", <p> Copied to Clipboard! </p >,
-                {
-                    toastId: 'clipboard-toast',
-                }
-            );
-        }
-        Analytics.logEvent('copy_clipboard', { id: logId });
-    }
-
-    function More() {
-        const options = ['Image', 'Text', 'Share'];
-        // if (!isPublishRoute) {
-        //     options.push('Share');
-        // }
-        if (!logService.isLogPresentLocally(logId)) {
-            options.push('Save');
-        }
-        return (<PSDropdown
-            options={options}
-            onClick={handleonAction}
-            placement='bottom-end'
-            className="custom-dropdown-class">
-            <EllipsisHorizontalIcon
-                className='h-7 w-7 cursor-pointer dark:text-slate-100 transition-all duration-100' />
-        </PSDropdown>
-        );
-    }
-
-
-    function handleonAction(key: Key) {
-        switch (key) {
-            case 'Image':
-                downloadImage();
-                Analytics.logEvent('download_image', { id: logId });
-                break;
-            case 'Text':
-                downloadText();
-                Analytics.logEvent('download_text', { id: logId });
-                break;
-            case 'Share':
-                onOpen();
-            // case '3':
-            //     logService.saveLogToLocal(previewLog!);
-            default:
-                break;
-        }
-    }
-
-    const downloadText = () => {
-        if (!previewLog?.data) return;
-        const element = document.createElement("a");
-        const file = new Blob([previewLog.data], { type: 'text/plain' });
-        element.href = URL.createObjectURL(file);
-        element.download = "pastelog.txt";
-        document.body.appendChild(element); // Required for this to work in FireFox
-        element.click();
-    }
-
     async function fetchLogsById() {
         setLoading(true);
         const log = await logService.fetchLogById(logId);
@@ -142,40 +62,28 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         setpreviewLog(log);
         setLoading(false);
     }
-    const downloadImage = async () => {
-        const preview = document.getElementById('preview');
-        if (!preview) return;
-
-        // Ensure all images within the preview element are fully loaded
-        const images = Array.from(preview.getElementsByTagName('img'));
-        await Promise.all(images.map(img => new Promise<void>((resolve, reject) => {
-            if (img.complete) {
-                resolve();
-            } else {
-                img.onload = () => resolve();
-                img.onerror = () => reject();
-            }
-            // Set crossOrigin attribute if needed
-            if (!img.crossOrigin) {
-                img.crossOrigin = 'anonymous';
-            }
-        })));
-
-        // Capture the canvas and download the image
-        html2canvas(preview, { useCORS: true }).then((canvas) => {
-            const link = document.createElement('a');
-            link.download = 'pastelog.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }).catch(error => {
-        });
-    };
     useEffect(() => {
         if (logId) {
             setId(logId);
             fetchLogsById();
         }
     }, [logId]);
+
+    const handleOnEdit = async (hasUpdated: boolean) => {
+        setLoading(true);
+        if (hasUpdated) {
+            const updatedLog = previewLog;
+            updatedLog!.data = editedContent;
+            await logService.updateLog(logId, updatedLog!);
+            setpreviewLog(updatedLog);
+        } else {
+            setEditedContent(previewLog!.data);
+            setpreviewLog(previewLog);
+        }
+        setIsEditing(false);
+        setLoading(false);
+    }
+
     return (
         <div className={`flex flex-col items-center h-fit`}>
             <div className="w-full md:w-3/4 lg:w-2/3 max-w-none px-1 prose prose-indigo dark:prose-dark">
@@ -235,7 +143,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                     </div>
                     {(
                         !loading &&
-                        <div className='flex flex-row justify-between'>
+                        <div className='flex flex-row justify-between items-center'>
                             {
                                 previewLog?.expiryDate ?
                                     <div>
@@ -247,54 +155,29 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                     : <div></div>
 
                             }
-                            {isPublishRoute && (
-                                <div className='space-x-2'>
-                                    {/* <Button
-                                        variant='bordered'
-                                        className='border-code-onSurface'
-                                        onClick={() => { }}>
-                                        {'save'}
-                                    </Button> */}
-                                    <More />
-                                    <ShareDialog
-                                        isOpen={isOpen}
-                                        onClose={onClose}
-                                        onShare={handleShare}
-                                        title={shareContent.title}
-                                        content={shareContent.content}
-                                    />
-                                </div>
-                            )}
+                            <PreviewAction
+                                loading={loading}
+                                onAction={handleOnEdit}
+                                setLoading={setLoading}
+                                previewLog={previewLog!}
+                                isEditing={isEditing}
+                                setIsEditing={setIsEditing}
+                                isPublishRoute={isPublishRoute}
+                            />
                         </div>
                     )
                     }
-                    <div className="relative">
-                        <IconButton
-                            className='absolute top-2 right-2 '
-                            onClick={() => {
-                                navigator.clipboard.writeText(previewLog?.data as string);
-                                setCopied(true);
-                                setTimeout(() => {
-                                    setCopied(false);
-                                }, 2000);
-                                notify();
-                            }}
-                            ariaLabel="Copy to clipboard"
-                        >{!copied ?
-                            (<ContentCopyIcon />)
-                            :
-                            (<DoneIcon
-                                color='success'
-                            />)
+                    <Editor
+                        preview={isEditing ? false : true}
+                        className={`bg-background ${theme !== 'dark' ? ` min-h-screen` : `text-white min-h-screen mt-2`}`}
+                        value={isEditing ? editedContent : previewLog?.data}
+                        onChange={(e) => {
+                            if (isEditing) {
+                                setEditedContent(e.target.value);
                             }
-                        </IconButton>
-                        <Editor
-                            preview={true}
-                            className={`bg-background ${theme !== 'dark' ? ` min-h-screen` : `text-white min-h-screen`}`}
-                            value={previewLog?.data}
-                            disabled={loading}
-                        />
-                    </div>
+                        }}
+                        disabled={loading || !isEditing}
+                    />
                 </div>
             </div >
         </div >

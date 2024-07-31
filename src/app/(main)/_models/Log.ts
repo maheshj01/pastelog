@@ -14,7 +14,7 @@ export interface ILog {
     type: LogType;
     isMarkDown: boolean;
     id?: string;
-    summary?: string;
+    summary?: string | '';
     userId?: string | null;
     public?: boolean | false;
     isExpired?: boolean | false;
@@ -28,7 +28,7 @@ export class Log implements ILog {
     type: LogType;
     isMarkDown: boolean;
     isExpired?: boolean | false;
-    summary?: string;
+    summary?: string | '';
     userId?: string | null;
     isPublic?: boolean | false;
     id?: string | undefined;
@@ -90,7 +90,7 @@ export class Log implements ILog {
     }
 
     toFirestore(): any {
-        return {
+        const doc: any = {
             expiryDate: this.expiryDate ? this.expiryDate.toISOString() : null,
             data: this.data,
             createdDate: this.createdDate.toISOString(),
@@ -102,7 +102,14 @@ export class Log implements ILog {
             isMarkDown: this.isMarkDown,
             isExpired: this.isExpired,
         };
+
+        if (this.summary === undefined || this.summary === null) {
+            doc.summary = '';
+        }
+        else {
+            doc.summary = this.summary;
+        }
+        return doc;
     }
 }
-
 export default Log;
