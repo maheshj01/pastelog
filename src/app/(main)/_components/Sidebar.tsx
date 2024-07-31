@@ -87,6 +87,7 @@ const Sidebar: React.FC = () => {
     const handleLogin = async () => {
         try {
             await authService.signInWithGoogle();
+            router.push('/logs');
         } catch (error) {
             console.error("Error signing in:", error);
         }
