@@ -15,6 +15,7 @@ export default function Welcome() {
     const [index, setIndex] = useState<number | null>(null);
     const [darkTheme, setDarkTheme] = useState(false); // State for dark theme
     const router = useRouter();
+    const tagline = 'Publish Rich Text Notes, and access them with a unique link.';
     const scrollByScreenHeight = () => {
         const currentScrollY = window.scrollY;
         const nextScrollY = currentScrollY + window.innerHeight;
@@ -113,9 +114,11 @@ export default function Welcome() {
             {/* Section 1: Introduction */}
             <section className="flex flex-col items-center justify-center min-h-screen">
                 <GradientText className='tagline' text={tagLineWords[currentTagLine]} gradientColors={['#FF0080', '#7928CA']} fontSize="5rem" />
-                <p className="text-2xl mb-16 text-center">
+                <p className="text-2xl mb-2 text-center">
                     Welcome to Pastelog!
                 </p>
+                <p className="text-lg mb-8 text-center">
+                    {tagline}</p>
                 <Button
                     className='bg-gradient-to-br from-indigo-500  to-indigo-700'
                     size={'lg'}
