@@ -32,6 +32,7 @@ export default function Pastelog({ id }: { id?: string }) {
     const selected = 'dark:bg-gray-600 bg-gray-400 text-slate-50 dark:text-slate-50';
     const unSelected = 'text-black bg-accent dark:text-slate-50 ';
     const router = useRouter();
+    const [editorKey, setEditorKey] = useState<number>(0);
     const [importContent, setImportContent] = useState({
         title: "Import Log",
         content: 'Paste a Pastelog link or a Gist URL to import a log.',
@@ -96,8 +97,12 @@ export default function Pastelog({ id }: { id?: string }) {
                 if (log) {
                     setTitle(log.title!);
                     setContent(log.data!);
-                    notify(false, "Log imported successfully");
-                    Analytics.logEvent('import_gist', { id: id, action: 'click' });
+                    // Here content value is blank but log.data is not blank
+                    setEditorKey(prevKey => prevKey + 1);
+                    if (log.data) {
+                        notify(false, "Log imported successfully");
+                        Analytics.logEvent('import_gist', { id: id, action: 'click' });
+                    }
                     onImportClose();
                 }
             }
@@ -187,6 +192,7 @@ export default function Pastelog({ id }: { id?: string }) {
                             </div>
                             <div className="w-full max-w-none px-1 prose prose-indigo dark:prose-dark">
                                 <Editor
+                                    key={editorKey}
                                     preview={preview}
                                     className={theme != 'dark' ? ` bg-slate-50 text-black` : `bg-gray-700 text-white`}
                                     value={content}
