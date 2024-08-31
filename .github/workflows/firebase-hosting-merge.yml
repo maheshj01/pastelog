@@ -17,12 +17,12 @@ jobs:
       # Install dependencies and build the project
       - run: npm ci && npm run build
 
-      # Deploy to Firebase Hosting
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_PASTELOG_ID }}"
-          channelId: live
-          projectId: pastelog-id
-        env:
-          FIREBASE_CLI_PREVIEWS: hostingchannels
+      # # Deploy to Firebase Hosting
+      # - uses: FirebaseExtended/action-hosting-deploy@v0
+      #   with:
+      #     repoToken: "${{ secrets.GITHUB_TOKEN }}"
+      #     firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_PASTELOG_ID }}"
+      #     channelId: live
+      #     projectId: pastelog-id
+      #   env:
+      #     FIREBASE_CLI_PREVIEWS: hostingchannels
