@@ -30,8 +30,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const [logTitle, setLogTitle] = useState<string>(log.title || log.id || '');
     const router = useRouter();
     const publicLogs = ['getting-started', 'shortcuts'];
-    const showMoreOptions = !publicLogs.includes(log.title!);
-    function MoreOptions() {    
+    const showMoreOptions = !publicLogs.includes(log.id!);
+    function MoreOptions() {
         const options = ['Share', 'Delete', 'Republish', 'Rename'];
         return (<PSDropdown
             options={options}
