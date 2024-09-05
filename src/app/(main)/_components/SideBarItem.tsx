@@ -29,7 +29,9 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const [isEditing, setIsEditing] = useState(false);
     const [logTitle, setLogTitle] = useState<string>(log.title || log.id || '');
     const router = useRouter();
-    function MoreOptions() {
+    const publicLogs = ['getting-started', 'shortcuts'];
+    const showMoreOptions = !publicLogs.includes(log.title!);
+    function MoreOptions() {    
         const options = ['Share', 'Delete', 'Republish', 'Rename'];
         return (<PSDropdown
             options={options}
@@ -176,7 +178,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                         />
                     </div>
                     <div className='flex-shrink-0 ml-2'>
-                        {(selected || isHovered) && <MoreOptions />}
+                        {showMoreOptions && (selected || isHovered) && <MoreOptions />}
                     </div>
                 </div>
             </div>
