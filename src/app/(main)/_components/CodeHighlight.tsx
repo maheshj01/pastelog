@@ -27,7 +27,6 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, children, ...rest }) =>
         setTimeout(() => {
             setCopied(false);
         }, 2000);
-        console.log('Copied to Clipboard!');
     }
     return (
         <div className='relative'>

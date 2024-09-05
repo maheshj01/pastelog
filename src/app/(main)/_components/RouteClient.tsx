@@ -10,7 +10,6 @@ export default function RouteClient() {
     const { showSideBar, setShowSideBar, id } = useSidebar();
 
     const handleRouteChange = (url: string) => {
-        console.log('route change', url);
         switch (url) {
             case '/':
                 Analytics.logPageView(url, 'Welcome');

@@ -83,7 +83,6 @@ export default function Pastelog({ id }: { id?: string }) {
             setLoading(false);
             Analytics.logEvent('publish_pastelog', { id: id, action: 'click' });
         } catch (e) {
-            console.log(e);
             notify(true, "Failed to publish log");
             setLoading(false);
         }
@@ -108,7 +107,6 @@ export default function Pastelog({ id }: { id?: string }) {
             }
             else if (url.includes('pastelog.vercel.app/logs')) {
                 const id = url.split('/').pop();
-                console.log(id);
                 const log = await logService.fetchLogById(id!);
                 if (log) {
                     setTitle(log.title!);

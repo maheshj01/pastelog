@@ -66,7 +66,6 @@ const Sidebar: React.FC = () => {
             }
             setLoading(false);
         } catch (_) {
-            console.log("Error fetching logs");
             setLoading(false);
         }
     }, [user]);
