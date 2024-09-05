@@ -134,11 +134,16 @@ class LogService {
     async updateLog(id: string, log: Log): Promise<void> {
         const docRef = doc(this.logCollection, id);
         const data = log.toFirestore();
-        console.log("updating:", id, data);
         // await this.saveLogToLocal(log);
         // Remove any undefined fields
         Object.keys(data).forEach(key => data[key] === undefined && delete data[key]);
         await updateDoc(docRef, data);
+    }
+
+    async updateLogTitle(id: string, log: Log): Promise<void> {
+        const docRef = doc(this.logCollection, id);
+        await updateDoc(docRef, { title: log.title });
+        await this.saveLogToLocal(log);
     }
 
     async markExpiredById(id: string): Promise<void> {
@@ -195,7 +200,6 @@ class LogService {
     }
 
     async fetchLogsFromLocal(collection?: string): Promise<Log[]> {
-        console.log("fetch from local")
         if (typeof window !== 'undefined') {
             const logs = localStorage.getItem(collection ? collection : process.env.NEXT_PUBLIC_LOCAL_GUEST_COLLECTION ?? '');
             if (logs) {

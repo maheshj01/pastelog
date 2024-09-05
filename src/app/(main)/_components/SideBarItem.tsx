@@ -2,8 +2,9 @@ import { showToast } from "@/utils/toast_utils";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import React, { Key, useState } from "react";
+import React, { Key, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import useClickOutside from "../_hooks/outsideclick";
 import Log from "../_models/Log";
 import Analytics from "../_services/Analytics";
 import { useSidebar } from "../_services/Context";
@@ -25,9 +26,11 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const { id: selectedId, setId: setSelectedId, user } = useSidebar();
     const { isOpen: isShareOpen, onOpen: onShareOpen, onClose: onShareClose } = useDisclosure();
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
+    const [isEditing, setIsEditing] = useState(false);
+    const [logTitle, setLogTitle] = useState<string>(log.title || log.id || '');
     const router = useRouter();
     function MoreOptions() {
-        const options = ['Share', 'Delete', 'Republish'];
+        const options = ['Share', 'Delete', 'Republish', 'Rename'];
         return (<PSDropdown
             options={options}
             placement="bottom-start"
@@ -54,6 +57,18 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
         onShareClose(); // Close the dialog after sharing
     };
 
+    const handleOutSideClick = () => {
+        setIsEditing(false);
+        if (logTitle !== log.title) {
+            const logService = new LogService();
+            const updatedLog = { ...log, title: logTitle, toFirestore: () => ({}) };
+            logService.updateLogTitle(id, updatedLog);
+            log.title = logTitle;
+            setIsEditing(false);
+        }
+
+    }
+
     async function handleonAction(key: Key) {
         const logService = new LogService();
         switch (key) {
@@ -71,6 +86,14 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                 setSelectedId(null);
                 router.push(`/logs?id=${id}`);
                 Analytics.logEvent('republish_log', { id: id, action: 'click' });
+                break;
+            case 'Rename':
+                setIsEditing(true);
+                const title = log.title || log.id || '';
+                inputRef.current?.focus();
+                // add cursor to the end of the inputs
+                inputRef.current?.setSelectionRange(title.length, title.length);
+                break;
             default:
                 break;
         }
@@ -101,6 +124,25 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             router.push('/logs');
         }
         onRefresh();
+    }
+
+    const inputRef = useRef<HTMLInputElement>(null);
+    useClickOutside(inputRef, handleOutSideClick);
+
+    if (isEditing) {
+        return (
+            <div
+                ref={inputRef as React.RefObject<HTMLDivElement>}
+                key={log.id}
+                className={`text-sm dark:text-slate-200 cursor-pointer py-2 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative bg-background`}>
+                <input
+                    type="text"
+                    value={logTitle}
+                    onChange={(e) => setLogTitle(e.target.value)}
+                    className="text-black dark:text-white mx-2 px-2 py-1 w-full border-none focus:outline-none bg-transparent"
+                />
+            </div >
+        )
     }
 
     return (
