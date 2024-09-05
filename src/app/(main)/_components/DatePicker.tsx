@@ -20,8 +20,8 @@ export function DatePicker({ selected, onSelect, label }: { selected?: Date; onS
                         variant="outline"
                         className={cn('w-[160px] justify-start text-left font-normal', !selected && 'text-muted-foreground')}
                     >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {selected ? format(selected, 'PP') : <span>Pick a date</span>}
+                        <CalendarIcon className="mr-2 h-4 w-4 dark:text-white" />
+                        {selected ? <span className="dark:text-white">{format(selected, 'PP')} </span> : <span>Pick a date</span>}
                     </Button>
                     {(label && <p className="px-2 cursor-pointer">{label}</p>)}
                 </div>
