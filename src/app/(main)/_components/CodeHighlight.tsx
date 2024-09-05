@@ -19,6 +19,7 @@ interface CodeBlockProps {
  */
 const CodeBlock: React.FC<CodeBlockProps> = ({ language, children, ...rest }) => {
     const { theme } = useTheme();
+    const dark = theme == Theme.DARK;
     const [copied, setCopied] = useState<boolean>(false);
     const handleCopy = () => {
         navigator.clipboard.writeText(children);
@@ -40,8 +41,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, children, ...rest }) =>
                 />)
                 :
                 (<DoneIcon
-                    className='w-5 h-5'
-                    color='success'
+                    className={`w-5 h-5 ${dark ? 'text-white' : 'text-green-800'}`}
                 />)
                 }
             </IconButton>

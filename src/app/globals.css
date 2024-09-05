@@ -12,13 +12,13 @@
     --color-tertiary: #94a3b8;
     --color-surface: #e2e8f0;
     --color-background: #f8fafc;
-    --color-code-surface: #ecf4fd;
+    --color-code-surface: #f0f2f3;
     --color-code-onSurface: #191b1c;
     --color-accent: #cbd5e1;
-    --color-block-surface: #e2ebf3;
+    --color-block-surface: #e2e7f3;
     --color-link: #2563eb;
     --color-input-background: #f1f5f9;
-    --color-selection: #98b6f8;
+    --color-selection: #e0e3ea;
   }
 
   .dark {
@@ -50,15 +50,15 @@ body {
 }
 
 ::-moz-selection {
-  background: var(--color-primary);
+  background: var(--color-selection);
 }
 
 ::-webkit-selection {
-  background: var(--color-primary);
+  background: var(--color-selection);
 }
 
 ::selection {
-  background: var(--color-primary);
+  background: var(--color-selection);
 }
 
 .line-break {
