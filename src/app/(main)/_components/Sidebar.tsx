@@ -221,7 +221,7 @@ const Sidebar: React.FC = () => {
                     <IconButton
                         ariaLabel='Report a Bug'
                         onClick={() => {
-                            window.open(`${process.env.NEXT_PUBLIC_GITHUB_REPO}/issues/new` ?? '', '_blank');
+                            window.open(`${process.env.NEXT_PUBLIC_GITHUB_REPO}/issues/new`, '_blank');
                         }}
                     >
                         <FaBug className='size-6 text-black dark:text-white' />
