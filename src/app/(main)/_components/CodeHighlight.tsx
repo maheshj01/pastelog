@@ -31,13 +31,16 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, children, ...rest }) =>
     return (
         <div className='relative'>
             <IconButton
-                className='absolute top-0 right-0'
+                className='absolute top-[-12px] right-[-12px]'
                 onClick={handleCopy}
                 ariaLabel="Copy to clipboard"
             >{!copied ?
-                (<ContentCopyIcon />)
+                (<ContentCopyIcon
+                    className='w-5 h-5'
+                />)
                 :
                 (<DoneIcon
+                    className='w-5 h-5'
                     color='success'
                 />)
                 }
