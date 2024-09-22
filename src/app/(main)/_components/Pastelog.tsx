@@ -239,9 +239,11 @@ export default function Pastelog({ id }: { id?: string }) {
                                         disabled={loading}
                                     >Preview</PSButton>
                                 </div>
-                                <div className='flex justify-end space-x-2 items-center'>
-                                    <p className="text-sm">{!expiryDate && "Expires"}</p>
-                                    <SelectExpiryComp />
+                                <div className='flex justify-end items-center'>
+                                    <div className="flex items-center">
+                                        <p className="text-sm hidden md:block">{expiryDate ? "Expires in" : "Expires"}</p>
+                                        <div className="hidden md:block"><SelectExpiryComp /></div>
+                                    </div>
                                     {expiryDate && <DatePicker
                                         onSelect={onDateSelect}
                                         selected={expiryDate!}
