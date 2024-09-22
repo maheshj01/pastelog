@@ -43,7 +43,7 @@ export default function Pastelog({ id }: { id?: string }) {
     const unSelected = 'text-black bg-accent dark:text-slate-50 ';
     const router = useRouter();
     const [editorKey, setEditorKey] = useState<number>(0);
-    const expiryDays = ["7 days", "30 days", "90 days", "6 months", "1 year", "Never"];
+    const expiryDays = ["7 days", "30 days", "90 days", "6 months", "1 year"];
     const expiryValuesInDays = [7, 30, 90, 180, 365, 9999];
     const [selectExpiry, setSelectExpiry] = useState<string>(expiryDays[1]);
     const [importContent, setImportContent] = useState({
@@ -54,7 +54,9 @@ export default function Pastelog({ id }: { id?: string }) {
     const { isOpen: isImportOpen, onOpen: onImportOpen, onClose: onImportClose } = useDisclosure();
     const toastId = React.useRef('import-toast');
     const { setShowSideBar, showSideBar, toggleSideBar, user } = useSidebar();
-
+    if (user) {
+        expiryDays.push("Never");
+    }
     const notify = (error: boolean, message: string) => {
         if (!toast.isActive(toastId.current!)) {
             showToast(error ? "error" : "success", <p> {message}</p >,
