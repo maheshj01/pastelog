@@ -1,4 +1,5 @@
 "use client";
+
 import { showToast } from "@/utils/toast_utils";
 import { getDateOffsetBy } from "@/utils/utils";
 import { Button as PSButton } from "@nextui-org/button";
@@ -19,6 +20,14 @@ import ImportDialog from "./Import";
 import PSInput from "./PSInput";
 import ShortcutWrapper from "./ShortCutWrapper";
 import { Button } from "./button";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from "./select";
 
 export default function Pastelog({ id }: { id?: string }) {
 
@@ -28,13 +37,14 @@ export default function Pastelog({ id }: { id?: string }) {
     const [preview, setPreview] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [importLoading, setImportLoading] = useState<boolean>(false);
-    const [expiryDate, setExpiryDate] = useState<Date>(getDateOffsetBy(30));
+    const [expiryDate, setExpiryDate] = useState<Date | null>(getDateOffsetBy(30));
     const logService = new LogService();
     const selected = 'dark:bg-gray-600 bg-gray-400 text-slate-50 dark:text-slate-50';
     const unSelected = 'text-black bg-accent dark:text-slate-50 ';
     const router = useRouter();
     const [editorKey, setEditorKey] = useState<number>(0);
     const expiryDays = ["7 days", "30 days", "90 days", "6 months", "1 year", "Never"];
+    const expiryValuesInDays = [7, 30, 90, 180, 365, 9999];
     const [selectExpiry, setSelectExpiry] = useState<string>(expiryDays[1]);
     const [importContent, setImportContent] = useState({
         title: "Import Log",
@@ -57,6 +67,43 @@ export default function Pastelog({ id }: { id?: string }) {
                 }
             );
         }
+    }
+
+
+    function SelectExpiryComp() {
+        return (
+            <Select value={selectExpiry} onValueChange={(x) => {
+                setSelectExpiry(x);
+                var date: Date = new Date();
+                if (x === "Never") {
+                    // date = new Date('9999-12-31');
+                    setExpiryDate(null)
+                    return;
+                } else {
+                    const index = expiryDays.indexOf(x);
+                    const daysOffset = expiryValuesInDays[index];
+                    date = getDateOffsetBy(daysOffset);
+                }
+                onDateSelect(date);
+            }}>
+                <SelectTrigger className="px-2">
+                    <SelectValue placeholder="Expiry Date" />
+                </SelectTrigger>
+                <SelectContent className="bg-background" >
+                    <SelectGroup>
+                        {/* <SelectLabel>Custom</SelectLabel> */}
+                        {
+                            expiryDays.map((day, index) => {
+                                return (
+                                    <SelectItem
+                                        key={`${day}-${index}`} value={day}>{day}</SelectItem>
+                                )
+                            })
+                        }
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
+        )
     }
 
     async function publish() {
@@ -90,6 +137,8 @@ export default function Pastelog({ id }: { id?: string }) {
             setLoading(false);
         }
     }
+
+
 
     async function handleImport(url: string) {
         setImportLoading(true);
@@ -129,6 +178,11 @@ export default function Pastelog({ id }: { id?: string }) {
             notify(true, "Please enter a valid URL");
         }
         setImportLoading(false);
+    }
+
+    function onDateSelect(date: Date) {
+        setExpiryDate(date!);
+        Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
     }
 
     useEffect(() => {
@@ -185,13 +239,14 @@ export default function Pastelog({ id }: { id?: string }) {
                                         disabled={loading}
                                     >Preview</PSButton>
                                 </div>
-                                <DatePicker
-                                    onSelect={(date: Date) => {
-                                        setExpiryDate(date!);
-                                        Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
-                                    }}
-                                    selected={expiryDate}
-                                />
+                                <div className='flex justify-end space-x-2 items-center'>
+                                    <p className="text-sm">{!expiryDate && "Expires"}</p>
+                                    <SelectExpiryComp />
+                                    {expiryDate && <DatePicker
+                                        onSelect={onDateSelect}
+                                        selected={expiryDate!}
+                                    />}
+                                </div>
                             </div>
                             <div className="w-full max-w-none px-1 prose prose-indigo dark:prose-dark">
                                 <Editor
