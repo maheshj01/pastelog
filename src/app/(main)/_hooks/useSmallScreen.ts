@@ -27,7 +27,6 @@ function useSmallScreen(breakpoint: number = 640) {
         const listener = (isSmall: boolean) => setIsSmallScreen(isSmall);
         listeners.push(listener);
 
-        // Add the global resize handler only if it's not already set
         if (listeners.length === 1) {
             mediaQuery.addEventListener('change', handleResize);
         }
