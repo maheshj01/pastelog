@@ -5,7 +5,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border-left-color: var(--color-primary);
+    border-left-color: var(--color-surface);
     animation: spin 1s ease infinite;
 }
 

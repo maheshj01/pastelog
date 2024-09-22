@@ -18,7 +18,7 @@ import Editor from "./Editor";
 import ImportDialog from "./Import";
 import PSInput from "./PSInput";
 import ShortcutWrapper from "./ShortCutWrapper";
-import { Button } from './button';
+import { Button } from "./button";
 
 export default function Pastelog({ id }: { id?: string }) {
 
@@ -27,12 +27,15 @@ export default function Pastelog({ id }: { id?: string }) {
     const [content, setContent] = useState<string>('');
     const [preview, setPreview] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [importLoading, setImportLoading] = useState<boolean>(false);
     const [expiryDate, setExpiryDate] = useState<Date>(getDateOffsetBy(30));
     const logService = new LogService();
     const selected = 'dark:bg-gray-600 bg-gray-400 text-slate-50 dark:text-slate-50';
     const unSelected = 'text-black bg-accent dark:text-slate-50 ';
     const router = useRouter();
     const [editorKey, setEditorKey] = useState<number>(0);
+    const expiryDays = ["7 days", "30 days", "90 days", "6 months", "1 year", "Never"];
+    const [selectExpiry, setSelectExpiry] = useState<string>(expiryDays[1]);
     const [importContent, setImportContent] = useState({
         title: "Import Log",
         content: 'Paste a Pastelog link or a Gist URL to import a log.',
@@ -89,6 +92,7 @@ export default function Pastelog({ id }: { id?: string }) {
     }
 
     async function handleImport(url: string) {
+        setImportLoading(true);
         try {
             if (url.includes('gist.github.com')) {
                 const id = url.split('/').pop();
@@ -124,6 +128,7 @@ export default function Pastelog({ id }: { id?: string }) {
         } catch (e) {
             notify(true, "Please enter a valid URL");
         }
+        setImportLoading(false);
     }
 
     useEffect(() => {
@@ -215,6 +220,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                 isOpen={isImportOpen}
                                 onClose={onImportClose}
                                 onImport={handleImport}
+                                importLoading={importLoading}
                                 title={importContent.title}
                                 content={importContent.content}
                             />
@@ -229,9 +235,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                 </div>
                             </Button>
                         </div>
-                        <div
-                            className="h-16"
-                        />
+                        <div className="h-16" />
                         <div className="mb-8 h-32 flex justify-center items-center">
                             <Link color="#2563eb" href='/policies'> Terms of service</Link>
                         </div>

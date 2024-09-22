@@ -9,9 +9,10 @@ interface ImportDialogProps {
     onImport: (url: string) => void;
     title: string;
     content: string;
+    importLoading: boolean;
 }
 
-const ImportDialog: React.FC<ImportDialogProps> = ({ isOpen, onClose, onImport, title, content }) => {
+const ImportDialog: React.FC<ImportDialogProps> = ({ isOpen, onClose, onImport, title, content, importLoading }) => {
     const [url, setUrl] = useState<string>('');
     useEffect(() => {
         setUrl('');
@@ -40,7 +41,11 @@ const ImportDialog: React.FC<ImportDialogProps> = ({ isOpen, onClose, onImport, 
                             onImport(url);
                         }}
                         className={`bg-gradient-to-r from-gray-700 to-gray-800`}>
-                        <p className='mx-2'>Import</p> <UploadIcon />
+                        <p className='mx-2'>
+                            {importLoading ? (
+                                <div className="loader mx-6" />
+                            ) : "Import"}
+                        </p> <UploadIcon />
                     </Button>
                 </ModalFooter>
             </ModalContent>
