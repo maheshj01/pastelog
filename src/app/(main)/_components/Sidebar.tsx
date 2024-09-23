@@ -130,7 +130,7 @@ const Sidebar: React.FC = () => {
                             </div>
                         </PopoverTrigger>
                         <PopoverContent className="w-60 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-300">
-                            <div className='shadow-md'>
+                            <div>
                                 <div className="flex items-center space-x-2 p-2">
                                     <Image
                                         src={user.photoURL!}

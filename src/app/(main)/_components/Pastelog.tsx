@@ -88,7 +88,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 }
                 onDateSelect(date);
             }}>
-                <SelectTrigger className="px-2">
+                <SelectTrigger className="px-2 focus: border-none">
                     <SelectValue placeholder="Expiry Date" />
                 </SelectTrigger>
                 <SelectContent className="bg-background" >
@@ -241,8 +241,8 @@ export default function Pastelog({ id }: { id?: string }) {
                                         disabled={loading}
                                     >Preview</PSButton>
                                 </div>
-                                <div className='flex justify-end items-center'>
-                                    <div className="flex items-center">
+                                <div className='flex justify-end items-center space-x-1'>
+                                    <div className="flex items-center space-x-1">
                                         <p className="text-sm hidden md:block">{expiryDate ? "Expires in" : "Expires"}</p>
                                         <div className="hidden md:block"><SelectExpiryComp /></div>
                                     </div>
