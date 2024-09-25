@@ -34,8 +34,10 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
     };
 
     const handleMainContentClick = () => {
-        if (window.innerWidth <= 768 && showSideBar) {
-            setShowSideBar(false);
+        if (typeof window !== 'undefined') {
+            if (window.innerWidth <= 768 && showSideBar) {
+                setShowSideBar(false);
+            }
         }
     };
 
