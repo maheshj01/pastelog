@@ -9,6 +9,15 @@
     animation: spin 1s ease infinite;
 }
 
+/* mediaquery */
+@media (max-width: 768px) {
+    .slide-main {
+        /* translate x 1/3 */
+        transform: translateX(33.3333%);
+        transition: transform 0.5s;
+    }
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

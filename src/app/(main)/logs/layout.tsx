@@ -72,7 +72,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                             <FiSidebar className="text-2xl" />
                         </IconButton>
                     )}
-                    <div className={`relative z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out  ${showSideBar && window.innerWidth <= 768 ? 'transform translate-x-1/3' : ''}`}>
+                    <div className={`relative z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out  ${showSideBar? 'slide-main': ''}`}>
                         <div className="flex flex-col min-h-full">
                             <PSBanner
                                 key={`${bannerState.show}-${bannerState.message}`}
