@@ -17,10 +17,11 @@ import { useSidebar } from '../_services/Context';
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
-    const { showSideBar, toggleSideBar, setShowSideBar, id } = useSidebar();
+    const { showSideBar, toggleSideBar, setShowSideBar } = useSidebar();
     const bannerState = useBannerState();
     const [show, setShow] = React.useState(true);
     const router = useRouter();
+
     const checkWindowSize = async () => {
         if (typeof window !== 'undefined') {
             if (showSideBar && window.innerWidth <= 768) {
@@ -31,6 +32,13 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
     const toggleTheme = () => {
         setTheme(theme === 'dark' ? 'light' : 'dark');
     };
+
+    const handleMainContentClick = () => {
+        if (window.innerWidth <= 768 && showSideBar) {
+            setShowSideBar(false);
+        }
+    };
+
     useEffect(() => {
         checkWindowSize();
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -41,18 +49,17 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
         }
         window.addEventListener('resize', checkWindowSize);
         return () => window.removeEventListener('resize', checkWindowSize);
-    }, [setTheme])
-
+    }, [setTheme]);
 
     return (
         <ShortcutWrapper onCtrlShiftH={toggleSideBar} onCtrlShiftD={toggleTheme} onCtrlShiftN={() => {
             router.push('/logs');
         }} >
             <div className={`flex ${theme === Theme.DARK ? 'dark' : 'light'}`}>
-                <div className={`fixed top-0 left-0 z-50 h-screen overflow-y-auto ${showSideBar ? 'w-64' : 'w-0'}`}>
+                <div className={`fixed top-0 left-0 z-50 h-screen overflow-y-auto ${showSideBar ? 'w-64' : 'w-0'} transition-all duration-300`}>
                     <Sidebar />
                 </div>
-                <div className={`flex-grow w-full overflow-x-hidden transition-all duration-200 ${showSideBar ? 'pl-64' : 'pl-0'}`}>
+                <div className={`flex-grow w-full overflow-x-hidden transition-all duration-300 ease-in-out ${showSideBar ? 'pl-64' : 'pl-0'} `} onPointerDown={handleMainContentClick}>
                     {showSideBar && (
                         <IconButton
                             className={`fixed top-2 left-2 z-50`}
@@ -60,16 +67,16 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                             ariaLabel="Close Sidebar"
                             tooltipPlacement="bottom-start"
                         >
-                            <FiSidebar className='text-2xl' />
+                            <FiSidebar className="text-2xl" />
                         </IconButton>
                     )}
-                    <div className="relative z-40 h-screen overflow-y-auto">
+                    <div className={`relative z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out  ${showSideBar && window.innerWidth <= 768 ? 'transform translate-x-1/3' : ''}`}>
                         <div className="flex flex-col min-h-full">
                             <PSBanner
                                 key={`${bannerState.show}-${bannerState.message}`}
-                                className='sticky top-0 z-40'
+                                className="sticky top-0 z-40"
                                 show={show}
-                                message="Pastelog is under maintenance, Your existing logs won't be accessible, But you can still publish new logs" >
+                                message="Pastelog is under maintenance, Your existing logs won't be accessible, But you can still publish new logs">
                                 <div className='px-2'>
                                     <IconButton
                                         ariaLabel='Close Banner'
@@ -87,6 +94,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                         </div>
                     </div>
                 </div>
+
                 <Suspense fallback={<div>Loading...</div>}>
                     <RouteClient />
                 </Suspense>
