@@ -13,7 +13,7 @@ const SettingsModal: React.FC = () => {
                     <CardHeader className="text-2xl">
                         <p className="text-4xl">Settings</p>
                         <p className="text-xl">
-                            Add a quote to our list of quotes with one click.
+                            This is a settings page
                         </p>
                     </CardHeader>
                 </Card>

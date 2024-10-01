@@ -12,6 +12,7 @@ import LogService from '../_services/logService';
 import IconButton from "./IconButton";
 import LoginMenu from './LoginMenu';
 import SidebarItem from './SideBarItem';
+
 const Sidebar: React.FC = () => {
     const { id, setSelected, setId, showSideBar, user, setUser } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);

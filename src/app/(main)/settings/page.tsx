@@ -43,16 +43,18 @@ const SettingsPage: React.FC = () => {
     const router = useRouter();
 
     return (
-        <div>
+        <div className="min-h-screen">
             <div className="flex justify-between items-center p-4 bg-background border-b-1 border-gray-400">
                 <h1 className="text-xl font-bold">Account settings</h1>
                 <button onClick={() => router.back()} className="text-gray-500 hover:text-gray-700">
                     Close
                 </button>
             </div>
-            <SettingsList onSettingSelect={handleSettingSelect} />
-            <div className="w-full sm:w-2/3">
-                {renderSettingsContent()}
+            <div className='flex min-h-screen'>
+                <SettingsList onSettingSelect={handleSettingSelect} />
+                <div className="w-full sm:w-2/3">
+                    {renderSettingsContent()}
+                </div>
             </div>
         </div >
     );
