@@ -11,8 +11,6 @@
       "windows": true,
       "macos": true,
    },
-   "dart.flutterSdkPath": "/Users/mahesh/Documents/flutter",
-   "dart.debugExternalLibraries": true,
    "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit",
       "source.fixAll": "explicit"

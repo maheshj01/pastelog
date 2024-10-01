@@ -15,7 +15,7 @@ import { Theme } from '../_components/ThemeSwitcher';
 import useBannerState from '../_services/BannerState';
 import { useSidebar } from '../_services/Context';
 
-export default function LogsLayout({ children }: { children: React.ReactNode }) {
+export default function LogsLayout({ children, modal }: { modal: React.ReactNode, children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
     const { showSideBar, toggleSideBar, setShowSideBar } = useSidebar();
     const bannerState = useBannerState();
@@ -72,7 +72,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                             <FiSidebar className="text-2xl" />
                         </IconButton>
                     )}
-                    <div className={`relative z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out  ${showSideBar? 'slide-main': ''}`}>
+                    <div className={`relative z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out  ${showSideBar ? 'slide-main' : ''}`}>
                         <div className="flex flex-col min-h-full">
                             <PSBanner
                                 key={`${bannerState.show}-${bannerState.message}`}
@@ -96,7 +96,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                         </div>
                     </div>
                 </div>
-
+                {modal}
                 <Suspense fallback={<div>Loading...</div>}>
                     <RouteClient />
                 </Suspense>

@@ -2,7 +2,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from 'axios';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
 import { Log, LogType } from '../_models/Log';
 class LogService {
@@ -47,7 +47,8 @@ class LogService {
         const userQuery = query(
             this.logCollection,
             where('userId', '==', userId),
-            where('isExpired', '==', false)
+            where('isExpired', '==', false),
+            orderBy('createdDate', 'desc')
         );
         const userQuerySnapshot = await getDocs(userQuery);
         const userLogs = userQuerySnapshot.docs.map(doc => Log.fromFirestore(doc));
@@ -76,7 +77,7 @@ class LogService {
         }, []);
 
         // Sort logs by createdDate in descending order
-        return uniqueLogs.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
+        return uniqueLogs;//.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
     }
 
     async publishLog(log: Log): Promise<string> {

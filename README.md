@@ -75,6 +75,12 @@ root /
 │ │ ├── (main)/
 │ │ │ ├── \_models/
 │ │ │ │ ├── Log.ts
+│ │ │ ├── \@modal/
+│ │ │ │ ├── \(.)settings/
+│ │ │ │   ├── page.tsx
+│ │ │ │ ├── \[...catchall]/
+│ │ │ │   ├── page.tsx
+│ │ │ │ ├── default.tsx/
 │ │ │ ├── \_services/
 │ │ │ │ ├── LogService.ts
 │ │ │ ├── \_components/

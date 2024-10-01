@@ -11,10 +11,9 @@ export const metadata: Metadata = {
   description: "Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.",
 
 };
-export default function RootLayout({
-  children,
-}: Readonly<{
+export default function RootLayout(props: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode,
 }>) {
   return (
     <html lang="en">
@@ -33,7 +32,8 @@ export default function RootLayout({
           >
             <SidebarProvider>
               <ToastProvider>
-                {children}
+                {props.modal}
+                {props.children}
               </ToastProvider>
             </SidebarProvider>
           </ThemeProvider>
