@@ -10,6 +10,7 @@ export interface ILog {
     expiryDate: Date | null;
     data: string;
     createdDate: Date;
+    lastUpdatedDate: Date;
     title?: string | '';
     type: LogType;
     isMarkDown: boolean;
@@ -25,6 +26,7 @@ export class Log implements ILog {
     data: string;
     title?: string | '';
     createdDate: Date;
+    lastUpdatedDate: Date;
     type: LogType;
     isMarkDown: boolean;
     isExpired?: boolean | false;
@@ -37,6 +39,7 @@ export class Log implements ILog {
         expiryDate = null,
         data,
         createdDate = new Date(),
+        lastUpdatedDate = new Date(),
         type,
         isMarkDown,
         title = '',
@@ -49,6 +52,7 @@ export class Log implements ILog {
         expiryDate?: Date | null,
         data: string,
         createdDate?: Date,
+        lastUpdatedDate?: Date,
         type: LogType,
         isMarkDown: boolean,
         title?: string,
@@ -59,6 +63,7 @@ export class Log implements ILog {
         id?: string
     }) {
         this.expiryDate = expiryDate;
+        this.lastUpdatedDate = new Date(createdDate);
         this.data = data;
         this.title = title;
         this.isExpired = isExpired;
@@ -75,6 +80,7 @@ export class Log implements ILog {
         const data = doc.data();
         return new Log({
             expiryDate: data.expiryDate ? new Date(data.expiryDate) : null,
+            lastUpdatedDate: new Date(data.lastUpdatedDate),
             data: data.data,
             createdDate: new Date(data.createdDate),
             type: data.type as LogType,
@@ -92,6 +98,7 @@ export class Log implements ILog {
     toFirestore(): any {
         const doc: any = {
             expiryDate: this.expiryDate ? this.expiryDate.toISOString() : null,
+            lastUpdatedDate: this.lastUpdatedDate ? this.lastUpdatedDate.toISOString() : null,
             data: this.data,
             createdDate: this.createdDate.toISOString(),
             title: this.title ? this.title : '',

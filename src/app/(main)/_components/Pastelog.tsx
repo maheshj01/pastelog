@@ -118,6 +118,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 type: LogType.TEXT,
                 title: title,
                 createdDate: new Date(),
+                lastUpdatedDate: new Date(),
                 isExpired: false,
                 summary: '',
                 isPublic: false,
@@ -139,7 +140,6 @@ export default function Pastelog({ id }: { id?: string }) {
             setLoading(false);
         }
     }
-
 
 
     async function handleImport(url: string) {
