@@ -1,20 +1,31 @@
 
 import PreviewPage from '@/app/(main)/_components/PreviewPage';
-import { Metadata } from 'next';
+import LogService from '@/app/(main)/_services/logService';
+import { Metadata, ResolvingMetadata } from 'next';
 
 // This is required for dynamic routing in runtime
 export const dynamicParams = true;
 
-export const metadata: Metadata = {
-    title: "Pastelog",
-    description: "Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.",
+type Props = {
+    params: {
+        id: string;
+    };
+    searchParams: URLSearchParams;
+}
 
-};
-// export async function generateStaticParams() {
-//     const logService = new LogService();
-//     const logs = await logService.fetchLogs();
-//     return logs.map(log => ({ id: log.id }));
-// }
+export async function generateMetadata(
+    { params, searchParams }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    const id = params.id
+
+    const log = await new LogService().fetchLogById(id);
+
+    return {
+        title: log?.title || "Pastelog",
+        description: log?.data || "PasteLog is a simple, fast, and powerful pastebin. It is powered by firebase in the backend. It allows you to publish your logs, and access them from anywhere and any device via a unique link.",
+    }
+}
 
 export default function PublishPage({ params }: { params: { id: string } }) {
     const { id } = params;
