@@ -2,7 +2,6 @@
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
-import useSmallScreen from '../_hooks/useSmallScreen';
 import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
@@ -19,7 +18,6 @@ const Sidebar: React.FC = () => {
     const [logs, setLogs] = useState<Log[]>([]);
     const [refresh, setRefresh] = useState<boolean>(false);
     const router = useRouter();
-    const isSmallScreen = useSmallScreen();
     const authService = new AuthService();
     const logService = new LogService();
     const [isFirstLogin, setIsFirstLogin] = useState<boolean>(false);
@@ -30,7 +28,7 @@ const Sidebar: React.FC = () => {
             setId(log.id!);
             router.push(`/logs/${log.id}`);
             Analytics.logEvent('change_log', { id: log.id, action: 'click' });
-            if (isSmallScreen && showSideBar) {
+            if (window.innerWidth <= 640) {
                 setShowSideBar(false);
             }
         } else {
