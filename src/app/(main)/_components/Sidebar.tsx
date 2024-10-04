@@ -1,8 +1,7 @@
 "use client";
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react';
-import useSmallScreen from '../_hooks/useSmallScreen';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
@@ -18,11 +17,16 @@ const Sidebar: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [logs, setLogs] = useState<Log[]>([]);
     const [refresh, setRefresh] = useState<boolean>(false);
+    const [isFetching, setIsFetching] = useState<boolean>(false);
     const router = useRouter();
-    const isSmallScreen = useSmallScreen();
+    const [hasMore, setHasMore] = useState<boolean>(true);
     const authService = new AuthService();
     const logService = new LogService();
     const [isFirstLogin, setIsFirstLogin] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
+    const logsEndRef = useRef<HTMLDivElement>(null);
+    const initialFetchDone = useRef<boolean>(false);
+
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
             setSelected(log);
@@ -45,41 +49,91 @@ const Sidebar: React.FC = () => {
         setLoading(false);
     };
 
-    const fetchLogs = useCallback(async () => {
+    const fetchLogs = useCallback(async (pageNumber: number = 1, isRefresh: boolean = false) => {
+        console.log("fetching logs:");
+        if (isFetching) return;
+        setIsFetching(true);
         setLoading(true);
         try {
             await logService.deleteExpiredLogs();
+            let fetchedLogs: Log[] = [];
             if (user && user.uid) {
                 const isFirstLogin = await authService.isFirstTimeLogin(user.uid);
                 if (isFirstLogin) {
-                    const logs = await logService.fetchLogsFromLocal();
-                    setLogs(logs);
+                    fetchedLogs = await logService.fetchLogsFromLocal();
                 } else {
-                    const fetchedLogs = await logService.getLogsByUserId(user.uid)
-                    setLogs(fetchedLogs);
+                    fetchedLogs = await logService.getLogsByUserId(user.uid, pageNumber); // Add pagination to this method
                 }
             } else {
-                const logs = await logService.fetchLogsFromLocal();
-                setLogs(logs);
+                fetchedLogs = await logService.fetchLogsFromLocal();
             }
+
+            if (isRefresh) {
+                setLogs(fetchedLogs);
+            } else {
+                setLogs(prevLogs => [...prevLogs, ...fetchedLogs]);
+            }
+
+            setHasMore(fetchedLogs.length > 0); // Update hasMore based on fetched results
             setLoading(false);
         } catch (_) {
             setLoading(false);
+        } finally {
+            setIsFetching(false);
         }
     }, [user]);
 
     useEffect(() => {
-        const unsubscribe = authService.onAuthStateChanged((user) => {
-            setUser(user);
-            if (user) {
-                fetchLogs();
+        const unsubscribe = authService.onAuthStateChanged((newUser) => {
+            setUser(newUser);
+            if (newUser && !initialFetchDone.current) {
+                fetchLogs(1, true);
+                setPage(1);
+                initialFetchDone.current = true;
             }
         });
-        fetchLogs();
-        return () => unsubscribe();
-    }, [fetchLogs, refresh]);
 
-    const handleRefresh = () => setRefresh(prev => !prev);
+        if (!initialFetchDone.current) {
+            fetchLogs(1, true);
+            initialFetchDone.current = true;
+        }
+
+        return () => unsubscribe();
+    }, [fetchLogs, setUser]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting && hasMore && !loading && (user && user.uid)) {
+                    setPage(prevPage => prevPage + 1);
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        if (logsEndRef.current) {
+            observer.observe(logsEndRef.current);
+        }
+
+        return () => {
+            if (logsEndRef.current) {
+                observer.unobserve(logsEndRef.current);
+            }
+        };
+    }, [hasMore, loading]);
+
+
+    useEffect(() => {
+        if (page > 1) {
+            fetchLogs(page);
+        }
+    }, [page, fetchLogs]);
+
+    const handleRefresh = useCallback(() => {
+        setRefresh(prev => !prev);
+        setPage(1);
+        fetchLogs(1, true);
+    }, [fetchLogs]);
 
     const handleLogin = async () => {
         try {
@@ -94,9 +148,7 @@ const Sidebar: React.FC = () => {
         try {
             await authService.signOut();
             setUser(null);
-            // Clear the logs state immediately
             setLogs([]);
-            // Fetch logs from local storage after logout
             const localLogs = await logService.fetchLogsFromLocal();
             setLogs(localLogs);
             router.push('/logs');
@@ -120,11 +172,13 @@ const Sidebar: React.FC = () => {
                     </div>
                 </div>
                 {/* Scrollable logs list */}
-                {loading ? (
-                    <div className={`flex items-center justify-center flex-grow ${showSideBar ? 'w-64' : 'w-0'}`}>
-                        <div className="loader" />
-                    </div>
-                ) :
+                {
+                    // loading ? (
+                    //     <div className={`flex items-center justify-center flex-grow ${showSideBar ? 'w-64' : 'w-0'}`}>
+                    //         <div className="loader" />
+                    //     </div>
+                    // ) :
+
                     (<div className='overflow-y-auto flex-grow pb-2'>
                         {logs.map((log: Log) => (
                             <SidebarItem
@@ -137,6 +191,10 @@ const Sidebar: React.FC = () => {
                                 onRefresh={handleRefresh} // Pass the refresh function
                             />
                         ))}
+                        {loading && <div className="flex justify-center items-center">
+                            <p> Loading...</p>
+                        </div>}
+                        <div ref={logsEndRef} style={{ height: '20px' }} />
                     </div>
                     )}
                 {/* <SettingsDialog /> */}

@@ -2,7 +2,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from 'axios';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
 import { Log, LogType } from '../_models/Log';
 class LogService {
@@ -42,41 +42,72 @@ class LogService {
         return querySnapshot.docs.map(doc => Log.fromFirestore(doc));
     }
 
-    async getLogsByUserId(userId: string): Promise<Log[]> {
-        // Fetch user-specific logs with isExpired = false
-        const userQuery = query(
+    private async getLastVisibleDoc(userId: string, page: number, logsPerPage: number) {
+        const lastVisibleDocQuery = query(
             this.logCollection,
             where('userId', '==', userId),
-            where('isExpired', '==', false)
+            where('isExpired', '==', false),
+            orderBy('lastUpdatedAt', 'desc'),
+            limit((page) * logsPerPage)
         );
-        const userQuerySnapshot = await getDocs(userQuery);
-        const userLogs = userQuerySnapshot.docs.map(doc => Log.fromFirestore(doc));
 
-        // Fetch public logs
-        const publicIdLogs = ['getting-started', 'shortcuts'];
-        const publicLogPromises = publicIdLogs.map(async (id) => {
-            const docRef = doc(this.logCollection, id);
-            const docSnap = await getDoc(docRef);
-            return docSnap.exists() ? Log.fromFirestore(docSnap) : null;
-        });
+        const snapShot = await getDocs(lastVisibleDocQuery);
+        return snapShot.docs[snapShot.docs.length - 1];
+    }
 
-        const publicLogs = (await Promise.all(publicLogPromises)).filter((log): log is Log => log !== null);
+    async getLogsByUserId(userId: string, page: number = 1, logsPerPage: number = 10): Promise<Log[]> {
+        try {
+            // Create a base query
+            let baseQuery = query(
+                this.logCollection,
+                where('userId', '==', userId),
+                where('isExpired', '==', false),
+                orderBy('lastUpdatedAt', 'desc'),
+                limit(logsPerPage)
+            );
 
-        // Combine user logs and public logs
-        const combinedLogs = [...userLogs, ...publicLogs];
-
-        // Remove duplicates (in case a user has a personal copy of a public log)
-        const uniqueLogs = combinedLogs.reduce((acc: Log[], current) => {
-            const x = acc.find(item => item.id === current.id);
-            if (!x) {
-                return acc.concat([current]);
-            } else {
-                return acc;
+            if (page > 1) {
+                // Get the last document from the previous page
+                const lastVisibleDoc = await this.getLastVisibleDoc(userId, page - 1, logsPerPage);
+                if (lastVisibleDoc) {
+                    baseQuery = query(baseQuery, startAfter(lastVisibleDoc));
+                }
             }
-        }, []);
 
-        // Sort logs by createdDate in descending order
-        return uniqueLogs.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
+            const userQuerySnapshot = await getDocs(baseQuery);
+            const userLogs = userQuerySnapshot.docs.map(doc => Log.fromFirestore(doc));
+
+            // Fetch public logs (only on the first page)
+            let publicLogs: Log[] = [];
+            if (page === 1) {
+                const publicIdLogs = ['getting-started', 'shortcuts'];
+                const publicLogPromises = publicIdLogs.map(async (id) => {
+                    const docRef = doc(this.logCollection, id);
+                    const docSnap = await getDoc(docRef);
+                    return docSnap.exists() ? Log.fromFirestore(docSnap) : null;
+                });
+                publicLogs = (await Promise.all(publicLogPromises)).filter((log): log is Log => log !== null);
+            }
+
+            // Combine user logs and public logs
+            const combinedLogs = [...userLogs, ...publicLogs];
+
+            // Remove duplicates
+            const uniqueLogs = combinedLogs.reduce((acc: Log[], current) => {
+                const x = acc.find(item => item.id === current.id);
+                if (!x) {
+                    return acc.concat([current]);
+                } else {
+                    return acc;
+                }
+            }, []);
+
+            // Sort logs by createdDate
+            return uniqueLogs.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
+        } catch (error) {
+            console.error("Error in getLogsByUserId:", error);
+            throw error;
+        }
     }
 
     async publishLog(log: Log): Promise<string> {
@@ -142,7 +173,9 @@ class LogService {
 
     async updateLogTitle(id: string, log: Log): Promise<void> {
         const docRef = doc(this.logCollection, id);
-        await updateDoc(docRef, { title: log.title });
+        await updateDoc(docRef, {
+            title: log.title
+        });
         await this.saveLogToLocal(log);
     }
 
