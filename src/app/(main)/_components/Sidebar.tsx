@@ -14,7 +14,7 @@ import ShortCutsGuide from './ShortcutsGuide';
 import SidebarItem from './SideBarItem';
 
 const Sidebar: React.FC = () => {
-    const { id, setSelected, setId, showSideBar, user, setUser } = useSidebar();
+    const { id, setSelected, setId, showSideBar, user, setUser, setShowSideBar } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
     const [logs, setLogs] = useState<Log[]>([]);
     const [refresh, setRefresh] = useState<boolean>(false);
@@ -23,12 +23,16 @@ const Sidebar: React.FC = () => {
     const authService = new AuthService();
     const logService = new LogService();
     const [isFirstLogin, setIsFirstLogin] = useState<boolean>(false);
+
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
             setSelected(log);
             setId(log.id!);
             router.push(`/logs/${log.id}`);
             Analytics.logEvent('change_log', { id: log.id, action: 'click' });
+            if (isSmallScreen && showSideBar) {
+                setShowSideBar(false);
+            }
         } else {
             setSelected(null);
             setId(null);
