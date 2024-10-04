@@ -118,7 +118,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 type: LogType.TEXT,
                 title: title,
                 createdDate: new Date(),
-                lastUpdatedDate: new Date(),
+                lastUpdatedAt: new Date(),
                 isExpired: false,
                 summary: '',
                 isPublic: false,

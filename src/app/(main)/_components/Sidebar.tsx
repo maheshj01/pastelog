@@ -51,7 +51,7 @@ const Sidebar: React.FC = () => {
 
     const fetchLogs = useCallback(async (pageNumber: number = 1, isRefresh: boolean = false) => {
         console.log("fetching logs:");
-        if (isFetching) return; // Prevent multiple simultaneous fetches
+        if (isFetching) return;
         setIsFetching(true);
         setLoading(true);
         try {
@@ -104,7 +104,7 @@ const Sidebar: React.FC = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             entries => {
-                if (entries[0].isIntersecting && hasMore && !loading) {
+                if (entries[0].isIntersecting && hasMore && !loading && (user && user.uid)) {
                     setPage(prevPage => prevPage + 1);
                 }
             },

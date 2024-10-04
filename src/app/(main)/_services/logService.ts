@@ -47,7 +47,7 @@ class LogService {
             this.logCollection,
             where('userId', '==', userId),
             where('isExpired', '==', false),
-            orderBy('createdDate', 'desc'),
+            orderBy('lastUpdatedAt', 'desc'),
             limit((page) * logsPerPage)
         );
 
@@ -62,11 +62,10 @@ class LogService {
                 this.logCollection,
                 where('userId', '==', userId),
                 where('isExpired', '==', false),
-                orderBy('createdDate', 'desc'),
+                orderBy('lastUpdatedAt', 'desc'),
                 limit(logsPerPage)
             );
 
-            // If it's not the first page, we need to use startAfter
             if (page > 1) {
                 // Get the last document from the previous page
                 const lastVisibleDoc = await this.getLastVisibleDoc(userId, page - 1, logsPerPage);
@@ -174,7 +173,9 @@ class LogService {
 
     async updateLogTitle(id: string, log: Log): Promise<void> {
         const docRef = doc(this.logCollection, id);
-        await updateDoc(docRef, { title: log.title });
+        await updateDoc(docRef, {
+            title: log.title
+        });
         await this.saveLogToLocal(log);
     }
 

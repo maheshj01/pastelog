@@ -76,7 +76,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         setLoading(true);
         if (hasUpdated) {
             // update last updated date
-            editedLog!.lastUpdatedDate = new Date();
+            editedLog!.lastUpdatedAt = new Date();
             await logService.updateLog(logId, editedLog!);
             setpreviewLog(new Log({ ...editedLog! }));
         } else {
