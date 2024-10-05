@@ -8,7 +8,7 @@ interface ShortcutWrapperProps {
 
 const ShortcutWrapper: React.FC<ShortcutWrapperProps> = ({ onShortCutClick, children }) => {
     const handleKeyPress = useCallback((event: KeyboardEvent) => {
-        if ((event.ctrlKey || event.metaKey) && event.key) {
+        if ((event.ctrlKey || event.metaKey) && (event.key == 'p' || event.key == 'n' || event.key == 's' || event.key == 'd')) {
             event.preventDefault();
             if (onShortCutClick) {
                 onShortCutClick(event.key);
