@@ -10,10 +10,10 @@ interface BannerState {
 
 export const useBannerState = () => {
     const [bannerState, setBannerState] = useState<BannerState>({ show: false, message: '' });
-    const featureCollection = `${process.env.NEXT_PUBLIC_FIREBASE_FEATURE_COLLECTION}`;
+    const configCollection = `${process.env.NEXT_PUBLIC_FIREBASE_CONFIG_COLLECTION}`;
     const bannerDocument = `${process.env.NEXT_PUBLIC_FIREBASE_FEATURE_BANNER}`;
     useEffect(() => {
-        const unsubscribe = onSnapshot(doc(db, featureCollection ?? 'feature', bannerDocument ?? 'banner'),
+        const unsubscribe = onSnapshot(doc(db, configCollection ?? 'config', bannerDocument ?? 'banner'),
             (doc) => {
                 if (doc.exists()) {
                     const data = doc.data() as BannerState;
