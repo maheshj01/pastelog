@@ -122,7 +122,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                             content={geminiContent.content}
                         />
                     </div>
-                    <div className='rounded-xl px-4 py-3 bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500'>
+                    {((previewLog?.summary || summaryLoading) && <div className='rounded-xl px-4 py-3 bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500'>
                         <p className="text-white mb-2 font-bold text-lg">
                             Summary
                         </p>
@@ -140,7 +140,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                         ) : (
                             <p className="text-white italic">No summary available. Tap the Gemini Icon to generate the Summary</p>
                         )}
-                    </div>
+                    </div>)}
                     {(
                         !loading &&
                         <div className='flex flex-row justify-between items-center'>

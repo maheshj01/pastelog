@@ -1,6 +1,9 @@
+import { showToast } from "@/utils/toast_utils";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import Image from "next/image";
 import React from "react";
+import { toast } from "react-toastify";
+import Analytics from "../_services/Analytics";
 import GradientText from "./GradientText";
 import PSInput from "./PSInput";
 import { Button } from "./button";
@@ -13,8 +16,19 @@ interface GeminiDialogProps {
 }
 
 const GeminiDialog: React.FC<GeminiDialogProps> = ({ isOpen, onClose, onSave, title, content }) => {
-    const toastId = React.useRef('copied-toast');
+    const toastId = React.useRef('stored-toast');
+
     const [value, setValue] = React.useState<string>('');
+    const notify = (message: string) => {
+        if (!toast.isActive(toastId.current!)) {
+            showToast("success", <p> {message} </p >,
+                {
+                    toastId: 'stored-toast',
+                }
+            );
+        }
+        Analytics.logEvent('API key Stored');
+    }
 
     return (
         <Modal size="md" isOpen={isOpen} onClose={onClose} isDismissable={true}>
@@ -55,6 +69,7 @@ const GeminiDialog: React.FC<GeminiDialogProps> = ({ isOpen, onClose, onSave, ti
                     <Button
                         onClick={() => {
                             if (value) {
+                                notify('API Key Stored in Ephemeral Storage');
                                 onSave(value);
                                 onClose();
                             }
