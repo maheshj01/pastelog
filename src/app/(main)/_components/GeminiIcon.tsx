@@ -8,9 +8,10 @@ interface GeminiProps {
     onGeminiTrigger: () => void;
     className?: string;
     children?: React.ReactNode;
+    toolTip?: string;
 }
 
-const GeminiIcon: React.FC<GeminiProps> = ({ onGeminiTrigger, className, children }) => {
+const GeminiIcon: React.FC<GeminiProps> = ({ onGeminiTrigger, className, children, toolTip }) => {
     const geminiContent = {
         title: "Gemini",
         content: 'With the power of Gemini, you can summarize long notes content. Enter your API key to get started.',
@@ -26,7 +27,7 @@ const GeminiIcon: React.FC<GeminiProps> = ({ onGeminiTrigger, className, childre
     return (
         <div className={className}>
             <Tooltip
-                content="Tap to Summarize"
+                content={toolTip || "Tap to Summarize"}
                 placement='top-start'>
                 <div onClick={() => {
                     if (apiKey === undefined || apiKey === null || apiKey === '') {

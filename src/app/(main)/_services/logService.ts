@@ -302,6 +302,27 @@ class LogService {
         } finally {
         }
     };
+
+    generateTitle = async (apiKey: string, log: Log) => {
+        try {
+            const genAI = new GoogleGenerativeAI(apiKey!);
+            const model = genAI.getGenerativeModel({
+                model: "gemini-pro"
+            });
+            const prompt = `Generate a new title under 30 chars for for the following piece of text whose current title: ${log.title} and the content: ${log.data}`;
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const title = response.text();
+            console.log("response title:", title);
+            // Strip Markdown manually (simple regex for common elements)
+            const parsedTitle = title.replace(/[#*_`]/g, '').trim();
+            console.log("response title:", parsedTitle);
+            return parsedTitle
+        } catch (error) {
+            console.error("Error querying Gemini:", error);
+        } finally {
+        }
+    }
 }
 
 export default LogService;
