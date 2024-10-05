@@ -2,6 +2,7 @@
 import Editor from '@/app/(main)/_components/Editor';
 import { formatReadableDate } from '@/utils/utils';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Log from '../_models/Log';
@@ -34,6 +35,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         } catch (error) {
             console.error("Error querying Gemini:", error);
         } finally {
+            Analytics.logEvent('gemini_open', { id: logId });
             setSummaryLoading(false);
         }
     };
@@ -78,7 +80,19 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                         <div className='grow'>
                             <p className="text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
                         </div>
-                        <GeminiIcon title={''} content={''} onGeminiTrigger={onSummarizeClicked} className={`${summaryLoading ? 'animate-pulse transform scale-150' : ''}`} />
+                        <GeminiIcon onGeminiTrigger={() => {
+                            if (!summaryLoading) {
+                                onSummarizeClicked();
+                            }
+                        }}>
+                            <Image
+                                src={"/images/gemini.png"}
+                                alt="Logo"
+                                width={32}
+                                height={32}
+                                className={`cursor-pointer transition-transform duration-500 transform hover:scale-150 h-8 m-0 p-0 ${summaryLoading ? 'animate-pulse transform scale-150' : ''}`}
+                            />
+                        </GeminiIcon>
                     </div>
                     {((previewLog?.summary || summaryLoading) && <div className='rounded-xl px-4 py-3 bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500'>
                         <p className="text-white mb-2 font-bold text-lg">
