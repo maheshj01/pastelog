@@ -1,9 +1,7 @@
 "use client";
 import Editor from '@/app/(main)/_components/Editor';
 import { formatReadableDate } from '@/utils/utils';
-import { Tooltip, useDisclosure } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Log from '../_models/Log';
@@ -11,27 +9,21 @@ import Analytics from '../_services/Analytics';
 import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
 import { DatePicker } from "./DatePicker";
-import GeminiDialog from './Gemini';
+import GeminiIcon from './GeminiIcon';
 import MDPreview from './MDPreview';
 import PreviewAction from './PreviewAction';
 
 const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
-    const { setId, apiKey, setApiKey, user } = useSidebar();
+    const { setId, apiKey, user } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
     const [editedLog, seteditedLog] = useState<Log | null>(null);
     const { theme } = useTheme();
     const pathName = usePathname();
     const isPublishRoute = pathName.includes('/logs/publish');
-    const { isOpen: geminiOpen, onOpen: onGeminiOpen, onClose: onGeminiClose } = useDisclosure();
     const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-
-    const [geminiContent, setGeminiContent] = useState({
-        title: "Gemini",
-        content: 'With the power of Gemini, you can summarize long notes content. Enter your API key to get started.',
-    });
 
     const onSummarizeClicked = async () => {
         try {
@@ -43,12 +35,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
             console.error("Error querying Gemini:", error);
         } finally {
             setSummaryLoading(false);
-        }
-    };
-
-    const onGeminiApiSave = (key: string) => {
-        if (key) {
-            setApiKey(key);
         }
     };
 
@@ -92,35 +78,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                         <div className='grow'>
                             <p className="text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
                         </div>
-                        <Tooltip
-                            content="Tap to Summarize"
-                            placement='top-start'>
-                            <Image
-                                src={"/images/gemini.png"}
-                                alt="Logo"
-                                width={32}
-                                height={32}
-                                onClick={() => {
-                                    if (summaryLoading) {
-                                        return;
-                                    }
-                                    if (apiKey === undefined || apiKey === null || apiKey === '') {
-                                        onGeminiOpen();
-                                        Analytics.logEvent('gemini_open', { id: logId });
-                                    } else {
-                                        onSummarizeClicked();
-                                    }
-                                }}
-                                className={`cursor-pointer transition-transform duration-500 transform hover:scale-150 h-8 m-0 p-0 ${summaryLoading ? 'animate-pulse transform scale-150' : ''}`}
-                            />
-                        </Tooltip>
-                        <GeminiDialog
-                            isOpen={geminiOpen}
-                            onClose={onGeminiClose}
-                            onSave={onGeminiApiSave}
-                            title={geminiContent.title}
-                            content={geminiContent.content}
-                        />
+                        <GeminiIcon title={''} content={''} onGeminiTrigger={onSummarizeClicked} className={`${summaryLoading ? 'animate-pulse transform scale-150' : ''}`} />
                     </div>
                     {((previewLog?.summary || summaryLoading) && <div className='rounded-xl px-4 py-3 bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500'>
                         <p className="text-white mb-2 font-bold text-lg">
