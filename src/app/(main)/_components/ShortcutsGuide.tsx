@@ -10,20 +10,21 @@ import { MdOutlineKeyboardCommandKey } from "react-icons/md";
 export default function ShortCutsGuide() {
 
     const ShortcutsMap = [
-        { keys: 'Ctrl/Cmd + H', description: 'Toggle Preview' },
-        { keys: 'Ctrl/Cmd + P', description: 'Toggle Sidebar' },
-        { keys: 'Ctrl/Cmd + D', description: 'Toggle DarkMode' },
-        { keys: 'Ctrl/Cmd + B', description: 'Bold' },
-        { keys: 'Ctrl/Cmd + I', description: 'Italic' },
-        { keys: 'Ctrl/Cmd + Shift + X', description: 'Strikethrough' },
-        { keys: 'Ctrl/Cmd + Shift + [1-6]', description: 'Heading' },
-        { keys: 'Ctrl/Cmd + K', description: 'Link' },
-        { keys: 'Ctrl/Cmd + E', description: 'Code' },
-        { keys: 'Ctrl/Cmd + Shift + C', description: 'Code Block' },
-        { keys: 'Ctrl/Cmd + U', description: 'Unordered List' },
-        { keys: 'Ctrl/Cmd + Shift + O', description: 'Ordered List' },
-        { keys: 'Ctrl/Cmd + Shift + .', description: 'Blockquote' },
-        { keys: 'Ctrl/Cmd + Shift + -', description: 'Horizontal Rule' },
+        { keys: '+ P', description: 'Toggle Preview' },
+        { keys: '+ S', description: 'Toggle Sidebar' },
+        { keys: '+ D', description: 'Toggle DarkMode' },
+        { keys: '+ N', description: 'Add a New Note' },
+        { keys: '+ B', description: 'Bold' },
+        { keys: '+ I', description: 'Italic' },
+        { keys: '+ Shift + X', description: 'Strikethrough' },
+        { keys: '+ Shift + [1-6]', description: 'Heading' },
+        { keys: '+ K', description: 'Link' },
+        { keys: '+ E', description: 'Code' },
+        { keys: '+ Shift + C', description: 'Code Block' },
+        { keys: '+ U', description: 'Unordered List' },
+        { keys: '+ Shift + O', description: 'Ordered List' },
+        { keys: '+ Shift + .', description: 'Blockquote' },
+        { keys: '+ Shift + -', description: 'Horizontal Rule' },
         { keys: 'Tab / Shift + Tab', description: 'Indent/Unindent Code Block' },
     ]
     return (<HoverCard>
@@ -42,10 +43,11 @@ export default function ShortCutsGuide() {
                         const shortcut: any = ShortcutsMap[index];
                         return (
                             <div key={index}>
-                                {index === 3 && <p className='text-md my-2 font-bold'>Markdown Shortcuts</p>}
-                                <div className="flex justify-between">
+                                {index === 4 && <p className='text-md my-2 font-bold'>Markdown Shortcuts</p>}
+                                <div className="flex justify-between items-center">
                                     <div className="flex space-x-2">
-                                        <MdOutlineKeyboardCommandKey className='text-black dark:text-white' />
+                                        <MdOutlineKeyboardCommandKey className='text-black dark:text-white mt-[0.5px]' />
+                                        {/* <MdOutlineKeyboardControlKey className='text-black dark:text-white' /> */}
                                         <span className="text-sm">{shortcut.keys}</span>
                                     </div>
                                     <span className="text-sm">{shortcut.description}</span>
