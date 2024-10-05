@@ -5,9 +5,11 @@ import axios from 'axios';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
 import { Log, LogType } from '../_models/Log';
+import FeatureService from "./feature";
 class LogService {
     private logCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION}`);
-
+    private configCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_CONFIG_COLLECTION}`);
+    private featureService: FeatureService = new FeatureService();
     async fetchLogs(): Promise<Log[]> {
         const querySnapshot = await getDocs(this.logCollection);
         const logs: Log[] = [];
@@ -164,26 +166,28 @@ class LogService {
     }
 
     async deleteExpiredLogs(): Promise<void> {
-        const querySnapshot = await getDocs(this.logCollection);
-        const updatePromises: Promise<void>[] = [];
-        const today = new Date();
-        today.setUTCHours(0, 0, 0, 0);
+        if (await this.featureService.shouldDeleteExpired()) {
+            const querySnapshot = await getDocs(this.logCollection);
+            const updatePromises: Promise<void>[] = [];
+            const today = new Date();
+            today.setUTCHours(0, 0, 0, 0);
 
-        querySnapshot.forEach((doc) => {
-            const log = Log.fromFirestore(doc);
-            if (log.expiryDate && log.expiryDate < today) {
-                updatePromises.push(
-                    updateDoc(doc.ref, { isExpired: true })
-                        .catch((error) => {
-                            console.error(`Error deleting:`, error);
-                        })
-                );
+            querySnapshot.forEach((doc) => {
+                const log = Log.fromFirestore(doc);
+                if (log.expiryDate && log.expiryDate < today) {
+                    updatePromises.push(
+                        updateDoc(doc.ref, { isExpired: true })
+                            .catch((error) => {
+                                console.error(`Error deleting:`, error);
+                            })
+                    );
+                }
+            });
+
+            try {
+                await Promise.all(updatePromises);
+            } catch (error) {
             }
-        });
-
-        try {
-            await Promise.all(updatePromises);
-        } catch (error) {
         }
     }
 
