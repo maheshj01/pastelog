@@ -53,10 +53,24 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
         return () => window.removeEventListener('resize', checkWindowSize);
     }, [setTheme]);
 
+    const handleShortCut = (key: string) => {
+        switch (key) {
+            case 'n':
+                router.push('/logs');
+                break;
+            case 'd':
+                toggleTheme();
+                break;
+            case 's':
+                toggleSideBar();
+                break;
+            default:
+                break;
+        }
+    };
+
     return (
-        <ShortcutWrapper onCtrlShiftH={toggleSideBar} onCtrlShiftD={toggleTheme} onCtrlShiftN={() => {
-            router.push('/logs');
-        }} >
+        <ShortcutWrapper onShortCutClick={handleShortCut} >
             <div className={`flex ${theme === Theme.DARK ? 'dark' : 'light'}`}>
                 <div className={`fixed top-0 left-0 z-50 h-screen overflow-y-auto ${showSideBar ? 'w-64' : 'w-0'} transition-all duration-300`}>
                     <Sidebar />
@@ -72,7 +86,7 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                             <FiSidebar className="text-2xl" />
                         </IconButton>
                     )}
-                    <div className={`relative z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out  ${showSideBar? 'slide-main': ''}`}>
+                    <div className={`relative z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out  ${showSideBar ? 'slide-main' : ''}`}>
                         <div className="flex flex-col min-h-full">
                             <PSBanner
                                 key={`${bannerState.show}-${bannerState.message}`}

@@ -208,11 +208,28 @@ export default function Pastelog({ id }: { id?: string }) {
         setTheme(theme === 'dark' ? 'light' : 'dark');
     };
 
+    const handleShortCut = (key: string) => {
+        switch (key) {
+            case 'n':
+                router.push('/logs');
+                break;
+            case 'd':
+                toggleTheme();
+                break;
+            case 's':
+                toggleSideBar();
+                break;
+            case 'p':
+                togglePreview();
+                break;
+            default:
+                break;
+        }
+    };
+
     return (
         <>
-            <ShortcutWrapper onCtrlShiftP={togglePreview} onCtrlShiftD={toggleTheme} onCtrlShiftN={() => {
-                router.push('/logs');
-            }}>
+            <ShortcutWrapper onShortCutClick={handleShortCut}>
                 <div className="min-h-screen relative xsm:px-2">
                     <div
                         aria-disabled={loading}
