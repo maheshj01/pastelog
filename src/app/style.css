@@ -38,6 +38,26 @@
     }
 }
 
+@keyframes revealFromBottom {
+    0% {
+        clip-path: inset(100% 0 0 0);
+    }
+
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes revealFromTop {
+    0% {
+        clip-path: inset(0 0 100% 0);
+    }
+
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
 @keyframes revealFromLeft {
     0% {
         clip-path: inset(0 100% 0 0);
@@ -53,8 +73,13 @@
 }
 
 .reveal-in-animation {
-    animation: revealFromLeft 0.7s ease-out forwards;
-    overflow: hidden;
+    animation: revealFromLeft 1s ease-out;
+    overflow: hidden
+}
+
+.reveal-top-animation {
+    animation: revealFromTop 1s ease-out;
+    overflow: hidden
 }
 
 .tagline {
