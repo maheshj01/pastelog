@@ -2,10 +2,10 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react';
-import { ReactNode, useState } from 'react';
-import Log from './(main)/_models/Log';
-import { SidebarContext } from './(main)/_services/Context';
 import { User as FirebaseUser } from 'firebase/auth';
+import { ReactNode, useState } from 'react';
+import { SidebarContext } from './(main)/_hooks/useSidebar';
+import Log from './(main)/_models/Log';
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <NextUIProvider>

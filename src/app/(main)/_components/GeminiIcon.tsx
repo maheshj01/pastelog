@@ -1,8 +1,7 @@
 import { Tooltip, useDisclosure } from '@nextui-org/react';
 import React from 'react';
-import { useSidebar } from '../_services/Context';
+import { useSidebar } from '../_hooks/useSidebar';
 import GeminiDialog from './GeminiDialog';
-import Analytics from '../_services/Analytics';
 
 interface GeminiProps {
     onGeminiTrigger: () => void;

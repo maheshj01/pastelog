@@ -5,7 +5,7 @@ import {
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { FiSidebar } from 'react-icons/fi';
-import { useSidebar } from '../_services/Context';
+import { useSidebar } from "../_hooks/useSidebar";
 import IconButton from './IconButton';
 import { ThemeSwitcher } from "./ThemeSwitcher";
 

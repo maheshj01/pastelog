@@ -12,8 +12,8 @@ import RouteClient from '../_components/RouteClient';
 import ShortcutWrapper from '../_components/ShortCutWrapper';
 import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
+import { useSidebar } from '../_hooks/useSidebar';
 import useBannerState from '../_services/BannerState';
-import { useSidebar } from '../_services/Context';
 
 export default function LogsLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();

@@ -1,8 +1,8 @@
 "use client";
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import { useSidebar } from '../_hooks/useSidebar';
 import Analytics from '../_services/Analytics';
-import { useSidebar } from '../_services/Context';
 
 export default function RouteClient() {
     const searchParams = useSearchParams();

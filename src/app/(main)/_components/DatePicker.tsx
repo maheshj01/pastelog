@@ -2,7 +2,7 @@ import { cn } from "@nextui-org/react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import React from "react";
-import { useSidebar } from "../_services/Context";
+import { useSidebar } from "../_hooks/useSidebar";
 import { Button } from "./button";
 import { Calendar } from "./calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";

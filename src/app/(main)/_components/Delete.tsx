@@ -1,6 +1,6 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import React from "react";
-import { useSidebar } from "../_services/Context";
+import { useSidebar } from "../_hooks/useSidebar";
 
 interface DeleteDialogProps {
     isOpen: boolean;

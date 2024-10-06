@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { FaBug, FaGithub, FaGoogle } from "react-icons/fa";
-import { useSidebar } from '../_services/Context';
+import { useSidebar } from '../_hooks/useSidebar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from './dropdown-menu';
 
 interface LoginMenuProps {

@@ -2,10 +2,10 @@
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSidebar } from '../_hooks/useSidebar';
 import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
-import { useSidebar } from '../_services/Context';
 import LogService from '../_services/logService';
 import IconButton from "./IconButton";
 import LoginMenu from './LoginMenu';
