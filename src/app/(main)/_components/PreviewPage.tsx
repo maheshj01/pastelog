@@ -105,7 +105,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                         ) : previewLog?.summary ? (
                             <div className="bg-white bg-opacity-10 rounded-lg p-3">
                                 <MDPreview
-                                    className='text-white'
+                                    className='text-white reveal-top-animation'
                                     value={previewLog?.summary}
                                 />
                             </div>
