@@ -16,6 +16,7 @@ export default function Welcome() {
     const [darkTheme, setDarkTheme] = useState(false); // State for dark theme
     const router = useRouter();
     const tagline = 'Publish Rich Text Notes, and access them with a unique link.';
+
     const scrollByScreenHeight = () => {
         const currentScrollY = window.scrollY;
         const nextScrollY = currentScrollY + window.innerHeight;

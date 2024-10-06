@@ -1,4 +1,5 @@
 "use client";
+import { redirect } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 import RouteClient from './(main)/_components/RouteClient';
 import Welcome from './(main)/_components/Welcome';
@@ -12,6 +13,7 @@ export default function Page() {
     const firstVisit = f === 'true';
     if (!firstVisit) {
       setIsFirstVisit(false);
+      redirect('/logs');
     } else {
       setIsFirstVisit(true);
     }
