@@ -52,7 +52,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
                             layout="responsive"
                             width={6}
                             height={6}
-                            className="transition-transform duration-500 transform hover:scale-105"
+                            className="transition-transform duration-500 transform hover:scale-105 hidden md:block"
                         />
                     </div>
                     {/* <p
