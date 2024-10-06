@@ -3,19 +3,14 @@ import { redirect } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 import RouteClient from './(main)/_components/RouteClient';
 import Welcome from './(main)/_components/Welcome';
+import useSettings from './(main)/_hooks/useSettings';
 
 export default function Page() {
-  const [isFirstVisit, setIsFirstVisit] = useState(true);
   const [loading, setLoading] = useState(true);
-
+  const { settings, toggleNewUser, setNewUser } = useSettings();
   useEffect(() => {
-    const f = localStorage.getItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`) ?? 'true';
-    const firstVisit = f === 'true';
-    if (!firstVisit) {
-      setIsFirstVisit(false);
+    if (!settings.newUser) {
       redirect('/logs');
-    } else {
-      setIsFirstVisit(true);
     }
     setLoading(false);
   }, [])

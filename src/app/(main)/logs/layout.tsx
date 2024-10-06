@@ -111,10 +111,10 @@ export default function LogsLayout({ children }: { children: React.ReactNode }) 
                     </div>
                 </div>
 
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div className='flex min-h-screen items-center justify-center'>Loading...</div>}>
                     <RouteClient />
                 </Suspense>
             </div>
-        </ShortcutWrapper>
+        </ShortcutWrapper >
     );
 }

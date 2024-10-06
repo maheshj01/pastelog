@@ -3,7 +3,8 @@ import { ExitIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
-import { FaBug, FaGithub, FaGoogle } from "react-icons/fa";
+import { FaBug, FaGithub, FaGoogle, FaWpexplorer } from "react-icons/fa";
+import useSettings from '../_hooks/useSettings';
 import { useSidebar } from '../_hooks/useSidebar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from './dropdown-menu';
 
@@ -17,6 +18,7 @@ interface LoginMenuProps {
 const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSettings }) => {
 
     const { id, setSelected, setId, showSideBar, user, setUser } = useSidebar();
+    const { settings, toggleNewUser, setNewUser } = useSettings();
     const router = useRouter();
     return (
         <div className='sticky bottom-0'>
@@ -65,6 +67,14 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSet
                         }}>
                             <FaBug className='size-4 text-black dark:text-white' />
                             <span>Report a Bug</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={async () => {
+                            setNewUser(true);
+                            router.push('/');
+                        }}>
+                            <FaWpexplorer className='size-4 text-black dark:text-white' />
+                            <span>Take a Tour</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className='space-x-2 cursor-pointer' onClick={onLogOut}>

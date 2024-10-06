@@ -3,6 +3,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import useSettings from "../_hooks/useSettings";
 import Analytics from "../_services/Analytics";
 import LogService from '../_services/logService';
 import GradientText from './GradientText';
@@ -16,6 +17,7 @@ export default function Welcome() {
     const [darkTheme, setDarkTheme] = useState(false); // State for dark theme
     const router = useRouter();
     const tagline = 'Publish Rich Text Notes, and access them with a unique link.';
+    const { settings, toggleNewUser, setNewUser } = useSettings();
 
     const scrollByScreenHeight = () => {
         const currentScrollY = window.scrollY;
@@ -51,7 +53,7 @@ export default function Welcome() {
     const handleGetStarted = async () => {
         setLoading(true); // Set loading state to true immediately
         saveLocally(['getting-started', 'shortcuts']);
-        localStorage.setItem(`${process.env.NEXT_PUBLIC_NEW_USER_VISITED}`, 'false');
+        setNewUser(false);
         try {
             await new Promise<void>(resolve => {
                 setTimeout(() => {
@@ -165,11 +167,11 @@ export default function Welcome() {
                 <p className="text-3xl mt-8 mb-4 text-center">
                     Powered By Gemini
                 </p>
-                <p className="text-center"> Powered by Gemini, you can effortlessly summarize logs with just one click. </p>
+                <p className="text-center"> Write better notes with Gemini.</p>
                 <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
                     {/* video without any controls on loop */}
                     <video
-                        src="https://github.com/maheshmnj/pastelog/assets/31410839/0eecf88c-a198-43ff-958a-47fb192fae73"
+                        src="https://github.com/user-attachments/assets/54a5c70c-3bab-494b-bec8-5d58b9df816d"
                         autoPlay
                         loop
                         muted
