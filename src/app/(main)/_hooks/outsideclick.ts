@@ -4,7 +4,8 @@ const useClickOutside = <T extends HTMLElement>(ref: RefObject<T>, fn: () => voi
     useEffect(() => {
         const element = ref?.current;
         function handleClickOutside(event: Event) {
-            if (element && !element.contains(event.target as Node | null)) {
+            const dialog = document.querySelector('.gemini-dialog-class');
+            if (element && !element.contains(event.target as Node | null) && (!dialog || !dialog.contains(event.target as Node | null))) {
                 fn();
             }
         }

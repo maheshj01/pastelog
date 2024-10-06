@@ -32,7 +32,7 @@ const GeminiDialog: React.FC<GeminiDialogProps> = ({ isOpen, onClose, onSave, ti
 
     return (
         <Modal size="md" isOpen={isOpen} onClose={onClose} isDismissable={true}>
-            <ModalContent>
+            <ModalContent className="gemini-dialog-class">
                 <ModalHeader className="flex flex-col mt-1">
                     <div className="flex">
                         <Image
