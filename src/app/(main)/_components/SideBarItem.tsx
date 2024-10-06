@@ -33,6 +33,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const [logTitle, setLogTitle] = useState<string>(log.title || log.id || '');
     const router = useRouter();
     const [fadeIn, setFadeIn] = useState(false);
+    const [fadeOut, setFadeOut] = useState(false);
     const logService = new LogService();
     const publicLogs = ['getting-started', 'shortcuts'];
     const showMoreOptions = !publicLogs.includes(log.id!);
@@ -104,14 +105,18 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                 break;
         }
     }
-
     const onGenerateTitle = async () => {
         try {
-            setFadeIn(true);
             setTitleLoading(true);
-            const generatedTitle = await logService.generateTitle(apiKey!, log!)
-            setLogTitle(generatedTitle || log.title || log.id || '')
             setFadeIn(false);
+            setFadeOut(true);
+            await new Promise(resolve => setTimeout(resolve, 500)); // Wait for fade-out
+
+            const generatedTitle = await logService.generateTitle(apiKey!, log!);
+            setLogTitle(generatedTitle || log.title || log.id || '');
+            setFadeIn(true);
+            await new Promise(resolve => setTimeout(resolve, 100)); // Short delay before fade-in
+            setFadeOut(false);
         } catch (error) {
             console.error("Error querying Gemini:", error);
         } finally {
@@ -160,7 +165,9 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                     type="text"
                     value={logTitle}
                     onChange={(e) => setLogTitle(e.target.value)}
-                    className={`text-black dark:text-white mx-2 py-1 w-full border-none focus:outline-none bg-transparent ${fadeIn ? 'reveal-in-animation' : ''}`}
+                    className={`text-black dark:text-white mx-2 py-1 w-full border-none focus:outline-none bg-transparent 
+                        ${fadeOut ? 'fade-out-animation' : ''} 
+                        ${fadeIn && !fadeOut ? 'reveal-in-animation' : ''}`}
                 />
                 <GeminiIcon
                     toolTip="Generate Title"
