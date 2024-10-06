@@ -1,6 +1,11 @@
 {
   "name": "Pastelog",
   "short_name": "Pastelog",
+  "description": "Create Stunning AI Powered Rich notes with markdown Support",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
   "icons": [
     {
       "src": "/icon-192x192.png",
@@ -14,8 +19,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  ]
 }

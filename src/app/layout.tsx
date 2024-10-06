@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Pastelog",
   description: "Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.",
-
+  manifest: "/web.manifest",
 };
 export default function RootLayout({
   children,
