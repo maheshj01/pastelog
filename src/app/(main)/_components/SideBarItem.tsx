@@ -32,6 +32,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const [titleLoading, setTitleLoading] = useState(false);
     const [logTitle, setLogTitle] = useState<string>(log.title || log.id || '');
     const router = useRouter();
+    const [fadeIn, setFadeIn] = useState(false);
     const logService = new LogService();
     const publicLogs = ['getting-started', 'shortcuts'];
     const showMoreOptions = !publicLogs.includes(log.id!);
@@ -106,9 +107,11 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
 
     const onGenerateTitle = async () => {
         try {
+            setFadeIn(true);
             setTitleLoading(true);
             const generatedTitle = await logService.generateTitle(apiKey!, log!)
-            setLogTitle(generatedTitle || log.title || log.id || '');
+            setLogTitle(generatedTitle || log.title || log.id || '')
+            setFadeIn(false);
         } catch (error) {
             console.error("Error querying Gemini:", error);
         } finally {
@@ -157,7 +160,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                     type="text"
                     value={logTitle}
                     onChange={(e) => setLogTitle(e.target.value)}
-                    className="text-black dark:text-white mx-2 py-1 w-full border-none focus:outline-none bg-transparent"
+                    className={`text-black dark:text-white mx-2 py-1 w-full border-none focus:outline-none bg-transparent ${fadeIn ? 'reveal-in-animation' : ''}`}
                 />
                 <GeminiIcon
                     toolTip="Generate Title"
