@@ -1,3 +1,13 @@
+### [0.6.0] - October 06, 2024
+
+- Add Google Sign In Authentication
+- Save guest notes in local storage
+- Add more options for notes
+- Integrate Gemini to summarize and rename the log
+- Add PWA Support
+- Improve Responsiveness of the app
+- And lots of minor fixes and improvements
+
 ### [0.5.4] - July 31, 2024
 
 - Add Edit feature
