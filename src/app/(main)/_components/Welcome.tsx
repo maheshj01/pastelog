@@ -167,11 +167,11 @@ export default function Welcome() {
                 <p className="text-3xl mt-8 mb-4 text-center">
                     Powered By Gemini
                 </p>
-                <p className="text-center"> Write better notes with Gemini.</p>
+                <p className="text-center">Pastelog comes with Gemini Integrated to help you along the way.</p>
                 <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
                     {/* video without any controls on loop */}
                     <video
-                        src="https://github.com/user-attachments/assets/54a5c70c-3bab-494b-bec8-5d58b9df816d"
+                        src="https://github.com/user-attachments/assets/9ce0571b-5590-4092-807d-943c8717d807"
                         autoPlay
                         loop
                         muted
