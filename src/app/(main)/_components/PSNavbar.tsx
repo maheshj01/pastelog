@@ -3,7 +3,7 @@ import {
     NavbarContent
 } from "@nextui-org/navbar";
 import Image from 'next/image';
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FiSidebar } from 'react-icons/fi';
 import { useSidebar } from "../_hooks/useSidebar";
 import IconButton from './IconButton';
@@ -18,7 +18,8 @@ interface PSNavbarProps {
 const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
     const router = useRouter();
     const { showSideBar, setShowSideBar, setId, setSelected } = useSidebar();
-
+    const pathName = usePathname();
+    const isPublishRoute = pathName.includes('/logs/publish');
     return (
         <Navbar
             position='sticky'
@@ -60,7 +61,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon }) => {
                 </div>
             </NavbarContent>
             <NavbarContent justify="end">
-                <ThemeSwitcher />
+                {isPublishRoute && <ThemeSwitcher />}
             </NavbarContent>
         </Navbar>
     )

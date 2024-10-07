@@ -11,6 +11,7 @@ import IconButton from "./IconButton";
 import LoginMenu from './LoginMenu';
 import ShortCutsGuide from './ShortcutsGuide';
 import SidebarItem from './SideBarItem';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 const Sidebar: React.FC = () => {
     const { id, setSelected, setId, showSideBar, user, setUser, setShowSideBar } = useSidebar();
@@ -143,7 +144,10 @@ const Sidebar: React.FC = () => {
                     )}
                 {/* <SettingsDialog /> */}
                 <div className='flex items-center justify-between bg-surface dark:bg-gray-700 border-t border-gray-300 dark:border-gray-600 px-2 py-2'>
-                    <ShortCutsGuide />
+                    <div className="flex items-center space-x-2">
+                        <ShortCutsGuide />
+                        <ThemeSwitcher />
+                    </div>
                     <LoginMenu onLogOut={handleLogout} onLogin={handleLogin} loading={loading} onSettings={() => {
                         router.push('/settings');
                     }} />

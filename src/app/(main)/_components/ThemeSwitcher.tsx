@@ -33,7 +33,7 @@ export function ThemeSwitcher() {
                     setTheme(theme == Theme.DARK ? 'light' : 'dark');
                     Analytics.logThemeChange(theme === 'dark' ? 'light' : 'dark');
                 }}>
-                {theme === 'dark' ? <SunIcon className='text-black size-12 dark:text-white' /> : <MoonIcon className='size-12 text-black dark:text-white' />}
+                {theme === 'dark' ? <SunIcon className='text-black size-7 dark:text-white' /> : <MoonIcon className='size-7 text-black dark:text-white' />}
             </IconButton>
         </div>
     )
