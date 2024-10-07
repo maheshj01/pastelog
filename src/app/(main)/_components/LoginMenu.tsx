@@ -87,7 +87,12 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSet
                     <HoverCardTrigger>
                         <div className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-lg'>
                             <div className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-lg'
-                            // onClick={handleLogin}
+                                onClick={() => {
+                                    // on small screens login
+                                    if (window.innerWidth < 768) {
+                                        onLogin();
+                                    }
+                                }}
                             >
                                 <FaGoogle className='size-6 text-black dark:text-white' />
                             </div>
