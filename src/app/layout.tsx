@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from './(main)/_components/ThemeProvider';
 import ToastProvider from "./(main)/_components/ToastProvider";
@@ -8,9 +8,33 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Pastelog",
+  applicationName: "Pastelog",
   description: "Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.",
-  manifest: "/web.manifest",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Pastelog",
+    // startUpImage: [],
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Pastelog",
+    title: {
+      default: "Pastelog",
+      template: "%s | Pastelog",
+    },
+    description: "Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.",
+  },
 };
+
+export const viewport: Viewport = {
+  themeColor: "#FFFFFF",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

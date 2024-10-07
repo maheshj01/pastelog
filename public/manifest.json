@@ -1,0 +1,56 @@
+{
+  "name": "Pastelog",
+  "short_name": "Pastelog",
+  "description": "Create Stunning AI Powered Rich notes with markdown Support",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon/icon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/icon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/icon-180x180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/cover.png",
+      "sizes": "3104x1974",
+      "form_factor": "wide",
+      "type": "image/png",
+      "label": "Preview of Pastelog notes"
+    },
+    {
+      "src": "/images/preview.png",
+      "sizes": "1828x1974",
+      "type": "image/png",
+      "label": "Preview of Pastelog notes"
+    }
+  ]
+}
