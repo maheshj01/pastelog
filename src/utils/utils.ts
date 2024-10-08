@@ -36,6 +36,17 @@ export const downloadImage = async () => {
     const preview = document.getElementById('preview');
     if (!preview) return;
 
+    const codeBlocks = preview.querySelectorAll('code:not(pre code)');
+
+    // Add custom class to fix rendering issues
+    codeBlocks.forEach(block => {
+        const codeBlock = block as HTMLElement;  // Cast to HTMLElement
+        codeBlock.style.paddingBottom = '1.0em';
+        // codeBlock.style.backgroundColor = 'red';
+        // codeBlock.style.display = 'inline-block';
+        // codeBlock.style.verticalAlign = 'middle';
+    });
+
     const previewElement = preview.querySelector('.reactMarkDown');
     const originalClasses = previewElement!.className;
 
@@ -61,6 +72,11 @@ export const downloadImage = async () => {
         link.download = 'pastelog.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
+        // Restore the original styles after capturing the canvas
+        codeBlocks.forEach(block => {
+            const codeBlock = block as HTMLElement;  // Cast to HTMLElement
+            codeBlock.style.paddingBottom = '';
+        });
         previewElement!.className = originalClasses;
     }).catch(error => {
         previewElement!.className = originalClasses;
