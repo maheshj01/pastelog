@@ -65,27 +65,36 @@ const Editor: React.FC<PSEditorProps> = ({ value, onChange, placeHolder, preview
     `;
 
     const customClass = `px-2 py-2 rounded-b-lg border-surface focus:ring-secondary focus:outline-none focus:ring-2 focus:ring-2 resize-y min-h-80 w-full ${className}`;
-    if (preview) {
-        return <MDPreview
-            className={`${customClass} reactMarkDown`}
-            value={value}
-        />;
-    }
     return (
-        <TextCompletionInput
-            customClass={`${customClass} line-break`}
-            // We need editor state only when editing
-            value={isRepublish ? value : editorStateRef.current.getCurrentValue()}
-            onChange={handleChange}
-            disabled={disabled}
-            placeholder={placeHolder || placeholder}
-            height="70vh"
-            autoSuggest={false}
-            maxHeight="100%"
-            onUndo={handleUndo}
-            onRedo={handleRedo}
-        />
-    );
+        <div className="relative">
+            {preview ? (
+                // if value is empty, show placeholder
+                value ? (
+                    <MDPreview
+                        className={`${customClass} reactMarkDown ${preview ? 'fade-in-animation' : 'fade-out-animation'}`}
+                        value={value}
+                    />
+                ) : (
+                    <div className={`flex justify-center items-center rounded-b-lg ${customClass}`} >
+                        <p>Nothing to Preview</p>
+                    </div>)
+            ) : (
+                <TextCompletionInput
+                    customClass={`${customClass} line-break ${!preview ? 'fade-in-animation' : 'fade-out-animation'}`}
+                    // We need editor state only when editing
+                    value={isRepublish ? value : editorStateRef.current?.getCurrentValue()}
+                    onChange={handleChange}
+                    disabled={disabled}
+                    placeholder={placeHolder || placeholder}
+                    height="70vh"
+                    autoSuggest={false}
+                    maxHeight="100%"
+                    onUndo={handleUndo}
+                    onRedo={handleRedo}
+                />
+            )}
+        </div>
+    )
 
 };
 
