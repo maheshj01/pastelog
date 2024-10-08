@@ -36,6 +36,11 @@ export const downloadImage = async () => {
     const preview = document.getElementById('preview');
     if (!preview) return;
 
+    const previewElement = preview.querySelector('.reactMarkDown');
+    const originalClasses = previewElement!.className;
+
+    previewElement!.className = originalClasses.replace(/fade-in-animation|fade-out-animation/g, '').trim();
+
     // Ensure all images within the preview element are fully loaded
     const images = Array.from(preview.getElementsByTagName('img'));
     await Promise.all(images.map(img => new Promise<void>((resolve, reject) => {
@@ -45,7 +50,6 @@ export const downloadImage = async () => {
             img.onload = () => resolve();
             img.onerror = () => reject();
         }
-        // Set crossOrigin attribute if needed
         if (!img.crossOrigin) {
             img.crossOrigin = 'anonymous';
         }
@@ -57,11 +61,14 @@ export const downloadImage = async () => {
         link.download = 'pastelog.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
+        previewElement!.className = originalClasses;
     }).catch(error => {
+        previewElement!.className = originalClasses;
+        console.error(error);
     });
 };
 
-export  const downloadText = (previewLog: Log) => {
+export const downloadText = (previewLog: Log) => {
     if (!previewLog?.data) return;
     const element = document.createElement("a");
     const file = new Blob([previewLog.data], { type: 'text/plain' });
