@@ -49,7 +49,13 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
 
     };
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const clipBoardHasUrl = async () => {
+        const text = await navigator.clipboard.readText();
+        const urlRegex = /https?:\/\/[^\s]+/g;
+        return urlRegex.test(text);
+    }
+
+    const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.ctrlKey || event.metaKey) {
             switch (event.key.toLowerCase()) {
                 case 'b':
@@ -78,6 +84,15 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
                         onRedo();
                     } else {
                         onUndo();
+                    }
+                    break;
+                case 'v':
+                    event.preventDefault();
+                    if (await clipBoardHasUrl()) {
+                        const text = await navigator.clipboard.readText();
+                        applyLinkFormatting(text);
+                    } else {
+                        replaceSelection();
                     }
                     break;
                 case 'y':
@@ -275,15 +290,30 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         updateValue(value, newCursorPos);
     };
 
-    const applyLinkFormatting = () => {
+    const replaceSelection = async () => {
+        const replacement = await navigator.clipboard.readText();
+        const textarea = inputRef.current;
+        if (!replacement || !textarea) return;
+        const replacedtext = inputValue.substring(0, textarea.selectionStart) + replacement +
+            inputValue.substring(textarea.selectionEnd)
+        updateValue(replacedtext, textarea.selectionStart + replacement.length);
+    }
+
+    const applyLinkFormatting = (text?: string) => {
         const textarea = inputRef.current;
         if (!textarea) return;
+        const selection = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+        if (selection.length == 0) {
+            replaceSelection();
+        } else {
 
-        const { value, newCursorPos } = markdownFormatter.current.applyLinkFormatting(
-            textarea.selectionStart,
-            textarea.selectionEnd
-        );
-        updateValue(value, newCursorPos);
+            const { value, newCursorPos } = markdownFormatter.current.applyLinkFormatting(
+                textarea.selectionStart,
+                textarea.selectionEnd,
+                text
+            );
+            updateValue(value, newCursorPos);
+        }
     };
 
     const applyListFormatting = (listSyntax: string) => {

@@ -40,14 +40,22 @@ export class MarkdownFormatter {
         return { value: newValue, newCursorPos };
     }
 
-    public applyLinkFormatting(start: number, end: number): { value: string, newCursorPos: number } {
+    public applyLinkFormatting(start: number, end: number, url?: string): { value: string, newCursorPos: number } {
         const selectedText = this.value.substring(start, end);
-        const newValue =
-            this.value.substring(0, start) +
-            `[${selectedText}]()` +
-            this.value.substring(end);
+        if (url) {
+            const newValue =
+                this.value.substring(0, start) +
+                `[${selectedText}](${url})` +
+                this.value.substring(end);
+            return { value: newValue, newCursorPos: end + 3 };
+        } else {
+            const newValue =
+                this.value.substring(0, start) +
+                `[${selectedText}]()` +
+                this.value.substring(end);
+            return { value: newValue, newCursorPos: end + 3 };
+        }
 
-        return { value: newValue, newCursorPos: end + 3 };
     }
 
     public applyListFormatting(start: number, listSyntax: string): { value: string, newCursorPos: number } {
