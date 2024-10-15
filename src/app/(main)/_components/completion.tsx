@@ -46,7 +46,6 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         const newValue = event.target.value;
         setInputValue(newValue);
         markdownFormatter.current.setValue(newValue);
-
     };
 
     const clipBoardHasUrl = async () => {
@@ -123,6 +122,10 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
 
         if ((event.ctrlKey || event.metaKey) && event.shiftKey) {
             switch (event.key.toLowerCase()) {
+                case 'd':
+                    event.preventDefault();
+                    duplicateCurrentLine();
+                    break;
                 case 'x':
                     event.preventDefault();
                     applyFormatting('~~');
@@ -233,6 +236,23 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         }
     };
 
+    const duplicateCurrentLine = () => {
+        const textarea = inputRef.current;
+        if (!textarea) return;
+
+        const cursorPosition = textarea.selectionStart;
+        const value = textarea.value;
+        let currentLineStart = value.lastIndexOf('\n', cursorPosition - 1) + 1;
+        let currentLineEnd = value.indexOf('\n', cursorPosition);
+        if (currentLineEnd === -1) currentLineEnd = value.length;
+
+        const currentLine = value.substring(currentLineStart, currentLineEnd);
+        const newLine = `${currentLine}`;
+
+        const newValue = value.substring(0, currentLineEnd) + "\n" + newLine + value.substring(currentLineEnd);
+        const newCursorPosition = currentLineEnd + 1;
+        updateValue(newValue, newCursorPosition + newLine.length);
+    }
 
 
     const onEnter = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
