@@ -21,7 +21,7 @@ export default function Page() {
     </div >
   }
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div />}>
       <RouteClient />
       <Welcome />
     </Suspense>
