@@ -13,6 +13,16 @@ export class MarkdownFormatter {
         this.value = newValue;
     }
 
+    public applyParanthesisFormatting(paranthesis: string, start: number, end: number,): { value: string, newCursorPos: number } {
+        const selectedText = this.value.substring(start, end);
+        const newValue =
+            this.value.substring(0, start) +
+            `${paranthesis}${selectedText}${paranthesis}` +
+            this.value.substring(end);
+
+        return { value: newValue, newCursorPos: end + 2 };
+    }
+
     public applyFormatting(start: number, end: number, syntax: string): { value: string, newCursorPos: number } {
         let selectedText = this.value.substring(start, end);
 

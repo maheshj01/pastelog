@@ -57,12 +57,25 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
 
     const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (event.key.toLowerCase() === '`' || event.key.toLowerCase() === "'" || (event.shiftKey && event.key.toLowerCase() === '"')) {
-            event.preventDefault();
-            applyFormatting(event.key);
-            return;
-        }
-
-        if (event.ctrlKey || event.metaKey) {
+            const textarea = inputRef.current;
+            if (!textarea) return;
+            const selection = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+            if (selection.length > 0) {
+                event.preventDefault();
+                applyFormatting(event.key);
+                return;
+            }
+        } else if (event.shiftKey && (event.key.toLowerCase() == '(' || event.key.toLowerCase() == '[' || event.key.toLowerCase() == '{' || event.key.toLowerCase() == ')' || event.key.toLowerCase() == ']' || event.key.toLowerCase() == '}')) {
+            const textarea = inputRef.current;
+            if (!textarea) return;
+            const selection = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+            if (selection.length > 0) {
+                event.preventDefault();
+                const wrapped = wrapWithParentheses(event.key, selection);
+                const newValue = textarea.value.substring(0, textarea.selectionStart) + wrapped + textarea.value.substring(textarea.selectionEnd);
+                updateValue(newValue, textarea.selectionEnd + 2);
+            }
+        } else if (event.ctrlKey || event.metaKey) {
             switch (event.key.toLowerCase()) {
                 case 'b':
                     event.preventDefault();
@@ -107,6 +120,7 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
                     break;
             }
         }
+
         if ((event.ctrlKey || event.metaKey) && event.shiftKey) {
             switch (event.key.toLowerCase()) {
                 case 'x':
@@ -295,6 +309,25 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         );
         updateValue(value, newCursorPos);
     };
+
+    const wrapWithParentheses = (paranthesis: string, selection: string): string => {
+        const textarea = inputRef.current;
+        if (!textarea) return '';
+        switch (paranthesis) {
+            case '(':
+            case ')':
+                return `(${selection})`;
+            case '[':
+            case ']':
+                return `[${selection}]`;
+            case '{':
+            case '}':
+                return `{${selection}}`;
+            default:
+                return '';
+        }
+
+    }
 
     const replaceSelection = async () => {
         const replacement = await navigator.clipboard.readText();
