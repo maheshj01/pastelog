@@ -56,6 +56,12 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
     }
 
     const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key.toLowerCase() === '`' || event.key.toLowerCase() === "'" || (event.shiftKey && event.key.toLowerCase() === '"')) {
+            event.preventDefault();
+            applyFormatting(event.key);
+            return;
+        }
+
         if (event.ctrlKey || event.metaKey) {
             switch (event.key.toLowerCase()) {
                 case 'b':
