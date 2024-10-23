@@ -1,5 +1,4 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
-
 // src/models/Log.ts
 export enum LogType {
     TEXT = 'text',
@@ -10,6 +9,7 @@ export interface ILog {
     expiryDate: Date | null;
     data: string;
     createdDate: Date;
+    lastUpdatedAt: Date;
     title?: string | '';
     type: LogType;
     isMarkDown: boolean;
@@ -25,6 +25,7 @@ export class Log implements ILog {
     data: string;
     title?: string | '';
     createdDate: Date;
+    lastUpdatedAt: Date;
     type: LogType;
     isMarkDown: boolean;
     isExpired?: boolean | false;
@@ -37,6 +38,7 @@ export class Log implements ILog {
         expiryDate = null,
         data,
         createdDate = new Date(),
+        lastUpdatedAt = new Date(),
         type,
         isMarkDown,
         title = '',
@@ -49,6 +51,7 @@ export class Log implements ILog {
         expiryDate?: Date | null,
         data: string,
         createdDate?: Date,
+        lastUpdatedAt?: Date,
         type: LogType,
         isMarkDown: boolean,
         title?: string,
@@ -59,6 +62,7 @@ export class Log implements ILog {
         id?: string
     }) {
         this.expiryDate = expiryDate;
+        this.lastUpdatedAt = new Date(createdDate);
         this.data = data;
         this.title = title;
         this.isExpired = isExpired;
@@ -70,15 +74,17 @@ export class Log implements ILog {
         this.isMarkDown = isMarkDown;
         this.id = id;
     }
+
     static fromFirestore(doc: QueryDocumentSnapshot<DocumentData, DocumentData>): Log {
         const data = doc.data();
         return new Log({
             expiryDate: data.expiryDate ? new Date(data.expiryDate) : null,
+            lastUpdatedAt: new Date(data.lastUpdatedAt),
             data: data.data,
             createdDate: new Date(data.createdDate),
             type: data.type as LogType,
             isMarkDown: data.isMarkDown,
-            title: data.title || '',
+            title: data.title ? data.title : '',
             summary: data.summary,
             userId: data.userId,
             isPublic: data.isPublic,
@@ -90,12 +96,13 @@ export class Log implements ILog {
 
     toFirestore(): any {
         const doc: any = {
-            expiryDate: this.expiryDate ? this.expiryDate.toISOString() : null,
+            expiryDate: this.expiryDate ? this.expiryDate.toUTCString() : null,
+            lastUpdatedAt: this.lastUpdatedAt ? this.lastUpdatedAt.toUTCString() : null,
             data: this.data,
-            createdDate: this.createdDate.toISOString(),
-            title: this.title || '',
+            createdDate: this.createdDate.toUTCString(),
+            title: this.title ? this.title : '',
             type: this.type,
-            summary: this.summary || '',
+            summary: this.summary,
             userId: this.userId,
             isPublic: this.isPublic,
             isMarkDown: this.isMarkDown,

@@ -78,8 +78,7 @@ class LogService {
             }
         }, []);
 
-        // Sort logs by createdDate in descending order
-        return uniqueLogs.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
+        return uniqueLogs;//.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
     }
 
     async publishLog(log: Log): Promise<string> {
