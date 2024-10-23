@@ -164,6 +164,12 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                 className={`flex justify-between items-center text-xs dark:text-slate-200 cursor-pointer py-1 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative bg-background`}>
                 <input
                     type="text"
+                    // on enter close the input
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            handleOutSideClick();
+                        }
+                    }}
                     value={logTitle}
                     onChange={(e) => setLogTitle(e.target.value)}
                     className={`text-black dark:text-white mx-2 py-1 w-full border-none focus:outline-none bg-transparent 
