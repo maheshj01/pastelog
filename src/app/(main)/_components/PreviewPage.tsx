@@ -25,7 +25,8 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const isPublishRoute = pathName.includes('/logs/publish');
     const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-
+    const publicLogs = ['getting-started', 'shortcuts'];
+    const showMoreOptions = !publicLogs.includes(logId!);
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
@@ -144,7 +145,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                 )
 
                             }
-                            <PreviewAction
+                            {(showMoreOptions && <PreviewAction
                                 className='py-2'
                                 loading={loading}
                                 onAction={handleOnEdit}
@@ -154,6 +155,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                 setIsEditing={setIsEditing}
                                 isPublishRoute={isPublishRoute}
                             />
+                            )}
                         </div>
                     )
                     }

@@ -45,7 +45,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             onClick={handleonAction}
             className="dropdown-class">
             <EllipsisHorizontalIcon
-                className='h-5 w-7 cursor-pointer transition-all duration-100' />
+                className='h-4 w-7 cursor-pointer transition-all duration-100' />
         </PSDropdown>
         );
     }
@@ -72,6 +72,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             logService.updateLogTitle(id, updatedLog);
             log.title = logTitle;
             setIsEditing(false);
+            notify('Notes Title Updated Successfully');
         }
 
     }
@@ -160,9 +161,14 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             <div
                 ref={inputRef as React.RefObject<HTMLDivElement>}
                 key={log.id}
-                className={`flex justify-between items-center text-sm dark:text-slate-200 cursor-pointer py-2 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative bg-background`}>
+                className={`flex justify-between items-center text-xs dark:text-slate-200 cursor-pointer py-1 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative bg-background`}>
                 <input
                     type="text"
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            handleOutSideClick();
+                        }
+                    }}
                     value={logTitle}
                     onChange={(e) => setLogTitle(e.target.value)}
                     className={`text-black dark:text-white mx-2 py-1 w-full border-none focus:outline-none bg-transparent 
@@ -194,7 +200,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             onMouseLeave={() => setIsHovered(false)}
         >
             <div
-                className={`text-sm dark:text-slate-200 cursor-pointer py-3 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative ${selected ? 'bg-background' : ''} ${className}`}
+                className={`text-xs dark:text-slate-200 cursor-pointer py-2 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative ${selected ? 'bg-background' : ''} ${className}`}
                 onClick={() => onLogClick(log)}
             >
                 <div className='flex justify-between items-center'>

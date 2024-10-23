@@ -9,7 +9,6 @@ function LogsContent() {
     const id = searchParams.get('id')
     return (
         <div className={`grow`}>
-            {/* Main content */}
             <div className="flex flex-col h-full">
                 <Pastelog id={id!} />
             </div>
