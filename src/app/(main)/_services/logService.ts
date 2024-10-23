@@ -2,7 +2,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from 'axios';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
 import { Log, LogType } from '../_models/Log';
 import FeatureService from "./feature";
@@ -49,7 +49,8 @@ class LogService {
         const userQuery = query(
             this.logCollection,
             where('userId', '==', userId),
-            where('isExpired', '==', false)
+            where('isExpired', '==', false),
+            orderBy('lastUpdatedAt', 'desc')
         );
         const userQuerySnapshot = await getDocs(userQuery);
         const userLogs = userQuerySnapshot.docs.map(doc => Log.fromFirestore(doc));
@@ -144,7 +145,7 @@ class LogService {
 
     async updateLogTitle(id: string, log: Log): Promise<void> {
         const docRef = doc(this.logCollection, id);
-        await updateDoc(docRef, { title: log.title });
+        await updateDoc(docRef, { title: log.title, lastUpdatedAt: new Date().toUTCString() });
         await this.saveLogToLocal(log);
     }
 
