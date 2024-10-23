@@ -1,4 +1,4 @@
-import { DocumentData, QueryDocumentSnapshot, Timestamp } from "firebase/firestore";
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 // src/models/Log.ts
 export enum LogType {
@@ -70,13 +70,12 @@ export class Log implements ILog {
         this.isMarkDown = isMarkDown;
         this.id = id;
     }
-
     static fromFirestore(doc: QueryDocumentSnapshot<DocumentData, DocumentData>): Log {
         const data = doc.data();
         return new Log({
-            expiryDate: data.expiryDate ? data.expiryDate.toDate : null,
+            expiryDate: data.expiryDate ? new Date(data.expiryDate) : null,
             data: data.data,
-            createdDate: data.createdDate ? data.createdDate.toDate : new Date(),
+            createdDate: new Date(data.createdDate),
             type: data.type as LogType,
             isMarkDown: data.isMarkDown,
             title: data.title || '',
@@ -91,9 +90,9 @@ export class Log implements ILog {
 
     toFirestore(): any {
         const doc: any = {
-            expiryDate: this.expiryDate ? Timestamp.fromDate(this.expiryDate) : null,
+            expiryDate: this.expiryDate ? this.expiryDate.toISOString() : null,
             data: this.data,
-            createdDate: Timestamp.fromDate(this.createdDate),
+            createdDate: this.createdDate.toISOString(),
             title: this.title || '',
             type: this.type,
             summary: this.summary || '',
