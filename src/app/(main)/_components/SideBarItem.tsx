@@ -45,7 +45,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             onClick={handleonAction}
             className="dropdown-class">
             <EllipsisHorizontalIcon
-                className='h-4 w-7 cursor-pointer transition-all duration-100' />
+                className='h-5 md:h-4 w-7 cursor-pointer transition-all duration-100' />
         </PSDropdown>
         );
     }
@@ -200,7 +200,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             onMouseLeave={() => setIsHovered(false)}
         >
             <div
-                className={`text-xs dark:text-slate-200 cursor-pointer py-2 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative ${selected ? 'bg-background' : ''} ${className}`}
+                className={`text-sm md:text-xs dark:text-slate-200 cursor-pointer py-2 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative ${selected ? 'bg-background' : ''} ${className}`}
                 onClick={() => onLogClick(log)}
             >
                 <div className='flex justify-between items-center'>
