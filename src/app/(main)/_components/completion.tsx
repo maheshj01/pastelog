@@ -449,7 +449,7 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
     return (
         <div className="relative inline-block w-full">
             <textarea
-                className={`${customClass}`}
+                className={`${customClass} editor`}
                 value={inputValue}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}

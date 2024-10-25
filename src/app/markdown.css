@@ -1,3 +1,7 @@
+.editor {
+    line-height: 1.0;
+}
+
 .reactMarkDown {
     /* word-break: break-all;
     white-space: pre-wrap; */
@@ -166,6 +170,15 @@
 
 */
 /* add standard styles for horizontal rules */
+
+.reactMarkDown a {
+    line-height: 100%;
+}
+
+.reactMarkDown p {
+    line-height: 120%;
+    text-align: justify;
+}
 
 .reactMarkDown hr {
     font-size: 1rem;
