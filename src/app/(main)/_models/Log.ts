@@ -97,7 +97,7 @@ export class Log implements ILog {
     toFirestore(): any {
         const doc: any = {
             expiryDate: this.expiryDate ? this.expiryDate.toUTCString() : null,
-            lastUpdatedAt: this.lastUpdatedAt ? this.lastUpdatedAt.toUTCString() : null,
+            lastUpdatedAt: new Date().toUTCString(),
             data: this.data,
             createdDate: this.createdDate.toUTCString(),
             title: this.title ? this.title : '',
