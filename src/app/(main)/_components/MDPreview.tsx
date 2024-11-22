@@ -1,4 +1,5 @@
 // src/_components/PSContent.tsx
+import { Tooltip } from "@nextui-org/react";
 import dynamic from "next/dynamic";
 import remarkGfm from "remark-gfm";
 import CodeBlock from "./CodeHighlight";
@@ -11,14 +12,19 @@ interface MDPreviewProps {
 }
 
 const MDPreview = ({ value, className }: MDPreviewProps) => {
-    const customClass = `px-2 py-2 rounded-b-lg border-surface focus:ring-secondary focus:outline-none focus:ring-2 focus:ring-2 resize-y min-h-60 w-full reactMarkDown ${className}`;
+    const customClass = `px-2 py-2 rounded-b-lg border-surface focus:ring-secondary focus:outline-none focus:ring-2 resize-y min-h-60 w-full reactMarkDown ${className}`;
 
     function LinkRenderer(props: any) {
-        console.log({ props });
         return (
-            <a href={props.href} target="_blank" rel="noreferrer">
-                {props.children}
-            </a>
+            <Tooltip
+                className="cursor-pointer"
+                onClick={(e) => window.open(props.href, '_blank')}
+                content={props.href.length > 50 ? props.href.substring(0, 50) + '...' : props.href}
+                placement='top-start'>
+                <a href={props.href} target="_blank" rel="noreferrer">
+                    {props.children}
+                </a>
+            </Tooltip>
         );
     }
     return <div
@@ -31,9 +37,6 @@ const MDPreview = ({ value, className }: MDPreviewProps) => {
             className={`${customClass} mb-2`}
             components={{
                 a: LinkRenderer,
-                p({ children }) {
-                    return <p className='line-break'>{children}</p>;
-                },
                 code(props) {
                     const { children, className, node, ref, ...rest } = props
                     const match = /language-(\w+)/.exec(className || '')
