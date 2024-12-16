@@ -17,7 +17,8 @@
     --color-accent: #cbd5e1;
     --color-block-surface: #e2e7f3;
     --color-link: #2563eb;
-    --color-input-background: #f1f5f9;
+    --color-input-background: #f8fafc;
+    --color-input-border: #475569;
     --color-selection: #e0e3ea;
   }
 
@@ -33,7 +34,8 @@
     --color-accent: #9ca3af;
     --color-block-surface: #46516a;
     --color-link: #7aafe1;
-    --color-input-background: #5f6877;
+    --color-input-background: #374151;
+    --color-input-border: #e2e8f0;
     --color-selection: #AFAFAF;
   }
 }
