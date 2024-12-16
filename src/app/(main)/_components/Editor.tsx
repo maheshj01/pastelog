@@ -66,7 +66,7 @@ const Editor: React.FC<PSEditorProps> = ({ value, onChange, placeHolder, preview
     `;
     const pathName = usePathname();
     const isPublishRoute = pathName.includes('/logs/publish');
-    const customClass = `px-2 py-2 rounded-b-lg border-surface focus:ring-[var(--color-input-border)] bg-[var(--color-input-background)] focus:outline-none focus:ring-2 resize-y w-full ${className}`;
+    const customClass = `px-2 py-2 rounded-b-lg border-surface focus:ring-secondary focus:outline-none focus:ring-2 focus:ring-2 resize-y min-h-80 w-full ${className}`;
 
     var previewClass = '';
     if (preview) {
@@ -76,7 +76,7 @@ const Editor: React.FC<PSEditorProps> = ({ value, onChange, placeHolder, preview
         previewClass = 'fade-out-animation'
     };
     return (
-        <div className="flex flex-grow">
+        <div className="relative">
             {preview ? (
                 // if value is empty, show placeholder
                 value ? (
@@ -85,15 +85,12 @@ const Editor: React.FC<PSEditorProps> = ({ value, onChange, placeHolder, preview
                         value={value}
                     />
                 ) : (!isPublishRoute &&
-                    <div className={`${customClass} border-b-8 flex justify-center items-center`} style={{
-                        height: "70vh",
-                        maxHeight: "100%"
-                    }}>
-                        <p className="text-gray-500">{"Nothing to Preview"}</p>
+                    <div className={`flex justify-center items-center rounded-b-lg ${customClass}`} >
+                        <p>Nothing to Preview</p>
                     </div>)
             ) : (
                 <TextCompletionInput
-                    customClass={`${customClass} w-full ${!preview ? 'fade-in-animation' : 'fade-out-animation'}`}
+                    customClass={`${customClass} line-break ${!preview ? 'fade-in-animation' : 'fade-out-animation'}`}
                     // We need editor state only when editing
                     value={isRepublish ? value : editorStateRef.current?.getCurrentValue()}
                     onChange={handleChange}
