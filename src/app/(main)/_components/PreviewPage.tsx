@@ -79,7 +79,15 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                 <div className='flex flex-col'>
                     <div className='flex items-center py-2'>
                         <div className='grow'>
-                            <p className="text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
+                            <p className="text-3xl font-medium text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
+                            {!loading && <div className="mt-2">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    {/* <span className="font-medium">Created At:</span> {formatReadableDate(previewLog?.createdDate!)} */}
+                                </p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    <span className="font-medium">Last Updated:</span> {previewLog?.lastUpdatedAt.toDateString()}
+                                </p>
+                            </div>}
                         </div>
                         <GeminiIcon onGeminiTrigger={() => {
                             if (!summaryLoading) {
