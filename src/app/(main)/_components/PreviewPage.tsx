@@ -27,6 +27,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const publicLogs = ['getting-started', 'shortcuts'];
     const showMoreOptions = !publicLogs.includes(logId!);
+
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
@@ -64,6 +65,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const handleOnEdit = async (hasUpdated: boolean) => {
         setLoading(true);
         if (hasUpdated) {
+            editedLog!.lastUpdatedAt = new Date();
             await logService.updateLog(logId, editedLog!);
             setpreviewLog(new Log({ ...editedLog! }));
         } else {
@@ -189,3 +191,4 @@ const PreviewPage = ({ logId }: { logId: string }) => {
 }
 
 export default PreviewPage;
+

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
 import { FiSidebar } from "react-icons/fi";
 import IconButton from "../_components/IconButton";
-import PSBanner from '../_components/PSBanner';
+import PSBanner from '../_components/PSBanner'; 
 import PSNavbar from '../_components/PSNavbar';
 import RouteClient from '../_components/RouteClient';
 import ShortcutWrapper from '../_components/ShortCutWrapper';

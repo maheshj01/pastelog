@@ -199,7 +199,6 @@ export default function Pastelog({ id }: { id?: string }) {
         }
     }, [id])
 
-
     const togglePreview = React.useCallback(() => {
         setPreview((prev) => !prev);
     }, [])

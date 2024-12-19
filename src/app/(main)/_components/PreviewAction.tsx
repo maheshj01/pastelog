@@ -13,10 +13,11 @@ import { useSidebar } from '../_hooks/useSidebar';
 import Log from '../_models/Log';
 import Analytics from '../_services/Analytics';
 import LogService from '../_services/logService';
+import { Button } from './button';
+import CopyIcon from './CopyIcon';
 import PSDropdown from './Dropdown';
 import IconButton from './IconButton';
 import ShareDialog from './Share';
-import { Button } from './button';
 
 interface PreviewActionProps {
     isEditing: boolean,
@@ -34,7 +35,6 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
     const { isOpen, onOpen, onClose } = useDisclosure();
     const logService = new LogService();
     const logId = previewLog.id;
-    const [copied, setCopied] = useState<boolean>(false);
     const pathName = usePathname();
 
     function More() {
@@ -97,42 +97,25 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
         Analytics.logEvent('copy_clipboard', { id: logId });
     }
 
-    const handleCopy = (data: string) => {
-        navigator.clipboard.writeText(data);
-        setCopied(true);
-        setTimeout(() => {
-            setCopied(false);
-        }, 2000);
-        notify('Copied to Clipboard!');
-    }
-
     return (
         <div className={`flex justify-between items-center ${className}`}>
-
             <div className='flex justify-end space-x-2'>
-                <IconButton
-                    onClick={() => handleCopy(`${window.location.origin}/logs/publish/${previewLog?.id}`)}
-                    ariaLabel="Share "
-                >{!copied ?
-                    (<ShareIcon />)
-                    :
-                    (<DoneIcon
-                        color='success'
-                    />)
-                    }
-                </IconButton>
-
-                <IconButton
-                    onClick={() => handleCopy(`${previewLog?.data as string}`)}
-                    ariaLabel="Copy to clipboard"
-                >{!copied ?
-                    (<ContentCopyIcon />)
-                    :
-                    (<DoneIcon
-                        color='success'
-                    />)
-                    }
-                </IconButton>
+                <CopyIcon
+                    id='copy-link'
+                    message='Link copied'
+                    tooltip='Copy link'
+                    data={`${window.location.origin}/logs/publish/${previewLog?.id}`}
+                    copiedIcon={<DoneIcon color='success' />}
+                    icon={<ShareIcon className='size-6 text-black dark:text-white' />}
+                />
+                <CopyIcon
+                    id='copy-content'
+                    message='Copied to clipboard'
+                    tooltip='Copy to clipboard'
+                    data={`${previewLog?.data as string}`}
+                    copiedIcon={<DoneIcon color='success' />}
+                    icon={<ContentCopyIcon className='size-6 text-black dark:text-white' />}
+                />
                 {
                     user && !isPublishRoute && (
                         !isEditing ? (<div className='flex'>
