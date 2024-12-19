@@ -1,6 +1,6 @@
 import { showToast } from '@/utils/toast_utils';
 import { downloadImage, downloadText } from '@/utils/utils';
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
+import { EllipsisHorizontalIcon, ShareIcon } from "@heroicons/react/24/solid";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
 import { useDisclosure } from '@nextui-org/react';
@@ -97,8 +97,8 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
         Analytics.logEvent('copy_clipboard', { id: logId });
     }
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(previewLog?.data as string);
+    const handleCopy = (data: string) => {
+        navigator.clipboard.writeText(data);
         setCopied(true);
         setTimeout(() => {
             setCopied(false);
@@ -111,7 +111,19 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
 
             <div className='flex justify-end space-x-2'>
                 <IconButton
-                    onClick={handleCopy}
+                    onClick={() => handleCopy(`${window.location.origin}/logs/publish/${previewLog?.id}`)}
+                    ariaLabel="Share "
+                >{!copied ?
+                    (<ShareIcon />)
+                    :
+                    (<DoneIcon
+                        color='success'
+                    />)
+                    }
+                </IconButton>
+
+                <IconButton
+                    onClick={() => handleCopy(`${previewLog?.data as string}`)}
                     ariaLabel="Copy to clipboard"
                 >{!copied ?
                     (<ContentCopyIcon />)

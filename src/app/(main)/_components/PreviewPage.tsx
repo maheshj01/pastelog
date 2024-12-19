@@ -126,19 +126,19 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                         !loading &&
                         <div className='flex flex-row justify-between items-center'>
                             {
-                                (!isEditing) ? (previewLog?.expiryDate ?
+                                (!isEditing) ? (previewLog?.expiryDate &&
                                     <div>
                                         <p className="text-black dark:text-slate-50 my-1 font-bold">
                                             {`Expires`}
                                         </p>
                                         <p className="text-black dark:text-slate-50 my-1"> {` ${formatReadableDate(previewLog?.expiryDate)}`}</p>
                                     </div>
-                                    : <div>
-                                        <p className="text-black dark:text-slate-50 my-1 font-bold">
-                                            {`Expires`}
-                                        </p>
-                                        <p className="text-black dark:text-slate-50 my-1"> {`Never`}</p>
-                                    </div>
+                                    // : <div>
+                                    //     <p className="text-black dark:text-slate-50 my-1 font-bold">
+                                    //         {`Expires`}
+                                    //     </p>
+                                    //     <p className="text-black dark:text-slate-50 my-1"> {`Never`}</p>
+                                    // </div>
                                 ) : (
                                     <DatePicker
                                         onSelect={(date: Date) => {
@@ -153,6 +153,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                 )
 
                             }
+                            <div className='flex w-auto' />
                             {(showMoreOptions && <PreviewAction
                                 className='py-2'
                                 loading={loading}
