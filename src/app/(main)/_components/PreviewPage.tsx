@@ -27,7 +27,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const publicLogs = ['getting-started', 'shortcuts'];
     const showMoreOptions = !publicLogs.includes(logId!);
-
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
@@ -73,6 +72,26 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         }
         setIsEditing(false);
         setLoading(false);
+    }
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-500"></div>
+            </div>
+        )
+    }
+
+    if (previewLog === null || (previewLog.expiryDate != null && new Date(previewLog.expiryDate) < new Date())) {
+        const className = 'text-md text-black dark:text-slate-50 my-1';
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                    <p className={`text-3xl`}>{"This Note has Expired"}</p>
+                    <p className={className}>{"or its has been deleted by the owner"}</p>
+                </div>
+            </div>
+        )
     }
 
     return (
