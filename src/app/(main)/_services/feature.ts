@@ -18,11 +18,9 @@ class FeatureService {
     async shouldDeleteExpired(): Promise<boolean> {
         const querySnapshot = await getDocs(this.configCollection);
         const notesFeature = querySnapshot.docs.find(doc => doc.id === 'notes');
-
         if (notesFeature) {
             const data = notesFeature.data();
             const lastExpiryCheck = data.lastExpiryCheck?.toDate();
-
             if (!lastExpiryCheck || await this.isMoreThan24HoursAgo(lastExpiryCheck)) {
                 // Use a transaction to ensure atomic read-write operation
                 await runTransaction(db, async (transaction) => {

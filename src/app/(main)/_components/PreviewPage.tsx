@@ -88,7 +88,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
             <div className="flex items-center justify-center h-screen">
                 <div className="text-center">
                     <p className={`text-3xl`}>{"This Note has Expired"}</p>
-                    <p className={className}>{"or its has been deleted by the owner"}</p>
+                    <p className={className}>{"or it has been deleted by the owner"}</p>
                 </div>
             </div>
         )

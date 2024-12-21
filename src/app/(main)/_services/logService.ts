@@ -166,11 +166,11 @@ class LogService {
     }
 
     async deleteExpiredLogs(): Promise<void> {
-        if (await this.featureService.shouldDeleteExpired()) {
+        const checked = await this.featureService.shouldDeleteExpired()
+        if (checked) {
             const querySnapshot = await getDocs(this.logCollection);
             const updatePromises: Promise<void>[] = [];
             const today = new Date();
-            today.setUTCHours(0, 0, 0, 0);
 
             querySnapshot.forEach((doc) => {
                 const log = Log.fromFirestore(doc);
@@ -183,7 +183,6 @@ class LogService {
                     );
                 }
             });
-
             try {
                 await Promise.all(updatePromises);
             } catch (error) {
