@@ -15,6 +15,17 @@ class FeatureService {
         }
     };
 
+    async menuDoc(): Promise<any> {
+        const querySnapshot = await getDocs(this.configCollection);
+        const menuFeature = querySnapshot.docs.find(doc => doc.id === 'menu');
+        return menuFeature?.data() ?? {
+            'github': true,
+            'report': true,
+            'releaseNotes': false,
+            'tour': true,
+        };
+    }
+
     async shouldDeleteExpired(): Promise<boolean> {
         const querySnapshot = await getDocs(this.configCollection);
         const notesFeature = querySnapshot.docs.find(doc => doc.id === 'notes');

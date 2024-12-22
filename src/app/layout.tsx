@@ -53,8 +53,7 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
             themes={['purple', 'red', 'blue', 'green', 'dark']}
-            disableTransitionOnChange
-          >
+            disableTransitionOnChange>
             <SidebarProvider>
               <ToastProvider>
                 {children}

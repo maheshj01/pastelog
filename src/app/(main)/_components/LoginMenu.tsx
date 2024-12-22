@@ -1,9 +1,11 @@
+import { RootState } from '@/lib/store';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@radix-ui/react-hover-card';
 import { ExitIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
-import { FaBug, FaGithub, FaGoogle, FaWpexplorer } from "react-icons/fa";
+import { FaBug, FaGithub, FaGoogle, FaNewspaper, FaWpexplorer } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 import useSettings from '../_hooks/useSettings';
 import { useSidebar } from '../_hooks/useSidebar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuShortcut, DropdownMenuTrigger } from './dropdown-menu';
@@ -19,6 +21,7 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSet
 
     const { id, setSelected, setId, showSideBar, user, setUser } = useSidebar();
     const { settings, toggleNewUser, setNewUser } = useSettings();
+    const { menuItems, loading: loadingMenu } = useSelector((state: RootState) => state.menu);
     const router = useRouter();
     return (
         <div className='sticky bottom-0'>
@@ -50,30 +53,32 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSet
                                 <div className="text-xs text-gray-500 dark:text-gray-300">{user.email}</div>
                             </div>
                         </div>
-                        {/* <DropdownMenuSeparator /> */}
-                        {/* <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={onSettings}>
-                            <FaGithub className='size-4 text-black dark:text-white' />
-                            <span>Settings</span>
-                        </DropdownMenuItem> */}
-                        <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {
+                        {menuItems.releaseNotes && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {
+                        }}>
+                            <FaNewspaper className='size-4 text-black dark:text-white' />
+                            <span>Whats New ✨</span>
+                        </DropdownMenuItem>
+                        }
+                        {menuItems.github && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {
                             window.open(process.env.NEXT_PUBLIC_GITHUB_REPO ?? '', '_blank');
                         }}>
                             <FaGithub className='size-4 text-black dark:text-white' />
                             <span>GitHub</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {
+                        }
+                        {menuItems.report && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {
                             window.open(`${process.env.NEXT_PUBLIC_GITHUB_REPO}/issues/new`, '_blank');
                         }}>
                             <FaBug className='size-4 text-black dark:text-white' />
                             <span>Report a Bug</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={async () => {
+                        </DropdownMenuItem>}
+                        {menuItems.tour && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={async () => {
                             setNewUser(true);
                             router.push('/');
                         }}>
                             <FaWpexplorer className='size-4 text-black dark:text-white' />
                             <span>Take a Tour</span>
-                        </DropdownMenuItem>
+                        </DropdownMenuItem>}
                         <DropdownMenuItem className='space-x-2 cursor-pointer' onClick={onLogOut}>
                             <ExitIcon />
                             <span>Log out</span>
