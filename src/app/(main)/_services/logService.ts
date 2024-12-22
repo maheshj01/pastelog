@@ -136,6 +136,7 @@ class LogService {
     async updateLog(id: string, log: Log): Promise<void> {
         const docRef = doc(this.logCollection, id);
         const data = log.toFirestore();
+        console.log("updating data:", data);
         // await this.saveLogToLocal(log);
         // Remove any undefined fields
         Object.keys(data).forEach(key => data[key] === undefined && delete data[key]);
@@ -174,7 +175,7 @@ class LogService {
 
             querySnapshot.forEach((doc) => {
                 const log = Log.fromFirestore(doc);
-                if (log.expiryDate && log.expiryDate < today) {
+                if (log.expiryDate && new Date(log.expiryDate) < today) {
                     updatePromises.push(
                         updateDoc(doc.ref, { isExpired: true })
                             .catch((error) => {
@@ -209,17 +210,16 @@ class LogService {
                 const parsedLogs = JSON.parse(logs) as Log[];
                 // Convert createdDate strings back to Date objects
                 const logInstances = parsedLogs.map((log) => {
-                    log.createdDate = new Date(log.createdDate);
-                    if (log.expiryDate) {
-                        log.expiryDate = new Date(log.expiryDate);
+                    if (!log.lastUpdatedAt) {
+                        log.lastUpdatedAt = log.createdDate;
                     }
                     return new Log(log)
                 });
 
                 const filtered = logInstances.filter(log => !log.isExpired);
 
-                // sort by created date in reverse order
-                return filtered.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
+                // sort by lastUpdate in reverse order
+                return filtered.sort((a, b) => new Date(b.lastUpdatedAt).getTime() - new Date(a.lastUpdatedAt).getTime());
             }
             return [];
         }
@@ -266,7 +266,8 @@ class LogService {
                 type: LogType.TEXT,
                 isMarkDown: false,
                 title: desc,
-                createdDate: new Date(),
+                createdDate: new Date().toUTCString(),
+                lastUpdatedAt: new Date().toUTCString(),
                 isPublic: true,
                 isExpired: false,
                 summary: '',

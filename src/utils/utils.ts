@@ -23,13 +23,13 @@ export const parsedDate = (date: Date): CalendarDate => {
     return parsedDate;
 }
 
-export const formatReadableDate = (date: Date): string => {
+export const formatReadableDate = (date: string): string => {
     const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
     };
-    return date.toLocaleDateString(undefined, options);
+    return new Date(date).toLocaleDateString('en-local', options);
 }
 
 export const downloadImage = async () => {

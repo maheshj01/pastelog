@@ -6,10 +6,10 @@ export enum LogType {
 }
 
 export interface ILog {
-    expiryDate: Date | null;
+    expiryDate: string | null;
     data: string;
-    createdDate: Date;
-    lastUpdatedAt: Date;
+    createdDate: string;
+    lastUpdatedAt: string;
     title?: string | '';
     type: LogType;
     isMarkDown: boolean;
@@ -21,11 +21,11 @@ export interface ILog {
 }
 
 export class Log implements ILog {
-    expiryDate: Date | null;
+    expiryDate: string | null;
     data: string;
     title?: string | '';
-    createdDate: Date;
-    lastUpdatedAt: Date;
+    createdDate: string;
+    lastUpdatedAt: string;
     type: LogType;
     isMarkDown: boolean;
     isExpired?: boolean | false;
@@ -37,8 +37,8 @@ export class Log implements ILog {
     constructor({
         expiryDate = null,
         data,
-        createdDate = new Date(),
-        lastUpdatedAt = new Date(),
+        createdDate = new Date().toUTCString(),
+        lastUpdatedAt = new Date().toUTCString(),
         type,
         isMarkDown,
         title = '',
@@ -48,10 +48,10 @@ export class Log implements ILog {
         isExpired = false,
         id
     }: {
-        expiryDate?: Date | null,
+        expiryDate?: string | null,
         data: string,
-        createdDate?: Date,
-        lastUpdatedAt?: Date,
+        createdDate?: string,
+        lastUpdatedAt?: string,
         type: LogType,
         isMarkDown: boolean,
         title?: string,
@@ -62,11 +62,11 @@ export class Log implements ILog {
         id?: string
     }) {
         this.expiryDate = expiryDate;
-        this.lastUpdatedAt = new Date(createdDate);
+        this.lastUpdatedAt = createdDate;
         this.data = data;
         this.title = title;
         this.isExpired = isExpired;
-        this.createdDate = new Date(createdDate);
+        this.createdDate = createdDate;
         this.type = type;
         this.summary = summary;
         this.userId = userId;
@@ -78,10 +78,10 @@ export class Log implements ILog {
     static fromFirestore(doc: QueryDocumentSnapshot<DocumentData, DocumentData>): Log {
         const data = doc.data();
         return new Log({
-            expiryDate: data.expiryDate ? new Date(data.expiryDate) : null,
-            lastUpdatedAt: new Date(data.lastUpdatedAt),
+            expiryDate: data.expiryDate ? data.expiryDate : null,
+            lastUpdatedAt: data.lastUpdatedAt,
             data: data.data,
-            createdDate: new Date(data.createdDate),
+            createdDate: data.createdDate,
             type: data.type as LogType,
             isMarkDown: data.isMarkDown,
             title: data.title ? data.title : '',
@@ -96,10 +96,10 @@ export class Log implements ILog {
 
     toFirestore(): any {
         const doc: any = {
-            expiryDate: this.expiryDate ? this.expiryDate.toUTCString() : null,
+            expiryDate: this.expiryDate ? this.expiryDate : null,
             lastUpdatedAt: new Date().toUTCString(),
             data: this.data,
-            createdDate: this.createdDate.toUTCString(),
+            createdDate: this.createdDate,
             title: this.title ? this.title : '',
             type: this.type,
             summary: this.summary,

@@ -64,7 +64,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const handleOnEdit = async (hasUpdated: boolean) => {
         setLoading(true);
         if (hasUpdated) {
-            editedLog!.lastUpdatedAt = new Date();
+            editedLog!.lastUpdatedAt = new Date().toISOString();
             await logService.updateLog(logId, editedLog!);
             setpreviewLog(new Log({ ...editedLog! }));
         } else {
@@ -106,7 +106,9 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                     {/* <span className="font-medium">Created At:</span> {formatReadableDate(previewLog?.createdDate!)} */}
                                 </p>
                                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    <span className="font-medium">Last Updated:</span> {previewLog?.lastUpdatedAt.toDateString()}
+                                    <span className="font-medium">Last Updated:</span> {
+                                        isEditing ? formatReadableDate(editedLog?.lastUpdatedAt!) : formatReadableDate(previewLog?.lastUpdatedAt!)
+                                    }
                                 </p>
                             </div>}
                         </div>
@@ -165,11 +167,11 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                         onSelect={(date: Date) => {
                                             seteditedLog(prevLog => new Log({
                                                 ...prevLog!,
-                                                expiryDate: date
+                                                expiryDate: date.toISOString()
                                             }));
                                             Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
                                         }}
-                                        selected={editedLog?.expiryDate!}
+                                        selected={new Date(editedLog?.expiryDate!)}
                                     />
                                 )
 
