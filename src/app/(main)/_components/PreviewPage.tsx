@@ -13,12 +13,7 @@ import { DatePicker } from "./DatePicker";
 import GeminiIcon from './GeminiIcon';
 import MDPreview from './MDPreview';
 import PreviewAction from './PreviewAction';
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from './accordion';
+import PSAccordion from './PSAccordian';
 
 const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
@@ -146,40 +141,33 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                 </GeminiIcon>
                             </div>
                             {!loading && <div>
-                                <Accordion
-                                    type="single" collapsible>
-                                    <AccordionItem value="details">
-                                        <AccordionTrigger className='dark:text-white p-0'>Details</AccordionTrigger>
-                                        <AccordionContent>
-                                            <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                <p className='m-0'>
-                                                    <span className="font-medium">Created At:</span>{" "}
-                                                    {formatReadableDate(previewLog?.createdDate!)}
-                                                </p>
-                                                <p className='m-0'>
-                                                    <span className="font-medium">Last Updated:</span>{" "}
-                                                    {isEditing
-                                                        ? formatReadableDate(editedLog?.lastUpdatedAt!)
-                                                        : formatReadableDate(previewLog?.lastUpdatedAt!)}
-                                                </p>
-                                            </div>
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                </Accordion>
+                                <PSAccordion
+                                    title='Details'
+                                    id='details'
+                                >
+                                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                                        <p className='m-0'>
+                                            <span className="font-medium">Created At:</span>{" "}
+                                            {formatReadableDate(previewLog?.createdDate!)}
+                                        </p>
+                                        <p className='m-0'>
+                                            <span className="font-medium">Last Updated:</span>{" "}
+                                            {isEditing
+                                                ? formatReadableDate(editedLog?.lastUpdatedAt!)
+                                                : formatReadableDate(previewLog?.lastUpdatedAt!)}
+                                        </p>
+                                    </div>
+                                </PSAccordion>
                             </div>}
                         </div>
                     </div>
                     {(previewLog?.summary || summaryLoading) &&
-                        <Accordion
-                            className='flex-grow'
-                            type="single" collapsible>
-                            <AccordionItem value="summary">
-                                <AccordionTrigger className='dark:text-white p-0'>Summary</AccordionTrigger>
-                                <AccordionContent>
-                                    <SummaryComponent />
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
+                        <PSAccordion
+                            title='Summary'
+                            id='summary'
+                            className='flex-grow'>
+                            <SummaryComponent />
+                        </PSAccordion>
                     }
                     {(
                         !loading &&
