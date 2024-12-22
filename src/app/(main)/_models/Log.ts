@@ -38,7 +38,7 @@ export class Log implements ILog {
         expiryDate = null,
         data,
         createdDate = new Date().toUTCString(),
-        lastUpdatedAt = new Date().toUTCString(),
+        lastUpdatedAt,
         type,
         isMarkDown,
         title = '',
@@ -62,7 +62,7 @@ export class Log implements ILog {
         id?: string
     }) {
         this.expiryDate = expiryDate;
-        this.lastUpdatedAt = createdDate;
+        this.lastUpdatedAt = lastUpdatedAt ? lastUpdatedAt : createdDate;
         this.data = data;
         this.title = title;
         this.isExpired = isExpired;
@@ -77,11 +77,12 @@ export class Log implements ILog {
 
     static fromFirestore(doc: QueryDocumentSnapshot<DocumentData, DocumentData>): Log {
         const data = doc.data();
+        console.log("firestore", data);
         return new Log({
-            expiryDate: data.expiryDate ? data.expiryDate : null,
-            lastUpdatedAt: data.lastUpdatedAt,
+            expiryDate: data.expiryDate ? (data.expiryDate.toDate ? data.expiryDate.toDate().toUTCString() : data.expiryDate) : null,
+            lastUpdatedAt: data.lastUpdatedAt ?? data.createdDate,
             data: data.data,
-            createdDate: data.createdDate,
+            createdDate: data.createdDate ? (data.createdDate.toDate ? data.createdDate.toDate().toUTCString() : data.createdDate) : '',
             type: data.type as LogType,
             isMarkDown: data.isMarkDown,
             title: data.title ? data.title : '',
@@ -90,8 +91,7 @@ export class Log implements ILog {
             isPublic: data.isPublic,
             isExpired: data.isExpired,
             id: data.id ? data.id : doc.id
-        }
-        );
+        });
     }
 
     toFirestore(): any {
@@ -116,6 +116,23 @@ export class Log implements ILog {
             doc.summary = this.summary;
         }
         return doc;
+    }
+
+    toJson(): any {
+        return {
+            expiryDate: this.expiryDate ? this.expiryDate : null,
+            lastUpdatedAt: this.lastUpdatedAt,
+            data: this.data,
+            createdDate: this.createdDate,
+            title: this.title ? this.title : '',
+            type: this.type,
+            summary: this.summary,
+            userId: this.userId,
+            isPublic: this.isPublic,
+            isMarkDown: this.isMarkDown,
+            isExpired: this.isExpired,
+            id: this.id
+        };
     }
 }
 export default Log;

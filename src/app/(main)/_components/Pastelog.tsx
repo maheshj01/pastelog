@@ -113,11 +113,11 @@ export default function Pastelog({ id }: { id?: string }) {
 
             setLoading(true);
             const log = new Log({
-                expiryDate: expiryDate,
+                expiryDate: expiryDate?.toDateString(),
                 data: content,
                 type: LogType.TEXT,
                 title: title,
-                createdDate: new Date(),
+                createdDate: new Date().toDateString(),
                 isExpired: false,
                 summary: '',
                 isPublic: false,
@@ -166,7 +166,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 if (log) {
                     setTitle(log.title!);
                     setContent(log.data!);
-                    setExpiryDate(log.expiryDate!);
+                    setExpiryDate(new Date(log.expiryDate!));
                     notify(false, "Log imported successfully");
                     onImportClose();
                     Analytics.logEvent('import_pastelog', { id: id, action: 'click' });
@@ -193,7 +193,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 if (log) {
                     setTitle(log.title!);
                     setContent(log.data!);
-                    setExpiryDate(log.expiryDate!);
+                    setExpiryDate(new Date(log.expiryDate!));
                 }
             });
         }

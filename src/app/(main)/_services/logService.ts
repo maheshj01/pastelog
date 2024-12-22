@@ -87,12 +87,10 @@ class LogService {
             if (docRef.id) {
                 // if user not loggedIn save to local
                 if (!log.userId) {
-                    await this.saveLogToLocal({
+                    await this.saveLogToLocal(new Log({
                         ...log, id: docRef.id,
-                        toFirestore: function () {
-                            throw new Error('Function not implemented.');
-                        }
-                    });
+                    },
+                    ));
                 }
                 return docRef.id!
             } else {
@@ -124,19 +122,15 @@ class LogService {
     async publishLogWithId(log: Log, id: string): Promise<string> {
         const docRef = doc(this.logCollection, id);
         await setDoc(docRef, log.toFirestore());
-        await this.saveLogToLocal({
+        await this.saveLogToLocal(new Log({
             ...log, id: docRef.id,
-            toFirestore: function () {
-                throw new Error('Function not implemented.');
-            }
-        });
+        }));
         return docRef.id;
     }
 
     async updateLog(id: string, log: Log): Promise<void> {
         const docRef = doc(this.logCollection, id);
         const data = log.toFirestore();
-        console.log("updating data:", data);
         // await this.saveLogToLocal(log);
         // Remove any undefined fields
         Object.keys(data).forEach(key => data[key] === undefined && delete data[key]);

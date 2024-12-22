@@ -64,7 +64,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const handleOnEdit = async (hasUpdated: boolean) => {
         setLoading(true);
         if (hasUpdated) {
-            editedLog!.lastUpdatedAt = new Date().toISOString();
+            editedLog!.lastUpdatedAt = new Date().toUTCString();
             await logService.updateLog(logId, editedLog!);
             setpreviewLog(new Log({ ...editedLog! }));
         } else {
