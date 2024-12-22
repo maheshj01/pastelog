@@ -13,6 +13,12 @@ import { DatePicker } from "./DatePicker";
 import GeminiIcon from './GeminiIcon';
 import MDPreview from './MDPreview';
 import PreviewAction from './PreviewAction';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from './accordion';
 
 const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
@@ -40,6 +46,28 @@ const PreviewPage = ({ logId }: { logId: string }) => {
             setSummaryLoading(false);
         }
     };
+
+    function SummaryComponent() {
+        return <div className='rounded-xl bg-gradient-to-tr'>
+            {/* <p className="text-white mb-2 font-bold text-lg">
+                Summary
+            </p> */}
+            {summaryLoading ? (
+                <div className="flex items-center justify-center py-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                </div>
+            ) : previewLog?.summary ? (
+                <div className="bg-white bg-opacity-10 rounded-lg p-3">
+                    <MDPreview
+                        className='text-black dark:text-white reveal-top-animation'
+                        value={previewLog?.summary}
+                    />
+                </div>
+            ) : (
+                <p className="italic text-black dark:text-white">No summary available. Tap the Gemini Icon to generate the Summary</p>
+            )}
+        </div>
+    }
 
     async function fetchLogsById() {
         setLoading(true);
@@ -98,10 +126,10 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         <div className={`flex flex-col items-center h-fit`}>
             <div className="w-full md:w-3/4 lg:w-2/3 max-w-none px-1 prose prose-indigo dark:prose-dark">
                 <div className='flex flex-col'>
-                    <div className='flex items-center py-2'>
+                    <div className='flex items-center'>
                         <div className='grow'>
                             <p className="text-3xl font-medium text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
-                            {!loading && <div className="mt-2">
+                            {!loading && <div>
                                 <p className="text-sm text-gray-500 dark:text-gray-400">
                                     {/* <span className="font-medium">Created At:</span> {formatReadableDate(previewLog?.createdDate!)} */}
                                 </p>
@@ -126,25 +154,16 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                             />
                         </GeminiIcon>
                     </div>
-                    {((previewLog?.summary || summaryLoading) && <div className='rounded-xl px-4 py-3 bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500'>
-                        <p className="text-white mb-2 font-bold text-lg">
-                            Summary
-                        </p>
-                        {summaryLoading ? (
-                            <div className="flex items-center justify-center py-4">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-                            </div>
-                        ) : previewLog?.summary ? (
-                            <div className="bg-white bg-opacity-10 rounded-lg p-3">
-                                <MDPreview
-                                    className='text-white reveal-top-animation'
-                                    value={previewLog?.summary}
-                                />
-                            </div>
-                        ) : (
-                            <p className="text-white italic">No summary available. Tap the Gemini Icon to generate the Summary</p>
-                        )}
-                    </div>)}
+                    {(previewLog?.summary || summaryLoading) &&
+                        <Accordion type="single" collapsible>
+                            <AccordionItem value="summary">
+                                <AccordionTrigger className='dark:text-white'>Summary</AccordionTrigger>
+                                <AccordionContent>
+                                    <SummaryComponent />
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    }
                     {(
                         !loading &&
                         <div className='flex flex-row justify-between items-center'>
@@ -178,7 +197,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                             }
                             <div className='flex w-auto' />
                             {(showMoreOptions && <PreviewAction
-                                className='py-2'
                                 loading={loading}
                                 onAction={handleOnEdit}
                                 setLoading={setLoading}
