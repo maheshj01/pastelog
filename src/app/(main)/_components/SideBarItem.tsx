@@ -68,7 +68,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const handleOutSideClick = () => {
         setIsEditing(false);
         if (logTitle !== log.title) {
-            const updatedLog = { ...log, title: logTitle, toFirestore: () => ({}) };
+            const updatedLog = new Log({ ...log, title: logTitle });
             logService.updateLogTitle(id, updatedLog);
             log.title = logTitle;
             setIsEditing(false);
