@@ -57,7 +57,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
                 </div>
             ) : previewLog?.summary ? (
-                <div className="bg-white bg-opacity-10 rounded-lg p-3">
+                <div className="bg-white bg-opacity-10 rounded-lg px-2">
                     <MDPreview
                         className='text-black dark:text-white reveal-top-animation'
                         value={previewLog?.summary}
@@ -128,36 +128,49 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                 <div className='flex flex-col'>
                     <div className='flex items-center'>
                         <div className='grow'>
-                            <p className="text-3xl font-medium text-black dark:text-slate-50 my-1">{previewLog?.title}</p>
-                            {!loading && <div>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    {/* <span className="font-medium">Created At:</span> {formatReadableDate(previewLog?.createdDate!)} */}
-                                </p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    <span className="font-medium">Last Updated:</span> {
-                                        isEditing ? formatReadableDate(editedLog?.lastUpdatedAt!) : formatReadableDate(previewLog?.lastUpdatedAt!)
+                            <div className='flex justify-between items-center gap-10'>
+                                <p className="text-3xl font-medium text-black dark:text-slate-50 my-1">
+                                    {previewLog?.title}</p>
+                                <GeminiIcon onGeminiTrigger={() => {
+                                    if (!summaryLoading) {
+                                        onSummarizeClicked();
                                     }
-                                </p>
+                                }}>
+                                    <Image
+                                        src={"/images/gemini.png"}
+                                        alt="Logo"
+                                        width={32}
+                                        height={32}
+                                        className={`cursor-pointer transition-transform duration-500 transform hover:scale-150 h-8 m-0 p-0 ${summaryLoading ? 'animate-pulse transform scale-150' : ''}`}
+                                    />
+                                </GeminiIcon>
+                            </div>
+                            {!loading && <div>
+                                <Accordion
+                                    type="single" collapsible>
+                                    <AccordionItem value="details">
+                                        <AccordionTrigger className='dark:text-white p-0'>Details</AccordionTrigger>
+                                        <AccordionContent>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                {/* <span className="font-medium">Created At:</span> {formatReadableDate(previewLog?.createdDate!)} */}
+                                            </p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                <span className="font-medium">Last Updated:</span> {
+                                                    isEditing ? formatReadableDate(editedLog?.lastUpdatedAt!) : formatReadableDate(previewLog?.lastUpdatedAt!)
+                                                }
+                                            </p>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                </Accordion>
                             </div>}
                         </div>
-                        <GeminiIcon onGeminiTrigger={() => {
-                            if (!summaryLoading) {
-                                onSummarizeClicked();
-                            }
-                        }}>
-                            <Image
-                                src={"/images/gemini.png"}
-                                alt="Logo"
-                                width={32}
-                                height={32}
-                                className={`cursor-pointer transition-transform duration-500 transform hover:scale-150 h-8 m-0 p-0 ${summaryLoading ? 'animate-pulse transform scale-150' : ''}`}
-                            />
-                        </GeminiIcon>
                     </div>
                     {(previewLog?.summary || summaryLoading) &&
-                        <Accordion type="single" collapsible>
+                        <Accordion
+                            className='flex-grow'
+                            type="single" collapsible>
                             <AccordionItem value="summary">
-                                <AccordionTrigger className='dark:text-white'>Summary</AccordionTrigger>
+                                <AccordionTrigger className='dark:text-white p-0'>Summary</AccordionTrigger>
                                 <AccordionContent>
                                     <SummaryComponent />
                                 </AccordionContent>
@@ -166,7 +179,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                     }
                     {(
                         !loading &&
-                        <div className='flex flex-row justify-between items-center'>
+                        <div className='flex flex-row justify-between items-center pt-2'>
                             {
                                 (!isEditing) ? (previewLog?.expiryDate &&
                                     <div>
@@ -225,7 +238,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                     />
                 </div>
             </div >
-        </div >
+        </div>
     );
 }
 
