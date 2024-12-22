@@ -13,12 +13,9 @@ export const updateLogs = functions.pubsub.schedule(
 ).onRun(async () => {
   try {
     const totalCollections = await db.listCollections();
-    console.log(`Checking for expired logs in ${totalCollections.length} collections...`);
     const logsCollection = db.collection("logs");
     const logsSnapshot = await logsCollection.get();
-    console.log(`Checking for expired logs... in ${logCollection} against ${logsSnapshot.size} documents`);
     if (logsSnapshot.empty) {
-      console.log("Not found in logs collection....");
       return; // Return nothing instead of null
     }
 
@@ -34,15 +31,12 @@ export const updateLogs = functions.pubsub.schedule(
 
       // Convert both dates to UTC to ensure correct comparison
       const isExpired = expiryDate ? expiryDate.getTime() <= currentDate.getTime() : false;
-      console.log(`Doc ID: ${doc.id}, Expiry Date: ${expiryDate}, Current Date: ${currentDate}, Is Expired: ${isExpired}`);
       batch.update(doc.ref, { isExpired });
     });
 
     await batch.commit();
-    console.log("Expiry check and update completed.");
     return;
   } catch (error) {
-    console.error("Error checking expiry:", error);
   }
 }
 );

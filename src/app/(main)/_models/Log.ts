@@ -77,7 +77,6 @@ export class Log implements ILog {
 
     static fromFirestore(doc: QueryDocumentSnapshot<DocumentData, DocumentData>): Log {
         const data = doc.data();
-        console.log("firestore", data);
         return new Log({
             expiryDate: data.expiryDate ? (data.expiryDate.toDate ? data.expiryDate.toDate().toUTCString() : data.expiryDate) : null,
             lastUpdatedAt: data.lastUpdatedAt ?? data.createdDate,

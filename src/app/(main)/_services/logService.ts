@@ -307,10 +307,8 @@ class LogService {
             const result = await model.generateContent(prompt);
             const response = await result.response;
             const title = response.text();
-            console.log("response title:", title);
             // Strip Markdown manually (simple regex for common elements)
             const parsedTitle = title.replace(/[#*_`]/g, '').trim();
-            console.log("response title:", parsedTitle);
             return parsedTitle
         } catch (error) {
             console.error("Error querying Gemini:", error);

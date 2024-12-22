@@ -56,8 +56,10 @@ const Sidebar: React.FC = () => {
                 const isFirstLogin = await authService.isFirstTimeLogin(user.uid);
                 if (isFirstLogin) {
                     const logs = await logService.fetchLogsFromLocal();
+                    console.log("First time login", logs);
                     setLogs(logs);
                 } else {
+                    console.log("Fetching logs for user", user.uid);
                     const fetchedLogs = await logService.getLogsByUserId(user.uid)
                     setLogs(fetchedLogs);
                 }
