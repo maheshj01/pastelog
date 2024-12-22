@@ -151,14 +151,18 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                     <AccordionItem value="details">
                                         <AccordionTrigger className='dark:text-white p-0'>Details</AccordionTrigger>
                                         <AccordionContent>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                {/* <span className="font-medium">Created At:</span> {formatReadableDate(previewLog?.createdDate!)} */}
-                                            </p>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                <span className="font-medium">Last Updated:</span> {
-                                                    isEditing ? formatReadableDate(editedLog?.lastUpdatedAt!) : formatReadableDate(previewLog?.lastUpdatedAt!)
-                                                }
-                                            </p>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                                                <p className='m-0'>
+                                                    <span className="font-medium">Created At:</span>{" "}
+                                                    {formatReadableDate(previewLog?.createdDate!)}
+                                                </p>
+                                                <p className='m-0'>
+                                                    <span className="font-medium">Last Updated:</span>{" "}
+                                                    {isEditing
+                                                        ? formatReadableDate(editedLog?.lastUpdatedAt!)
+                                                        : formatReadableDate(previewLog?.lastUpdatedAt!)}
+                                                </p>
+                                            </div>
                                         </AccordionContent>
                                     </AccordionItem>
                                 </Accordion>
