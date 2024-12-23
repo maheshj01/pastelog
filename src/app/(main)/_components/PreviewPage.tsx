@@ -1,10 +1,11 @@
 "use client";
 import Editor from '@/app/(main)/_components/Editor';
+import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import { formatReadableDate } from '@/utils/utils';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSidebar } from "../_hooks/useSidebar";
 import Log from '../_models/Log';
 import Analytics from '../_services/Analytics';
@@ -28,6 +29,8 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const publicLogs = ['getting-started', 'shortcuts'];
     const showMoreOptions = !publicLogs.includes(logId!);
+    const { setNavbarTitle } = useNavbar();
+    const titleRef = useRef<HTMLParagraphElement>(null);
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
@@ -84,6 +87,26 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         }
     }, [logId]);
 
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setNavbarTitle(entry.isIntersecting ? null : previewLog?.title || "");
+            },
+            {
+                threshold: 0.1,
+                rootMargin: "-8% 0px 0px 0px"
+            }
+        );
+
+        if (titleRef.current) {
+            observer.observe(titleRef.current);
+        }
+
+        return () => {
+            if (titleRef.current) observer.unobserve(titleRef.current);
+        };
+    }, [previewLog?.title]);
+
     const handleOnEdit = async (hasUpdated: boolean) => {
         setLoading(true);
         if (hasUpdated) {
@@ -124,7 +147,8 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                     <div className='flex items-center'>
                         <div className='grow'>
                             <div className='flex justify-between items-center gap-10'>
-                                <p className="text-3xl font-medium text-black dark:text-slate-50 my-1">
+                                <p className="text-3xl font-medium text-black dark:text-slate-50 my-1"
+                                    ref={titleRef}>
                                     {previewLog?.title}</p>
                                 <GeminiIcon onGeminiTrigger={() => {
                                     if (!summaryLoading) {
