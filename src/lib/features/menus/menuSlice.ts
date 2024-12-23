@@ -27,7 +27,6 @@ const initialState: MenuState = {
 export const fetchMenuItems = createAsyncThunk('menu/fetchMenuItems', async () => {
     const featureService = new FeatureService();
     const data = await featureService.menuDoc();
-    console.log('Menu data:', data);
     return data;
 });
 

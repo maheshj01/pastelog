@@ -8,7 +8,7 @@ import { FaBug, FaGithub, FaGoogle, FaNewspaper, FaWpexplorer } from "react-icon
 import { useSelector } from 'react-redux';
 import useSettings from '../_hooks/useSettings';
 import { useSidebar } from '../_hooks/useSidebar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuShortcut, DropdownMenuTrigger } from './dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from './dropdown-menu';
 
 interface LoginMenuProps {
     onLogOut: () => void;
@@ -82,7 +82,7 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSet
                         <DropdownMenuItem className='space-x-2 cursor-pointer' onClick={onLogOut}>
                             <ExitIcon />
                             <span>Log out</span>
-                            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                            {/* <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut> */}
                         </DropdownMenuItem>
                     </DropdownMenuContent>
 

@@ -53,7 +53,7 @@ export default function Pastelog({ id }: { id?: string }) {
 
     const { isOpen: isImportOpen, onOpen: onImportOpen, onClose: onImportClose } = useDisclosure();
     const toastId = React.useRef('import-toast');
-    const { setShowSideBar, showSideBar, toggleSideBar, user } = useSidebar();
+    const {toggleSideBar, user } = useSidebar();
     if (user) {
         expiryDays.push("Never");
     }
