@@ -1,4 +1,5 @@
 "use client";
+import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -22,10 +23,12 @@ const Sidebar: React.FC = () => {
     const authService = new AuthService();
     const logService = new LogService();
     const [isFirstLogin, setIsFirstLogin] = useState<boolean>(false);
+    const { navbarTitle, setNavbarTitle } = useNavbar();
 
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
             setSelected(log);
+            setNavbarTitle(log.title || log.id || '');
             setId(log.id!);
             router.push(`/logs/${log.id}`);
             Analytics.logEvent('change_log', { id: log.id, action: 'click' });
