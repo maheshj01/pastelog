@@ -15,8 +15,8 @@ import Log, { LogType } from "../_models/Log";
 import Analytics from "../_services/Analytics";
 import LogService from "../_services/logService";
 import { DatePicker } from "./DatePicker";
+import ImportDialog from "./Dialog/Import";
 import Editor from "./Editor";
-import ImportDialog from "./Import";
 import PSInput from "./PSInput";
 import ShortcutWrapper from "./ShortCutWrapper";
 import { Button } from "./button";
@@ -53,7 +53,7 @@ export default function Pastelog({ id }: { id?: string }) {
 
     const { isOpen: isImportOpen, onOpen: onImportOpen, onClose: onImportClose } = useDisclosure();
     const toastId = React.useRef('import-toast');
-    const {toggleSideBar, user } = useSidebar();
+    const { toggleSideBar, user } = useSidebar();
     if (user) {
         expiryDays.push("Never");
     }

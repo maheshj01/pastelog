@@ -3,10 +3,10 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextu
 import Image from "next/image";
 import React from "react";
 import { toast } from "react-toastify";
-import Analytics from "../_services/Analytics";
-import GradientText from "./GradientText";
-import PSInput from "./PSInput";
-import { Button } from "./button";
+import Analytics from "../../_services/Analytics";
+import GradientText from "../GradientText";
+import PSInput from "../PSInput";
+import { Button } from "../button";
 interface GeminiDialogProps {
     isOpen: boolean;
     onClose: () => void;

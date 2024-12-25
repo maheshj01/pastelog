@@ -10,10 +10,10 @@ import { useSidebar } from "../_hooks/useSidebar";
 import Log from "../_models/Log";
 import Analytics from "../_services/Analytics";
 import LogService from '../_services/logService';
-import DeleteDialog from "./Delete";
+import DeleteDialog from "./Dialog/Delete";
+import ShareDialog from "./Dialog/Share";
 import PSDropdown from "./Dropdown";
 import GeminiIcon from "./GeminiIcon";
-import ShareDialog from "./Share";
 interface SidebarItemProps {
     id: string;
     log: Log;

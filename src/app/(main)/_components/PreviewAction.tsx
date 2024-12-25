@@ -15,9 +15,9 @@ import Analytics from '../_services/Analytics';
 import LogService from '../_services/logService';
 import { Button } from './button';
 import CopyIcon from './CopyIcon';
+import ShareDialog from './Dialog/Share';
 import PSDropdown from './Dropdown';
 import IconButton from './IconButton';
-import ShareDialog from './Share';
 
 interface PreviewActionProps {
     isEditing: boolean,
