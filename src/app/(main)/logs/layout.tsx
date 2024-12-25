@@ -1,3 +1,4 @@
+// app/(main)/logs/layout.tsx
 "use client";
 
 import { PSNavbarProvider } from '@/lib/Context/PSNavbarProvider';
