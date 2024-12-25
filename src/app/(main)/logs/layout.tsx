@@ -5,11 +5,12 @@ import { store } from '@/lib/store';
 import { Provider } from 'react-redux';
 import AppLayout from './app_layout';
 
-export default function LogsLayout({ children }: { children: React.ReactNode }) {
+export default function LogsLayout({ children, settings }: { children: React.ReactNode, settings: React.ReactNode }) {
     return (
         <Provider store={store}>
             <PSNavbarProvider>
                 <AppLayout>
+                    {settings}
                     {children}
                 </AppLayout>
             </PSNavbarProvider>

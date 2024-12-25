@@ -1,6 +1,6 @@
 import { RootState } from '@/lib/store';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@radix-ui/react-hover-card';
-import { ExitIcon } from '@radix-ui/react-icons';
+import { ExitIcon, GearIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
@@ -53,10 +53,14 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSet
                                 <div className="text-xs text-gray-500 dark:text-gray-300">{user.email}</div>
                             </div>
                         </div>
-                        {menuItems.releaseNotes && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {
-                        }}>
+                        {menuItems.releaseNotes && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={onSettings}>
                             <FaNewspaper className='size-4 text-black dark:text-white' />
                             <span>Whats New ✨</span>
+                        </DropdownMenuItem>
+                        }
+                        {menuItems.releaseNotes && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={onSettings}>
+                            <GearIcon className='size-4 text-black dark:text-white' />
+                            <span>Settings</span>
                         </DropdownMenuItem>
                         }
                         {menuItems.github && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {
