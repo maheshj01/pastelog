@@ -91,7 +91,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                             <FiSidebar className="text-2xl" />
                         </IconButton>
                     )}
-                    <div className={`relative z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out  ${showSideBar ? 'slide-main' : ''}`}>
+                    <div className={`relative z-40 h-screen overflow-y-auto transition-all duration-300 ease-in-out  ${showSideBar ? 'slide-main' : ''} scrollContainer`}>
                         <div className="flex flex-col min-h-full">
                             <PSBanner
                                 key={`${bannerState.show}-${bannerState.message}`}

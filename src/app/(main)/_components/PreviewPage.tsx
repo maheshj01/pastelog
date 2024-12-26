@@ -88,6 +88,15 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     }, [logId]);
 
     useEffect(() => {
+        const scrollContainer = document.querySelectorAll('.scrollContainer');
+        const scrollRef = scrollContainer[0];
+        if (scrollRef) {
+            scrollRef.scrollTop = 0;
+        }
+    }, [logId]);
+
+    useEffect(() => {
+        if (!titleRef.current || !previewLog?.title) return;
         const observer = new IntersectionObserver(
             ([entry]) => {
                 setNavbarTitle(entry.isIntersecting ? null : previewLog?.title || "");
@@ -103,7 +112,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         }
 
         return () => {
-            if (titleRef.current) observer.unobserve(titleRef.current);
+            observer.disconnect();
         };
     }, [previewLog?.title]);
 
