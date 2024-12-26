@@ -8,7 +8,7 @@ const TermsAndPrivacy = () => {
                 <div className="mb-8">
                     <h2 className="text-2xl font-semibold mb-4">Terms of Use</h2>
                     <p className="mb-4">
-                        Welcome to Pastelog, an open-source logging application hosted on GitHub. By using our services, you agree to the following terms and conditions:
+                        Welcome to Pastelog, an open-source Rich Notes application hosted on GitHub. By using our services, you agree to the following terms and conditions:
                     </p>
                     <ul className="list-disc list-inside mb-6">
                         <li>You are responsible for your content and actions.</li>
