@@ -1,3 +1,7 @@
+### [0.6.1] - October 06, 2024
+- Show title in Navbar on overscroll
+- reset scroll when a new slog is selected
+
 ### [0.6.0] - October 06, 2024
 
 - Add Google Sign In Authentication
