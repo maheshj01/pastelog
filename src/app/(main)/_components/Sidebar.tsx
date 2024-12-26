@@ -1,7 +1,6 @@
 "use client";
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSidebar } from '../_hooks/useSidebar';
@@ -152,7 +151,7 @@ const Sidebar: React.FC = () => {
                         <ShortCutsGuide />
                         <ThemeSwitcher />
                     </div>
-                    <Link href="/settings">Settings</Link>
+                    {/* <Link href="/settings">Settings</Link> */}
                     <LoginMenu onLogOut={handleLogout} onLogin={handleLogin} loading={loading} onSettings={() => {
                         router.push('/settings');
                     }} />
