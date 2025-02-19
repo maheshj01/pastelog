@@ -171,7 +171,7 @@ export default function Welcome() {
                 <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
                     {/* video without any controls on loop */}
                     <video
-                        src="https://github.com/user-attachments/assets/9ce0571b-5590-4092-807d-943c8717d807"
+                        src="https://github.com/user-attachments/assets/a7eb8978-95cd-4d21-8045-34e9ceb027b4"
                         autoPlay
                         loop
                         muted
