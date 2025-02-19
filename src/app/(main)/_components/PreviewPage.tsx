@@ -5,7 +5,7 @@ import { formatReadableDate } from '@/utils/utils';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSidebar } from "../_hooks/useSidebar";
 import Log from '../_models/Log';
 import Analytics from '../_services/Analytics';
@@ -31,6 +31,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const showMoreOptions = !publicLogs.includes(logId!);
     const { setNavbarTitle } = useNavbar();
     const titleRef = useRef<HTMLParagraphElement>(null);
+
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
@@ -45,11 +46,8 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         }
     };
 
-    function SummaryComponent() {
+    const SummaryComponent = React.memo(function SummaryComponent() {
         return <div className='rounded-xl bg-gradient-to-tr'>
-            {/* <p className="text-white mb-2 font-bold text-lg">
-                Summary
-            </p> */}
             {summaryLoading ? (
                 <div className="flex items-center justify-center py-4">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
@@ -57,7 +55,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
             ) : previewLog?.summary ? (
                 <div className="bg-white bg-opacity-10 rounded-lg px-2">
                     <MDPreview
-                        className='text-black dark:text-white reveal-top-animation'
+                        className='text-black dark:text-white'
                         value={previewLog?.summary}
                     />
                 </div>
@@ -65,7 +63,8 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                 <p className="italic text-black dark:text-white">No summary available. Tap the Gemini Icon to generate the Summary</p>
             )}
         </div>
-    }
+    });
+
 
     async function fetchLogsById() {
         setLoading(true);
@@ -194,12 +193,13 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                             </div>}
                         </div>
                     </div>
-                    {(previewLog?.summary || summaryLoading) &&
+                    {(previewLog?.summary) &&
                         <PSAccordion
                             title='Summary'
                             id='summary'
                             className='flex-grow'>
-                            <SummaryComponent />
+                            {!summaryLoading &&
+                                <SummaryComponent />}
                         </PSAccordion>
                     }
                     {(
