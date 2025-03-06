@@ -15,8 +15,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
-    const [id, setId] = useState<string | null>(null);
-    const [selected, setSelected] = useState<Log | null>(null);
     const [apiKey, setApiKey] = useState<string | null>(null);  // Add apiKey to the state
 
     return (
