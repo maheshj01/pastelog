@@ -18,4 +18,5 @@
       "source.fixAll": "explicit",
       "source.addMissingImports.ts": "explicit"
    },
+   "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }

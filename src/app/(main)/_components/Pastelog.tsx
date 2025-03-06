@@ -1,5 +1,7 @@
 "use client";
 
+import { toggleSideBar } from "@/lib/features/menus/sidebarSlice";
+import { AppDispatch, RootState } from "@/lib/store";
 import { showToast } from "@/utils/toast_utils";
 import { getDateOffsetBy } from "@/utils/utils";
 import { Button as PSButton } from "@nextui-org/button";
@@ -9,8 +11,8 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useSidebar } from "../_hooks/useSidebar";
 import Log, { LogType } from "../_models/Log";
 import Analytics from "../_services/Analytics";
 import LogService from "../_services/logService";
@@ -53,7 +55,8 @@ export default function Pastelog({ id }: { id?: string }) {
 
     const { isOpen: isImportOpen, onOpen: onImportOpen, onClose: onImportClose } = useDisclosure();
     const toastId = React.useRef('import-toast');
-    const { toggleSideBar, user } = useSidebar();
+    const user = useSelector((state: RootState) => state.auth.user);
+    const dispatch = useDispatch<AppDispatch>();
     if (user) {
         expiryDays.push("Never");
     }
@@ -216,7 +219,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 toggleTheme();
                 break;
             case 's':
-                toggleSideBar();
+                dispatch(toggleSideBar());
                 break;
             case 'p':
                 togglePreview();

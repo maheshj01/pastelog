@@ -1,6 +1,7 @@
+import { RootState } from "@/lib/store";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import React from "react";
-import { useSidebar } from "../../_hooks/useSidebar";
+import { useSelector } from "react-redux";
 
 interface DeleteDialogProps {
     isOpen: boolean;
@@ -12,7 +13,7 @@ interface DeleteDialogProps {
 
 const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, onClose, onDelete, title, content }) => {
     const [deleteLocal, setDeleteLocal] = React.useState<boolean>(true);
-    const { user } = useSidebar();
+    const user = useSelector((state: RootState) => state.auth.user);
     return (
         <Modal
             isOpen={isOpen}

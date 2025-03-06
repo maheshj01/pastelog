@@ -1,3 +1,4 @@
+import { RootState } from '@/lib/store';
 import { showToast } from '@/utils/toast_utils';
 import { downloadImage, downloadText } from '@/utils/utils';
 import { EllipsisHorizontalIcon, ShareIcon } from "@heroicons/react/24/solid";
@@ -8,8 +9,8 @@ import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { Key, useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { useSidebar } from '../_hooks/useSidebar';
 import Log from '../_models/Log';
 import Analytics from '../_services/Analytics';
 import LogService from '../_services/logService';
@@ -31,12 +32,11 @@ interface PreviewActionProps {
 }
 
 const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLoading, previewLog, isEditing, setIsEditing, isPublishRoute, onAction }) => {
-    const { user } = useSidebar();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const logService = new LogService();
     const logId = previewLog.id;
     const pathName = usePathname();
-
+    const user = useSelector((state: RootState) => state.auth.user);
     function More() {
         const options = ['Image', 'Text', 'Share'];
         // if (!isPublishRoute) {

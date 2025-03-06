@@ -6,12 +6,14 @@ import { useSidebar } from "../_hooks/useSidebar";
 import { Button } from "./button";
 import { Calendar } from "./calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 export function DatePicker({ selected, onSelect, label }: { selected?: Date; onSelect: any, label?: string }) {
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const today = new Date();
     // const isSmall = useSmallScreen();
-    const { user } = useSidebar();
+    const user = useSelector((state: RootState) => state.auth.user);
     return (
         <Popover
             open={isPopoverOpen}

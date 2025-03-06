@@ -18,7 +18,7 @@ import PSAccordion from './PSAccordian';
 
 const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
-    const { setId, apiKey, user } = useSidebar();
+    const { setId, apiKey } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
     const [editedLog, seteditedLog] = useState<Log | null>(null);
