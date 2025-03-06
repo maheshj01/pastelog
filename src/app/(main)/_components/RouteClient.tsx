@@ -1,13 +1,14 @@
 "use client";
+import { RootState } from '@/lib/store';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { useSidebar } from '../_hooks/useSidebar';
+import { useSelector } from 'react-redux';
 import Analytics from '../_services/Analytics';
 
 export default function RouteClient() {
     const searchParams = useSearchParams();
     const pathName = usePathname();
-    const { id } = useSidebar();
+    const id = useSelector((state: RootState) => state.sidebar.id);
 
     const handleRouteChange = (url: string) => {
         switch (url) {

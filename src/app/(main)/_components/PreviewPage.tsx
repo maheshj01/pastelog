@@ -1,11 +1,14 @@
 "use client";
 import Editor from '@/app/(main)/_components/Editor';
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
+import { setId } from '@/lib/features/menus/sidebarSlice';
+import { AppDispatch, RootState } from '@/lib/store';
 import { formatReadableDate } from '@/utils/utils';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSidebar } from "../_hooks/useSidebar";
 import Log from '../_models/Log';
 import Analytics from '../_services/Analytics';
@@ -18,7 +21,7 @@ import PSAccordion from './PSAccordian';
 
 const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
-    const { setId, apiKey } = useSidebar();
+    const { apiKey } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
     const [previewLog, setpreviewLog] = useState<Log | null>(null);
     const [editedLog, seteditedLog] = useState<Log | null>(null);
@@ -31,7 +34,8 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const showMoreOptions = !publicLogs.includes(logId!);
     const { setNavbarTitle } = useNavbar();
     const titleRef = useRef<HTMLParagraphElement>(null);
-
+    const dispatch = useDispatch<AppDispatch>();
+    const selected = useSelector((state: RootState) => state.sidebar.selected);
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
@@ -67,24 +71,30 @@ const PreviewPage = ({ logId }: { logId: string }) => {
 
 
     async function fetchLogsById() {
-        setLoading(true);
         const log = await logService.fetchLogById(logId);
         if (!log) {
-            setLoading(false);
-            // handle not found case, maybe show an error message
             return;
         }
         setpreviewLog(new Log({ ...log }));
         seteditedLog(new Log({ ...log }));
-        setLoading(false);
     }
-    useEffect(() => {
-        if (logId) {
-            setId(logId);
-            fetchLogsById();
 
+    useEffect(() => {
+        dispatch(setId(logId));
+        if (selected) {
+            setpreviewLog(selected);
+            seteditedLog(selected);
+            setLoading(false);
+
+            fetchLogsById();
+        } else {
+            if (logId) {
+                setLoading(true);
+                fetchLogsById().finally(() => setLoading(false));
+            }
         }
     }, [logId]);
+
 
     useEffect(() => {
         const scrollContainer = document.querySelectorAll('.scrollContainer');

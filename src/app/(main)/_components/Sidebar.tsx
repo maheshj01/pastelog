@@ -1,7 +1,7 @@
 "use client";
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import { setUser, signInWithGoogle, signOut } from '@/lib/features/menus/authSlice';
-import { fetchLogs, fetchLogsFromLocal, setLogs, setShowSideBar } from '@/lib/features/menus/sidebarSlice';
+import { fetchLogs, fetchLogsFromLocal, setId, setLogs, setSelected, setShowSideBar } from '@/lib/features/menus/sidebarSlice';
 import { AppDispatch, RootState } from '@/lib/store';
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { useRouter } from 'next/navigation';
@@ -18,7 +18,6 @@ import SidebarItem from './SideBarItem';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
 const Sidebar: React.FC = () => {
-    const { id, setSelected, setId } = useSidebar();
     const dispatch = useDispatch<AppDispatch>();
     const loading = useSelector((state: RootState) => state.sidebar.loading);
     const logs = useSelector((state: RootState) => state.sidebar.logs);
@@ -28,11 +27,12 @@ const Sidebar: React.FC = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     const { navbarTitle, setNavbarTitle } = useNavbar();
     const showSideBar = useSelector((state: RootState) => state.sidebar.showSideBar);
+    const id = useSelector((state: RootState) => state.sidebar.id);
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
-            setSelected(log);
+            dispatch(setSelected(log));
             setNavbarTitle('');
-            setId(log.id!);
+            dispatch(setId(log.id!));
             router.push(`/logs/${log.id}`);
             Analytics.logEvent('change_log', { id: log.id, action: 'click' });
             if (window.innerWidth <= 640) {

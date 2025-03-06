@@ -1,14 +1,13 @@
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
+import { setId, setSelected, setShowSideBar } from '@/lib/features/menus/sidebarSlice';
+import { AppDispatch, RootState } from '@/lib/store';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { usePathname, useRouter } from "next/navigation";
 import { FiSidebar } from 'react-icons/fi';
-import { useSidebar } from "../_hooks/useSidebar";
+import { useDispatch, useSelector } from 'react-redux';
 import IconButton from './IconButton';
 import { ThemeSwitcher } from "./ThemeSwitcher";
-import { AppDispatch, RootState } from '@/lib/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { setShowSideBar } from '@/lib/features/menus/sidebarSlice';
 
 interface PSNavbarProps {
     className?: string;
@@ -17,7 +16,6 @@ interface PSNavbarProps {
 }
 const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon, className }) => {
     const router = useRouter();
-    const { setId, setSelected } = useSidebar();
     const pathName = usePathname();
     const isPublishRoute = pathName.includes('/logs/publish');
     const { navbarTitle } = useNavbar();
@@ -40,8 +38,8 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon, className }) => {
                         )}
                     <div className={`py-6 mt-2 h-11 w-11 flex items-center cursor-pointer hover:animate-spin`}
                         onClick={() => {
-                            setId(null)
-                            setSelected(null)
+                            dispatch(setId(null))
+                            dispatch(setSelected(null));
                             router.push('/logs');
                         }}>
                         <Image

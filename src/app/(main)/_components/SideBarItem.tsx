@@ -1,11 +1,12 @@
-import { RootState } from "@/lib/store";
+import { setId, setSelected } from "@/lib/features/menus/sidebarSlice";
+import { AppDispatch, RootState } from "@/lib/store";
 import { showToast } from "@/utils/toast_utils";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { useDisclosure } from "@nextui-org/react";
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import React, { Key, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import useClickOutside from "../_hooks/outsideclick";
 import { useSidebar } from "../_hooks/useSidebar";
@@ -27,7 +28,7 @@ interface SidebarItemProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick, onRefresh, className }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const { id: selectedId, setId: setSelectedId, apiKey } = useSidebar();
+    const { apiKey } = useSidebar();
     const { isOpen: isShareOpen, onOpen: onShareOpen, onClose: onShareClose } = useDisclosure();
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const [isEditing, setIsEditing] = useState(false);
@@ -40,6 +41,9 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const publicLogs = ['getting-started', 'shortcuts'];
     const showMoreOptions = !publicLogs.includes(log.id!);
     const user = useSelector((state: RootState) => state.auth.user);
+    const selectedId = useSelector((state: RootState) => state.sidebar.id);
+    const dispatch = useDispatch<AppDispatch>();
+
     function MoreOptions() {
         const options = ['Share', 'Delete', 'Republish', 'Rename'];
         return (<PSDropdown
@@ -94,7 +98,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
                 Analytics.logEvent('share_log', { id: id, action: 'click' });
                 break;
             case 'Republish':
-                setSelectedId(null);
+                dispatch(setId(null));
                 router.push(`/logs?id=${id}`);
                 Analytics.logEvent('republish_log', { id: id, action: 'click' });
                 break;
@@ -150,7 +154,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             // notify('Log deleted from Server Only');
         }
         if (id == selectedId) {
-            setSelectedId(null);
+            dispatch(setSelected(null));
             router.push('/logs');
         }
         onRefresh();

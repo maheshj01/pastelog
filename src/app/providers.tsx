@@ -2,7 +2,6 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/react';
-import { User as FirebaseUser } from 'firebase/auth';
 import { ReactNode, useState } from 'react';
 import { SidebarContext } from './(main)/_hooks/useSidebar';
 import Log from './(main)/_models/Log';
@@ -22,7 +21,6 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
 
     return (
         <SidebarContext.Provider value={{
-            id, selected, setId, setSelected,
             apiKey, setApiKey,
         }
         }>
