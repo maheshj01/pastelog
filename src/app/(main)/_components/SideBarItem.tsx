@@ -212,6 +212,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             >
                 <div className='flex justify-between items-center'>
                     <div
+                        onClick={(e) => e.stopPropagation()}
                         className='flex-grow overflow-hidden'>
                         <span className="block overflow-hidden text-ellipsis whitespace-nowrap">{log.title!.length === 0 ? log.id : log.title}</span>
                         <ShareDialog
