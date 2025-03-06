@@ -1,9 +1,11 @@
+import { RootState } from "@/lib/store";
 import { showToast } from "@/utils/toast_utils";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { useDisclosure } from "@nextui-org/react";
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import React, { Key, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import useClickOutside from "../_hooks/outsideclick";
 import { useSidebar } from "../_hooks/useSidebar";
@@ -25,7 +27,7 @@ interface SidebarItemProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick, onRefresh, className }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const { id: selectedId, setId: setSelectedId, user, apiKey } = useSidebar();
+    const { id: selectedId, setId: setSelectedId, apiKey } = useSidebar();
     const { isOpen: isShareOpen, onOpen: onShareOpen, onClose: onShareClose } = useDisclosure();
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const [isEditing, setIsEditing] = useState(false);
@@ -37,6 +39,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const logService = new LogService();
     const publicLogs = ['getting-started', 'shortcuts'];
     const showMoreOptions = !publicLogs.includes(log.id!);
+    const user = useSelector((state: RootState) => state.auth.user);
     function MoreOptions() {
         const options = ['Share', 'Delete', 'Republish', 'Rename'];
         return (<PSDropdown

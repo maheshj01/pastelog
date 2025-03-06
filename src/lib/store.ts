@@ -1,9 +1,14 @@
 "use clent  ";
 import { configureStore } from '@reduxjs/toolkit';
 import menuReducer from './features/menus/menuSlice';
+import sidebarSlice from './features/menus/sidebarSlice';
+import authSlice from './features/menus/authSlice';
+
 export const store = configureStore({
     reducer: {
         menu: menuReducer,
+        sidebar: sidebarSlice,
+        auth: authSlice,
     },
 });
 

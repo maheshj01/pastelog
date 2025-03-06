@@ -1,13 +1,16 @@
 "use client";
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
+import { setUser, signInWithGoogle, signOut } from '@/lib/features/menus/authSlice';
+import { fetchLogs, fetchLogsFromLocal, setLogs, setShowSideBar } from '@/lib/features/menus/sidebarSlice';
+import { AppDispatch, RootState } from '@/lib/store';
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSidebar } from '../_hooks/useSidebar';
 import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
-import LogService from '../_services/logService';
 import IconButton from "./IconButton";
 import LoginMenu from './LoginMenu';
 import ShortCutsGuide from './ShortcutsGuide';
@@ -15,16 +18,16 @@ import SidebarItem from './SideBarItem';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
 const Sidebar: React.FC = () => {
-    const { id, setSelected, setId, showSideBar, user, setUser, setShowSideBar } = useSidebar();
-    const [loading, setLoading] = useState<boolean>(true);
-    const [logs, setLogs] = useState<Log[]>([]);
+    const { id, setSelected, setId } = useSidebar();
+    const dispatch = useDispatch<AppDispatch>();
+    const loading = useSelector((state: RootState) => state.sidebar.loading);
+    const logs = useSelector((state: RootState) => state.sidebar.logs);
     const [refresh, setRefresh] = useState<boolean>(false);
     const router = useRouter();
     const authService = new AuthService();
-    const logService = new LogService();
-    const [isFirstLogin, setIsFirstLogin] = useState<boolean>(false);
+    const user = useSelector((state: RootState) => state.auth.user);
     const { navbarTitle, setNavbarTitle } = useNavbar();
-
+    const showSideBar = useSelector((state: RootState) => state.sidebar.showSideBar);
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
             setSelected(log);
@@ -33,7 +36,7 @@ const Sidebar: React.FC = () => {
             router.push(`/logs/${log.id}`);
             Analytics.logEvent('change_log', { id: log.id, action: 'click' });
             if (window.innerWidth <= 640) {
-                setShowSideBar(false);
+                dispatch(setShowSideBar(false));
             }
         } else {
             setSelected(null);
@@ -43,45 +46,14 @@ const Sidebar: React.FC = () => {
         }
     }, []);
 
-    const handleFirstTimeLogin = async (userId: string) => {
-        setLoading(true);
-        await logService.updateLogsForNewUser(userId);
-        await fetchLogs(); // Refresh logs after updating
-        setIsFirstLogin(false);
-        setLoading(false);
-    };
-
-    const fetchLogs = useCallback(async () => {
-        setLoading(true);
-        try {
-            await logService.deleteExpiredLogs();
-            if (user && user.uid) {
-                const isFirstLogin = await authService.isFirstTimeLogin(user.uid);
-                if (isFirstLogin) {
-                    const logs = await logService.fetchLogsFromLocal();
-                    setLogs(logs);
-                } else {
-                    const fetchedLogs = await logService.getLogsByUserId(user.uid)
-                    setLogs(fetchedLogs);
-                }
-            } else {
-                const logs = await logService.fetchLogsFromLocal();
-                setLogs(logs);
-            }
-            setLoading(false);
-        } catch (_) {
-            setLoading(false);
-        }
-    }, [user]);
-
     useEffect(() => {
         const unsubscribe = authService.onAuthStateChanged((user) => {
-            setUser(user);
-            if (user) {
-                fetchLogs();
+            dispatch(setUser(user));
+            if (user && user.uid) {
+                dispatch(fetchLogs(user.uid));
             }
         });
-        fetchLogs();
+        dispatch(fetchLogs(""));
         return () => unsubscribe();
     }, [fetchLogs, refresh]);
 
@@ -89,7 +61,7 @@ const Sidebar: React.FC = () => {
 
     const handleLogin = async () => {
         try {
-            await authService.signInWithGoogle();
+            await dispatch(signInWithGoogle());
             router.push('/logs');
         } catch (error) {
             console.error("Error signing in:", error);
@@ -98,13 +70,15 @@ const Sidebar: React.FC = () => {
 
     const handleLogout = async () => {
         try {
-            await authService.signOut();
-            setUser(null);
+            dispatch(signOut());
+            dispatch(setUser(null));
             // Clear the logs state immediately
-            setLogs([]);
+            dispatch(setLogs([]))
             // Fetch logs from local storage after logout
-            const localLogs = await logService.fetchLogsFromLocal();
-            setLogs(localLogs);
+            const localLogs = dispatch(fetchLogsFromLocal());
+            if (logs) {
+                dispatch(setLogs((await localLogs).payload));
+            }
             router.push('/logs');
         } catch (error) {
             console.error("Error signing out:", error);

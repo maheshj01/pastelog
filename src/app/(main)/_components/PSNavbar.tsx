@@ -6,6 +6,10 @@ import { FiSidebar } from 'react-icons/fi';
 import { useSidebar } from "../_hooks/useSidebar";
 import IconButton from './IconButton';
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import { AppDispatch, RootState } from '@/lib/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setShowSideBar } from '@/lib/features/menus/sidebarSlice';
+
 interface PSNavbarProps {
     className?: string;
     sideBarIcon?: boolean;
@@ -13,10 +17,12 @@ interface PSNavbarProps {
 }
 const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon, className }) => {
     const router = useRouter();
-    const { showSideBar, setShowSideBar, setId, setSelected } = useSidebar();
+    const { setId, setSelected } = useSidebar();
     const pathName = usePathname();
     const isPublishRoute = pathName.includes('/logs/publish');
     const { navbarTitle } = useNavbar();
+    const showSideBar = useSelector((state: RootState) => state.sidebar.showSideBar);
+    const dispatch = useDispatch<AppDispatch>();
     return (
         <div className={`bg-background px-16 sticky top-0 z-50 w-full h-16 flex justify-between items-center ${className}`}>
             <div className='flex space-x-20'>
@@ -26,7 +32,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon, className }) => {
                             <IconButton
                                 className='absolute top-2 left-2'
                                 onClick={() => {
-                                    setShowSideBar(!showSideBar)
+                                    dispatch(setShowSideBar(!showSideBar));
                                 }}
                                 ariaLabel="Open Sidebar">
                                 <FiSidebar className='text-2xl' />

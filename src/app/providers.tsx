@@ -18,15 +18,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
 export function SidebarProvider({ children }: { children: ReactNode }) {
     const [id, setId] = useState<string | null>(null);
     const [selected, setSelected] = useState<Log | null>(null);
-    const [showSideBar, setShowSideBar] = useState<boolean>(true);
     const [apiKey, setApiKey] = useState<string | null>(null);  // Add apiKey to the state
-    const [user, setUser] = useState<FirebaseUser | null>(null);
-    const toggleSideBar = () => setShowSideBar((prevState) => !prevState);
 
     return (
         <SidebarContext.Provider value={{
-            id, selected, showSideBar, setId, setSelected,
-            user, setUser, setShowSideBar, toggleSideBar, apiKey, setApiKey,
+            id, selected, setId, setSelected,
+            apiKey, setApiKey,
         }
         }>
             {children}

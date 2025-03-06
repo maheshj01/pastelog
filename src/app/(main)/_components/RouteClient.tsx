@@ -7,7 +7,7 @@ import Analytics from '../_services/Analytics';
 export default function RouteClient() {
     const searchParams = useSearchParams();
     const pathName = usePathname();
-    const { showSideBar, setShowSideBar, id } = useSidebar();
+    const { id } = useSidebar();
 
     const handleRouteChange = (url: string) => {
         switch (url) {

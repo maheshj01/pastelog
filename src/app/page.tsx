@@ -7,7 +7,7 @@ import useSettings from './(main)/_hooks/useSettings';
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
-  const { settings, toggleNewUser, setNewUser } = useSettings();
+  const { settings } = useSettings();
   useEffect(() => {
     if (!settings.newUser) {
       redirect('/logs');

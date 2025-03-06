@@ -349,13 +349,47 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
 
     }
 
+    const handleImageUpload = async () => {
+        try {
+
+            const textarea = inputRef.current;
+            if (!textarea) return;
+
+            const items = await navigator.clipboard.read();
+            const image = items[0].getType('image/png') || items[0].getType('image/jpeg');
+            const size = (await image).size
+            if (size > 3000000) {
+                alert('Image size should not exceed 3MB');
+                return;
+            }
+            const imageName = `![${`image-${Date.now()}`}](<uploaded url goes here>)`;
+            const replacedtext = inputValue.substring(0, textarea.selectionStart) + imageName +
+                inputValue.substring(textarea.selectionEnd)
+            const newCursorPos = textarea.selectionStart + imageName.length;
+            updateValue(replacedtext, newCursorPos);
+        } catch (_) {
+            console.error("Error uploading image:", _);
+        }
+    }
+
     const replaceSelection = async () => {
-        const replacement = await navigator.clipboard.readText();
+        if (!navigator.clipboard) return;
+        const hasImage = await navigator.clipboard.read().then((items) => {
+            return items[0].types.includes('image/png') || items[0].types.includes('image/jpeg');
+        });
+
+        if (hasImage) {
+            await handleImageUpload();
+            return;
+        }
+
+        const clipboardText = await navigator.clipboard.readText();
         const textarea = inputRef.current;
-        if (!replacement || !textarea) return;
-        const replacedtext = inputValue.substring(0, textarea.selectionStart) + replacement +
+        if (!clipboardText || !textarea) return;
+        const replacedtext = inputValue.substring(0, textarea.selectionStart) + clipboardText +
             inputValue.substring(textarea.selectionEnd)
-        updateValue(replacedtext, textarea.selectionStart + replacement.length);
+        const newCursorPos = textarea.selectionStart + clipboardText.length;
+        updateValue(replacedtext, newCursorPos);
     }
 
     const applyLinkFormatting = (text?: string) => {
@@ -365,7 +399,6 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         if (selection.length == 0) {
             replaceSelection();
         } else {
-
             const { value, newCursorPos } = markdownFormatter.current.applyLinkFormatting(
                 textarea.selectionStart,
                 textarea.selectionEnd,

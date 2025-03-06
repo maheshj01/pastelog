@@ -7,7 +7,6 @@ import * as React from 'react';
 import { FaBug, FaGithub, FaGoogle, FaNewspaper, FaWpexplorer } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import useSettings from '../_hooks/useSettings';
-import { useSidebar } from '../_hooks/useSidebar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from './dropdown-menu';
 
 interface LoginMenuProps {
@@ -19,7 +18,7 @@ interface LoginMenuProps {
 
 const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSettings }) => {
 
-    const { id, setSelected, setId, showSideBar, user, setUser } = useSidebar();
+    const user = useSelector((state: RootState) => state.auth.user);
     const { settings, toggleNewUser, setNewUser } = useSettings();
     const { menuItems, loading: loadingMenu } = useSelector((state: RootState) => state.menu);
     const router = useRouter();

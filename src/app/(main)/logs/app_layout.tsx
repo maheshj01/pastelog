@@ -1,13 +1,14 @@
 "use client";
 
 import { fetchMenuItems } from '@/lib/features/menus/menuSlice';
-import { AppDispatch } from '@/lib/store';
+import { setShowSideBar, toggleSideBar } from '@/lib/features/menus/sidebarSlice';
+import { AppDispatch, RootState } from '@/lib/store';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
 import { FiSidebar } from "react-icons/fi";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import IconButton from "../_components/IconButton";
 import PSBanner from '../_components/PSBanner';
 import PSNavbar from '../_components/PSNavbar';
@@ -15,21 +16,19 @@ import RouteClient from '../_components/RouteClient';
 import ShortcutWrapper from '../_components/ShortCutWrapper';
 import Sidebar from '../_components/Sidebar';
 import { Theme } from '../_components/ThemeSwitcher';
-import { useSidebar } from '../_hooks/useSidebar';
 import useBannerState from '../_services/BannerState';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
-    const { showSideBar, toggleSideBar, setShowSideBar } = useSidebar();
     const bannerState = useBannerState();
     const [show, setShow] = React.useState(true);
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-
+    const showSideBar = useSelector((state: RootState) => state.sidebar.showSideBar);
     const checkWindowSize = async () => {
         if (typeof window !== 'undefined') {
             if (showSideBar && window.innerWidth <= 768) {
-                setShowSideBar(false);
+                dispatch(setShowSideBar(false));
             }
         }
     };
@@ -40,7 +39,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const handleMainContentClick = () => {
         if (typeof window !== 'undefined') {
             if (window.innerWidth <= 768 && showSideBar) {
-                setShowSideBar(false);
+                dispatch(setShowSideBar(false));
             }
         }
     };
@@ -67,7 +66,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 toggleTheme();
                 break;
             case 's':
-                toggleSideBar();
+                dispatch(toggleSideBar());
                 break;
             default:
                 break;
@@ -84,7 +83,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     {showSideBar && (
                         <IconButton
                             className={`fixed top-2 left-2 z-50`}
-                            onClick={() => setShowSideBar(!showSideBar)}
+                            onClick={() => dispatch(setShowSideBar(!showSideBar))}
                             ariaLabel="Close Sidebar"
                             tooltipPlacement="bottom-start"
                         >
@@ -123,3 +122,4 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </ShortcutWrapper >
     );
 }
+
