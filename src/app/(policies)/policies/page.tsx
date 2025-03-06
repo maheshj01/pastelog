@@ -1,4 +1,3 @@
-"use client";
 
 import TermsAndPrivacy from '@/app/(main)/_components/TermsAndPrivacy';
 
