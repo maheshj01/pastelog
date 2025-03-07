@@ -1,4 +1,10 @@
+### [0.6.2] - Mar 07, 2025
+
+- Improved app loading time by 50%
+- Eliminate Context API and Migrate to Redux
+
 ### [0.6.1] - October 06, 2024
+
 - Show title in Navbar on overscroll
 - reset scroll when a new slog is selected
 
