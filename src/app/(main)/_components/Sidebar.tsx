@@ -7,7 +7,6 @@ import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSidebar } from '../_hooks/useSidebar';
 import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
@@ -28,9 +27,10 @@ const Sidebar: React.FC = () => {
     const { navbarTitle, setNavbarTitle } = useNavbar();
     const showSideBar = useSelector((state: RootState) => state.sidebar.showSideBar);
     const id = useSelector((state: RootState) => state.sidebar.id);
+    console.log('selected:', id);
     const onLogClick = useCallback((log: Log | null) => {
         if (log) {
-            dispatch(setSelected(log));
+            dispatch(setSelected(log.toJson()));
             setNavbarTitle('');
             dispatch(setId(log.id!));
             router.push(`/logs/${log.id}`);
@@ -39,8 +39,8 @@ const Sidebar: React.FC = () => {
                 dispatch(setShowSideBar(false));
             }
         } else {
-            setSelected(null);
-            setId(null);
+            dispatch(setSelected(null));
+            dispatch(setId(null));
             router.push(`/logs`);
             Analytics.logEvent('new_log');
         }
@@ -109,7 +109,6 @@ const Sidebar: React.FC = () => {
                         {logs.map((log: Log) => (
                             <SidebarItem
                                 id={log.id!}
-                                selected={id === log.id}
                                 log={log}
                                 key={log.id}
                                 className={id === log.id ? 'hover:bg-background' : 'hover:dark:bg-slate-600 hover:bg-slate-300 '}

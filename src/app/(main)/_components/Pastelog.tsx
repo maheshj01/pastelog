@@ -1,6 +1,7 @@
 "use client";
 
-import { toggleSideBar } from "@/lib/features/menus/sidebarSlice";
+import { setContent, setExpiryDate, setImportLoading, setPreview, setPublishing, setTitle, togglePreview } from "@/lib/features/menus/editorSlice";
+import { setId, setSelected, toggleSideBar } from "@/lib/features/menus/sidebarSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import { showToast } from "@/utils/toast_utils";
 import { getDateOffsetBy } from "@/utils/utils";
@@ -10,6 +11,7 @@ import { UploadIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { title } from "process";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -34,12 +36,8 @@ import {
 export default function Pastelog({ id }: { id?: string }) {
 
     const { theme, setTheme } = useTheme();
-    const [title, setTitle] = useState<string>('');
-    const [content, setContent] = useState<string>('');
-    const [preview, setPreview] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [importLoading, setImportLoading] = useState<boolean>(false);
-    const [expiryDate, setExpiryDate] = useState<Date | null>(getDateOffsetBy(30));
+    const dispatch = useDispatch<AppDispatch>();
+    const editor = useSelector((state: RootState) => state.editor);
     const logService = new LogService();
     const selected = 'dark:bg-gray-600 bg-gray-400 text-slate-50 dark:text-slate-50';
     const unSelected = 'text-black bg-accent dark:text-slate-50 ';
@@ -56,7 +54,6 @@ export default function Pastelog({ id }: { id?: string }) {
     const { isOpen: isImportOpen, onOpen: onImportOpen, onClose: onImportClose } = useDisclosure();
     const toastId = React.useRef('import-toast');
     const user = useSelector((state: RootState) => state.auth.user);
-    const dispatch = useDispatch<AppDispatch>();
     if (user) {
         expiryDays.push("Never");
     }
@@ -114,12 +111,12 @@ export default function Pastelog({ id }: { id?: string }) {
     async function publish() {
         try {
 
-            setLoading(true);
+            dispatch(setPublishing(true));
             const log = new Log({
-                expiryDate: expiryDate?.toDateString(),
-                data: content,
+                expiryDate: editor.expiryDate?.toDateString(),
+                data: editor.content,
                 type: LogType.TEXT,
-                title: title,
+                title: editor.title,
                 createdDate: new Date().toDateString(),
                 isExpired: false,
                 summary: '',
@@ -131,29 +128,27 @@ export default function Pastelog({ id }: { id?: string }) {
             const id = await logService.publishLog(log);
             // const id = await logService.publishLogWithId(log, 'shortcuts');
             if (!id) {
-                setLoading(false);
+                dispatch(setPublishing(false));
                 return;
             }
             router.push(`/logs/publish/${id}`);
-            setLoading(false);
+            dispatch(setPublishing(false));
             Analytics.logEvent('publish_pastelog', { id: id, action: 'click' });
         } catch (e) {
             notify(true, "Failed to publish log");
-            setLoading(false);
+            dispatch(setPublishing(false));
         }
     }
 
-
-
     async function handleImport(url: string) {
-        setImportLoading(true);
+        dispatch(setImportLoading(true));
         try {
             if (url.includes('gist.github.com')) {
                 const id = url.split('/').pop();
                 const log = await logService.importLogFromGist(id!);
                 if (log) {
-                    setTitle(log.title!);
-                    setContent(log.data!);
+                    dispatch(setTitle(log.title!));
+                    dispatch(setContent(log.data!));
                     // Here content value is blank but log.data is not blank
                     setEditorKey(prevKey => prevKey + 1);
                     if (log.data) {
@@ -169,7 +164,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 if (log) {
                     setTitle(log.title!);
                     setContent(log.data!);
-                    setExpiryDate(new Date(log.expiryDate!));
+                    dispatch(setExpiryDate(new Date(log.expiryDate!)));
                     notify(false, "Log imported successfully");
                     onImportClose();
                     Analytics.logEvent('import_pastelog', { id: id, action: 'click' });
@@ -182,7 +177,7 @@ export default function Pastelog({ id }: { id?: string }) {
         } catch (e) {
             notify(true, "Please enter a valid URL");
         }
-        setImportLoading(false);
+        dispatch(setImportLoading(false));
     }
 
     function onDateSelect(date: Date) {
@@ -202,10 +197,6 @@ export default function Pastelog({ id }: { id?: string }) {
         }
     }, [id])
 
-    const togglePreview = React.useCallback(() => {
-        setPreview((prev) => !prev);
-    }, [])
-
     const toggleTheme = () => {
         setTheme(theme === 'dark' ? 'light' : 'dark');
     };
@@ -213,6 +204,9 @@ export default function Pastelog({ id }: { id?: string }) {
     const handleShortCut = (key: string) => {
         switch (key) {
             case 'n':
+                console.log('New log');
+                dispatch(setId(null));
+                dispatch(setSelected(null));
                 router.push('/logs');
                 break;
             case 'd':
@@ -222,7 +216,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 dispatch(toggleSideBar());
                 break;
             case 'p':
-                togglePreview();
+                dispatch(togglePreview());
                 break;
             default:
                 break;
@@ -234,54 +228,54 @@ export default function Pastelog({ id }: { id?: string }) {
             <ShortcutWrapper onShortCutClick={handleShortCut}>
                 <div className="min-h-screen relative xsm:px-2">
                     <div
-                        aria-disabled={loading}
-                        className={`flex flex-col items-center sm:px-4 w-full ${loading ? 'pointer-events-none' : ''}`}>
+                        aria-disabled={editor.publishing}
+                        className={`flex flex-col items-center sm:px-4 w-full ${editor.publishing ? 'pointer-events-none' : ''}`}>
                         <PSInput
                             className="my-2 w-full md:w-3/4 lg:w-2/3"
                             placeHolder="Pastelog Description"
                             value={title}
                             onChange={(e) => { setTitle(e.target.value) }}
-                            disabled={loading}
+                            disabled={editor.publishing}
                         />
                         <div className="flex flex-col items-center w-full md:w-3/4 lg:w-2/3 border-black rounded-lg bg-surface">
 
                             <div className="flex flex-row justify-between items-center pr-2 w-full h-12 mb-1">
                                 <div className="flex flex-row justify-start">
                                     <PSButton
-                                        className={`rounded-tl-lg rounded-bl-none rounded-r-none ${!preview ? selected : unSelected}`}
+                                        className={`rounded-tl-lg rounded-bl-none rounded-r-none ${!editor.preview ? selected : unSelected}`}
                                         size="lg"
-                                        onClick={() => setPreview(false)}
-                                        disabled={loading}
+                                        onClick={() => dispatch(setPreview(false))}
+                                        disabled={editor.publishing}
                                     >Edit</PSButton>
                                     <PSButton
-                                        className={`rounded-l-none rounded-tr-lg rounded-br-none ${preview ? selected : unSelected}`}
+                                        className={`rounded-l-none rounded-tr-lg rounded-br-none ${editor.preview ? selected : unSelected}`}
                                         size="lg"
-                                        onClick={() => setPreview(true)}
-                                        disabled={loading}
+                                        onClick={() => dispatch(setPreview(true))}
+                                        disabled={editor.publishing}
                                     >Preview</PSButton>
                                 </div>
                                 <div className='flex justify-end items-center space-x-1'>
                                     <div className="flex items-center space-x-1">
-                                        <p className="text-sm hidden md:block">{expiryDate ? "Expires in" : "Expires"}</p>
+                                        <p className="text-sm hidden md:block">{editor.expiryDate ? "Expires in" : "Expires"}</p>
                                         <div className="hidden md:block"><SelectExpiryComp /></div>
                                     </div>
-                                    {expiryDate && <DatePicker
+                                    {editor.expiryDate && <DatePicker
                                         onSelect={onDateSelect}
-                                        selected={expiryDate!}
+                                        selected={editor.expiryDate!}
                                     />}
                                 </div>
                             </div>
                             <div className="w-full max-w-none px-1 prose prose-indigo dark:prose-dark">
                                 <Editor
                                     key={editorKey}
-                                    preview={preview}
+                                    preview={editor.preview}
                                     className={theme != 'dark' ? ` bg-slate-50 text-black` : `bg-gray-700 text-white`}
-                                    value={content}
+                                    value={editor.content}
                                     isRepublish={id ? true : false}
                                     onChange={(e) => {
                                         setContent(e.target.value)
                                     }}
-                                    disabled={loading}
+                                    disabled={editor.publishing}
                                 />
                             </div>
                         </div>
@@ -298,7 +292,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                 isOpen={isImportOpen}
                                 onClose={onImportClose}
                                 onImport={handleImport}
-                                importLoading={importLoading}
+                                importLoading={editor.importLoading}
                                 title={importContent.title}
                                 content={importContent.content}
                             />
@@ -306,10 +300,10 @@ export default function Pastelog({ id }: { id?: string }) {
                             <Button
                                 className={`bg-gray-700`}
                                 onClick={publish}
-                                disabled={loading || !content}
+                                disabled={editor.publishing || !editor.content}
                             >
-                                <div className={`px-4 ${loading || !content ? 'text-gray-300' : 'text-primary-foreground'}`}>
-                                    {loading ? 'Publishing...' : 'Publish'}
+                                <div className={`px-4 ${editor.publishing || !editor.content ? 'text-gray-300' : 'text-primary-foreground'}`}>
+                                    {editor.publishing ? 'Publishing...' : 'Publish'}
                                 </div>
                             </Button>
                         </div>

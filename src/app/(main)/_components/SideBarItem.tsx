@@ -20,13 +20,12 @@ import GeminiIcon from "./GeminiIcon";
 interface SidebarItemProps {
     id: string;
     log: Log;
-    selected: boolean;
     onLogClick: (id: Log) => void;
     onRefresh: () => void;
     className?: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick, onRefresh, className }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ id, log, onLogClick, onRefresh, className }) => {
     const [isHovered, setIsHovered] = useState(false);
     const { apiKey } = useSidebar();
     const { isOpen: isShareOpen, onOpen: onShareOpen, onClose: onShareClose } = useDisclosure();
@@ -42,6 +41,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
     const showMoreOptions = !publicLogs.includes(log.id!);
     const user = useSelector((state: RootState) => state.auth.user);
     const selectedId = useSelector((state: RootState) => state.sidebar.id);
+    const selected = selectedId === id;
     const dispatch = useDispatch<AppDispatch>();
 
     function MoreOptions() {
@@ -81,7 +81,6 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             setIsEditing(false);
             notify('Notes Title Updated Successfully');
         }
-
     }
 
     async function handleonAction(key: Key) {
@@ -153,7 +152,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ selected, id, log, onLogClick
             await logService.deleteLogById(id);
             // notify('Log deleted from Server Only');
         }
-        if (id == selectedId) {
+        if (selected) {
             dispatch(setSelected(null));
             router.push('/logs');
         }
