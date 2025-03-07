@@ -38,7 +38,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const selected = useSelector((state: RootState) => state.sidebar.selected);
     const user = useSelector((state: RootState) => state.auth.user);
     const userService = new UserService();
-    const [publishedUser, setPublishedUser] = useState<any | null>(null);
+    // const [publishedUser, setPublishedUser] = useState<any | null>(null);
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
@@ -79,14 +79,14 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         }
         setpreviewLog({ ...log });
         seteditedLog({ ...log });
-        if (!Constants.publicLogIds.includes(logId)) {
-            if (!isPublishRoute) {
-                setPublishedUser(user);
-            } else {
-                const publisher = await userService.getUserById(log.userId);
-                setPublishedUser(publisher);
-            }
-        }
+        // if (!Constants.publicLogIds.includes(logId)) {
+        //     if (!isPublishRoute) {
+        //         setPublishedUser(user);
+        //     } else {
+        //         const publisher = await userService.getUserById(log.userId);
+        //         setPublishedUser(publisher);
+        //     }
+        // }
     }
 
     useEffect(() => {
@@ -210,10 +210,10 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                                 ? formatReadableDate(editedLog?.lastUpdatedAt!)
                                                 : formatReadableDate(previewLog?.lastUpdatedAt!)}
                                         </p>
-                                        <p className='m-0'>
+                                        {/* <p className='m-0'>
                                             <span className="font-medium">created by:</span>{" "}
                                             {publishedUser?.displayName || "Anonymous"}
-                                        </p>
+                                        </p> */}
                                     </div>
                                 </PSAccordion>
                             </div>}
