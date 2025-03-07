@@ -19,6 +19,11 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({ isOpen, onClose, onDelete, 
             isOpen={isOpen}
             placement="top-center"
             onClose={onClose}
+            onClick={
+                (e) => {
+                    e.stopPropagation();
+                }
+            }
         >
             <ModalContent>
                 {(onClose) => (

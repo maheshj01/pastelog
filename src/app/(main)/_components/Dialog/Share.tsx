@@ -29,7 +29,13 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, tit
         }
     }
     return (
-        <Modal size="md" isOpen={isOpen} onClose={onClose} isDismissable={true}>
+        <Modal
+            onClick={
+                (e) => {
+                    e.stopPropagation();
+                }
+            }
+            size="md" isOpen={isOpen} onClose={onClose} isDismissable={true}>
             <ModalContent>
                 <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
                 <ModalBody>
