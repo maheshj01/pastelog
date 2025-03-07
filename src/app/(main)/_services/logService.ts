@@ -42,6 +42,16 @@ class LogService {
         }
     }
 
+    async importLog(id = ''): Promise<any> {
+        const docRef = doc(this.logCollection, id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return docSnap.data();
+        } else {
+            return null;
+        }
+    }
+
     async getGuestLogs(): Promise<any[]> {
         const q = query(this.logCollection, where('userId', '==', null));
         const querySnapshot = await getDocs(q);

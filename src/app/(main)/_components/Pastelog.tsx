@@ -159,10 +159,10 @@ export default function Pastelog({ id }: { id?: string }) {
             }
             else if (url.includes('pastelog.vercel.app/logs')) {
                 const id = url.split('/').pop();
-                const log = await logService.fetchLogById(id!);
+                const log = await logService.importLog(id!);
                 if (log) {
-                    setTitle(log.title!);
-                    setContent(log.data!);
+                    dispatch(setTitle(log.title!));
+                    dispatch(setContent(log.data!));
                     dispatch(setExpiryDate(log.expiryDate!));
                     notify(false, "Log imported successfully");
                     onImportClose();
