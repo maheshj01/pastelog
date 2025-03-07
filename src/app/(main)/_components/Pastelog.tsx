@@ -12,7 +12,6 @@ import { UploadIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { title } from "process";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -76,7 +75,7 @@ export default function Pastelog({ id }: { id?: string }) {
         return (
             <Select value={selectExpiry} onValueChange={(x) => {
                 setSelectExpiry(x);
-                var date: Date = new Date();
+                var date: string = new Date().toDateString();
                 if (x === "Never") {
                     // date = new Date('9999-12-31');
                     setExpiryDate(null)
@@ -113,11 +112,12 @@ export default function Pastelog({ id }: { id?: string }) {
 
             dispatch(setPublishing(true));
             const log = {
-                expiryDate: editor.expiryDate?.toDateString(),
+                expiryDate: editor.expiryDate,
                 data: editor.content,
                 type: LogType.TEXT,
                 title: editor.title,
                 createdDate: new Date().toDateString(),
+                lastUpdatedAt: new Date().toDateString(),
                 isExpired: false,
                 summary: '',
                 isPublic: false,
@@ -163,7 +163,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 if (log) {
                     setTitle(log.title!);
                     setContent(log.data!);
-                    dispatch(setExpiryDate(new Date(log.expiryDate!)));
+                    dispatch(setExpiryDate(log.expiryDate!));
                     notify(false, "Log imported successfully");
                     onImportClose();
                     Analytics.logEvent('import_pastelog', { id: id, action: 'click' });
@@ -179,8 +179,9 @@ export default function Pastelog({ id }: { id?: string }) {
         dispatch(setImportLoading(false));
     }
 
-    function onDateSelect(date: Date) {
-        setExpiryDate(date!);
+    function onDateSelect(date: string) {
+        dispatch(setExpiryDate(date!));
+        console.log(date, editor.expiryDate);
         Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
     }
 
@@ -190,7 +191,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 if (log) {
                     setTitle(log.title!);
                     setContent(log.data!);
-                    setExpiryDate(new Date(log.expiryDate!));
+                    setExpiryDate(log.expiryDate!);
                 }
             });
         }
@@ -232,8 +233,8 @@ export default function Pastelog({ id }: { id?: string }) {
                         <PSInput
                             className="my-2 w-full md:w-3/4 lg:w-2/3"
                             placeHolder="Pastelog Description"
-                            value={title}
-                            onChange={(e) => { setTitle(e.target.value) }}
+                            value={editor.title}
+                            onChange={(e) => { dispatch(setTitle(e.target.value)) }}
                             disabled={editor.publishing}
                         />
                         <div className="flex flex-col items-center w-full md:w-3/4 lg:w-2/3 border-black rounded-lg bg-surface">
@@ -260,7 +261,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                     </div>
                                     {editor.expiryDate && <DatePicker
                                         onSelect={onDateSelect}
-                                        selected={editor.expiryDate!}
+                                        selected={new Date(editor.expiryDate)}
                                     />}
                                 </div>
                             </div>
@@ -272,7 +273,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                     value={editor.content}
                                     isRepublish={id ? true : false}
                                     onChange={(e) => {
-                                        setContent(e.target.value)
+                                        dispatch(setContent(e.target.value));
                                     }}
                                     disabled={editor.publishing}
                                 />

@@ -1,6 +1,6 @@
 "use client";
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
-import { setUser, signInWithGoogle, signOut } from '@/lib/features/menus/authSlice';
+import { mapFirebaseUserToUser, setUser, signInWithGoogle, signOut } from '@/lib/features/menus/authSlice';
 import { fetchLogs, fetchLogsFromLocal, setId, setLogs, setSelected, setShowSideBar } from '@/lib/features/menus/sidebarSlice';
 import { AppDispatch, RootState } from '@/lib/store';
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
@@ -47,7 +47,7 @@ const Sidebar: React.FC = () => {
 
     useEffect(() => {
         const unsubscribe = authService.onAuthStateChanged((user) => {
-            dispatch(setUser(user));
+            dispatch(setUser(mapFirebaseUserToUser(user!)));
             if (user && user.uid) {
                 dispatch(fetchLogs(user.uid));
             }

@@ -74,7 +74,7 @@ class LogService {
 
     async publishLog(log: any): Promise<string> {
         try {
-            const docRef = await addDoc(this.logCollection, log.toFirestore());
+            const docRef = await addDoc(this.logCollection, log);
             if (docRef.id) {
                 // if user not loggedIn save to local
                 if (!log.userId) {

@@ -1,6 +1,5 @@
 import { User as FirebaseUser, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../../utils/firebase';
-import { User } from '../_models/User';
 import { UserService } from './UserService';
 import LogService from './logService';
 
@@ -22,14 +21,14 @@ export class AuthService {
     }
 
     private async createOrUpdateUserInFirestore(user: FirebaseUser): Promise<void> {
-        const userModel = new User(
-            user.email!,
-            user.displayName,
-            user.photoURL,
-            new Date(user.metadata.creationTime!),
-            new Date(),
-            user.uid
-        );
+        const userModel = {
+            email: user.email!,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            createdAt: new Date(user.metadata.creationTime!),
+            lastLoginAt: new Date(),
+            id: user.uid
+        };
         await this.userService.createOrUpdateUser(userModel);
     }
     async signOut(): Promise<void> {

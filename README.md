@@ -73,7 +73,6 @@ root /
 ├──src
 │ ├── app /
 │ │ ├── (main)/
-│ │ │ ├── \_models/
 │ │ │ │ ├── Log.ts
 │ │ │ ├── \_services/
 │ │ │ │ ├── LogService.ts

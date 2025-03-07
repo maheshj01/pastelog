@@ -6,7 +6,7 @@ interface EditorState {
     title: string;
     preview: boolean;
     publishing: boolean;
-    expiryDate: Date | null;
+    expiryDate: string | null;
     importLoading: boolean;
 }
 
@@ -38,7 +38,7 @@ const editorSlice = createSlice({
         setPublishing: (state, action: PayloadAction<boolean>) => {
             state.publishing = action.payload;
         },
-        setExpiryDate: (state, action: PayloadAction<Date | null>) => {
+        setExpiryDate: (state, action: PayloadAction<string | null>) => {
             state.expiryDate = action.payload;
         },
         setImportLoading: (state, action: PayloadAction<boolean>) => {

@@ -4,7 +4,7 @@ import { User as FirebaseUser } from 'firebase/auth';
 
 
 interface AuthState {
-    user: FirebaseUser | null,
+    user: any | null,
     loading: boolean;
     isFirstLogin: boolean;
     error: string | null;
@@ -16,6 +16,16 @@ const initialState: AuthState = {
     isFirstLogin: true,
     error: null,
 };
+export function mapFirebaseUserToUser(user: FirebaseUser): any {
+    return {
+        email: user.email!,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        createdAt: user.metadata.creationTime!,
+        lastLoginAt: new Date().toISOString(),
+        id: user.uid
+    };
+}
 
 const authService = new AuthService();
 
@@ -62,7 +72,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<FirebaseUser | null>) => {
-            state.user = action.payload;
+            state.user = action.payload!;
         },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;

@@ -2,10 +2,10 @@ import { parseDate } from "@internationalized/date";
 import { CalendarDate } from "@nextui-org/react";
 import html2canvas from "html2canvas";
 
-export const getDateOffsetBy = (days: number): Date => {
+export const getDateOffsetBy = (days: number): string => {
     const date = new Date();
     date.setDate(date.getDate() + days);
-    return date;
+    return formatDateISO(date);
 };
 
 // returns date in ISO format
