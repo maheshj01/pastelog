@@ -30,9 +30,12 @@ class LogService {
         const docRef = doc(this.logCollection, id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            const log = docSnap.data();
             const local = await this.fetchLogFromLocalById(id);
-            log!.summary = local?.summary!;
+            const log = {
+                ...docSnap.data(),
+                id: id,
+                summary: local?.summary || ''
+            };
             return log;
         } else {
             return null;
