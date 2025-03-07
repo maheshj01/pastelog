@@ -1,5 +1,6 @@
 "use client";
 
+import { LogType } from "@/app/constants";
 import { setContent, setExpiryDate, setImportLoading, setPreview, setPublishing, setTitle, togglePreview } from "@/lib/features/menus/editorSlice";
 import { setId, setSelected, toggleSideBar } from "@/lib/features/menus/sidebarSlice";
 import { AppDispatch, RootState } from "@/lib/store";
@@ -15,7 +16,6 @@ import { title } from "process";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import Log, { LogType } from "../_models/Log";
 import Analytics from "../_services/Analytics";
 import LogService from "../_services/logService";
 import { DatePicker } from "./DatePicker";
@@ -112,7 +112,7 @@ export default function Pastelog({ id }: { id?: string }) {
         try {
 
             dispatch(setPublishing(true));
-            const log = new Log({
+            const log = {
                 expiryDate: editor.expiryDate?.toDateString(),
                 data: editor.content,
                 type: LogType.TEXT,
@@ -123,8 +123,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 isPublic: false,
                 userId: user ? user.uid : null,
                 isMarkDown: true,
-            }
-            );
+            };
             const id = await logService.publishLog(log);
             // const id = await logService.publishLogWithId(log, 'shortcuts');
             if (!id) {

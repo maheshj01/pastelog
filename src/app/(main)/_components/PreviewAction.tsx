@@ -11,7 +11,6 @@ import { Key, useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import Log from '../_models/Log';
 import Analytics from '../_services/Analytics';
 import LogService from '../_services/logService';
 import { Button } from './button';
@@ -22,7 +21,7 @@ import IconButton from './IconButton';
 
 interface PreviewActionProps {
     isEditing: boolean,
-    previewLog: Log,
+    previewLog: any,
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>,
     isPublishRoute: boolean,
     loading: boolean,

@@ -1,3 +1,4 @@
+import { Constants } from "@/app/constants";
 import { setId, setSelected } from "@/lib/features/menus/sidebarSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import { showToast } from "@/utils/toast_utils";
@@ -10,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import useClickOutside from "../_hooks/outsideclick";
 import { useSidebar } from "../_hooks/useSidebar";
-import Log from "../_models/Log";
 import Analytics from "../_services/Analytics";
 import LogService from '../_services/logService';
 import DeleteDialog from "./Dialog/Delete";
@@ -19,8 +19,8 @@ import PSDropdown from "./Dropdown";
 import GeminiIcon from "./GeminiIcon";
 interface SidebarItemProps {
     id: string;
-    log: Log;
-    onLogClick: (id: Log) => void;
+    log: any;
+    onLogClick: (id: any) => void;
     onRefresh: () => void;
     className?: string;
 }
@@ -37,8 +37,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ id, log, onLogClick, onRefres
     const [fadeIn, setFadeIn] = useState(false);
     const [fadeOut, setFadeOut] = useState(false);
     const logService = new LogService();
-    const publicLogs = ['getting-started', 'shortcuts'];
-    const showMoreOptions = !publicLogs.includes(log.id!);
+    const showMoreOptions = !Constants.publicLogIds.includes(log.id!);
     const user = useSelector((state: RootState) => state.auth.user);
     const selectedId = useSelector((state: RootState) => state.sidebar.id);
     const selected = selectedId === id;
@@ -75,7 +74,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ id, log, onLogClick, onRefres
     const handleOutSideClick = () => {
         setIsEditing(false);
         if (logTitle !== log.title) {
-            const updatedLog = new Log({ ...log, title: logTitle });
+            const updatedLog = { ...log, title: logTitle }
             logService.updateLogTitle(id, updatedLog);
             log.title = logTitle;
             setIsEditing(false);

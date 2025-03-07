@@ -7,7 +7,6 @@ import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Log from "../_models/Log";
 import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
 import IconButton from "./IconButton";
@@ -27,10 +26,10 @@ const Sidebar: React.FC = () => {
     const { navbarTitle, setNavbarTitle } = useNavbar();
     const showSideBar = useSelector((state: RootState) => state.sidebar.showSideBar);
     const id = useSelector((state: RootState) => state.sidebar.id);
-    console.log('selected:', id);
-    const onLogClick = useCallback((log: Log | null) => {
+
+    const onLogClick = useCallback((log: any | null) => {
         if (log) {
-            dispatch(setSelected(log.toJson()));
+            dispatch(setSelected(log));
             setNavbarTitle('');
             dispatch(setId(log.id!));
             router.push(`/logs/${log.id}`);
@@ -106,7 +105,7 @@ const Sidebar: React.FC = () => {
                     </div>
                 ) :
                     (<div className='overflow-y-auto flex-grow pb-2'>
-                        {logs.map((log: Log) => (
+                        {logs.map((log: any) => (
                             <SidebarItem
                                 id={log.id!}
                                 log={log}

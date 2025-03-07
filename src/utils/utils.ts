@@ -1,4 +1,3 @@
-import Log from "@/app/(main)/_models/Log";
 import { parseDate } from "@internationalized/date";
 import { CalendarDate } from "@nextui-org/react";
 import html2canvas from "html2canvas";
@@ -84,7 +83,7 @@ export const downloadImage = async () => {
     });
 };
 
-export const downloadText = (previewLog: Log) => {
+export const downloadText = (previewLog: any) => {
     if (!previewLog?.data) return;
     const element = document.createElement("a");
     const file = new Blob([previewLog.data], { type: 'text/plain' });

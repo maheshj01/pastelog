@@ -8,6 +8,7 @@ import Analytics from "../_services/Analytics";
 import LogService from '../_services/logService';
 import GradientText from './GradientText';
 import { Button } from './button';
+import { Constants } from "@/app/constants";
 export default function Welcome() {
     const tagLineWords = ['Easy', 'Fast', 'Powerful'];
     const tagLineDescription = ['Easy to use', 'Fast to load', 'Powerful features'];
@@ -52,7 +53,7 @@ export default function Welcome() {
 
     const handleGetStarted = async () => {
         setLoading(true); // Set loading state to true immediately
-        saveLocally(['getting-started', 'shortcuts']);
+        saveLocally(Constants.publicLogIds);
         setNewUser(false);
         try {
             await new Promise<void>(resolve => {

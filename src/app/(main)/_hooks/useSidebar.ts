@@ -1,7 +1,6 @@
 // Context.tsx
 
 import { createContext, useContext } from 'react';
-import Log from '../_models/Log';
 
 interface SidebarContextProps {
     apiKey: string | null;

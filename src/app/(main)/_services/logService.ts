@@ -1,20 +1,21 @@
 // src/services/LogService.ts
 
+import { Constants, LogType } from "@/app/constants";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from 'axios';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
-import { Log, LogType } from '../_models/Log';
 import FeatureService from "./feature";
 class LogService {
     private logCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION}`);
     private configCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_CONFIG_COLLECTION}`);
     private featureService: FeatureService = new FeatureService();
-    async fetchLogs(): Promise<Log[]> {
+    async fetchLogs(): Promise<any[]> {
         const querySnapshot = await getDocs(this.logCollection);
-        const logs: Log[] = [];
+        const logs: any[] = [];
         querySnapshot.forEach((doc) => {
-            const log = Log.fromFirestore(doc);
+            // const log = Log.fromFirestore(doc);
+            const log = doc.data();
             if (!log.isExpired) {
                 logs.push(log);
             }
@@ -25,11 +26,11 @@ class LogService {
         return logs;
     }
 
-    async fetchLogById(id: string): Promise<Log | null> {
+    async fetchLogById(id: string): Promise<any | null> {
         const docRef = doc(this.logCollection, id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            const log = Log.fromFirestore(docSnap);
+            const log = docSnap.data();
             const local = await this.fetchLogFromLocalById(id);
             log!.summary = local?.summary!;
             return log;
@@ -38,14 +39,15 @@ class LogService {
         }
     }
 
-    async getGuestLogs(): Promise<Log[]> {
+    async getGuestLogs(): Promise<any[]> {
         const q = query(this.logCollection, where('userId', '==', null));
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(doc => Log.fromFirestore(doc));
+        return querySnapshot.docs.map(doc => doc.data());
     }
 
-    async getLogsByUserId(userId: string): Promise<Log[]> {
+    async getLogsByUserId(userId: string): Promise<any[]> {
         // Fetch user-specific logs with isExpired = false
+        console.log("fetching logs for userId", userId);
         const userQuery = query(
             this.logCollection,
             where('userId', '==', userId),
@@ -53,44 +55,36 @@ class LogService {
             orderBy('lastUpdatedAt', 'desc')
         );
         const userQuerySnapshot = await getDocs(userQuery);
-        const userLogs = userQuerySnapshot.docs.map(doc => Log.fromFirestore(doc));
-
-        // Fetch public logs
-        const publicIdLogs = ['getting-started', 'shortcuts'];
-        const publicLogPromises = publicIdLogs.map(async (id) => {
-            const docRef = doc(this.logCollection, id);
-            const docSnap = await getDoc(docRef);
-            return docSnap.exists() ? Log.fromFirestore(docSnap) : null;
-        });
-
-        const publicLogs = (await Promise.all(publicLogPromises)).filter((log): log is Log => log !== null);
-
-        // Combine user logs and public logs
-        const combinedLogs = [...userLogs, ...publicLogs];
-
-        // Remove duplicates (in case a user has a personal copy of a public log)
-        const uniqueLogs = combinedLogs.reduce((acc: Log[], current) => {
-            const x = acc.find(item => item.id === current.id);
-            if (!x) {
-                return acc.concat([current]);
-            } else {
-                return acc;
+        const userLogs = userQuerySnapshot.docs.map(
+            (doc) => {
+                const log = doc.data();
+                log.id = doc.id;
+                return log;
             }
-        }, []);
+        );
 
-        return uniqueLogs;//.sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
+        // // Fetch public logs
+        // const publicLogPromises = Constants.publicLogIds.map(async (id) => {
+        //     const docRef = doc(this.logCollection, id);
+        //     const docSnap = await getDoc(docRef);
+        //     return docSnap.exists() ? docSnap.data() : null;
+        // });
+        return userLogs;
     }
 
-    async publishLog(log: Log): Promise<string> {
+    async publishLog(log: any): Promise<string> {
         try {
             const docRef = await addDoc(this.logCollection, log.toFirestore());
             if (docRef.id) {
                 // if user not loggedIn save to local
                 if (!log.userId) {
-                    await this.saveLogToLocal(new Log({
-                        ...log, id: docRef.id,
-                    },
-                    ));
+                    await this.saveLogToLocal(
+                        {
+                            ...log,
+                            id: docRef.id
+                        }
+                        ,
+                    );
                 }
                 return docRef.id!
             } else {
@@ -104,9 +98,8 @@ class LogService {
     async updateLogsForNewUser(userId: string): Promise<void> {
         const logs = await this.fetchLogsFromLocal('logs');
         const updatePromises: Promise<void>[] = [];
-        const publicLogs = ['getting-started', 'shortcuts'];
         for (const log of logs) {
-            if (!log.userId && !publicLogs.includes(log.id!)) {
+            if (!log.userId && !Constants.publicLogIds.includes(log.id!)) {
                 log.userId = userId;
                 log.isPublic = false; // Set default value for isPublic
                 // Update in Firebase
@@ -119,16 +112,17 @@ class LogService {
         localStorage.removeItem('logs');
     }
 
-    async publishLogWithId(log: Log, id: string): Promise<string> {
+    async publishLogWithId(log: any, id: string): Promise<string> {
         const docRef = doc(this.logCollection, id);
         await setDoc(docRef, log.toFirestore());
-        await this.saveLogToLocal(new Log({
-            ...log, id: docRef.id,
-        }));
+        await this.saveLogToLocal({
+            ...log,
+            id: docRef.id
+        });
         return docRef.id;
     }
 
-    async updateLog(id: string, log: Log): Promise<void> {
+    async updateLog(id: string, log: any): Promise<void> {
         const docRef = doc(this.logCollection, id);
         const data = log.toFirestore();
         // await this.saveLogToLocal(log);
@@ -137,9 +131,11 @@ class LogService {
         await updateDoc(docRef, data);
     }
 
-    async updateLogTitle(id: string, log: Log): Promise<void> {
+    async updateLogTitle(id: string, log: any): Promise<void> {
         const docRef = doc(this.logCollection, id);
-        await updateDoc(docRef, { title: log.title, lastUpdatedAt: new Date().toUTCString() });
+        await updateDoc(docRef, {
+            title: log.title, lastUpdatedAt: new Date().toUTCString()
+        });
         await this.saveLogToLocal(log);
     }
 
@@ -155,9 +151,9 @@ class LogService {
         await this.deleteLogFromLocal(id);
     }
 
-    async getAllLogs(): Promise<Log[]> {
+    async getAllLogs(): Promise<any[]> {
         const querySnapshot = await getDocs(this.logCollection);
-        return querySnapshot.docs.map(doc => Log.fromFirestore(doc));
+        return querySnapshot.docs.map(doc => doc.data());
     }
 
     async deleteExpiredLogs(): Promise<void> {
@@ -168,7 +164,7 @@ class LogService {
             const today = new Date();
 
             querySnapshot.forEach((doc) => {
-                const log = Log.fromFirestore(doc);
+                const log = doc.data();
                 if (log.expiryDate && new Date(log.expiryDate) < today) {
                     updatePromises.push(
                         updateDoc(doc.ref, { isExpired: true })
@@ -191,23 +187,23 @@ class LogService {
     }
 
     // Local Storage Methods
-    private saveLogsToLocal(logs: Log[]): void {
+    private saveLogsToLocal(logs: any[]): void {
         if (typeof window !== 'undefined') {
             localStorage.setItem(process.env.NEXT_PUBLIC_LOCAL_GUEST_COLLECTION ?? 'logs', JSON.stringify(logs));
         }
     }
 
-    async fetchLogsFromLocal(collection?: string): Promise<Log[]> {
+    async fetchLogsFromLocal(collection?: string): Promise<any[]> {
         if (typeof window !== 'undefined') {
             const logs = localStorage.getItem(collection ? collection : process.env.NEXT_PUBLIC_LOCAL_GUEST_COLLECTION ?? '');
             if (logs) {
-                const parsedLogs = JSON.parse(logs) as Log[];
+                const parsedLogs = JSON.parse(logs) as any[];
                 // Convert createdDate strings back to Date objects
                 const logInstances = parsedLogs.map((log) => {
                     if (!log.lastUpdatedAt) {
                         log.lastUpdatedAt = log.createdDate;
                     }
-                    return new Log(log)
+                    return log;
                 });
 
                 const filtered = logInstances.filter(log => !log.isExpired);
@@ -220,7 +216,7 @@ class LogService {
         return [];
     }
 
-    async saveLogToLocal(log: Log): Promise<void> {
+    async saveLogToLocal(log: any): Promise<void> {
         const logs = await this.fetchLogsFromLocal();
         const existingIndex = logs.findIndex(existingLog => existingLog.id === log.id);
         if (existingIndex !== -1) {
@@ -231,7 +227,7 @@ class LogService {
         this.saveLogsToLocal(logs);
     }
 
-    async fetchLogFromLocalById(id: string): Promise<Log | null> {
+    async fetchLogFromLocalById(id: string): Promise<any | null> {
         const logs = await this.fetchLogsFromLocal();
         const log = logs.find(log => log.id === id);
         return log || null;
@@ -243,7 +239,7 @@ class LogService {
         this.saveLogsToLocal(updatedLogs);
     }
 
-    async importLogFromGist(gistId: string): Promise<Log> {
+    async importLogFromGist(gistId: string): Promise<any> {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_GITHUB_GIST_API}/${gistId}`);
             const gist = response.data;
@@ -255,7 +251,7 @@ class LogService {
             if (!file) {
                 throw new Error('No file found in the gist');
             }
-            const log = new Log({
+            const log = {
                 data: content,
                 type: LogType.TEXT,
                 isMarkDown: false,
@@ -265,7 +261,7 @@ class LogService {
                 isPublic: true,
                 isExpired: false,
                 summary: '',
-            });
+            };
             return log;
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -278,7 +274,7 @@ class LogService {
         }
     }
 
-    getSummary = async (apiKey: string, log: Log) => {
+    getSummary = async (apiKey: string, log: any) => {
         try {
             const genAI = new GoogleGenerativeAI(apiKey!);
 
@@ -297,7 +293,7 @@ class LogService {
         }
     };
 
-    generateTitle = async (apiKey: string, log: Log) => {
+    generateTitle = async (apiKey: string, log: any) => {
         try {
             const genAI = new GoogleGenerativeAI(apiKey!);
             const model = genAI.getGenerativeModel({

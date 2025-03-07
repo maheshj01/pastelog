@@ -10,7 +10,6 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSidebar } from "../_hooks/useSidebar";
-import Log from '../_models/Log';
 import Analytics from '../_services/Analytics';
 import LogService from '../_services/logService';
 import { DatePicker } from "./DatePicker";
@@ -18,20 +17,20 @@ import GeminiIcon from './GeminiIcon';
 import MDPreview from './MDPreview';
 import PreviewAction from './PreviewAction';
 import PSAccordion from './PSAccordian';
+import { Constants } from '@/app/constants';
 
 const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
     const { apiKey } = useSidebar();
     const [loading, setLoading] = useState<boolean>(true);
-    const [previewLog, setpreviewLog] = useState<Log | null>(null);
-    const [editedLog, seteditedLog] = useState<Log | null>(null);
+    const [previewLog, setpreviewLog] = useState<any | null>(null);
+    const [editedLog, seteditedLog] = useState<any | null>(null);
     const { theme } = useTheme();
     const pathName = usePathname();
     const isPublishRoute = pathName.includes('/logs/publish');
     const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const publicLogs = ['getting-started', 'shortcuts'];
-    const showMoreOptions = !publicLogs.includes(logId!);
+    const showMoreOptions = !Constants.publicLogIds.includes(logId!);
     const { setNavbarTitle } = useNavbar();
     const titleRef = useRef<HTMLParagraphElement>(null);
     const dispatch = useDispatch<AppDispatch>();
@@ -75,8 +74,8 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         if (!log) {
             return;
         }
-        setpreviewLog(new Log({ ...log }));
-        seteditedLog(new Log({ ...log }));
+        setpreviewLog({ ...log });
+        seteditedLog({ ...log });
     }
 
     useEffect(() => {
@@ -130,9 +129,9 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         if (hasUpdated) {
             editedLog!.lastUpdatedAt = new Date().toUTCString();
             await logService.updateLog(logId, editedLog!);
-            setpreviewLog(new Log({ ...editedLog! }));
+            setpreviewLog({ ...editedLog! });
         } else {
-            seteditedLog(new Log({ ...previewLog! }));
+            seteditedLog({ ...previewLog! });
         }
         setIsEditing(false);
         setLoading(false);
@@ -232,10 +231,12 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                 ) : (
                                     <DatePicker
                                         onSelect={(date: Date) => {
-                                            seteditedLog(prevLog => new Log({
-                                                ...prevLog!,
-                                                expiryDate: date.toISOString()
-                                            }));
+                                            seteditedLog(
+                                                (prevLog: any) => ({
+                                                    ...(prevLog ?? {}),
+                                                    expiryDate: date.toISOString()
+                                                })
+                                            );
                                             Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
                                         }}
                                         selected={new Date(editedLog?.expiryDate!)}
@@ -263,8 +264,8 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                         value={isEditing ? editedLog!.data : previewLog?.data}
                         onChange={(e) => {
                             if (isEditing) {
-                                seteditedLog(prevLog => new Log({
-                                    ...prevLog!,
+                                seteditedLog((prevLog: any) => ({
+                                    ...(prevLog ?? {}),
                                     data: e.target.value
                                 }));
                             }

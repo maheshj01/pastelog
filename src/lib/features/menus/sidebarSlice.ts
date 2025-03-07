@@ -1,13 +1,12 @@
-import Log from "@/app/(main)/_models/Log";
 import { AuthService } from "@/app/(main)/_services/AuthService";
 import LogService from "@/app/(main)/_services/logService";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SidebarState {
     id: string | null;
-    selected: Log | null;
+    selected: any;
     showSideBar: boolean;
-    logs: Log[];
+    logs: any[];
     loading: boolean;
     navbarTitle: string;
 }
@@ -55,7 +54,7 @@ const sidebarSlice = createSlice({
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
         },
-        setSelected: (state, action: PayloadAction<Log | null>) => {
+        setSelected: (state, action: PayloadAction<any | null>) => {
             state.selected = action.payload;
         },
         setId: (state, action: PayloadAction<string | null>) => {
