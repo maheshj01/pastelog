@@ -36,7 +36,7 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon, className }) => {
                                 <FiSidebar className='text-2xl' />
                             </IconButton>
                         )}
-                    <div className={`py-6 mt-2 h-11 w-11 flex items-center cursor-pointer hover:animate-spin`}
+                    <div className={`py-6 mt-2 h-11 w-11 flex items-center cursor-pointer`}
                         onClick={() => {
                             dispatch(setId(null))
                             dispatch(setSelected(null));
@@ -45,10 +45,9 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon, className }) => {
                         <Image
                             src={"/images/frame.png"}
                             alt="Logo"
-                            layout="responsive"
-                            width={6}
-                            height={6}
-                            className="hover:animate-spin transition-transform duration-500 transform hover:scale-105 hidden md:block"
+                            width={50}
+                            height={50}
+                            className="transition-transform duration-500 transform hover:scale-105 hidden md:block"
                         />
                     </div>
                 </div>

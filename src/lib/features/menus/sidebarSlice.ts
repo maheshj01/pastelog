@@ -35,7 +35,6 @@ export const fetchLogs = createAsyncThunk(
             }
             return await logService.getLogsByUserId(userId);
         }
-        console.log("No user id provided");
         return await logService.fetchLogsFromLocal();
     }
 );

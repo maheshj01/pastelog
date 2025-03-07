@@ -181,7 +181,6 @@ export default function Pastelog({ id }: { id?: string }) {
 
     function onDateSelect(date: string) {
         dispatch(setExpiryDate(date!));
-        console.log(date, editor.expiryDate);
         Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
     }
 
@@ -204,7 +203,6 @@ export default function Pastelog({ id }: { id?: string }) {
     const handleShortCut = (key: string) => {
         switch (key) {
             case 'n':
-                console.log('New log');
                 dispatch(setId(null));
                 dispatch(setSelected(null));
                 router.push('/logs');

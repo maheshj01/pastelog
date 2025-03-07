@@ -47,7 +47,6 @@ class LogService {
 
     async getLogsByUserId(userId: string): Promise<any[]> {
         // Fetch user-specific logs with isExpired = false
-        console.log("fetching logs for userId", userId);
         const userQuery = query(
             this.logCollection,
             where('userId', '==', userId),
