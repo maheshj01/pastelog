@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import React, { ChangeEvent, useEffect, useRef } from "react";
-import { EditorState } from "../_services/EditorState";
+import { EditorHistoryState } from "../_services/EditorState";
 import MDPreview from "./MDPreview";
 import TextCompletionInput from "./completion";
 // import ReactMarkdown from 'react-markdown';
@@ -18,7 +18,7 @@ interface PSEditorProps {
 }
 
 const Editor: React.FC<PSEditorProps> = ({ value, onChange, placeHolder, preview, disabled, className, isRepublish }) => {
-    const editorStateRef = useRef(new EditorState(value || ''));
+    const editorStateRef = useRef(new EditorHistoryState(value || ''));
 
     useEffect(() => {
         editorStateRef.current.setCurrentValue(value || '');

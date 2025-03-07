@@ -1,5 +1,5 @@
 // src/_services/EditorState.ts
-export class EditorState {
+export class EditorHistoryState {
     private history: string[];
     private historyIndex: number;
 
