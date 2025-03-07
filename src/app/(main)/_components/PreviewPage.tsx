@@ -1,5 +1,6 @@
 "use client";
 import Editor from '@/app/(main)/_components/Editor';
+import { Constants } from '@/app/constants';
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import { setId } from '@/lib/features/menus/sidebarSlice';
 import { AppDispatch, RootState } from '@/lib/store';
@@ -12,12 +13,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSidebar } from "../_hooks/useSidebar";
 import Analytics from '../_services/Analytics';
 import LogService from '../_services/logService';
+import { UserService } from '../_services/UserService';
 import { DatePicker } from "./DatePicker";
 import GeminiIcon from './GeminiIcon';
 import MDPreview from './MDPreview';
 import PreviewAction from './PreviewAction';
 import PSAccordion from './PSAccordian';
-import { Constants } from '@/app/constants';
 
 const PreviewPage = ({ logId }: { logId: string }) => {
     const logService = new LogService();
@@ -35,6 +36,9 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const titleRef = useRef<HTMLParagraphElement>(null);
     const dispatch = useDispatch<AppDispatch>();
     const selected = useSelector((state: RootState) => state.sidebar.selected);
+    const user = useSelector((state: RootState) => state.auth.user);
+    const userService = new UserService();
+    const [publishedUser, setPublishedUser] = useState<any | null>(null);
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
@@ -68,7 +72,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         </div>
     });
 
-
     async function fetchLogsById() {
         const log = await logService.fetchLogById(logId);
         if (!log) {
@@ -76,6 +79,14 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         }
         setpreviewLog({ ...log });
         seteditedLog({ ...log });
+        if (!Constants.publicLogIds.includes(logId)) {
+            if (!isPublishRoute) {
+                setPublishedUser(user);
+            } else {
+                const publisher = await userService.getUserById(log.userId);
+                setPublishedUser(publisher);
+            }
+        }
     }
 
     useEffect(() => {
@@ -84,7 +95,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
             setpreviewLog(selected);
             seteditedLog(selected);
             setLoading(false);
-
             fetchLogsById();
         } else {
             if (logId) {
@@ -136,6 +146,9 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         setIsEditing(false);
         setLoading(false);
     }
+
+
+
 
     if (loading) {
         return (
@@ -196,6 +209,10 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                             {isEditing
                                                 ? formatReadableDate(editedLog?.lastUpdatedAt!)
                                                 : formatReadableDate(previewLog?.lastUpdatedAt!)}
+                                        </p>
+                                        <p className='m-0'>
+                                            <span className="font-medium">created by:</span>{" "}
+                                            {publishedUser?.displayName || "Anonymous"}
                                         </p>
                                     </div>
                                 </PSAccordion>
