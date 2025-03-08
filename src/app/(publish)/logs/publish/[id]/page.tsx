@@ -19,7 +19,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const id = params.id
 
-    const log = await new LogService().fetchLogById(id);
+    const log = await new LogService().importLog(id);
 
     return {
         title: log?.title || "Pastelog",
