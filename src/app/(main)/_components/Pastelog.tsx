@@ -109,7 +109,6 @@ export default function Pastelog({ id }: { id?: string }) {
 
     async function publish() {
         try {
-
             dispatch(setPublishing(true));
             const log = {
                 expiryDate: editor.expiryDate,
@@ -121,7 +120,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 isExpired: false,
                 summary: '',
                 isPublic: false,
-                userId: user ? user.uid : null,
+                userId: user ? user.id : null,
                 isMarkDown: true,
             };
             const id = await logService.publishLog(log);
