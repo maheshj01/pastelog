@@ -27,6 +27,14 @@ export const metadata: Metadata = {
       default: "Pastelog",
       template: "%s | Pastelog",
     },
+    images: [
+      {
+        url: "/images/frame.png",
+        width: 512,
+        height: 512,
+        alt: "Pastelog",
+      },
+    ],
     description: "Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.",
   },
 };
