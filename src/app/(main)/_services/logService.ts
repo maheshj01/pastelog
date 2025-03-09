@@ -116,7 +116,7 @@ class LogService {
                 log.isPublic = false; // Set default value for isPublic
                 // Update in Firebase
                 const docRef = doc(this.logCollection, log.id);
-                updatePromises.push(setDoc(docRef, log.toFirestore()));
+                updatePromises.push(setDoc(docRef, log));
             }
         }
 
@@ -126,7 +126,7 @@ class LogService {
 
     async publishLogWithId(log: any, id: string): Promise<string> {
         const docRef = doc(this.logCollection, id);
-        await setDoc(docRef, log.toFirestore());
+        await setDoc(docRef, log);
         await this.saveLogToLocal({
             ...log,
             id: docRef.id
@@ -136,7 +136,10 @@ class LogService {
 
     async updateLog(id: string, log: any): Promise<void> {
         const docRef = doc(this.logCollection, id);
-        const data = log.toFirestore();
+        const data = {
+            ...log,
+            lastUpdatedAt: new Date().toUTCString()
+        };
         // await this.saveLogToLocal(log);
         // Remove any undefined fields
         Object.keys(data).forEach(key => data[key] === undefined && delete data[key]);

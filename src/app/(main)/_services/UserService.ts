@@ -9,7 +9,7 @@ export class UserService {
     async createOrUpdateUser(user: any): Promise<void> {
         if (!user.id) throw new Error('User ID is required');
         const userRef = doc(this.usersCollection, user.id);
-        await setDoc(userRef, user.toFirestore(), { merge: true });
+        await setDoc(userRef, user, { merge: true });
     }
 
     async getUserById(userId: string): Promise<any | null> {
