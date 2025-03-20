@@ -1,0 +1,211 @@
+[debug] [2025-03-20T21:30:59.165Z] ----------------------------------------------------------------------
+[debug] [2025-03-20T21:30:59.172Z] Command:       /opt/homebrew/Cellar/node/23.1.0_1/bin/node /opt/homebrew/bin/firebase deploy --only functions:moveExpiredLogs
+[debug] [2025-03-20T21:30:59.173Z] CLI Version:   13.29.1
+[debug] [2025-03-20T21:30:59.173Z] Platform:      darwin
+[debug] [2025-03-20T21:30:59.173Z] Node Version:  v23.1.0
+[debug] [2025-03-20T21:30:59.173Z] Time:          Thu Mar 20 2025 17:30:59 GMT-0400 (Eastern Daylight Time)
+[debug] [2025-03-20T21:30:59.174Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-03-20T21:30:59.226Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-20T21:30:59.226Z] > authorizing via signed-in user (maheshmn121@gmail.com)
+[debug] [2025-03-20T21:30:59.226Z] [iam] checking project pastelog-id for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2025-03-20T21:30:59.227Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:30:59.227Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:30:59.227Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions [none]
+[debug] [2025-03-20T21:30:59.228Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:30:59.229Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2025-03-20T21:30:59.553Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions 200
+[debug] [2025-03-20T21:30:59.553Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2025-03-20T21:30:59.553Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:30:59.554Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:30:59.554Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/pastelog-id/serviceAccounts/pastelog-id@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2025-03-20T21:30:59.554Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/pastelog-id/serviceAccounts/pastelog-id@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2025-03-20T21:30:59.868Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/pastelog-id/serviceAccounts/pastelog-id@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2025-03-20T21:30:59.868Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/pastelog-id/serviceAccounts/pastelog-id@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'pastelog-id'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] ✔  functions: Finished running predeploy script. 
+[debug] [2025-03-20T21:31:07.851Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:07.851Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:07.852Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id [none]
+[debug] [2025-03-20T21:31:08.131Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id 200
+[debug] [2025-03-20T21:31:08.131Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id {"projectNumber":"790912897367","projectId":"pastelog-id","lifecycleState":"ACTIVE","name":"pastelog","labels":{"firebase":"enabled","generative-language":"enabled"},"createTime":"2022-04-30T16:51:18.322Z"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[debug] [2025-03-20T21:31:08.133Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:08.133Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:08.133Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:08.133Z] Checked if tokens are valid: true, expires at: 1742508507002
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[debug] [2025-03-20T21:31:08.134Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:08.134Z] Checked if tokens are valid: true, expires at: 1742508507002
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2025-03-20T21:31:08.134Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:08.134Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:08.134Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudfunctions.googleapis.com [none]
+[debug] [2025-03-20T21:31:08.134Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:08.135Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/runtimeconfig.googleapis.com [none]
+[debug] [2025-03-20T21:31:08.136Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:08.137Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudbuild.googleapis.com [none]
+[debug] [2025-03-20T21:31:08.137Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudbuild.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:08.138Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/artifactregistry.googleapis.com [none]
+[debug] [2025-03-20T21:31:08.138Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/artifactregistry.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:08.667Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/runtimeconfig.googleapis.com 200
+[debug] [2025-03-20T21:31:08.667Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2025-03-20T21:31:08.668Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudfunctions.googleapis.com 200
+[debug] [2025-03-20T21:31:08.668Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudfunctions.googleapis.com [omitted]
+[info] ✔  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2025-03-20T21:31:08.668Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudbuild.googleapis.com 200
+[debug] [2025-03-20T21:31:08.668Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudbuild.googleapis.com [omitted]
+[info] ✔  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2025-03-20T21:31:08.669Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/artifactregistry.googleapis.com 200
+[debug] [2025-03-20T21:31:08.670Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/artifactregistry.googleapis.com [omitted]
+[info] ✔  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2025-03-20T21:31:08.670Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:08.670Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:08.670Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/pastelog-id/adminSdkConfig [none]
+[debug] [2025-03-20T21:31:09.420Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/pastelog-id/adminSdkConfig 200
+[debug] [2025-03-20T21:31:09.420Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/pastelog-id/adminSdkConfig {"projectId":"pastelog-id","storageBucket":"pastelog-id.appspot.com","locationId":"asia-northeast1"}
+[debug] [2025-03-20T21:31:09.421Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:09.421Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:09.421Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/pastelog-id/configs [none]
+[debug] [2025-03-20T21:31:09.686Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/pastelog-id/configs 200
+[debug] [2025-03-20T21:31:09.686Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/pastelog-id/configs {}
+[debug] [2025-03-20T21:31:09.688Z] Validating nodejs source
+[debug] [2025-03-20T21:31:10.297Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^6.3.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^5.8.2"
+  },
+  "private": true
+}
+[debug] [2025-03-20T21:31:10.297Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2025-03-20T21:31:10.298Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-03-20T21:31:10.304Z] Found firebase-functions binary at '/Users/mahesh/Development/oss/pastelog/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8295
+
+[debug] [2025-03-20T21:31:10.745Z] Got response from /__/functions.yaml {"endpoints":{"updateLogs":{"availableMemoryMb":256,"timeoutSeconds":60,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"scheduleTrigger":{"schedule":"0 0 * * *","retryConfig":{"retryCount":3},"timeZone":"Etc/UTC"},"entryPoint":"updateLogs"},"moveExpiredLogs":{"availableMemoryMb":256,"timeoutSeconds":60,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"scheduleTrigger":{"schedule":"0 0 * * 0","retryConfig":{"retryCount":3},"timeZone":"Etc/UTC"},"entryPoint":"moveExpiredLogs"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudscheduler.googleapis.com","reason":"Needed for scheduled functions."}],"extensions":{}}
+[info] i  extensions: ensuring required API firebaseextensions.googleapis.com is enabled... 
+[debug] [2025-03-20T21:31:14.774Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:14.775Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:14.775Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/firebaseextensions.googleapis.com [none]
+[debug] [2025-03-20T21:31:14.775Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/firebaseextensions.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:15.290Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/firebaseextensions.googleapis.com 200
+[debug] [2025-03-20T21:31:15.290Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/firebaseextensions.googleapis.com [omitted]
+[info] ✔  extensions: required API firebaseextensions.googleapis.com is enabled 
+[debug] [2025-03-20T21:31:15.291Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-20T21:31:15.291Z] > authorizing via signed-in user (maheshmn121@gmail.com)
+[debug] [2025-03-20T21:31:15.291Z] [iam] checking project pastelog-id for permissions ["firebase.projects.get","firebaseextensions.instances.list"]
+[debug] [2025-03-20T21:31:15.291Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:15.291Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:15.291Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions [none]
+[debug] [2025-03-20T21:31:15.291Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:15.291Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2025-03-20T21:31:15.558Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions 200
+[debug] [2025-03-20T21:31:15.558Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2025-03-20T21:31:15.558Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:15.558Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:15.558Z] >>> [apiv2][query] GET https://firebaseextensions.googleapis.com/v1beta/projects/pastelog-id/instances pageSize=100&pageToken=
+[debug] [2025-03-20T21:31:16.039Z] <<< [apiv2][status] GET https://firebaseextensions.googleapis.com/v1beta/projects/pastelog-id/instances 200
+[debug] [2025-03-20T21:31:16.039Z] <<< [apiv2][body] GET https://firebaseextensions.googleapis.com/v1beta/projects/pastelog-id/instances {}
+[info] i  functions: preparing functions directory for uploading... 
+[info] i  functions: packaged /Users/mahesh/Development/oss/pastelog/functions (91.72 KB) for uploading 
+[debug] [2025-03-20T21:31:16.079Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:16.079Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:16.079Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/pastelog-id/locations/-/functions [none]
+[debug] [2025-03-20T21:31:16.749Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/pastelog-id/locations/-/functions 200
+[debug] [2025-03-20T21:31:16.749Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/pastelog-id/locations/-/functions {}
+[debug] [2025-03-20T21:31:16.750Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:16.750Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:16.750Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/pastelog-id/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2025-03-20T21:31:17.244Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/pastelog-id/locations/-/functions 200
+[debug] [2025-03-20T21:31:17.245Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/pastelog-id/locations/-/functions {}
+[info] i  functions: ensuring required API cloudscheduler.googleapis.com is enabled... 
+[debug] [2025-03-20T21:31:17.246Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:17.246Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:17.247Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudscheduler.googleapis.com [none]
+[debug] [2025-03-20T21:31:17.247Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudscheduler.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:17.564Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudscheduler.googleapis.com 200
+[debug] [2025-03-20T21:31:17.564Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/cloudscheduler.googleapis.com [omitted]
+[info] ✔  functions: required API cloudscheduler.googleapis.com is enabled 
+[info] i  functions: ensuring required API run.googleapis.com is enabled... 
+[debug] [2025-03-20T21:31:17.565Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:17.565Z] Checked if tokens are valid: true, expires at: 1742508507002
+[info] i  functions: ensuring required API eventarc.googleapis.com is enabled... 
+[debug] [2025-03-20T21:31:17.565Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:17.565Z] Checked if tokens are valid: true, expires at: 1742508507002
+[info] i  functions: ensuring required API pubsub.googleapis.com is enabled... 
+[debug] [2025-03-20T21:31:17.566Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:17.566Z] Checked if tokens are valid: true, expires at: 1742508507002
+[info] i  functions: ensuring required API storage.googleapis.com is enabled... 
+[debug] [2025-03-20T21:31:17.566Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:17.566Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:17.566Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/run.googleapis.com [none]
+[debug] [2025-03-20T21:31:17.566Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/run.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:17.566Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/eventarc.googleapis.com [none]
+[debug] [2025-03-20T21:31:17.566Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/eventarc.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:17.567Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/pubsub.googleapis.com [none]
+[debug] [2025-03-20T21:31:17.567Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/pubsub.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:17.568Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/storage.googleapis.com [none]
+[debug] [2025-03-20T21:31:17.568Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/storage.googleapis.com x-goog-quota-user=projects/pastelog-id
+[debug] [2025-03-20T21:31:17.985Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/eventarc.googleapis.com 200
+[debug] [2025-03-20T21:31:17.986Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/eventarc.googleapis.com [omitted]
+[info] ✔  functions: required API eventarc.googleapis.com is enabled 
+[debug] [2025-03-20T21:31:17.986Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/run.googleapis.com 200
+[debug] [2025-03-20T21:31:17.986Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/run.googleapis.com [omitted]
+[info] ✔  functions: required API run.googleapis.com is enabled 
+[debug] [2025-03-20T21:31:18.002Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/pubsub.googleapis.com 200
+[debug] [2025-03-20T21:31:18.002Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/pubsub.googleapis.com [omitted]
+[info] ✔  functions: required API pubsub.googleapis.com is enabled 
+[debug] [2025-03-20T21:31:18.139Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/storage.googleapis.com 200
+[debug] [2025-03-20T21:31:18.139Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/pastelog-id/services/storage.googleapis.com [omitted]
+[info] ✔  functions: required API storage.googleapis.com is enabled 
+[info] i  functions: generating the service identity for pubsub.googleapis.com... 
+[debug] [2025-03-20T21:31:18.140Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:18.140Z] Checked if tokens are valid: true, expires at: 1742508507002
+[info] i  functions: generating the service identity for eventarc.googleapis.com... 
+[debug] [2025-03-20T21:31:18.140Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:18.140Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:18.140Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/790912897367/services/pubsub.googleapis.com:generateServiceIdentity [none]
+[debug] [2025-03-20T21:31:18.140Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/790912897367/services/eventarc.googleapis.com:generateServiceIdentity [none]
+[debug] [2025-03-20T21:31:18.430Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/790912897367/services/eventarc.googleapis.com:generateServiceIdentity 200
+[debug] [2025-03-20T21:31:18.430Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/790912897367/services/eventarc.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-790912897367@gcp-sa-eventarc.iam.gserviceaccount.com","uniqueId":"102418244684921181760"}}
+[debug] [2025-03-20T21:31:18.430Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/790912897367/services/pubsub.googleapis.com:generateServiceIdentity 200
+[debug] [2025-03-20T21:31:18.430Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/790912897367/services/pubsub.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-790912897367@gcp-sa-pubsub.iam.gserviceaccount.com","uniqueId":"112421184419830165227"}}
+[debug] [2025-03-20T21:31:18.432Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:18.432Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:18.432Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id [none]
+[debug] [2025-03-20T21:31:18.568Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id 200
+[debug] [2025-03-20T21:31:18.568Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/pastelog-id {"projectNumber":"790912897367","projectId":"pastelog-id","lifecycleState":"ACTIVE","name":"pastelog","labels":{"firebase":"enabled","generative-language":"enabled"},"createTime":"2022-04-30T16:51:18.322Z"}
+[debug] [2025-03-20T21:31:18.569Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:18.569Z] Checked if tokens are valid: true, expires at: 1742508507002
+[debug] [2025-03-20T21:31:18.569Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/pastelog-id/billingInfo [none]
