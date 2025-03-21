@@ -1,15 +1,20 @@
+import { RootState } from "@/lib/store";
 import { cn } from "@nextui-org/react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import React from "react";
-import { useSidebar } from "../_hooks/useSidebar";
+import { useSelector } from "react-redux";
 import { Button } from "./button";
 import { Calendar } from "./calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
 
-export function DatePicker({ selected, onSelect, label }: { selected?: Date; onSelect: any, label?: string }) {
+interface DatePickerProps {
+    selected?: Date;
+    onDateSelect: (date: string) => void;
+    label?: string;
+}
+
+export function DatePicker({ selected, onDateSelect, label }: DatePickerProps) {
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const today = new Date();
     // const isSmall = useSmallScreen();
@@ -39,9 +44,9 @@ export function DatePicker({ selected, onSelect, label }: { selected?: Date; onS
                     defaultMonth={selected}
                     toYear={user ? today.getFullYear() + 10 : today.getFullYear() + 1}
                     toDate={new Date(today.getFullYear() + 10, today.getMonth() + 1, 0)}
-                    onSelect={(e) => {
-                        if (onSelect) {
-                            onSelect(e);
+                    onSelect={(e?: Date) => {
+                        if (onDateSelect) {
+                            onDateSelect(e!.toDateString());
                         }
                         setIsPopoverOpen(false);
                     }}

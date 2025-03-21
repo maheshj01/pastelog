@@ -256,7 +256,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                         <div className="hidden md:block"><SelectExpiryComp /></div>
                                     </div>
                                     {editor.expiryDate && <DatePicker
-                                        onSelect={onDateSelect}
+                                        onDateSelect={onDateSelect}
                                         selected={new Date(editor.expiryDate)}
                                     />}
                                 </div>
