@@ -75,17 +75,16 @@ export default function Pastelog({ id }: { id?: string }) {
         return (
             <Select value={selectExpiry} onValueChange={(x) => {
                 setSelectExpiry(x);
-                var date: string = new Date().toDateString();
-                if (x === "Never") {
+                var date: string | null = new Date().toDateString();
+                if (x !== "Never") {
                     // date = new Date('9999-12-31');
-                    setExpiryDate(null)
-                    return;
-                } else {
                     const index = expiryDays.indexOf(x);
                     const daysOffset = expiryValuesInDays[index];
                     date = getDateOffsetBy(daysOffset);
+                } else {
+                    date = null;
                 }
-                onDateSelect(date);
+                onDateSelect(date!);
             }}>
                 <SelectTrigger className="px-2 focus: border-none">
                     <SelectValue placeholder="Expiry Date" />
@@ -189,7 +188,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 if (log) {
                     setTitle(log.title!);
                     setContent(log.data!);
-                    setExpiryDate(log.expiryDate!);
+                    dispatch(setExpiryDate(log.expiryDate!));
                 }
             });
         }
