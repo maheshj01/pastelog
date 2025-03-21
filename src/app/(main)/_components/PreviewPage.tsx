@@ -247,11 +247,11 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                     // </div>
                                 ) : (
                                     <DatePicker
-                                        onSelect={(date: Date) => {
+                                        onDateSelect={(date: string) => {
                                             seteditedLog(
                                                 (prevLog: any) => ({
                                                     ...(prevLog ?? {}),
-                                                    expiryDate: date.toISOString()
+                                                    expiryDate: date
                                                 })
                                             );
                                             Analytics.logEvent('set_expiry_date', { date: date, action: 'click' });
