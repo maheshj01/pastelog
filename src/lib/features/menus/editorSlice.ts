@@ -44,10 +44,12 @@ const editorSlice = createSlice({
         setImportLoading: (state, action: PayloadAction<boolean>) => {
             state.importLoading = action.payload;
         },
+        resetState: () => initialState,
     },
 });
 
 export const {
+    resetState,
     setTitle,
     setContent,
     setPreview,
