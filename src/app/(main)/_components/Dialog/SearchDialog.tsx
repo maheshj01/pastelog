@@ -6,7 +6,7 @@ import SearchIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
 import { Divider, Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Analytics from "../../_services/Analytics";
 import { Dialog, DialogContent, DialogTrigger } from "../dialog";
@@ -25,6 +25,9 @@ export function SearchDialog() {
   }
 
   const [filteredLogs, setFilteredLogs] = useState<any[]>(defaultList());
+  useEffect(() => {
+    setFilteredLogs(logs);
+  }, [logs])
 
   const onLogClick = useCallback((log: any | null) => {
     if (log) {
