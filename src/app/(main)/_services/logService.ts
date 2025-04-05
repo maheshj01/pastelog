@@ -3,7 +3,7 @@
 import { Constants, LogType } from "@/app/constants";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from 'axios';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
 import FeatureService from "./feature";
 class LogService {
@@ -64,7 +64,7 @@ class LogService {
             this.logCollection,
             where('userId', '==', userId),
             where('isExpired', '==', false),
-            orderBy('lastUpdatedAt', 'desc')
+            // orderBy('lastUpdatedAt', 'desc')
         );
         const userQuerySnapshot = await getDocs(userQuery);
         const userLogs = userQuerySnapshot.docs.map(
@@ -74,7 +74,12 @@ class LogService {
                 return log;
             }
         );
-
+        // todo: change dates to timeStamp and sort server side
+        userLogs.sort((a, b) => {
+            const aTime = new Date(a.lastUpdatedAt).getTime();
+            const bTime = new Date(b.lastUpdatedAt).getTime();
+            return bTime - aTime;
+        });
         // // Fetch public logs
         // const publicLogPromises = Constants.publicLogIds.map(async (id) => {
         //     const docRef = doc(this.logCollection, id);
