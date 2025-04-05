@@ -1,3 +1,4 @@
+import { Constants } from '@/app/constants';
 import { RootState } from '@/lib/store';
 import { showToast } from '@/utils/toast_utils';
 import { downloadImage, downloadText } from '@/utils/utils';
@@ -105,7 +106,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
                     tooltip='Copy link'
                     data={`${window.location.origin}/logs/publish/${previewLog?.id}`}
                     copiedIcon={<DoneIcon color='success' />}
-                    icon={<ShareIcon className='size-6 text-black dark:text-white' />}
+                    icon={<ShareIcon className={Constants.styles.iconTheme} />}
                 />
                 <CopyIcon
                     id='copy-content'
@@ -113,7 +114,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
                     tooltip='Copy to clipboard'
                     data={`${previewLog?.data as string}`}
                     copiedIcon={<DoneIcon color='success' />}
-                    icon={<ContentCopyIcon className='size-6 text-black dark:text-white' />}
+                    icon={<ContentCopyIcon className={Constants.styles.iconTheme} />}
                 />
                 {
                     user && !isPublishRoute && (
@@ -122,7 +123,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
                                 setIsEditing(true);
                             }}
                                 ariaLabel="Edit">
-                                <FaEdit className='size-6 text-black dark:text-white' />
+                                <FaEdit className={Constants.styles.iconTheme} />
                             </IconButton>
                         </div>
                         ) : (<div className='flex space-x-2'>

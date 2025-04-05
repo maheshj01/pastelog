@@ -35,6 +35,7 @@ export const metadata: Metadata = {
         alt: "Pastelog",
       },
     ],
+    url: "https://pastelog.vercel.app",
     description: "Create Stunning Rich Text Logs/Notes with markdown Support and Code Highlighting and share it with the world.",
   },
 };

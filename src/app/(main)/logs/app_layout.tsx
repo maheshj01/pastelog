@@ -4,6 +4,7 @@ import { fetchMenuItems } from '@/lib/features/menus/menuSlice';
 import { setShowSideBar, toggleSideBar } from '@/lib/features/menus/sidebarSlice';
 import { AppDispatch, RootState } from '@/lib/store';
 import ClearIcon from '@mui/icons-material/Clear';
+import { useDisclosure } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
@@ -22,6 +23,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const { theme, setTheme } = useTheme();
     const bannerState = useBannerState();
     const [show, setShow] = React.useState(true);
+    const { isOpen: searchOpen, onOpen: onSearchOpen, onClose: onSearchClose } = useDisclosure();
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const showSideBar = useSelector((state: RootState) => state.sidebar.showSideBar);
@@ -109,8 +111,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                                 className='sticky top-0 z-40'
                                 sideBarIcon={!showSideBar} />
                             <main className="flex-grow">
-                                {children}
-                            </main>
+                                {children}                            </main>
                         </div>
                     </div>
                 </div>

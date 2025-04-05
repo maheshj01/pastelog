@@ -1,4 +1,5 @@
 
+import { Constants } from "@/app/constants";
 import {
     HoverCard,
     HoverCardContent,
@@ -30,7 +31,7 @@ export default function ShortCutsGuide() {
     return (<HoverCard>
         <HoverCardTrigger asChild>
             <div className='cursor-pointer'>
-                <MdOutlineKeyboardCommandKey className='size-6 text-black dark:text-white' />
+                <MdOutlineKeyboardCommandKey className={Constants.styles.iconTheme} />
             </div>
         </HoverCardTrigger>
         <HoverCardContent side='top' align='start' className="z-30">

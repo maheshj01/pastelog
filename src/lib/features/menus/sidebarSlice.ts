@@ -1,5 +1,6 @@
 import { AuthService } from "@/app/(main)/_services/AuthService";
 import LogService from "@/app/(main)/_services/logService";
+import { LogType } from "@/app/constants";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SidebarState {
@@ -9,6 +10,23 @@ interface SidebarState {
     logs: any[];
     loading: boolean;
     navbarTitle: string;
+}
+
+export interface Note {
+    id: string;
+    title: string;
+    data: string;
+    createdAt: string;
+    updatedAt: string;
+    expiryDate: string;
+    type: LogType;
+    createdDate: string;
+    lastUpdatedAt: string;
+    isExpired: boolean,
+    summary: string
+    isPublic: false,
+    userId: string,
+    isMarkDown: boolean,
 }
 
 const initialState: SidebarState = {

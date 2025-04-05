@@ -1,3 +1,4 @@
+import { Constants } from '@/app/constants';
 import { RootState } from '@/lib/store';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@radix-ui/react-hover-card';
 import { ExitIcon } from '@radix-ui/react-icons';
@@ -98,7 +99,7 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSet
                                     }
                                 }}
                             >
-                                <FaGoogle className='size-6 text-black dark:text-white' />
+                                <FaGoogle className={Constants.styles.iconTheme} />
                             </div>
                         </div>
                     </HoverCardTrigger>

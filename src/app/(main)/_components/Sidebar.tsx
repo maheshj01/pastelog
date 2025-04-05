@@ -1,4 +1,5 @@
 "use client";
+import { Constants } from '@/app/constants';
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import { mapFirebaseUserToUser, setUser, signInWithGoogle, signOut } from '@/lib/features/menus/authSlice';
 import { fetchLogs, fetchLogsFromLocal, setId, setLogs, setSelected, setShowSideBar } from '@/lib/features/menus/sidebarSlice';
@@ -9,6 +10,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
+import { SearchDialog } from './Dialog/SearchDialog';
 import IconButton from "./IconButton";
 import LoginMenu from './LoginMenu';
 import ShortCutsGuide from './ShortcutsGuide';
@@ -22,8 +24,7 @@ const Sidebar: React.FC = () => {
     const [refresh, setRefresh] = useState<boolean>(false);
     const router = useRouter();
     const authService = new AuthService();
-    const user = useSelector((state: RootState) => state.auth.user);
-    const { navbarTitle, setNavbarTitle } = useNavbar();
+    const { setNavbarTitle } = useNavbar();
     const showSideBar = useSelector((state: RootState) => state.sidebar.showSideBar);
     const id = useSelector((state: RootState) => state.sidebar.id);
 
@@ -90,11 +91,12 @@ const Sidebar: React.FC = () => {
                 {/* Fixed IconButton */}
                 <div className='sticky top-0 z-10 pt-2 pb-2'>
                     <div className='flex justify-end pr-4'>
+                        <SearchDialog />
                         <IconButton
-                            ariaLabel="New Pastelog"
+                            ariaLabel="New Note"
                             onClick={() => onLogClick(null)}
                         >
-                            <PencilSquareIcon className='size-6 text-black dark:text-white' />
+                            <PencilSquareIcon className={Constants.styles.iconTheme} />
                         </IconButton>
                     </div>
                 </div>

@@ -1,3 +1,4 @@
+import { Constants } from "@/app/constants";
 import { showToast } from "@/utils/toast_utils";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
 import { ClipboardCopyIcon, EyeOpenIcon } from "@radix-ui/react-icons";
@@ -50,7 +51,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, tit
                                 navigator.clipboard.writeText(content);
                                 notify();
                             }}>
-                                <ClipboardCopyIcon className="size-6 text-black dark:text-white" />
+                                <ClipboardCopyIcon className={Constants.styles.iconTheme} />
                             </IconButton>
                         </div>
                     </div>

@@ -18,5 +18,9 @@
       "source.fixAll": "explicit",
       "source.addMissingImports.ts": "explicit"
    },
-   "typescript.tsserver.experimental.enableProjectDiagnostics": true
+   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+   "cursor.cmdk.useThemedDiffBackground": true,
+   "editor.codeLensFontSize": 0,
+   "editor.defaultFormatter": "vscode.typescript-language-features",
+   "prettier.tabWidth": 4
 }

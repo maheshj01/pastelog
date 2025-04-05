@@ -77,6 +77,8 @@ root /
 │ │ │ ├── \_services/
 │ │ │ │ ├── LogService.ts
 │ │ │ ├── \_components/
+│ │ │ ├ ├──├── \_Dialog/
+│ │ │ ├ |────   └── SearchDialog.tsx
 │ │ │ │ ├── Sidebar.tsx
 │ │ │ │ ├── Navbar.tsx
 │ │ │ │ ├── MainContent.tsx
