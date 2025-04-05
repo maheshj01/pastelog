@@ -44,7 +44,6 @@ const authService = new AuthService();
 export const fetchLogs = createAsyncThunk(
     'sidebar/fetchLogs',
     async (userId: string, { dispatch }) => {
-        await logService.deleteExpiredLogs();
         if (userId) {
             const isFirstLogin = await authService.isFirstTimeLogin(userId);
             if (isFirstLogin) {
