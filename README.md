@@ -6,9 +6,11 @@ Create Stunning AI Powered Rich notes with markdown Support and Code Highlightin
 
 <a href="https://www.producthunt.com/posts/pastelog?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-pastelog" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=466669&theme=light" alt="Pastelog - Create&#0032;stunning&#0032;rich&#0032;text&#0032;notes&#0032;in&#0032;minutes | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
-<img width="764" alt="cover" src="https://github.com/maheshmnj/pastelog/assets/31410839/e75cfac7-93f8-4734-a0cc-d95872522230">
+<img width="764" alt="Screenshot 2025-04-07 at 14 15 41" src="https://github.com/user-attachments/assets/4f8ffdc8-5d7f-4158-8aee-1f7293ed6616" />
+
 
 ### Features
+
 
 - The logs are publicly accessible, no SignIn required
 - The logs auto expire after the specified date
