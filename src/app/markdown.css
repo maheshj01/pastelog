@@ -144,6 +144,18 @@
   /* padding: 0.5em 0.5em; */
 }
 
+/* Make code inside headings match the heading's font size and weight */
+.reactMarkDown h1 code:not(pre code),
+.reactMarkDown h2 code:not(pre code),
+.reactMarkDown h3 code:not(pre code),
+.reactMarkDown h4 code:not(pre code),
+.reactMarkDown h5 code:not(pre code),
+.reactMarkDown h6 code:not(pre code) {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
 /* Styles for inline code blocks */
 .reactMarkDown code:not(pre code) {
   font-size: 1rem;
@@ -153,7 +165,7 @@
   margin-bottom: 0.5em;
   background-color: var(--color-code-surface);
   color: var(--color-code-onSurface);
-  border-radius: 0.5em;
+  border-radius: 0.6em;
   padding: 0.2em 0.4em;
   /* Add padding for inline code blocks */
 }
