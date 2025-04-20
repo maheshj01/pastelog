@@ -98,5 +98,33 @@
 
 .tagline {
     display: inline-block;
-    animation: fadeUp 2.5s ease-in-out infinite;
+    animation: fadeUpSlide 3.0s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes fadeUpSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    15% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    95% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 }
