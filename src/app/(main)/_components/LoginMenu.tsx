@@ -54,9 +54,17 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onLogOut, onLogin, loading, onSet
                             </div>
                         </div>
                         {menuItems.releaseNotes && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {
+                            window.open(`${process.env.NEXT_PUBLIC_GITHUB_REPO}/blob/main/Changelog.md`, '_blank');
                         }}>
                             <FaNewspaper className='size-4 text-black dark:text-white' />
                             <span>Whats New ✨</span>
+                        </DropdownMenuItem>
+                        }
+                        {menuItems.terms && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {
+                            window.open(`${process.env.NEXT_PUBLIC_PRIVACY_POLICY}`, '_blank');
+                        }}>
+                            <FaNewspaper className='size-4 text-black dark:text-white' />
+                            <span>Privacy Policy</span>
                         </DropdownMenuItem>
                         }
                         {menuItems.github && <DropdownMenuItem className="space-x-2 cursor-pointer" onClick={() => {

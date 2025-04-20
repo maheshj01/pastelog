@@ -27,7 +27,7 @@ const ImportDialog: React.FC<ImportDialogProps> = ({ isOpen, onClose, onImport, 
                         value={url}
                         className="w-full"
                         onChange={(e) => setUrl(e.target.value)}
-                        placeHolder="Enter the URL of the log to import"
+                        placeHolder="Enter the URL"
                     />
                 </ModalBody>
                 <ModalFooter>

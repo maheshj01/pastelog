@@ -7,6 +7,7 @@ interface MenuState {
         github: boolean;
         report: boolean;
         tour: boolean;
+        terms: boolean;
     };
     loading: boolean;
     error: string | null;
@@ -18,6 +19,7 @@ const initialState: MenuState = {
         github: true,
         report: true,
         tour: true,
+        terms: true,
     },
     loading: false,
     error: null,
