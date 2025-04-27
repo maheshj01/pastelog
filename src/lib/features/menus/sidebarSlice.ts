@@ -1,7 +1,9 @@
 import { AuthService } from "@/app/(main)/_services/AuthService";
 import LogService from "@/app/(main)/_services/logService";
 import { LogType } from "@/app/constants";
+import { timestampToISOString } from "@/utils/utils";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Timestamp } from "firebase/firestore";
 
 interface SidebarState {
     id: string | null;
@@ -20,8 +22,8 @@ export interface Note {
     updatedAt: string;
     expiryDate: string;
     type: LogType;
-    createdDate: string;
-    lastUpdatedAt: string;
+    createdDate: Timestamp;
+    lastUpdatedAt: Timestamp;
     isExpired: boolean,
     summary: string
     isPublic: false,
@@ -41,6 +43,15 @@ const initialState: SidebarState = {
 const logService = new LogService();
 const authService = new AuthService();
 
+export function parseLog(log: any) {
+    return {
+        ...log,
+        createdDate: timestampToISOString(log.createdDate),
+        lastUpdatedAt: timestampToISOString(log.lastUpdatedAt),
+        expiryDate: timestampToISOString(log.expiryDate),
+    };
+}
+
 export const fetchLogs = createAsyncThunk(
     'sidebar/fetchLogs',
     async (userId: string, { dispatch }) => {
@@ -48,9 +59,10 @@ export const fetchLogs = createAsyncThunk(
             const isFirstLogin = await authService.isFirstTimeLogin(userId);
             if (isFirstLogin) {
                 const logs = await logService.fetchLogsFromLocal();
-                dispatch(setLogs(logs));
+                dispatch(setLogs(logs.map(parseLog)));
             }
-            return await logService.getLogsByUserId(userId);
+            const remoteLogs = await logService.getLogsByUserId(userId);
+            return remoteLogs.map(parseLog);
         }
         return await logService.fetchLogsFromLocal();
     }
@@ -90,7 +102,7 @@ const sidebarSlice = createSlice({
         },
         setLogs(state, action) {
             state.logs = action.payload;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder

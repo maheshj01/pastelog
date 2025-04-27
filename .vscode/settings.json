@@ -1,16 +1,6 @@
 {
    "files.autoSaveDelay": 3000,
    "editor.formatOnSave": true,
-   "files.exclude": {
-      //  "build":true,
-      "test": true,
-      //    ".vscode":false,
-      //    ".*":true,
-      "web": false,
-      "build": false,
-      "windows": true,
-      "macos": true,
-   },
    "dart.flutterSdkPath": "/Users/mahesh/Documents/flutter",
    "dart.debugExternalLibraries": true,
    "editor.codeActionsOnSave": {
@@ -18,9 +8,19 @@
       "source.fixAll": "explicit",
       "source.addMissingImports.ts": "explicit"
    },
-   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
-   "cursor.cmdk.useThemedDiffBackground": true,
-   "editor.codeLensFontSize": 0,
-   "editor.defaultFormatter": "vscode.typescript-language-features",
-   "prettier.tabWidth": 4
+   "editor.defaultFormatter": "esbenp.prettier-vscode",
+   "eslint.validate": [
+      "javascript",
+      "typescript"
+   ],
+   "typescript.tsdk": "functions/node_modules/typescript/lib",
+   "eslint.workingDirectories": [
+      {
+         "mode": "auto"
+      },
+      {
+         "pattern": "functions/"
+      }
+   ],
+   "java.configuration.updateBuildConfiguration": "interactive"
 }

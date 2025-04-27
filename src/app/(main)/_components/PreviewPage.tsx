@@ -4,7 +4,8 @@ import { Constants } from '@/app/constants';
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import { setId } from '@/lib/features/menus/sidebarSlice';
 import { AppDispatch, RootState } from '@/lib/store';
-import { formatReadableDate } from '@/utils/utils';
+import { formatReadableDate, timestampToISOString } from '@/utils/utils';
+import { Timestamp } from 'firebase/firestore';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -137,18 +138,19 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const handleOnEdit = async (hasUpdated: boolean) => {
         setLoading(true);
         if (hasUpdated) {
-            editedLog!.lastUpdatedAt = new Date().toUTCString();
-            await logService.updateLog(logId, editedLog!);
-            setpreviewLog({ ...editedLog! });
+            const updatedLog = { ...editedLog! };
+            updatedLog.lastUpdatedAt = Timestamp.now();
+            await logService.updateLog(logId, updatedLog);
+            setpreviewLog({
+                ...updatedLog,
+                lastUpdatedAt: timestampToISOString(updatedLog.lastUpdatedAt),
+            });
         } else {
             seteditedLog({ ...previewLog! });
         }
         setIsEditing(false);
         setLoading(false);
-    }
-
-
-
+    };
 
     if (loading) {
         return (
@@ -158,7 +160,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         )
     }
 
-    if (previewLog === null || (previewLog.expiryDate != null && new Date(previewLog.expiryDate) < new Date())) {
+    if (previewLog === null || (previewLog.expiryDate != null && previewLog.expiryDate < Timestamp.now())) {
         const className = 'text-md text-black dark:text-slate-50 my-1';
         return (
             <div className="flex items-center justify-center h-screen">
@@ -296,4 +298,3 @@ const PreviewPage = ({ logId }: { logId: string }) => {
 }
 
 export default PreviewPage;
-

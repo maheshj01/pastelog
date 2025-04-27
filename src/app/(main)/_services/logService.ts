@@ -3,7 +3,7 @@
 import { Constants, LogType } from "@/app/constants";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from 'axios';
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, Timestamp, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
 import FeatureService from "./feature";
 class LogService {
@@ -64,7 +64,7 @@ class LogService {
             this.logCollection,
             where('userId', '==', userId),
             where('isExpired', '==', false),
-            // orderBy('lastUpdatedAt', 'desc')
+            orderBy('lastUpdatedAt', 'desc')
         );
         const userQuerySnapshot = await getDocs(userQuery);
         const userLogs = userQuerySnapshot.docs.map(
@@ -75,11 +75,11 @@ class LogService {
             }
         );
         // todo: change dates to timeStamp and sort server side
-        userLogs.sort((a, b) => {
-            const aTime = new Date(a.lastUpdatedAt).getTime();
-            const bTime = new Date(b.lastUpdatedAt).getTime();
-            return bTime - aTime;
-        });
+        // userLogs.sort((a, b) => {
+        //     const aTime = new Date(a.lastUpdatedAt).getTime();
+        //     const bTime = new Date(b.lastUpdatedAt).getTime();
+        //     return bTime - aTime;
+        // });
         // // Fetch public logs
         // const publicLogPromises = Constants.publicLogIds.map(async (id) => {
         //     const docRef = doc(this.logCollection, id);
@@ -143,7 +143,7 @@ class LogService {
         const docRef = doc(this.logCollection, id);
         const data = {
             ...log,
-            lastUpdatedAt: new Date().toUTCString()
+            lastUpdatedAt: Timestamp.now()
         };
         // await this.saveLogToLocal(log);
         // Remove any undefined fields
@@ -154,7 +154,7 @@ class LogService {
     async updateLogTitle(id: string, log: any): Promise<void> {
         const docRef = doc(this.logCollection, id);
         await updateDoc(docRef, {
-            title: log.title, lastUpdatedAt: new Date().toUTCString()
+            title: log.title, lastUpdatedAt: Timestamp.now()
         });
         await this.saveLogToLocal(log);
     }
@@ -276,8 +276,8 @@ class LogService {
                 type: LogType.TEXT,
                 isMarkDown: false,
                 title: desc,
-                createdDate: new Date().toUTCString(),
-                lastUpdatedAt: new Date().toUTCString(),
+                createdDate: Timestamp.now(),
+                lastUpdatedAt: Timestamp.now(),
                 isPublic: true,
                 isExpired: false,
                 summary: '',

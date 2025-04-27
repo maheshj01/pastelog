@@ -9,6 +9,7 @@ import { getDateOffsetBy } from "@/utils/utils";
 import { Button as PSButton } from "@nextui-org/button";
 import { useDisclosure } from "@nextui-org/react";
 import { UploadIcon } from "@radix-ui/react-icons";
+import { Timestamp } from "firebase/firestore";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -108,35 +109,35 @@ export default function Pastelog({ id }: { id?: string }) {
 
     async function publish() {
         try {
-          dispatch(setPublishing(true));
-          const log = {
-            expiryDate: editor.expiryDate,
-            data: editor.content,
-            type: LogType.TEXT,
-            title: editor.title,
-            createdDate: new Date().toDateString(),
-            lastUpdatedAt: new Date().toDateString(),
-            isExpired: false,
-            summary: "",
-            isPublic: false,
-            userId: user ? user.id : null,
-            isMarkDown: true,
-          };
-          const id = await logService.publishLog(log);
-          // const id = await logService.publishLogWithId(log, 'shortcuts');
-          if (!id) {
-            dispatch(setPublishing(false));
-            return;
-          }
-          router.push(`/logs/publish/${id}`);
-          dispatch(resetState());
-          setEditorKey((prevKey) => prevKey + 1);
-          Analytics.logEvent("publish_pastelog", { id: id, action: "click" });
+            dispatch(setPublishing(true));
+            const log = {
+                expiryDate: Timestamp.fromDate(new Date(editor.expiryDate!)),
+                data: editor.content,
+                type: LogType.TEXT,
+                title: editor.title,
+                createdDate: Timestamp.now(),
+                lastUpdatedAt: Timestamp.now(),
+                isExpired: false,
+                summary: "",
+                isPublic: false,
+                userId: user ? user.id : null,
+                isMarkDown: true,
+            };
+            const id = await logService.publishLog(log);
+            // const id = await logService.publishLogWithId(log, 'shortcuts');
+            if (!id) {
+                dispatch(setPublishing(false));
+                return;
+            }
+            router.push(`/logs/publish/${id}`);
+            dispatch(resetState());
+            setEditorKey((prevKey) => prevKey + 1);
+            Analytics.logEvent("publish_pastelog", { id: id, action: "click" });
         } catch (e) {
-          notify(true, "Failed to publish log");
-          dispatch(setPublishing(false));
+            notify(true, "Failed to publish log");
+            dispatch(setPublishing(false));
         }
-      }
+    }
 
     async function handleImport(url: string) {
         dispatch(setImportLoading(true));
@@ -193,6 +194,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 }
             });
         }
+        // logService.migrateNotes();
     }, [id])
 
     const toggleTheme = () => {

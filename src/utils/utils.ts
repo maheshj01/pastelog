@@ -1,5 +1,6 @@
 import { parseDate } from "@internationalized/date";
 import { CalendarDate } from "@nextui-org/react";
+import { Timestamp } from "firebase/firestore";
 import html2canvas from "html2canvas";
 
 export const getDateOffsetBy = (days: number): string => {
@@ -22,16 +23,37 @@ export const parsedDate = (date: Date): CalendarDate => {
     return parsedDate;
 }
 
-export const formatReadableDate = (date: string): string => {
+
+export function timestampToISOString(input: Timestamp | string): string {
+    if (typeof input === "string") return input;
+    if (input instanceof Timestamp) return input.toDate().toISOString();
+    return "";
+}
+
+export const formatReadableDate = (dateInput: string | Timestamp | null | undefined): string => {
+    if (!dateInput) return '';
+
+    let date: Date;
+
+    if (typeof dateInput === "string") {
+        date = new Date(dateInput); // ISO string
+    } else if (dateInput instanceof Timestamp) {
+        date = dateInput.toDate(); // Firestore Timestamp
+    } else {
+        return '';
+    }
+
     const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         hour: 'numeric',
         minute: 'numeric',
+        hour12: true, // Optional: 12-hour format
     };
-    return new Date(date).toLocaleDateString('en-local', options);
-}
+
+    return date.toLocaleString('en-local', options);
+};
 
 export const downloadImage = async () => {
     const preview = document.getElementById('preview');
