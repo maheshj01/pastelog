@@ -12,16 +12,7 @@ class LogService {
     private featureService: FeatureService = new FeatureService();
     async fetchLogs(): Promise<any[]> {
         const querySnapshot = await getDocs(this.logCollection);
-        const logs: any[] = [];
-        querySnapshot.forEach((doc) => {
-            // const log = Log.fromFirestore(doc);
-            const log = doc.data();
-            if (!log.isExpired) {
-                logs.push(log);
-            }
-        });
-
-        // Save fetched logs to localStorage
+        const logs = querySnapshot.docs.map(doc => doc.data());
         this.saveLogsToLocal(logs);
         return logs;
     }

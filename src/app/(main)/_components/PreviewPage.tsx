@@ -69,36 +69,43 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         </div>
     });
 
-    async function fetchLogsById() {
-        const log = await logService.fetchLogById(logId);
-        if (!log) {
-            return;
+    async function fetchLogsByIdFast(id: string) {
+        const localLogs = await logService.fetchLogsFromLocal();
+        const localLog = localLogs.find((log) => log.id === id);
+
+        if (localLog) {
+            return localLog;
         }
-        setpreviewLog({ ...log });
-        seteditedLog({ ...log });
-        // if (!Constants.publicLogIds.includes(logId)) {
-        //     if (!isPublishRoute) {
-        //         setPublishedUser(user);
-        //     } else {
-        //         const publisher = await userService.getUserById(log.userId);
-        //         setPublishedUser(publisher);
-        //     }
-        // }
+        return await logService.fetchLogById(id);
     }
 
     useEffect(() => {
+        if (!logId) return;
+
         dispatch(setId(logId));
-        if (selected) {
-            setpreviewLog(selected);
-            seteditedLog(selected);
-            setLoading(false);
-            fetchLogsById();
-        } else {
-            if (logId) {
-                setLoading(true);
-                fetchLogsById().finally(() => setLoading(false));
+
+        async function loadLog() {
+            setLoading(true);
+
+            if (selected && selected.id === logId) {
+                console.log("Using selected from Redux");
+                setpreviewLog(selected);
+                seteditedLog(selected);
+                setLoading(false);
+                return;
             }
+
+            const fetchedLog = await fetchLogsByIdFast(logId);
+
+            if (fetchedLog) {
+                setpreviewLog(fetchedLog);
+                seteditedLog(fetchedLog);
+            }
+
+            setLoading(false);
         }
+
+        loadLog();
     }, [logId]);
 
     useEffect(() => {
