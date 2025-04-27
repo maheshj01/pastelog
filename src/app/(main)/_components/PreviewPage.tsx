@@ -4,7 +4,7 @@ import { Constants } from '@/app/constants';
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import { setId } from '@/lib/features/menus/sidebarSlice';
 import { AppDispatch, RootState } from '@/lib/store';
-import { formatReadableDate, timestampToISOString } from '@/utils/utils';
+import { formatReadableDate, isExpired, timestampToISOString } from '@/utils/utils';
 import { Timestamp } from 'firebase/firestore';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
@@ -105,7 +105,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         }
     }, [logId]);
 
-
     useEffect(() => {
         const scrollContainer = document.querySelectorAll('.scrollContainer');
         const scrollRef = scrollContainer[0];
@@ -160,7 +159,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         )
     }
 
-    if (!loading && previewLog && previewLog.expiryDate != null && previewLog.expiryDate < Timestamp.now()) {
+    if (!loading && previewLog && isExpired(previewLog.expiryDate)) {
         const className = 'text-md text-black dark:text-slate-50 my-1';
         return (
             <div className="flex items-center justify-center h-screen">
@@ -172,7 +171,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         )
     }
 
-    if (!loading && !previewLog) {
+    if (!previewLog) {
         return (
             <div className="flex items-center justify-center h-screen">
                 <div className="text-center">

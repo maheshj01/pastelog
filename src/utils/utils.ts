@@ -107,6 +107,22 @@ export const downloadImage = async () => {
     });
 };
 
+export const isExpired = (expiryDate: Timestamp | string | null | undefined): boolean => {
+    if (!expiryDate) return false;
+
+    let expiry: Date;
+    if (expiryDate instanceof Timestamp) {
+        expiry = expiryDate.toDate();
+    } else if (typeof expiryDate === "string") {
+        expiry = new Date(expiryDate);
+    } else {
+        return false;
+    }
+
+    const now = new Date();
+    return expiry.getTime() <= now.getTime();
+};
+
 export const downloadText = (previewLog: any) => {
     if (!previewLog?.data) return;
     const element = document.createElement("a");
