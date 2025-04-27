@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSidebar } from "../_hooks/useSidebar";
 import Analytics from '../_services/Analytics';
 import LogService from '../_services/logService';
-import { UserService } from '../_services/UserService';
 import { DatePicker } from "./DatePicker";
 import GeminiIcon from './GeminiIcon';
 import MDPreview from './MDPreview';
@@ -37,9 +36,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
     const titleRef = useRef<HTMLParagraphElement>(null);
     const dispatch = useDispatch<AppDispatch>();
     const selected = useSelector((state: RootState) => state.sidebar.selected);
-    const user = useSelector((state: RootState) => state.auth.user);
-    const userService = new UserService();
-    // const [publishedUser, setPublishedUser] = useState<any | null>(null);
     const onSummarizeClicked = async () => {
         try {
             setSummaryLoading(true);
