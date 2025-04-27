@@ -160,13 +160,24 @@ const PreviewPage = ({ logId }: { logId: string }) => {
         )
     }
 
-    if (previewLog === null || (previewLog.expiryDate != null && previewLog.expiryDate < Timestamp.now())) {
+    if (!loading && previewLog && previewLog.expiryDate != null && previewLog.expiryDate < Timestamp.now()) {
         const className = 'text-md text-black dark:text-slate-50 my-1';
         return (
             <div className="flex items-center justify-center h-screen">
                 <div className="text-center">
                     <p className={`text-3xl`}>{"This Note has Expired"}</p>
                     <p className={className}>{"or it has been deleted by the owner"}</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (!loading && !previewLog) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                    <p className={`text-3xl`}>{"Note not found"}</p>
+                    <p className="text-md text-black dark:text-slate-50 my-1">{"The requested note could not be found"}</p>
                 </div>
             </div>
         )
