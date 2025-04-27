@@ -1,4 +1,5 @@
 import PreviewPage from "@/app/(main)/_components/PreviewPage";
+import { Constants } from "@/app/constants";
 import { Metadata, ResolvingMetadata } from "next";
 import LogService from "../../_services/logService";
 
@@ -18,16 +19,14 @@ export async function generateMetadata(
     const meta = {
         title: log?.title || "Pastelog",
         description:
-            log?.data ||
-            "PasteLog is a simple, fast, and powerful pastebin. It is powered by firebase in the backend. It allows you to publish your logs, and access them from anywhere and any device via a unique link.",
+            log?.data || Constants.description,
         url: `https://pastelog.vercel.app/logs/${id}`,
         openGraph: {
             type: "website",
             siteName: "Pastelog",
             title: log?.title || "Pastelog",
             description:
-                log.data ||
-                "PasteLog is a simple, fast, and powerful pastebin. It is powered by firebase in the backend. It allows you to publish your logs, and access them from anywhere and any device via a unique link.",
+                log?.data || Constants.description,
             url: `https://pastelog.vercel.app/logs/${id}`,
             images: [
                 {

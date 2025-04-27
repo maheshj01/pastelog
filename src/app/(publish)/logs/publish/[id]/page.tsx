@@ -1,6 +1,7 @@
 
 import PreviewPage from '@/app/(main)/_components/PreviewPage';
 import LogService from '@/app/(main)/_services/logService';
+import { Constants } from '@/app/constants';
 import { Metadata, ResolvingMetadata } from 'next';
 
 // This is required for dynamic routing in runtime
@@ -23,7 +24,7 @@ export async function generateMetadata(
 
     return {
         title: log?.title || "Pastelog",
-        description: log?.data || "PasteLog is a simple, fast, and powerful pastebin. It is powered by firebase in the backend. It allows you to publish your logs, and access them from anywhere and any device via a unique link.",
+        description: log?.data || Constants.description
     }
 }
 
