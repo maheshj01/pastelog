@@ -107,6 +107,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
                     data={`${window.location.origin}/logs/publish/${previewLog?.id}`}
                     copiedIcon={<DoneIcon color='success' />}
                     icon={<ShareIcon className={Constants.styles.iconTheme} />}
+                    size='sm'
                 />
                 <CopyIcon
                     id='copy-content'
@@ -115,6 +116,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
                     data={`${previewLog?.data as string}`}
                     copiedIcon={<DoneIcon color='success' />}
                     icon={<ContentCopyIcon className={Constants.styles.iconTheme} />}
+                    size='sm'
                 />
                 {
                     user && !isPublishRoute && (

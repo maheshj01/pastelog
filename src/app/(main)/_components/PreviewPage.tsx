@@ -86,7 +86,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
 
         async function loadLog() {
             setLoading(true);
-
             if (selected && selected.id === logId) {
                 console.log("Using selected from Redux");
                 setpreviewLog(selected);

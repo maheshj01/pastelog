@@ -1,9 +1,12 @@
 // src/_components/PSContent.tsx
+import { Constants } from "@/app/constants";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DoneIcon from '@mui/icons-material/Done';
 import { Tooltip } from "@nextui-org/react";
 import dynamic from "next/dynamic";
 import remarkGfm from "remark-gfm";
 import CodeBlock from "./CodeHighlight";
-// import ReactMarkdown from 'react-markdown';
+import CopyIcon from "./CopyIcon";
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
 
 interface MDPreviewProps {
@@ -19,7 +22,20 @@ const MDPreview = ({ value, className }: MDPreviewProps) => {
             <Tooltip
                 className="cursor-pointer"
                 onClick={(e) => window.open(props.href, '_blank')}
-                content={props.href.length > 50 ? props.href.substring(0, 50) + '...' : props.href}
+                content={
+                    <div className="flex items-center gap-2">
+                        {props.href.length > 40 ? props.href.substring(0, 40) + '...' : props.href}
+                        <CopyIcon
+                            id='copy-link'
+                            message='Link copied'
+                            data={props.href}
+                            copiedIcon={<DoneIcon color='success' className={Constants.styles.smallIconTheme} />}
+                            icon={<ContentCopyIcon className={Constants.styles.smallIconTheme} />}
+                            size='sm'
+                            notifyCopy={false}
+                        />
+                    </div>
+                }
                 placement='top-start'>
                 <a href={props.href} target="_blank" rel="noreferrer">
                     {props.children}

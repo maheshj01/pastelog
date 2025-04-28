@@ -8,12 +8,14 @@ interface CopyIconProps {
     icon?: React.ReactNode
     copiedIcon?: React.ReactNode
     onClick?: () => void
+    notifyCopy?: boolean
     tooltip?: string
     message: string
     data: string
     id: string
+    size?: "sm" | "md" | "lg"
 }
-export default function CopyIcon({ id, className, icon, message, copiedIcon, onClick, data, tooltip }: CopyIconProps) {
+export default function CopyIcon({ id, className, icon, message, copiedIcon, onClick, data, tooltip, size = 'md', notifyCopy = true }: CopyIconProps) {
     const [copied, setCopied] = useState<boolean>(false);
 
 
@@ -22,10 +24,10 @@ export default function CopyIcon({ id, className, icon, message, copiedIcon, onC
         navigator.clipboard.writeText(data)
             .then(() => {
                 setCopied(true);
-                notify(message);
+                notifyCopy && notify(message);
             })
             .catch(() => {
-                notify("Failed to copy!");
+                notifyCopy && notify("Failed to copy!");
             });
         setTimeout(() => {
             setCopied(false);
@@ -51,6 +53,7 @@ export default function CopyIcon({ id, className, icon, message, copiedIcon, onC
     return (
         <IconButton
             ariaLabel={tooltip}
+            size={size}
             onClick={handleIconClick} className={className}>
             {!copied ? icon : copiedIcon}
         </IconButton>
