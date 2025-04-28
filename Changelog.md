@@ -1,3 +1,9 @@
+### [0.6.3] - Apr 26, 2025
+
+- Sort by last modified date [Issue #43](https://github.com/maheshj01/pastelog/issues/43)
+- Load log from local storage first to improve loading time
+- Add copy icon to tooltip for links
+
 ### [0.6.2] - Mar 07, 2025
 
 - Improved app loading time by 50%
