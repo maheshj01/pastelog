@@ -1,59 +1,6 @@
-import { parseDate } from "@internationalized/date";
 import { CalendarDate } from "@nextui-org/react";
 import { Timestamp } from "firebase/firestore";
 import html2canvas from "html2canvas";
-
-export const getDateOffsetBy = (days: number): string => {
-    const date = new Date();
-    date.setDate(date.getDate() + days);
-    return formatDateISO(date);
-};
-
-// returns date in ISO format
-const formatDateISO = (date: Date): string => {
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
-};
-
-export const parsedDate = (date: Date): CalendarDate => {
-    const isoDate = formatDateISO(date);
-    const parsedDate = parseDate(isoDate);
-    return parsedDate;
-}
-
-
-export function timestampToISOString(input: Timestamp | string): string {
-    if (typeof input === "string") return input;
-    if (input instanceof Timestamp) return input.toDate().toISOString();
-    return "";
-}
-
-export const formatReadableDate = (dateInput: string | Timestamp | null | undefined): string => {
-    if (!dateInput) return '';
-
-    let date: Date;
-
-    if (typeof dateInput === "string") {
-        date = new Date(dateInput); // ISO string
-    } else if (dateInput instanceof Timestamp) {
-        date = dateInput.toDate(); // Firestore Timestamp
-    } else {
-        return '';
-    }
-
-    const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true, // Optional: 12-hour format
-    };
-
-    return date.toLocaleString('en-local', options);
-};
 
 export const downloadImage = async () => {
     const preview = document.getElementById('preview');

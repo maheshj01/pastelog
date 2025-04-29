@@ -1,7 +1,7 @@
 import { RootState } from "@/lib/store";
+import DateUtils from "@/utils/DateUtils";
 import { cn } from "@nextui-org/react";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Button } from "./button";
@@ -31,7 +31,7 @@ export function DatePicker({ selected, onDateSelect, label }: DatePickerProps) {
                         className={cn('px-2 justify-start text-left font-normal', !selected && 'text-muted-foreground')}
                     >
                         <CalendarIcon className="mr-2 h-4 w-4 dark:text-white" />
-                        {selected ? <span className="dark:text-white">{format(selected, 'PP')} </span> : <span className="dark:text-white">Pick a date</span>}
+                        {selected ? <span className="dark:text-white">{DateUtils.formatDateMMMMDDYYYY(selected)} </span> : <span className="dark:text-white">Pick a date</span>}
                     </Button>
                     {(label && <p className="px-2 cursor-pointer">{label}</p>)}
                 </div>

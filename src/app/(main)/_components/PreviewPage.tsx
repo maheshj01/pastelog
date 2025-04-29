@@ -4,7 +4,8 @@ import { Constants } from '@/app/constants';
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import { setId } from '@/lib/features/menus/sidebarSlice';
 import { AppDispatch, RootState } from '@/lib/store';
-import { formatReadableDate, isExpired, timestampToISOString } from '@/utils/utils';
+import DateUtils from '@/utils/DateUtils';
+import { isExpired } from '@/utils/utils';
 import { Timestamp } from 'firebase/firestore';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
@@ -144,7 +145,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
             await logService.updateLog(logId, updatedLog);
             setpreviewLog({
                 ...updatedLog,
-                lastUpdatedAt: timestampToISOString(updatedLog.lastUpdatedAt),
+                lastUpdatedAt: DateUtils.timestampToISOString(updatedLog.lastUpdatedAt),
             });
         } else {
             seteditedLog({ ...previewLog! });
@@ -216,13 +217,13 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                     <div className="text-sm text-gray-500 dark:text-gray-400">
                                         <p className='m-0'>
                                             <span className="font-medium">Created At:</span>{" "}
-                                            {formatReadableDate(previewLog?.createdDate!)}
+                                            {DateUtils.formatReadableDate(previewLog?.createdDate!)}
                                         </p>
                                         <p className='m-0'>
                                             <span className="font-medium">Last Updated:</span>{" "}
                                             {isEditing
-                                                ? formatReadableDate(editedLog?.lastUpdatedAt!)
-                                                : formatReadableDate(previewLog?.lastUpdatedAt!)}
+                                                ? DateUtils.formatReadableDate(editedLog?.lastUpdatedAt!)
+                                                : DateUtils.formatReadableDate(previewLog?.lastUpdatedAt!)}
                                         </p>
                                         {/* <p className='m-0'>
                                             <span className="font-medium">created by:</span>{" "}
@@ -251,7 +252,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                         <p className="text-black dark:text-slate-50 my-1 font-bold">
                                             {`Expires`}
                                         </p>
-                                        <p className="text-black dark:text-slate-50 my-1"> {` ${formatReadableDate(previewLog?.expiryDate)}`}</p>
+                                        <p className="text-black dark:text-slate-50 my-1"> {` ${DateUtils.formatReadableDate(previewLog?.expiryDate)}`}</p>
                                     </div>
                                     // : <div>
                                     //     <p className="text-black dark:text-slate-50 my-1 font-bold">

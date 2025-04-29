@@ -4,8 +4,8 @@ import { LogType } from "@/app/constants";
 import { resetState, setContent, setExpiryDate, setImportLoading, setPreview, setPublishing, setTitle, togglePreview } from "@/lib/features/menus/editorSlice";
 import { setId, setSelected, toggleSideBar } from "@/lib/features/menus/sidebarSlice";
 import { AppDispatch, RootState } from "@/lib/store";
+import DateUtils from "@/utils/DateUtils";
 import { showToast } from "@/utils/toast_utils";
-import { getDateOffsetBy } from "@/utils/utils";
 import { Button as PSButton } from "@nextui-org/button";
 import { useDisclosure } from "@nextui-org/react";
 import { UploadIcon } from "@radix-ui/react-icons";
@@ -81,7 +81,7 @@ export default function Pastelog({ id }: { id?: string }) {
                     // date = new Date('9999-12-31');
                     const index = expiryDays.indexOf(x);
                     const daysOffset = expiryValuesInDays[index];
-                    date = getDateOffsetBy(daysOffset);
+                    date = DateUtils.getDateOffsetBy(daysOffset);
                 } else {
                     date = null;
                 }

@@ -1,4 +1,4 @@
-import { getDateOffsetBy } from "@/utils/utils";
+import DateUtils from "@/utils/DateUtils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface EditorState {
@@ -15,7 +15,7 @@ const initialState: EditorState = {
     content: "",
     preview: false,
     publishing: false,
-    expiryDate: getDateOffsetBy(30),
+    expiryDate: DateUtils.getDateOffsetBy(30),
     importLoading: false,
 };
 
