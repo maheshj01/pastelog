@@ -13,6 +13,8 @@
       "javascript",
       "typescript"
    ],
+   // shows error in entire project
+   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
    "typescript.tsdk": "functions/node_modules/typescript/lib",
    "eslint.workingDirectories": [
       {

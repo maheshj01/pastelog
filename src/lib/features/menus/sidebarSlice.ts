@@ -1,7 +1,7 @@
 import { AuthService } from "@/app/(main)/_services/AuthService";
 import LogService from "@/app/(main)/_services/logService";
 import { LogType } from "@/app/constants";
-import { timestampToISOString } from "@/utils/utils";
+import DateUtils from "@/utils/DateUtils";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Timestamp } from "firebase/firestore";
 
@@ -46,9 +46,9 @@ const authService = new AuthService();
 export function parseLog(log: any) {
     return {
         ...log,
-        createdDate: timestampToISOString(log.createdDate),
-        lastUpdatedAt: timestampToISOString(log.lastUpdatedAt),
-        expiryDate: timestampToISOString(log.expiryDate),
+        createdDate: DateUtils.timestampToISOString(log.createdDate),
+        lastUpdatedAt: DateUtils.timestampToISOString(log.lastUpdatedAt),
+        expiryDate: DateUtils.timestampToISOString(log.expiryDate),
     };
 }
 
