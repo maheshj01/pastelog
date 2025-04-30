@@ -254,13 +254,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                         </p>
                                         <p className="text-black dark:text-slate-50 my-1"> {` ${DateUtils.formatReadableDate(previewLog?.expiryDate)}`}</p>
                                     </div>
-                                    // : <div>
-                                    //     <p className="text-black dark:text-slate-50 my-1 font-bold">
-                                    //         {`Expires`}
-                                    //     </p>
-                                    //     <p className="text-black dark:text-slate-50 my-1"> {`Never`}</p>
-                                    // </div>
-                                ) : (
+                                ) : (previewLog?.expiryDate &&
                                     <DatePicker
                                         onDateSelect={(date: string) => {
                                             seteditedLog(

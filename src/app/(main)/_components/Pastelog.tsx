@@ -131,7 +131,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 dispatch(setPublishing(false));
                 return;
             }
-            router.push(`/logs/publish/${id}`);
+            router.push(`/logs/${id}`);
             dispatch(resetState());
             setEditorKey((prevKey) => prevKey + 1);
             Analytics.logEvent("publish_pastelog", { id: id, action: "click" });
