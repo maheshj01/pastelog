@@ -111,7 +111,9 @@ export default function Pastelog({ id }: { id?: string }) {
         try {
             dispatch(setPublishing(true));
             const log = {
-                expiryDate: Timestamp.fromDate(new Date(editor.expiryDate!)),
+                expiryDate: editor.expiryDate
+                    ? Timestamp.fromDate(new Date(editor.expiryDate))
+                    : null,
                 data: editor.content,
                 type: LogType.TEXT,
                 title: editor.title,
