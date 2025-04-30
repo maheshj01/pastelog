@@ -121,9 +121,11 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
                 {
                     user && !isPublishRoute && (
                         !isEditing ? (<div className='flex'>
-                            <IconButton onClick={() => {
-                                setIsEditing(true);
-                            }}
+                            <IconButton
+                                className='pb-2'
+                                onClick={() => {
+                                    setIsEditing(true);
+                                }}
                                 ariaLabel="Edit">
                                 <FaEdit className={Constants.styles.iconTheme} />
                             </IconButton>
@@ -161,12 +163,6 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
 
                 {isPublishRoute && (
                     <div className='space-x-2'>
-                        {/* <Button
-                                        variant='bordered'
-                                        className='border-code-onSurface'
-                                        onClick={() => { }}>
-                                        {'save'}
-                                    </Button> */}
                         <More />
                         <ShareDialog
                             isOpen={isOpen}

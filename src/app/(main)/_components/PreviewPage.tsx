@@ -284,6 +284,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                         </div>
                     )
                     }
+                    <div className='h-2' />
                     <Editor
                         preview={isEditing ? false : true}
                         className={`bg-background ${theme !== 'dark' ? ` min-h-screen` : `text-white min-h-screen mt-2`}`}
