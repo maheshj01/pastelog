@@ -52,9 +52,9 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon, className }) => {
                     </div>
                 </div>
                 {/* appbar content */}
-                <div className='flex grow items-center'>
+                <div className='flex grow items-center overflow-hidden'>
                     <motion.p
-                        className='md:text-lg sm:text-sm sm:text-center'
+                        className='truncate text-base md:text-lg lg:text-xl font-medium whitespace-nowrap overflow-hidden text-ellipsis w-full'
                         initial={{ translateY: 16 }}
                         animate={{ translateY: 0 }}
                         transition={{ duration: 0.3 }}

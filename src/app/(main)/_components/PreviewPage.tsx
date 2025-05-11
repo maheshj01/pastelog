@@ -191,23 +191,26 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                 <div className='flex flex-col'>
                     <div className='flex items-center'>
                         <div className='grow'>
-                            <div className='flex justify-between items-center gap-10'>
-                                <p className="text-3xl font-medium text-black dark:text-slate-50 my-1"
-                                    ref={titleRef}>
-                                    {previewLog?.title}</p>
-                                <GeminiIcon onGeminiTrigger={() => {
-                                    if (!summaryLoading) {
-                                        onSummarizeClicked();
-                                    }
-                                }}>
-                                    <Image
-                                        src={"/images/gemini.png"}
-                                        alt="Logo"
-                                        width={32}
-                                        height={32}
-                                        className={`cursor-pointer transition-transform duration-500 transform hover:scale-150 h-8 m-0 p-0 ${summaryLoading ? 'animate-pulse transform scale-150' : ''}`}
-                                    />
-                                </GeminiIcon>
+                            <div className="flex items-start justify-between w-full gap-4 px-1">
+                                <p
+                                    ref={titleRef}
+                                    className=" text-black dark:text-slate-50 text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium my-1 flex-1 break-words"
+                                >
+                                    {previewLog?.title}
+                                </p>
+
+                                <div className="flex-shrink-0 self-start">
+                                    <GeminiIcon onGeminiTrigger={onSummarizeClicked}>
+                                        <Image
+                                            src="/images/gemini.png"
+                                            alt="Gemini"
+                                            width={32}
+                                            height={32}
+                                            className={`cursor-pointer transition-transform duration-500 hover:scale-150 h-8 m-0 p-0 ${summaryLoading ? 'animate-pulse scale-150' : ''
+                                                }`}
+                                        />
+                                    </GeminiIcon>
+                                </div>
                             </div>
                             {!loading && <div>
                                 <PSAccordion
