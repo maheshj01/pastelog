@@ -103,6 +103,9 @@ const sidebarSlice = createSlice({
         setLogs(state, action) {
             state.logs = action.payload;
         },
+        addLog(state, action) {
+            state.logs = [action.payload, ...state.logs];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -119,6 +122,6 @@ const sidebarSlice = createSlice({
     }
 });
 
-export const { setSelected, setId, setShowSideBar, toggleSideBar, setLoading, setNavbarTitle, refreshLogs, setLogs } = sidebarSlice.actions;
+export const { setSelected, setId, setShowSideBar, toggleSideBar, setLoading, setNavbarTitle, refreshLogs, setLogs, addLog } = sidebarSlice.actions;
 
 export default sidebarSlice.reducer;

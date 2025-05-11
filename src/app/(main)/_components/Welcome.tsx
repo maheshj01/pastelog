@@ -55,7 +55,7 @@ export default function Welcome() {
                     setLoading(false);
                     router.push('/logs');
                     resolve();
-                }, 2500);
+                }, 1500);
             });
             Analytics.logEvent('get_started', { action: 'click' });
         } catch (error) {

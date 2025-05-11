@@ -2,7 +2,7 @@
 
 import { LogType } from "@/app/constants";
 import { resetState, setContent, setExpiryDate, setImportLoading, setPreview, setPublishing, setTitle, togglePreview } from "@/lib/features/menus/editorSlice";
-import { setId, setSelected, toggleSideBar } from "@/lib/features/menus/sidebarSlice";
+import { addLog, setId, setNavbarTitle, setSelected, toggleSideBar } from "@/lib/features/menus/sidebarSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import DateUtils from "@/utils/DateUtils";
 import { showToast } from "@/utils/toast_utils";
@@ -131,6 +131,12 @@ export default function Pastelog({ id }: { id?: string }) {
                 dispatch(setPublishing(false));
                 return;
             }
+            dispatch(addLog({
+                ...log, id
+            }))
+            dispatch(setSelected(log));
+            setNavbarTitle('');
+            dispatch(setId(id));
             router.push(`/logs/${id}`);
             dispatch(resetState());
             setEditorKey((prevKey) => prevKey + 1);

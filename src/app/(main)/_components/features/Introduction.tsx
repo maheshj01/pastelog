@@ -22,8 +22,7 @@ export function Introduction({
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentTagLine((prev) => (prev + 1) % tagLineWords.length);
-        }, 3000); // Match this with the CSS animation duration
-
+        }, 3000);
         return () => clearInterval(interval);
     }, []);
 
