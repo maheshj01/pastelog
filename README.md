@@ -89,6 +89,7 @@ root /
 │ │ │ │ ├──[id]
 │ │ │ │ │ └── page.tsx
 │ │ │ │ └── layout.tsx
+│ │ │ │ └── app_layout.tsx
 │ │ │ │ └── page.tsx
 │ │ ├── (publish)/
 │ │ │ ├── logs /
