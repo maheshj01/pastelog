@@ -198,7 +198,6 @@ const PreviewPage = ({ logId }: { logId: string }) => {
                                 >
                                     {previewLog?.title}
                                 </p>
-
                                 <div className="flex-shrink-0 self-start">
                                     <GeminiIcon onGeminiTrigger={onSummarizeClicked}>
                                         <Image

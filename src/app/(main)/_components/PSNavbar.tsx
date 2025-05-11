@@ -1,7 +1,7 @@
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import { setId, setSelected, setShowSideBar } from '@/lib/features/menus/sidebarSlice';
 import { AppDispatch, RootState } from '@/lib/store';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { usePathname, useRouter } from "next/navigation";
 import { FiSidebar } from 'react-icons/fi';
@@ -53,15 +53,20 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon, className }) => {
                 </div>
                 {/* appbar content */}
                 <div className='flex grow items-center overflow-hidden'>
-                    <motion.p
-                        className='truncate text-base md:text-lg lg:text-xl font-medium whitespace-nowrap overflow-hidden text-ellipsis w-full'
-                        initial={{ translateY: 16 }}
-                        animate={{ translateY: 0 }}
-                        transition={{ duration: 0.3 }}
-                        key={navbarTitle}
-                    >
-                        {navbarTitle}
-                    </motion.p>
+                    <AnimatePresence mode="wait" initial={false}>
+                        {navbarTitle && (
+                            <motion.p
+                                key={navbarTitle}
+                                className="truncate text-base md:text-lg lg:text-xl font-medium whitespace-nowrap overflow-hidden text-ellipsis w-full"
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 16 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {navbarTitle}
+                            </motion.p>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
             <div className="px-10">
