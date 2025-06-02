@@ -40,6 +40,7 @@ const config: Config = {
 				accent: 'var(--color-accent)',
 				background: 'var(--color-background)',
 				surface: 'var(--color-surface)',
+				selection: 'var(--color-selection)',
 			},
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'], // Custom font
