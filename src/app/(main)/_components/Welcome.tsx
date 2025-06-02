@@ -1,9 +1,9 @@
-"use client";
-import { Constants } from "@/app/constants";
+'use client';
+import { Constants } from '@/app/constants';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import useSettings from "../_hooks/useSettings";
-import Analytics from "../_services/Analytics";
+import useSettings from '../_hooks/useSettings';
+import Analytics from '../_services/Analytics';
 import LogService from '../_services/logService';
 import { BeautifulMarkdown } from './features/BeautifulMarkdown';
 import { CreateAndShare } from './features/CreateAndShare';

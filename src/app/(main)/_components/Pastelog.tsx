@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { LogType } from "@/app/constants";
-import { resetState, setContent, setExpiryDate, setImportLoading, setPreview, setPublishing, setTitle, togglePreview } from "@/lib/features/menus/editorSlice";
-import { addLog, setId, setNavbarTitle, setSelected, toggleSideBar } from "@/lib/features/menus/sidebarSlice";
-import { AppDispatch, RootState } from "@/lib/store";
-import DateUtils from "@/utils/DateUtils";
-import { showToast } from "@/utils/toast_utils";
-import { Button as PSButton } from "@nextui-org/button";
-import { useDisclosure } from "@nextui-org/react";
-import { UploadIcon } from "@radix-ui/react-icons";
-import { Timestamp } from "firebase/firestore";
-import { useTheme } from "next-themes";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import Analytics from "../_services/Analytics";
-import LogService from "../_services/logService";
-import { DatePicker } from "./DatePicker";
-import ImportDialog from "./Dialog/Import";
-import Editor from "./Editor";
-import PSInput from "./PSInput";
-import ShortcutWrapper from "./ShortCutWrapper";
-import { Button } from "./button";
+import { LogType } from '@/app/constants';
+import { resetState, setContent, setExpiryDate, setImportLoading, setPreview, setPublishing, setTitle, togglePreview } from '@/lib/features/menus/editorSlice';
+import { addLog, setId, setNavbarTitle, setSelected, toggleSideBar } from '@/lib/features/menus/sidebarSlice';
+import { AppDispatch, RootState } from '@/lib/store';
+import DateUtils from '@/utils/DateUtils';
+import { showToast } from '@/utils/toast_utils';
+import { Button as PSButton } from '@nextui-org/button';
+import { useDisclosure } from '@nextui-org/react';
+import { UploadIcon } from '@radix-ui/react-icons';
+import { Timestamp } from 'firebase/firestore';
+import { useTheme } from 'next-themes';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import Analytics from '../_services/Analytics';
+import LogService from '../_services/logService';
+import { DatePicker } from './DatePicker';
+import ImportDialog from './Dialog/Import';
+import Editor from './Editor';
+import PSInput from './PSInput';
+import ShortcutWrapper from './ShortCutWrapper';
+import { Button } from './button';
 import {
     Select,
     SelectContent,
@@ -31,7 +31,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue
-} from "./select";
+} from './select';
 
 export default function Pastelog({ id }: { id?: string }) {
 
@@ -43,11 +43,11 @@ export default function Pastelog({ id }: { id?: string }) {
     const unSelected = 'text-black bg-accent dark:text-slate-50 ';
     const router = useRouter();
     const [editorKey, setEditorKey] = useState<number>(0);
-    const expiryDays = ["7 days", "30 days", "90 days", "6 months", "1 year"];
+    const expiryDays = ['7 days', '30 days', '90 days', '6 months', '1 year'];
     const expiryValuesInDays = [7, 30, 90, 180, 365, 9999];
     const [selectExpiry, setSelectExpiry] = useState<string>(expiryDays[1]);
     const [importContent, setImportContent] = useState({
-        title: "Import Log",
+        title: 'Import Log',
         content: 'Paste a Pastelog link or a Gist URL to import a log.',
     });
 
@@ -55,11 +55,11 @@ export default function Pastelog({ id }: { id?: string }) {
     const toastId = React.useRef('import-toast');
     const user = useSelector((state: RootState) => state.auth.user);
     if (user) {
-        expiryDays.push("Never");
+        expiryDays.push('Never');
     }
     const notify = (error: boolean, message: string) => {
         if (!toast.isActive(toastId.current!)) {
-            showToast(error ? "error" : "success", <p> {message}</p >,
+            showToast(error ? 'error' : 'success', <p> {message}</p >,
                 {
                     toastId: 'import-toast',
                     style: {
@@ -77,7 +77,7 @@ export default function Pastelog({ id }: { id?: string }) {
             <Select value={selectExpiry} onValueChange={(x) => {
                 setSelectExpiry(x);
                 var date: string | null = new Date().toDateString();
-                if (x !== "Never") {
+                if (x !== 'Never') {
                     // date = new Date('9999-12-31');
                     const index = expiryDays.indexOf(x);
                     const daysOffset = expiryValuesInDays[index];
@@ -120,7 +120,7 @@ export default function Pastelog({ id }: { id?: string }) {
                 createdDate: Timestamp.now(),
                 lastUpdatedAt: Timestamp.now(),
                 isExpired: false,
-                summary: "",
+                summary: '',
                 isPublic: false,
                 userId: user ? user.id : null,
                 isMarkDown: true,
@@ -140,9 +140,9 @@ export default function Pastelog({ id }: { id?: string }) {
             router.push(`/logs/${id}`);
             dispatch(resetState());
             setEditorKey((prevKey) => prevKey + 1);
-            Analytics.logEvent("publish_pastelog", { id: id, action: "click" });
+            Analytics.logEvent('publish_pastelog', { id: id, action: 'click' });
         } catch (e) {
-            notify(true, "Failed to publish log");
+            notify(true, 'Failed to publish log');
             dispatch(setPublishing(false));
         }
     }
@@ -159,7 +159,7 @@ export default function Pastelog({ id }: { id?: string }) {
                     // Here content value is blank but log.data is not blank
                     setEditorKey(prevKey => prevKey + 1);
                     if (log.data) {
-                        notify(false, "Log imported successfully");
+                        notify(false, 'Log imported successfully');
                         Analytics.logEvent('import_gist', { id: id, action: 'click' });
                     }
                     onImportClose();
@@ -172,17 +172,17 @@ export default function Pastelog({ id }: { id?: string }) {
                     dispatch(setTitle(log.title!));
                     dispatch(setContent(log.data!));
                     dispatch(setExpiryDate(log.expiryDate!));
-                    notify(false, "Log imported successfully");
+                    notify(false, 'Log imported successfully');
                     onImportClose();
                     Analytics.logEvent('import_pastelog', { id: id, action: 'click' });
                 } else {
-                    notify(true, "Invalid Pastelog URL");
+                    notify(true, 'Invalid Pastelog URL');
                 }
             } else {
-                notify(true, "Please enter a valid URL");
+                notify(true, 'Please enter a valid URL');
             }
         } catch (e) {
-            notify(true, "Please enter a valid URL");
+            notify(true, 'Please enter a valid URL');
         }
         dispatch(setImportLoading(false));
     }
@@ -263,7 +263,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                 </div>
                                 <div className='flex justify-end items-center space-x-1'>
                                     <div className="flex items-center space-x-1">
-                                        <p className="text-sm hidden md:block">{editor.expiryDate ? "Expires in" : "Expires"}</p>
+                                        <p className="text-sm hidden md:block">{editor.expiryDate ? 'Expires in' : 'Expires'}</p>
                                         <div className="hidden md:block"><SelectExpiryComp /></div>
                                     </div>
                                     {editor.expiryDate && <DatePicker
@@ -276,7 +276,7 @@ export default function Pastelog({ id }: { id?: string }) {
                                 <Editor
                                     key={editorKey}
                                     preview={editor.preview}
-                                    className={theme != 'dark' ? ` bg-slate-50 text-black` : `bg-gray-700 text-white`}
+                                    className={theme != 'dark' ? ' bg-slate-50 text-black' : 'bg-gray-700 text-white'}
                                     value={editor.content}
                                     isRepublish={id ? true : false}
                                     onChange={(e) => {
@@ -305,7 +305,7 @@ export default function Pastelog({ id }: { id?: string }) {
                             />
                             <div className="w-6" />
                             <Button
-                                className={`bg-gray-700`}
+                                className={'bg-gray-700'}
                                 onClick={publish}
                                 disabled={editor.publishing || !editor.content}
                             >

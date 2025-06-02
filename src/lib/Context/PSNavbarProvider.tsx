@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 interface NavbarContextProps {
     navbarTitle: string | null;
@@ -20,7 +20,7 @@ export const PSNavbarProvider = ({ children }: { children: ReactNode }) => {
 export const useNavbar = () => {
     const context = useContext(NavbarContext);
     if (!context) {
-        throw new Error("useNavbar must be used within a NavbarProvider");
+        throw new Error('useNavbar must be used within a NavbarProvider');
     }
     return context;
 };

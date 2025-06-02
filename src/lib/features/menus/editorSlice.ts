@@ -1,5 +1,5 @@
-import DateUtils from "@/utils/DateUtils";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import DateUtils from '@/utils/DateUtils';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface EditorState {
     content: string;
@@ -11,8 +11,8 @@ interface EditorState {
 }
 
 const initialState: EditorState = {
-    title: "",
-    content: "",
+    title: '',
+    content: '',
     preview: false,
     publishing: false,
     expiryDate: DateUtils.getDateOffsetBy(30),
@@ -20,7 +20,7 @@ const initialState: EditorState = {
 };
 
 const editorSlice = createSlice({
-    name: "editor",
+    name: 'editor',
     initialState,
     reducers: {
         setTitle: (state, action: PayloadAction<string>) => {

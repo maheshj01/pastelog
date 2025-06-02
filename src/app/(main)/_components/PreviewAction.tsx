@@ -2,7 +2,7 @@ import { Constants } from '@/app/constants';
 import { RootState } from '@/lib/store';
 import { showToast } from '@/utils/toast_utils';
 import { downloadImage, downloadText } from '@/utils/utils';
-import { EllipsisHorizontalIcon, ShareIcon } from "@heroicons/react/24/solid";
+import { EllipsisHorizontalIcon, ShareIcon } from '@heroicons/react/24/solid';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
 import { useDisclosure } from '@nextui-org/react';
@@ -57,7 +57,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
     }
 
     const [shareContent, setShareContent] = useState({
-        title: "Share Pastelog",
+        title: 'Share Pastelog',
         content: process.env.NEXT_PUBLIC_BASE_URL + pathName,
     });
 
@@ -88,7 +88,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
     const toastId = React.useRef('clipboard-toast');
     const notify = (message: string) => {
         if (!toast.isActive(toastId.current!)) {
-            showToast("success", <p> {message} </p >,
+            showToast('success', <p> {message} </p >,
                 {
                     toastId: 'clipboard-toast',
                 }
@@ -139,7 +139,7 @@ const PreviewAction: React.FC<PreviewActionProps> = ({ className, loading, setLo
                                     }
                                 }}
                             >
-                                <div className={`px-4'text-primary-foreground'}`}>
+                                <div className={'px-4\'text-primary-foreground\'}'}>
                                     Cancel
                                 </div>
                             </Button>

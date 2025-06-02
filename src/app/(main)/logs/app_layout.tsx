@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { fetchMenuItems } from '@/lib/features/menus/menuSlice';
 import { setShowSideBar, toggleSideBar } from '@/lib/features/menus/sidebarSlice';
@@ -8,9 +8,9 @@ import { useDisclosure } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
-import { FiSidebar } from "react-icons/fi";
+import { FiSidebar } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
-import IconButton from "../_components/IconButton";
+import IconButton from '../_components/IconButton';
 import PSBanner from '../_components/PSBanner';
 import PSNavbar from '../_components/PSNavbar';
 import RouteClient from '../_components/RouteClient';
@@ -84,7 +84,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <div className={`flex-grow w-full overflow-x-hidden transition-all duration-300 ease-in-out ${showSideBar ? 'pl-64' : 'pl-0'} `} onPointerDown={handleMainContentClick}>
                     {showSideBar && (
                         <IconButton
-                            className={`fixed top-2 left-2 z-50`}
+                            className={'fixed top-2 left-2 z-50'}
                             onClick={() => dispatch(setShowSideBar(!showSideBar))}
                             ariaLabel="Close Sidebar"
                             tooltipPlacement="bottom-start"

@@ -1,4 +1,4 @@
-"use clent  ";
+'use clent  ';
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './features/menus/authSlice';
 import editorSlice from './features/menus/editorSlice';

@@ -3,11 +3,11 @@ import { setId, setSelected, setShowSideBar } from '@/lib/features/menus/sidebar
 import { AppDispatch, RootState } from '@/lib/store';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from 'next/navigation';
 import { FiSidebar } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import IconButton from './IconButton';
-import { ThemeSwitcher } from "./ThemeSwitcher";
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 interface PSNavbarProps {
     className?: string;
@@ -36,14 +36,14 @@ const PSNavbar: React.FC<PSNavbarProps> = ({ sideBarIcon, className }) => {
                                 <FiSidebar className='text-2xl' />
                             </IconButton>
                         )}
-                    <div className={`py-6 mt-2 h-11 w-11 flex items-center cursor-pointer`}
+                    <div className={'py-6 mt-2 h-11 w-11 flex items-center cursor-pointer'}
                         onClick={() => {
                             dispatch(setId(null))
                             dispatch(setSelected(null));
                             router.push('/logs');
                         }}>
                         <Image
-                            src={"/images/frame.png"}
+                            src={'/images/frame.png'}
                             alt="Logo"
                             width={50}
                             height={50}

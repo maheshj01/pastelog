@@ -1,5 +1,5 @@
-import { AuthService } from "@/app/(main)/_services/AuthService";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AuthService } from '@/app/(main)/_services/AuthService';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User as FirebaseUser } from 'firebase/auth';
 
 
@@ -37,7 +37,7 @@ export const signInWithGoogle = createAsyncThunk(
             const user = await authService.signInWithGoogle();
             return user;
         } catch (error) {
-            return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
+            return rejectWithValue(error instanceof Error ? error.message : 'An unknown error occurred');
         }
     }
 );
@@ -49,7 +49,7 @@ export const signOut = createAsyncThunk(
         try {
             await authService.signOut();
         } catch (error) {
-            return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
+            return rejectWithValue(error instanceof Error ? error.message : 'An unknown error occurred');
         }
     }
 );
@@ -62,7 +62,7 @@ export const isFirstTimeLogin = createAsyncThunk(
             const firstLogin = await authService.isFirstTimeLogin(userId);
             return firstLogin;
         } catch (error) {
-            return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
+            return rejectWithValue(error instanceof Error ? error.message : 'An unknown error occurred');
         }
     }
 );

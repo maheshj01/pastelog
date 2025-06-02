@@ -1,12 +1,12 @@
-import { showToast } from "@/utils/toast_utils";
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
-import Image from "next/image";
-import React from "react";
-import { toast } from "react-toastify";
-import Analytics from "../../_services/Analytics";
-import GradientText from "../GradientText";
-import PSInput from "../PSInput";
-import { Button } from "../button";
+import { showToast } from '@/utils/toast_utils';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
+import Image from 'next/image';
+import React from 'react';
+import { toast } from 'react-toastify';
+import Analytics from '../../_services/Analytics';
+import GradientText from '../GradientText';
+import PSInput from '../PSInput';
+import { Button } from '../button';
 interface GeminiDialogProps {
     isOpen: boolean;
     onClose: () => void;
@@ -21,7 +21,7 @@ const GeminiDialog: React.FC<GeminiDialogProps> = ({ isOpen, onClose, onSave, ti
     const [value, setValue] = React.useState<string>('');
     const notify = (message: string) => {
         if (!toast.isActive(toastId.current!)) {
-            showToast("success", <p> {message} </p >,
+            showToast('success', <p> {message} </p >,
                 {
                     toastId: 'stored-toast',
                 }
@@ -36,7 +36,7 @@ const GeminiDialog: React.FC<GeminiDialogProps> = ({ isOpen, onClose, onSave, ti
                 <ModalHeader className="flex flex-col mt-1">
                     <div className="flex">
                         <Image
-                            src={"/images/gemini.png"}
+                            src={'/images/gemini.png'}
                             alt="Logo"
                             width={32}
                             height={32}
@@ -56,7 +56,7 @@ const GeminiDialog: React.FC<GeminiDialogProps> = ({ isOpen, onClose, onSave, ti
                         <p className='text-sm mt-2 mb-4 text-gray-400'> Note: The API key is stored in memory only for the time this app runs.</p>
                         <p className="text-md">How to get the API key?</p>
                         <p className="text-sm text-gray-400">1. Go to <a href="https://ai.google.dev/gemini-api" target="_blank" className="text-blue-500">ai.google.dev/gemini-api</a> and login.</p>
-                        <p className="text-sm text-gray-400">{"2. Click -> Get API key in Google AI Studio"}</p>
+                        <p className="text-sm text-gray-400">{'2. Click -> Get API key in Google AI Studio'}</p>
                         <p className="text-sm text-gray-400">3. Create API key</p>
                     </div>
                 </ModalBody>
@@ -74,7 +74,7 @@ const GeminiDialog: React.FC<GeminiDialogProps> = ({ isOpen, onClose, onSave, ti
                                 onClose();
                             }
                         }}
-                        className={`bg-gradient-to-r from-gray-700 to-gray-800`}>
+                        className={'bg-gradient-to-r from-gray-700 to-gray-800'}>
                         <p className='mx-2'>Store API key</p>
                     </Button>
                 </ModalFooter>

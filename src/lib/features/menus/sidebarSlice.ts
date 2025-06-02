@@ -1,9 +1,9 @@
-import { AuthService } from "@/app/(main)/_services/AuthService";
-import LogService from "@/app/(main)/_services/logService";
-import { LogType } from "@/app/constants";
-import DateUtils from "@/utils/DateUtils";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Timestamp } from "firebase/firestore";
+import { AuthService } from '@/app/(main)/_services/AuthService';
+import LogService from '@/app/(main)/_services/logService';
+import { LogType } from '@/app/constants';
+import DateUtils from '@/utils/DateUtils';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Timestamp } from 'firebase/firestore';
 
 interface SidebarState {
     id: string | null;

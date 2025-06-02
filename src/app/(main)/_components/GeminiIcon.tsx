@@ -12,7 +12,7 @@ interface GeminiProps {
 
 const GeminiIcon: React.FC<GeminiProps> = ({ onGeminiTrigger, className, children, toolTip }) => {
     const geminiContent = {
-        title: "Gemini",
+        title: 'Gemini',
         content: 'With the power of Gemini, you can summarize long notes content. Enter your API key to get started.',
     };
     const { isOpen: geminiOpen, onOpen: onGeminiOpen, onClose: onGeminiClose } = useDisclosure();
@@ -26,7 +26,7 @@ const GeminiIcon: React.FC<GeminiProps> = ({ onGeminiTrigger, className, childre
     return (
         <div className={className}>
             <Tooltip
-                content={toolTip || "Tap to Summarize"}
+                content={toolTip || 'Tap to Summarize'}
                 placement='top-start'>
                 <div onClick={() => {
                     if (apiKey === undefined || apiKey === null || apiKey === '') {

@@ -23,7 +23,7 @@ export function DarkMode({ darkTheme, toggleTheme }: DarkModeProps) {
             </div>
             <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
                 <Image
-                    src={darkTheme ? "/images/cover-dark.png" : "/images/cover.png"}
+                    src={darkTheme ? '/images/cover-dark.png' : '/images/cover.png'}
                     alt="Feature 2"
                     layout="responsive"
                     width={1024}

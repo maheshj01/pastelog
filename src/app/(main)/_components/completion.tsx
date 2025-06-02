@@ -22,9 +22,9 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
     onUndo,
     onRedo,
     disabled = false,
-    placeholder = "Type to get suggestions...",
-    height = "70vh",
-    maxHeight = "100%",
+    placeholder = 'Type to get suggestions...',
+    height = '70vh',
+    maxHeight = '100%',
     autoSuggest = false,
 }) => {
     const [inputValue, setInputValue] = useState(value);
@@ -55,7 +55,7 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
     }
 
     const handleKeyDown = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key.toLowerCase() === '`' || event.key.toLowerCase() === "'" || (event.shiftKey && event.key.toLowerCase() === '"')) {
+        if (event.key.toLowerCase() === '`' || event.key.toLowerCase() === '\'' || (event.shiftKey && event.key.toLowerCase() === '"')) {
             const textarea = inputRef.current;
             if (!textarea) return;
             const selection = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
@@ -249,7 +249,7 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
         const currentLine = value.substring(currentLineStart, currentLineEnd);
         const newLine = `${currentLine}`;
 
-        const newValue = value.substring(0, currentLineEnd) + "\n" + newLine + value.substring(currentLineEnd);
+        const newValue = value.substring(0, currentLineEnd) + '\n' + newLine + value.substring(currentLineEnd);
         const newCursorPosition = currentLineEnd + 1;
         updateValue(newValue, newCursorPosition + newLine.length);
     }
@@ -368,7 +368,7 @@ const TextCompletionInput: React.FC<TextCompletionInputProps> = ({
             const newCursorPos = textarea.selectionStart + imageName.length;
             updateValue(replacedtext, newCursorPos);
         } catch (_) {
-            console.error("Error uploading image:", _);
+            console.error('Error uploading image:', _);
         }
     }
 

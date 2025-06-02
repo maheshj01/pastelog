@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { PSNavbarProvider } from '@/lib/Context/PSNavbarProvider';
 import { store } from '@/lib/store';

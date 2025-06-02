@@ -1,7 +1,7 @@
-import { RootState } from "@/lib/store";
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
-import React from "react";
-import { useSelector } from "react-redux";
+import { RootState } from '@/lib/store';
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 interface DeleteDialogProps {
     isOpen: boolean;

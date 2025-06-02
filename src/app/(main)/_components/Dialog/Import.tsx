@@ -1,8 +1,8 @@
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
-import { UploadIcon } from "@radix-ui/react-icons";
-import React, { useEffect, useState } from "react";
-import PSInput from "../PSInput";
-import { Button } from "../button";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
+import { UploadIcon } from '@radix-ui/react-icons';
+import React, { useEffect, useState } from 'react';
+import PSInput from '../PSInput';
+import { Button } from '../button';
 interface ImportDialogProps {
     isOpen: boolean;
     onClose: () => void;
@@ -40,11 +40,11 @@ const ImportDialog: React.FC<ImportDialogProps> = ({ isOpen, onClose, onImport, 
                         onClick={() => {
                             onImport(url);
                         }}
-                        className={`bg-gradient-to-r from-gray-700 to-gray-800`}>
+                        className={'bg-gradient-to-r from-gray-700 to-gray-800'}>
                         <p className='mx-2'>
                             {importLoading ? (
                                 <div className="loader mx-6" />
-                            ) : "Import"}
+                            ) : 'Import'}
                         </p> <UploadIcon />
                     </Button>
                 </ModalFooter>

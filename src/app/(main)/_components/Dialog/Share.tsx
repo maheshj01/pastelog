@@ -1,11 +1,11 @@
-import { Constants } from "@/app/constants";
-import { showToast } from "@/utils/toast_utils";
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
-import { ClipboardCopyIcon, EyeOpenIcon } from "@radix-ui/react-icons";
-import React from "react";
-import { toast } from "react-toastify";
-import IconButton from "../IconButton";
-import { Button } from "../button";
+import { Constants } from '@/app/constants';
+import { showToast } from '@/utils/toast_utils';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
+import { ClipboardCopyIcon, EyeOpenIcon } from '@radix-ui/react-icons';
+import React from 'react';
+import { toast } from 'react-toastify';
+import IconButton from '../IconButton';
+import { Button } from '../button';
 interface ShareDialogProps {
     isOpen: boolean;
     onClose: () => void;
@@ -18,7 +18,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, tit
     const toastId = React.useRef('copied-toast');
     const notify = () => {
         if (!toast.isActive(toastId.current!)) {
-            showToast("success", <p> Link copied! </p >,
+            showToast('success', <p> Link copied! </p >,
                 {
                     toastId: 'copied-toast',
                     style: {
@@ -65,7 +65,7 @@ const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, onShare, tit
                     </Button>
                     <Button
                         onClick={onShare}
-                        className={`bg-gradient-to-r from-gray-700 to-gray-800`}>
+                        className={'bg-gradient-to-r from-gray-700 to-gray-800'}>
                         <p className='mx-2'>Preview</p> <EyeOpenIcon />
                     </Button>
                 </ModalFooter>

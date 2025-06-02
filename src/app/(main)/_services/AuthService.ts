@@ -35,7 +35,7 @@ export class AuthService {
         try {
             return auth.signOut();
         } catch (error) {
-            console.error("Error signing out with Google", error);
+            console.error('Error signing out with Google', error);
         }
     }
 

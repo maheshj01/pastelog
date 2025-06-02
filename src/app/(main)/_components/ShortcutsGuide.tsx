@@ -1,11 +1,11 @@
 
-import { Constants } from "@/app/constants";
+import { Constants } from '@/app/constants';
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
-} from "@radix-ui/react-hover-card";
-import { MdOutlineKeyboardCommandKey } from "react-icons/md";
+} from '@radix-ui/react-hover-card';
+import { MdOutlineKeyboardCommandKey } from 'react-icons/md';
 
 
 export default function ShortCutsGuide() {

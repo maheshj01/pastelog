@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { store } from '@/lib/store';
 import { redirect } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';

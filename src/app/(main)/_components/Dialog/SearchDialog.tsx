@@ -1,16 +1,16 @@
-"use client"
-import { Constants } from "@/app/constants";
-import { setId, setNavbarTitle, setSelected, setShowSideBar } from "@/lib/features/menus/sidebarSlice";
-import { AppDispatch, RootState } from "@/lib/store";
+'use client'
+import { Constants } from '@/app/constants';
+import { setId, setNavbarTitle, setSelected, setShowSideBar } from '@/lib/features/menus/sidebarSlice';
+import { AppDispatch, RootState } from '@/lib/store';
 import SearchIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import PencilSquareIcon from '@heroicons/react/24/solid/PencilSquareIcon';
-import { Divider, Input } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Analytics from "../../_services/Analytics";
-import { Dialog, DialogContent, DialogTrigger } from "../dialog";
-import IconButton from "../IconButton";
+import { Divider, Input } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Analytics from '../../_services/Analytics';
+import { Dialog, DialogContent, DialogTrigger } from '../dialog';
+import IconButton from '../IconButton';
 
 export function SearchDialog() {
   const logs = useSelector((state: RootState) => state.sidebar.logs);
@@ -42,7 +42,7 @@ export function SearchDialog() {
     } else {
       dispatch(setSelected(null));
       dispatch(setId(null));
-      router.push(`/logs`);
+      router.push('/logs');
       Analytics.logEvent('new_log');
     }
     setOpen(false)
@@ -106,7 +106,7 @@ export function SearchDialog() {
             placeholder="Search"
             className="w-full rounded-t-lg"
             classNames={{
-              inputWrapper: "rounded-t-lg rounded-b-none",
+              inputWrapper: 'rounded-t-lg rounded-b-none',
             }}
           />
           <div className=" flex items-center px-2 animate-all duration-100 cursor-pointer h-12">
@@ -115,7 +115,7 @@ export function SearchDialog() {
               onClick={
                 () => onLogClick(null)
               }>
-              <p className="px-1">{"New Note"}</p>
+              <p className="px-1">{'New Note'}</p>
             </div>
           </div>
           <Divider />

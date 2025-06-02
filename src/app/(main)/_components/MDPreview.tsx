@@ -1,13 +1,13 @@
 // src/_components/PSContent.tsx
-import { Constants } from "@/app/constants";
+import { Constants } from '@/app/constants';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
-import { Tooltip } from "@nextui-org/react";
-import dynamic from "next/dynamic";
-import remarkGfm from "remark-gfm";
-import CodeBlock from "./CodeHighlight";
-import CopyIcon from "./CopyIcon";
-const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
+import { Tooltip } from '@nextui-org/react';
+import dynamic from 'next/dynamic';
+import remarkGfm from 'remark-gfm';
+import CodeBlock from './CodeHighlight';
+import CopyIcon from './CopyIcon';
+const ReactMarkdown = dynamic(() => import('react-markdown'), { ssr: false });
 
 interface MDPreviewProps {
     value?: string;
@@ -46,8 +46,8 @@ const MDPreview = ({ value, className }: MDPreviewProps) => {
     return <div
         id='preview'
         style={{
-            height: "100%",
-            maxHeight: "100%"
+            height: '100%',
+            maxHeight: '100%'
         }}>
         <ReactMarkdown
             className={`${customClass} mb-2`}

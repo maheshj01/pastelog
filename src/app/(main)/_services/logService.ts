@@ -1,11 +1,11 @@
 // src/services/LogService.ts
 
-import { Constants, LogType } from "@/app/constants";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { Constants, LogType } from '@/app/constants';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import axios from 'axios';
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, Timestamp, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../../utils/firebase';
-import FeatureService from "./feature";
+import FeatureService from './feature';
 class LogService {
     private logCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION}`);
     private configCollection = collection(db, `${process.env.NEXT_PUBLIC_FIREBASE_CONFIG_COLLECTION}`);
@@ -96,7 +96,7 @@ class LogService {
                 }
                 return docRef.id!
             } else {
-                throw new Error("Failed to publish log");
+                throw new Error('Failed to publish log');
             }
         } catch (e) {
             throw new Error(`Failed to publish log:${e}`);
@@ -180,7 +180,7 @@ class LogService {
                     updatePromises.push(
                         updateDoc(doc.ref, { isExpired: true })
                             .catch((error) => {
-                                console.error(`Error deleting:`, error);
+                                console.error('Error deleting:', error);
                             })
                     );
                 }
@@ -289,7 +289,7 @@ class LogService {
         try {
             const genAI = new GoogleGenerativeAI(apiKey!);
 
-            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+            const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
             const prompt = `Summarize the following text by taking the title: ${log.title} and its description:` + log.data;
 
@@ -299,7 +299,7 @@ class LogService {
 
             return summary
         } catch (error) {
-            console.error("Error querying Gemini:", error);
+            console.error('Error querying Gemini:', error);
         } finally {
         }
     };
@@ -308,7 +308,7 @@ class LogService {
         try {
             const genAI = new GoogleGenerativeAI(apiKey!);
             const model = genAI.getGenerativeModel({
-                model: "gemini-pro"
+                model: 'gemini-pro'
             });
             const prompt = `Generate a new title under 30 chars for for the following piece of text whose current title: ${log.title} and the content: ${log.data}`;
             const result = await model.generateContent(prompt);
@@ -318,7 +318,7 @@ class LogService {
             const parsedTitle = title.replace(/[#*_`]/g, '').trim();
             return parsedTitle
         } catch (error) {
-            console.error("Error querying Gemini:", error);
+            console.error('Error querying Gemini:', error);
         } finally {
         }
     }

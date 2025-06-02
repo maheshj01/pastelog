@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import GradientText from '../GradientText';
@@ -48,7 +48,7 @@ export function Introduction({
             >
                 {loading ? (
                     <div className="loader mx-6 py-1" />
-                ) : "Get Started"}
+                ) : 'Get Started'}
             </Button>
             <p className="text-center mt-32 mb-4">Show Your support on ProductHunt</p>
             <a href="https://www.producthunt.com/posts/pastelog?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-pastelog" target="_blank">

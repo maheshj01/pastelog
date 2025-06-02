@@ -5,7 +5,7 @@ import { ExitIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
-import { FaBug, FaGithub, FaGoogle, FaNewspaper, FaWpexplorer } from "react-icons/fa";
+import { FaBug, FaGithub, FaGoogle, FaNewspaper, FaWpexplorer } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import useSettings from '../_hooks/useSettings';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from './dropdown-menu';

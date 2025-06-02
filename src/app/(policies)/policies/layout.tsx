@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { PSNavbarProvider } from "@/lib/Context/PSNavbarProvider";
-import { store } from "@/lib/store";
-import { Provider } from "react-redux";
-import PSNavbar from "../../(main)/_components/PSNavbar";
+import { PSNavbarProvider } from '@/lib/Context/PSNavbarProvider';
+import { store } from '@/lib/store';
+import { Provider } from 'react-redux';
+import PSNavbar from '../../(main)/_components/PSNavbar';
 
 export default function PolicyLayout({ children }: { children: React.ReactNode }) {
     return (

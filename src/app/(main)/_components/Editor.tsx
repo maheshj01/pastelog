@@ -1,12 +1,12 @@
 // src/_components/PSContent.tsx
-import dynamic from "next/dynamic";
-import { usePathname } from "next/navigation";
-import React, { ChangeEvent, useEffect, useRef } from "react";
-import { EditorHistoryState } from "../_services/EditorState";
-import MDPreview from "./MDPreview";
-import TextCompletionInput from "./completion";
+import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
+import React, { ChangeEvent, useEffect, useRef } from 'react';
+import { EditorHistoryState } from '../_services/EditorState';
+import MDPreview from './MDPreview';
+import TextCompletionInput from './completion';
 // import ReactMarkdown from 'react-markdown';
-const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
+const ReactMarkdown = dynamic(() => import('react-markdown'), { ssr: false });
 interface PSEditorProps {
     className?: string;
     placeHolder?: string;

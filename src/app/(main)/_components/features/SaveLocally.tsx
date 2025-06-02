@@ -9,7 +9,7 @@ export function SaveLocally() {
             <p className="text-center">Your logs are saved locally on device, so that you can access them without signing in.</p>
             <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
                 <Image
-                    src={"/images/local.png"}
+                    src={'/images/local.png'}
                     alt="Feature 3"
                     layout="responsive"
                     width={1024}

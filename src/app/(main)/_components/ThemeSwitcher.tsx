@@ -1,15 +1,15 @@
 // app/components/ThemeSwitcher.tsx
-"use client";
+'use client';
 
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid';
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 import Analytics from '../_services/Analytics';
 import IconButton from './IconButton';
 
 export enum Theme {
-    LIGHT = "light",
-    DARK = "dark",
+    LIGHT = 'light',
+    DARK = 'dark',
 }
 
 export function ThemeSwitcher() {

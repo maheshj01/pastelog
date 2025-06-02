@@ -23,7 +23,7 @@ export async function generateMetadata(
     const log = await new LogService().importLog(id);
 
     return {
-        title: log?.title || "Pastelog",
+        title: log?.title || 'Pastelog',
         description: log?.data || Constants.description
     }
 }

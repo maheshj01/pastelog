@@ -1,6 +1,6 @@
-import { showToast } from "@/utils/toast_utils";
-import React, { useState } from "react";
-import { toast } from "react-toastify";
+import { showToast } from '@/utils/toast_utils';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import IconButton from './IconButton';
 
 interface CopyIconProps {
@@ -13,7 +13,7 @@ interface CopyIconProps {
     message: string
     data: string
     id: string
-    size?: "sm" | "md" | "lg"
+    size?: 'sm' | 'md' | 'lg'
 }
 export default function CopyIcon({ id, className, icon, message, copiedIcon, onClick, data, tooltip, size = 'md', notifyCopy = true }: CopyIconProps) {
     const [copied, setCopied] = useState<boolean>(false);
@@ -27,7 +27,7 @@ export default function CopyIcon({ id, className, icon, message, copiedIcon, onC
                 notifyCopy && notify(message);
             })
             .catch(() => {
-                notifyCopy && notify("Failed to copy!");
+                notifyCopy && notify('Failed to copy!');
             });
         setTimeout(() => {
             setCopied(false);
@@ -40,7 +40,7 @@ export default function CopyIcon({ id, className, icon, message, copiedIcon, onC
     const notify = (message: string) => {
         if (!toast.isActive(toastId.current)) {
             showToast(
-                "success",
+                'success',
                 <p>{message}</p>,
                 {
                     toastId: toastId.current,

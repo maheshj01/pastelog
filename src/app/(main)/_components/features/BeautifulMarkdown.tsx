@@ -8,7 +8,7 @@ export function BeautifulMarkdown() {
             </p>
             <div className="mt-8 w-full max-w-3xl relative overflow-hidden rounded-lg shadow-lg">
                 <Image
-                    src={"/images/cover.png"}
+                    src={'/images/cover.png'}
                     alt="Feature 1"
                     layout="responsive"
                     width={1024}

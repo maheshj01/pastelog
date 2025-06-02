@@ -1,6 +1,6 @@
-import { CalendarDate } from "@nextui-org/react";
-import { Timestamp } from "firebase/firestore";
-import html2canvas from "html2canvas";
+import { CalendarDate } from '@nextui-org/react';
+import { Timestamp } from 'firebase/firestore';
+import html2canvas from 'html2canvas';
 
 export const downloadImage = async () => {
     const preview = document.getElementById('preview');
@@ -60,7 +60,7 @@ export const isExpired = (expiryDate: Timestamp | string | null | undefined): bo
     let expiry: Date;
     if (expiryDate instanceof Timestamp) {
         expiry = expiryDate.toDate();
-    } else if (typeof expiryDate === "string") {
+    } else if (typeof expiryDate === 'string') {
         expiry = new Date(expiryDate);
     } else {
         return false;
@@ -72,10 +72,10 @@ export const isExpired = (expiryDate: Timestamp | string | null | undefined): bo
 
 export const downloadText = (previewLog: any) => {
     if (!previewLog?.data) return;
-    const element = document.createElement("a");
+    const element = document.createElement('a');
     const file = new Blob([previewLog.data], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
-    element.download = "pastelog.txt";
+    element.download = 'pastelog.txt';
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
 }

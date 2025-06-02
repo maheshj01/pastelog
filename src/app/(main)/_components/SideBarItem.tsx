@@ -1,22 +1,22 @@
-import { Constants } from "@/app/constants";
-import { setId, setSelected } from "@/lib/features/menus/sidebarSlice";
-import { AppDispatch, RootState } from "@/lib/store";
-import { showToast } from "@/utils/toast_utils";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
-import { useDisclosure } from "@nextui-org/react";
+import { Constants } from '@/app/constants';
+import { setId, setSelected } from '@/lib/features/menus/sidebarSlice';
+import { AppDispatch, RootState } from '@/lib/store';
+import { showToast } from '@/utils/toast_utils';
+import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid';
+import { useDisclosure } from '@nextui-org/react';
 import Image from 'next/image';
-import { useRouter } from "next/navigation";
-import React, { Key, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import useClickOutside from "../_hooks/outsideclick";
-import { useSidebar } from "../_hooks/useSidebar";
-import Analytics from "../_services/Analytics";
+import { useRouter } from 'next/navigation';
+import React, { Key, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import useClickOutside from '../_hooks/outsideclick';
+import { useSidebar } from '../_hooks/useSidebar';
+import Analytics from '../_services/Analytics';
 import LogService from '../_services/logService';
-import DeleteDialog from "./Dialog/Delete";
-import ShareDialog from "./Dialog/Share";
-import PSDropdown from "./Dropdown";
-import GeminiIcon from "./GeminiIcon";
+import DeleteDialog from './Dialog/Delete';
+import ShareDialog from './Dialog/Share';
+import PSDropdown from './Dropdown';
+import GeminiIcon from './GeminiIcon';
 interface SidebarItemProps {
     id: string;
     log: any;
@@ -57,11 +57,11 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ id, log, onLogClick, onRefres
     }
 
     const [shareContent, setShareContent] = useState({
-        title: "Share Pastelog",
+        title: 'Share Pastelog',
         content: process.env.NEXT_PUBLIC_BASE_URL + '/logs/publish/' + id,
     });
     const [deleteContent, setDeleteContent] = useState({
-        title: "Are you sure you want to Delete?",
+        title: 'Are you sure you want to Delete?',
         content: 'This action cannot be undone. This log will be deleted from your device and will no longer be available.'
     });
 
@@ -124,7 +124,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ id, log, onLogClick, onRefres
             await new Promise(resolve => setTimeout(resolve, 100)); // Short delay before fade-in
             setFadeOut(false);
         } catch (error) {
-            console.error("Error querying Gemini:", error);
+            console.error('Error querying Gemini:', error);
         } finally {
             Analytics.logEvent('gemini_title_rename', { id: log.id });
             setTitleLoading(false);
@@ -134,7 +134,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ id, log, onLogClick, onRefres
     const toastId = React.useRef('delete-toast');
     const notify = (message: string) => {
         if (!toast.isActive(toastId.current!)) {
-            showToast("success", <p> {message} </p >,
+            showToast('success', <p> {message} </p >,
                 {
                     toastId: 'delete-toast',
                 }
@@ -166,7 +166,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ id, log, onLogClick, onRefres
             <div
                 ref={inputRef as React.RefObject<HTMLDivElement>}
                 key={log.id}
-                className={`flex justify-between items-center text-xs dark:text-slate-200 cursor-pointer py-1 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative bg-background`}>
+                className={'flex justify-between items-center text-xs dark:text-slate-200 cursor-pointer py-1 transition-all duration-100 px-2 rounded-md whitespace-nowrap overflow-hidden relative bg-background'}>
                 <input
                     type="text"
                     onKeyDown={(e) => {
@@ -187,7 +187,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ id, log, onLogClick, onRefres
                             onGenerateTitle();
                         }
                     }}><Image
-                        src={"/images/gemini.png"}
+                        src={'/images/gemini.png'}
                         alt="Logo"
                         width={32}
                         height={32}

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { RootState } from '@/lib/store';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';

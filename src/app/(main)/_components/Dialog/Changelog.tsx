@@ -1,8 +1,8 @@
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react";
-import { EyeOpenIcon } from "@radix-ui/react-icons";
-import React from "react";
-import { Button } from "../button";
-import MDPreview from "../MDPreview";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
+import { EyeOpenIcon } from '@radix-ui/react-icons';
+import React from 'react';
+import { Button } from '../button';
+import MDPreview from '../MDPreview';
 interface ChangelogDialogProps {
     isOpen: boolean;
     onClose: () => void;
@@ -28,7 +28,7 @@ const ChangelogDialog: React.FC<ChangelogDialogProps> = ({ isOpen, onClose, onSh
                     </Button>
                     <Button
                         onClick={onShare}
-                        className={`bg-gradient-to-r from-gray-700 to-gray-800`}>
+                        className={'bg-gradient-to-r from-gray-700 to-gray-800'}>
                         <p className='mx-2'>Preview</p> <EyeOpenIcon />
                     </Button>
                 </ModalFooter>

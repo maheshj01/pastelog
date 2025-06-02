@@ -1,6 +1,6 @@
-import { CalendarDate } from "@nextui-org/react";
-import { parseDate } from "@internationalized/date";
-import { Timestamp } from "firebase/firestore";
+import { CalendarDate } from '@nextui-org/react';
+import { parseDate } from '@internationalized/date';
+import { Timestamp } from 'firebase/firestore';
 
 class DateUtils {
     static toUTC(date: Date): string {
@@ -54,9 +54,9 @@ class DateUtils {
     }
 
     static timestampToISOString(input: Timestamp | string): string {
-        if (typeof input === "string") return input;
+        if (typeof input === 'string') return input;
         if (input instanceof Timestamp) return input.toDate().toISOString();
-        return "";
+        return '';
     }
 
     static formatReadableDate = (dateInput: string | Timestamp | null | undefined): string => {
@@ -64,7 +64,7 @@ class DateUtils {
 
         let date: Date;
 
-        if (typeof dateInput === "string") {
+        if (typeof dateInput === 'string') {
             date = new Date(dateInput); // ISO string
         } else if (dateInput instanceof Timestamp) {
             date = dateInput.toDate(); // Firestore Timestamp

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { Constants } from '@/app/constants';
 import { useNavbar } from '@/lib/Context/PSNavbarProvider';
 import { mapFirebaseUserToUser, setUser, signInWithGoogle, signOut } from '@/lib/features/menus/authSlice';
@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Analytics from '../_services/Analytics';
 import { AuthService } from '../_services/AuthService';
 import { SearchDialog } from './Dialog/SearchDialog';
-import IconButton from "./IconButton";
+import IconButton from './IconButton';
 import LoginMenu from './LoginMenu';
 import ShortCutsGuide from './ShortcutsGuide';
 import SidebarItem from './SideBarItem';
@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
         } else {
             dispatch(setSelected(null));
             dispatch(setId(null));
-            router.push(`/logs`);
+            router.push('/logs');
             Analytics.logEvent('new_log');
         }
     }, []);
@@ -53,7 +53,7 @@ const Sidebar: React.FC = () => {
                 dispatch(fetchLogs(user.uid));
             }
         });
-        dispatch(fetchLogs(""));
+        dispatch(fetchLogs(''));
         return () => unsubscribe();
     }, [fetchLogs, refresh]);
 
@@ -64,7 +64,7 @@ const Sidebar: React.FC = () => {
             await dispatch(signInWithGoogle());
             router.push('/logs');
         } catch (error) {
-            console.error("Error signing in:", error);
+            console.error('Error signing in:', error);
         }
     };
 
@@ -81,12 +81,12 @@ const Sidebar: React.FC = () => {
             }
             router.push('/logs');
         } catch (error) {
-            console.error("Error signing out:", error);
+            console.error('Error signing out:', error);
         }
     };
 
     return (
-        <div className={`fixed top-0 left-0 bottom-0 bg-surface dark:bg-gray-700 overflow-y-auto z-20`}>
+        <div className={'fixed top-0 left-0 bottom-0 bg-surface dark:bg-gray-700 overflow-y-auto z-20'}>
             <div className={`flex flex-col h-full transition-width duration-700 ${showSideBar ? 'w-64' : 'w-0'}`}>
                 {/* Fixed IconButton */}
                 <div className='sticky top-0 z-10 pt-2 pb-2'>
