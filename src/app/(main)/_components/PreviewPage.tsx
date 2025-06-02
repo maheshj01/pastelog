@@ -221,7 +221,7 @@ const PreviewPage = ({ logId }: { logId: string }) => {
               {!loading && (
                 <div>
                   <PSAccordion title="Details" id="details">
-                    <div className="text-sm text-gray-500 dark:text-gray-400 selection:text-white dark:selection:text-white">
+									<div className="text-sm text-gray-500 dark:text-white dark:selection:text-white selection:bg-selection dark:selection:bg-selection">
                       <p className="m-0">
                         <span className="font-medium">Created At:</span>{" "}
                         {DateUtils.formatReadableDate(previewLog?.createdDate!)}
